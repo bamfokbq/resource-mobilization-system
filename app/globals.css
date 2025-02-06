@@ -13,6 +13,7 @@
     --color-light-blue: hsl(var(--light-blue));
     --color-main-bg: hsl(var(--main-bg));
     --color-dark-gray: hsl(var(--dark-gray));
+    --color-nobe-red-lighter: hsl(var(--nobe-red-lighter));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -85,6 +86,7 @@
         --light-blue: 195, 53%, 79%;
         --main-bg: 0, 0%, 94%;
         --dark-gray: 0, 0%, 29%;
+        --nobe-red-lighter: 0, 100%, 75%;
       --background: 0 0% 100%;
         --foreground: 240 10% 3.9%;
         --card: 0 0% 100%;

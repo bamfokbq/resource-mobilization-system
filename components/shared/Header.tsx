@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { NAVIGATION } from '@/constant'
 import Navigation from './Navigation'
+import PrimaryButton from './PrimaryButton'
 
 export default function Header() {
     return (
@@ -11,7 +12,7 @@ export default function Header() {
             </Link>
             <nav className='flex items-center gap-10'>
                 <Navigation />
-                <Link href="/contact-us">Contact Us</Link>
+                <PrimaryButton href='/contact' bgColor='bg-navy-blue' text='Contact us' textColor='text-white' />
             </nav>
         </header>
     )
