@@ -48,7 +48,29 @@ const FEATURES = [
     }
 ]
 
+const RESOURCES_LINK = [
+    {
+        id: 1,
+        title: "Take the Survey",
+        description: "Provide insights on NCD-related activities.",
+        link: '/survey',
+    },
+    {
+        id: 2,
+        title: "Explore Data",
+        description: "Access and analyse data on NCD services.",
+        link: '/explore-data',
+    },
+    {
+        id: 3,
+        title: "Join as a Partner",
+        description: "Collaborate on initiatives and funding.",
+        link: '/partners',
+    }
+]
+
 export {
     NAVIGATION,
-    FEATURES
+    FEATURES,
+    RESOURCES_LINK
 }
