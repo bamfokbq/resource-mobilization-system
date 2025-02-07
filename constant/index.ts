@@ -69,8 +69,32 @@ const RESOURCES_LINK = [
     }
 ]
 
+const RESOURCES_ACTION = [
+    {
+        id: 1,
+        title: "Ghana NCD Strategy 2023",
+        download: '/resources/stakeholder-mapping.pdf',
+    },
+    {
+        id: 2,
+        title: "Latest NCD Navigator Report",
+        download: '/resources/data-visualisation.pdf',
+    },
+    {
+        id: 3,
+        title: "NCD Service Distribution",
+        download: '/resources/resource-optimisation.pdf',
+    },
+    {
+        id: 4,
+        title: "Tutorial for using the Navigator",
+        download: '/resources/real-time-reporting.pdf',
+    }
+]
+
 export {
     NAVIGATION,
     FEATURES,
-    RESOURCES_LINK
+    RESOURCES_LINK,
+    RESOURCES_ACTION
 }
