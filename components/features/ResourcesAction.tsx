@@ -6,7 +6,7 @@ import { FaDownload } from "react-icons/fa6";
 
 export default function ResourcesAction() {
     return (
-        <section id="resources" className='min-h-[50dvh] border border-navy-blue py-20 px-10 flex flex-col gap-12'>
+        <section id="resources" className='min-h-[50dvh] border border-navy-blue py-10 px-5 md:py-20 md:px-10 flex flex-col gap-6 md:gap-12'>
             <SectionTitle text='Resources for Action' color='text-navy-blue' />
             <div className='max-w-lg w-full flex flex-col gap-6 mx-auto'>
                 {RESOURCES_ACTION.map((action) => <div key={action.id} className='bg-navy-blue shadow-lg h-full flex items-center rounded-xl px-4 py-3 justify-between'>

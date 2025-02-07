@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export default function Contributions() {
     return (
-        <section className='bg-light-blue min-h-[70dvh] py-20 px-10 flex flex-col gap-12'>
+        <section className='bg-light-blue min-h-[70dvh] py-10 px-5 md:py-20 md:px-10 flex flex-col gap-12'>
             <SectionTitle text='How You Can Contribute' color='text-navy-blue' />
             <div className='max-w-3xl gap-10 w-full mx-auto flex flex-col md:flex-row justify-between items-center'>
                 <div className='relative h-[380px] w-[300px] md:w-[600px]'>
