@@ -9,7 +9,7 @@ export default function WhoCompleteSurvey() {
       <SectionTitle text='Who Can Complete the Survey?' color='text-navy-blue' />
       <div className='flex flex-col max-w-4xl mx-auto w-full md:flex-row justify-between items-center gap-10'>
         <div className='flex flex-col gap-4 h-auto md:h-[400px] justify-around flex-1'>
-          <p className='text-lg md:text-2xl text-dark-gray font-medium'>This survey is designed for individuals directly involved in managing or implementing NCD (Non-Communicable Disease) projects within their organisations. If your organisation works to provide or improve access to NCD-related prevention and care services, your input is essential for this coordinated effort.</p>
+          <h3 className='text-lg md:text-2xl text-dark-gray font-medium'>This survey is designed for individuals directly involved in managing or implementing NCD (Non-Communicable Disease) projects within their organisations. If your organisation works to provide or improve access to NCD-related prevention and care services, your input is essential for this coordinated effort.</h3>
           <PrimaryButton href='/explore-data' text='Explore Data' bgColor='bg-pine-yellow' textColor='text-white' />
         </div>
         <div className='relative h-auto md:h-[400px] flex-1'>

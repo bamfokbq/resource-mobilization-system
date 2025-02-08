@@ -14,6 +14,9 @@
     --color-main-bg: hsl(var(--main-bg));
     --color-dark-gray: hsl(var(--dark-gray));
     --color-nobe-red-lighter: hsl(var(--nobe-red-lighter));
+    --color-ligher-gray: hsl(var(--ligher-gray));
+      --color-smit-green: hsl(var(--smit-green));
+      --color-mode-blue: hsl(var(--mode-blue));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -87,6 +90,9 @@
         --main-bg: 0, 0%, 94%;
         --dark-gray: 0, 0%, 29%;
         --nobe-red-lighter: 0, 100%, 75%;
+        --ligher-gray: 0, 0%, 93%;
+          --smit-green: 141, 87%, 31%;
+          --mode-blue: 215, 100%, 34%;
       --background: 0 0% 100%;
         --foreground: 240 10% 3.9%;
         --card: 0 0% 100%;

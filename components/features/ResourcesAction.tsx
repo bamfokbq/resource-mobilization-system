@@ -29,7 +29,7 @@ export default function ResourcesAction() {
     return (
         <section
             id="resources"
-            className='min-h-[50dvh] border border-navy-blue py-10 px-5 md:py-20 md:px-10 flex flex-col gap-6 md:gap-12 bg-gradient-to-r from-blue-50 to-blue-100'
+            className='border border-navy-blue py-10 px-5 md:py-20 md:px-10 flex flex-col gap-6 md:gap-12'
         >
             <SectionTitle text='Resources for Action' color='text-navy-blue' />
             <motion.div
