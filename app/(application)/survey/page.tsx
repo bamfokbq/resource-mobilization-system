@@ -1,7 +1,12 @@
 import React from 'react'
+import SurveyHero from '@/components/features/SurveyHero'
+import WhoCompleteSurvey from '@/components/features/WhoCompleteSurvey'
 
 export default function SurveyPage() {
     return (
-        <section>SurveyPage</section>
+        <section>
+            <SurveyHero />
+            <WhoCompleteSurvey />
+        </section>
     )
 }
