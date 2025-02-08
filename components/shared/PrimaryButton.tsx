@@ -11,7 +11,7 @@ export default function PrimaryButton({
     return (
         <div>
             <Link href={href}>
-                <button className={`${bgColor} ${textColor} w-full hover:opacity-85 cursor-pointer py-3 px-6 rounded-3xl border-2 border-transparent`}>
+                <button className={`${bgColor} ${textColor} w-full md:w-auto hover:opacity-85 cursor-pointer py-3 px-6 rounded-3xl border-2 border-transparent`}>
                     {text}
                 </button>
             </Link>
