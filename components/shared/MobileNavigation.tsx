@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HiMenu, HiX } from 'react-icons/hi';
 import { NAVIGATION } from '@/constant';
 import { itemVariants, menuVariants } from '@/lib/animation_variant';
+import PrimaryButton from './PrimaryButton';
 
 
 export default function MobileNavigation() {
@@ -19,17 +19,17 @@ export default function MobileNavigation() {
         <div className="md:hidden">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`${isOpen && 'fixed'} top-4 right-4 z-50 p-2 rounded-lg bg-navy-blue text-white hover:text-winny transition-colors duration-200`}
+                className="fixed top-4 right-4 z-50 p-2 rounded-sm text-navy-blue hover:text-light-blue transition-colors duration-200"
                 aria-label="Toggle navigation menu"
             >
-                <div className="flex flex-col gap-1.5"> 
+                <div className="flex flex-col gap-1.5">
                     <motion.span
-                        className="block h-0.5 w-6 bg-current"
+                        className="block h-0.5 w-6 bg-current origin-center"
                         initial="closed"
                         animate={isOpen ? 'open' : 'closed'}
                         variants={{
                             closed: { translateY: 0, rotate: 0 },
-                            open: { translateY: 4, rotate: 45 }
+                            open: { translateY: 10, rotate: 45 }
                         }}
                         transition={{ duration: 0.3 }}
                     />
@@ -44,12 +44,12 @@ export default function MobileNavigation() {
                         transition={{ duration: 0.3 }}
                     />
                     <motion.span
-                        className="block h-0.5 w-6 bg-current"
+                        className="block h-0.5 w-6 bg-current origin-center"
                         initial="closed"
                         animate={isOpen ? 'open' : 'closed'}
                         variants={{
                             closed: { translateY: 0, rotate: 0 },
-                            open: { translateY: -4, rotate: -45 }
+                            open: { translateY: -6, rotate: -45 }
                         }}
                         transition={{ duration: 0.3 }}
                     />
@@ -63,9 +63,9 @@ export default function MobileNavigation() {
                         animate="open"
                         exit="closed"
                         variants={menuVariants}
-                        className="fixed inset-0 pt-16 bg-navy-blue z-40 flex flex-col items-center justify-start origin-top-right overflow-y-auto"
+                        className="fixed inset-0 pt-16 bg-white z-40 flex flex-col items-center justify-start origin-top-right overflow-y-auto"
                     >
-                        <ul className="space-y-4 w-full text-white px-6 py-4">
+                        <ul className="space-y-4 w-full px-6 py-4">
                             {NAVIGATION.map((item, index) => (
                                 <motion.li
                                     key={item.name}
@@ -75,15 +75,24 @@ export default function MobileNavigation() {
                                 >
                                     <Link
                                         href={item.href}
-                                        className={`text-xl font-medium p-2 rounded-sm block w-full ${pathname === item.href ? 'bg-mint-green text-navy-blue' : 'text-white hover:text-nobe-red'
-                                            } transition-colors duration-200`}
+                                        className={`text-xl font-medium p-2 rounded-sm block w-full ${pathname === item.href ? 'bg-mint-green text-white' : 'text-navy-blue hover:text-light-blue'} transition-colors duration-200`}
                                         onClick={() => setIsOpen(false)}
                                     >
                                         {item.name}
                                     </Link>
                                 </motion.li>
                             ))}
+                            <motion.li
+                                className="w-full"
+                                variants={itemVariants}
+                                transition={{ delay: NAVIGATION.length * 0.1 }}
+                            >
+                                <Link className="bg-navy-blue text-white w-full block hover:opacity-85 cursor-pointer py-3 px-6 rounded-3xl text-center" href="/contact">
+                                    Contact us
+                                </Link>
+                            </motion.li>
                         </ul>
+
                     </motion.nav>
                 )}
             </AnimatePresence>
