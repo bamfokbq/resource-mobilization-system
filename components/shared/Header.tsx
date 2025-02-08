@@ -6,7 +6,7 @@ import MobileNavigation from './MobileNavigation'
 
 export default function Header() {
     return (
-        <header className='bg-white shadow-2xl p-4 flex justify-between items-center'>
+        <header className='relative bg-white shadow-2xl p-4 flex justify-between items-center'>
             <Link href="/" className='text-navy-blue text-xl font-black'>
                 NCD NAVIGATOR
             </Link>

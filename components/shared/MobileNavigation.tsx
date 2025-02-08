@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NAVIGATION } from '@/constant';
 import { itemVariants, menuVariants } from '@/lib/animation_variant';
-import PrimaryButton from './PrimaryButton';
 
 
 export default function MobileNavigation() {
@@ -19,7 +18,7 @@ export default function MobileNavigation() {
         <div className="md:hidden">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed top-4 right-4 z-50 p-2 rounded-sm text-navy-blue hover:text-light-blue transition-colors duration-200"
+                className="z-50 p-2 rounded-sm text-navy-blue hover:text-light-blue transition-colors duration-200"
                 aria-label="Toggle navigation menu"
             >
                 <div className="flex flex-col gap-1.5">
@@ -63,7 +62,7 @@ export default function MobileNavigation() {
                         animate="open"
                         exit="closed"
                         variants={menuVariants}
-                        className="fixed inset-0 pt-16 bg-white z-40 flex flex-col items-center justify-start origin-top-right overflow-y-auto"
+                        className="absolute top-full left-0 w-full bg-white z-40 flex flex-col items-center justify-start origin-top-right overflow-hidden"
                     >
                         <ul className="space-y-4 w-full px-6 py-4">
                             {NAVIGATION.map((item, index) => (
