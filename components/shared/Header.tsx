@@ -12,7 +12,7 @@ export default function Header() {
             </Link>
             <nav className='hidden lg:flex items-center gap-10'>
                 <Navigation />
-                <PrimaryButton href='/contact' bgColor='bg-navy-blue' text='Contact us' textColor='text-white' />
+                <PrimaryButton href='#assistance' bgColor='bg-navy-blue' text='Contact us' textColor='text-white' />
             </nav>
             <MobileNavigation />
         </header>

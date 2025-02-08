@@ -15,6 +15,7 @@ const contactInfo = [
 export default function Assistance() {
     return (
         <motion.section
+            id='assistance'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className='py-10 px-5 md:py-20 md:px-10 flex items-center justify-center'

@@ -8,7 +8,7 @@ export default function SurveyHero() {
         <section className='max-w-7xl mx-auto w-full p-2 md:p-4'>
             <div className='rounded-2xl bg-navy-blue'>
                 <div className='flex text-center flex-col max-w-4xl w-full mx-auto justify-center items-center gap-5 p-4 md:p-10'>
-                    <h1 className='text-center text-white text-4xl md:text-5xl xl:text-[4rem] leading-snug font-black tracking-tight'>Your <span className='text-mint-green'>Insights</span> Matter: Share Your Work on NCDs <span className='text-pine-yellow'>Across</span> Ghana.</h1>
+                    <h1 className='text-center text-white text-4xl md:text-5xl xl:text-[3.8rem] leading-snug font-black tracking-tight'>Your <span className='text-mint-green'>Insights</span> Matter: Share Your Work on NCDs <span className='text-pine-yellow'>Across</span> Ghana.</h1>
                     <p className='text-center text-light-blue max-w-md mx-auto'>Your feedback is crucial in driving change. Participate in our survey to help us improve services, meet community needs, and create lasting, positive impacts.</p>
                     <div className='flex gap-5 justify-between md:justify-start'>
                         <PrimaryButton

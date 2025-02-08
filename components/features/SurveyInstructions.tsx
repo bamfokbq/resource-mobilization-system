@@ -1,6 +1,7 @@
 import React from 'react'
 import SectionTitle from '../shared/SectionTitle'
 import Image from 'next/image'
+import SurveyCta from './SurveyCta'
 
 const Instructions = [
     {
@@ -19,9 +20,9 @@ const Instructions = [
 
 export default function SurveyInstructions() {
     return (
-        <section className='bg-mint-green/30 min-h-[80vh] py-10 px-5 md:py-20 md:px-10 flex flex-col gap-6 md:gap-12'>
-            <div className='max-w-4xl mx-auto w-full flex gap-10 md:gap-20'>
-                <div className='w-1/2 flex flex-col gap-6'>
+        <section id='instructions' className='bg-mint-green/30 min-h-[80vh] py-10 px-5 md:py-20 md:px-10 flex flex-col gap-6 md:gap-12'>
+            <div className='max-w-4xl mx-auto w-full flex flex-col md:flex-row gap-10 md:gap-20'>
+                <div className='w-full md:w-1/2 flex flex-col gap-6'>
                     <SectionTitle text='How to Complete the Survey' color='text-navy-blue' />
                     <div>
                         {/* Displaying instructions as card */}
@@ -38,15 +39,15 @@ export default function SurveyInstructions() {
                     </div>
                 </div>
 
-                <div className='relative h-[480px] w-[200px] md:w-[600px]'>
+                <div className='relative h-[360px] w-[80%] md:w-[400px] mx-auto'>
                     <div className='h-full w-full bg-smit-green rounded-[1.5rem_0.5rem_1.5rem_0.5rem]'>
                     </div>
                     <div className='h-full w-full flex items-center justify-center bg-white absolute -bottom-4 -right-4 rounded-[1.5rem_0.5rem_1.5rem_0.5rem]'>
                         <Image src='/complete_chart.svg' alt='Contribute' height={200} width={200} />
                     </div>
                 </div>
-
             </div>
+            <SurveyCta />
         </section>
     )
 }
