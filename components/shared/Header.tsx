@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
-import { NAVIGATION } from '@/constant'
 import Navigation from './Navigation'
 import PrimaryButton from './PrimaryButton'
+import MobileNavigation from './MobileNavigation'
 
 export default function Header() {
     return (
@@ -10,10 +10,11 @@ export default function Header() {
             <Link href="/" className='text-navy-blue text-xl font-black'>
                 NCD NAVIGATOR
             </Link>
-            <nav className='flex items-center gap-10'>
+            <nav className='hidden lg:flex items-center gap-10'>
                 <Navigation />
                 <PrimaryButton href='/contact' bgColor='bg-navy-blue' text='Contact us' textColor='text-white' />
             </nav>
+            <MobileNavigation />
         </header>
     )
 }
