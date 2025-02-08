@@ -51,7 +51,7 @@ export default function MobileNavigation() {
                                 >
                                     <Link
                                         href={item.href}
-                                        className={`text-xl font-medium p-2 rounded-sm block w-full ${pathname === item.href ? 'bg-mint-green text-white' : 'text-navy-blue hover:text-light-blue'} transition-colors duration-200`}
+                                        className={`p-2 rounded-sm block w-full ${pathname === item.href ? 'bg-mint-green text-white' : 'text-navy-blue hover:text-light-blue'} transition-colors duration-200`}
                                         onClick={() => setIsOpen(false)}
                                     >
                                         {item.name}
