@@ -9,7 +9,7 @@ export default function OutlineButton({
     return (
         <div>
             <Link href={href}>
-                <button className="text-white w-full border-2 border-white hover:opacity-85 cursor-pointer py-3 px-6 rounded-3xl">
+                <button className="text-white w-full border-2 border-white hover:opacity-85 cursor-pointer py-3 px-6 rounded-4xl">
                     {text}
                 </button>
             </Link>
