@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NAVIGATION } from '@/constant';
 import { itemVariants, menuVariants } from '@/lib/animation_variant';
-
+import { FiMenu, FiX } from 'react-icons/fi'; // updated imports, now including FiMenu
 
 export default function MobileNavigation() {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,41 +18,10 @@ export default function MobileNavigation() {
         <div className="md:hidden">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="z-50 p-2 rounded-sm text-navy-blue hover:text-light-blue transition-colors duration-200"
+                className="z-50 p-2 rounded-sm text-navy-blue transition-colors duration-200"
                 aria-label="Toggle navigation menu"
             >
-                <div className="flex flex-col gap-1.5">
-                    <motion.span
-                        className="block h-0.5 w-6 bg-current origin-center"
-                        initial="closed"
-                        animate={isOpen ? 'open' : 'closed'}
-                        variants={{
-                            closed: { translateY: 0, rotate: 0 },
-                            open: { translateY: 10, rotate: 45 }
-                        }}
-                        transition={{ duration: 0.3 }}
-                    />
-                    <motion.span
-                        className="block h-0.5 w-6 bg-current"
-                        initial="closed"
-                        animate={isOpen ? 'open' : 'closed'}
-                        variants={{
-                            closed: { opacity: 1 },
-                            open: { opacity: 0 }
-                        }}
-                        transition={{ duration: 0.3 }}
-                    />
-                    <motion.span
-                        className="block h-0.5 w-6 bg-current origin-center"
-                        initial="closed"
-                        animate={isOpen ? 'open' : 'closed'}
-                        variants={{
-                            closed: { translateY: 0, rotate: 0 },
-                            open: { translateY: -6, rotate: -45 }
-                        }}
-                        transition={{ duration: 0.3 }}
-                    />
-                </div>
+                <FiMenu size={32} />
             </button>
 
             <AnimatePresence>
@@ -62,8 +31,16 @@ export default function MobileNavigation() {
                         animate="open"
                         exit="closed"
                         variants={menuVariants}
-                        className="absolute top-full left-0 w-full bg-white z-40 flex flex-col items-center justify-start origin-top-right overflow-hidden"
+                        className="fixed inset-0 pt-16 bg-white z-40 flex flex-col items-center justify-start origin-top-right overflow-y-auto"
                     >
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            aria-label="Close navigation menu"
+                            className="absolute top-4 right-4 text-navy-blue p-2"
+                        >
+                            <FiX size={32} />
+                        </button>
+
                         <ul className="space-y-4 w-full px-6 py-4">
                             {NAVIGATION.map((item, index) => (
                                 <motion.li
