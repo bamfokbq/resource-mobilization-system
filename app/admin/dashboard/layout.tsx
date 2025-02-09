@@ -13,7 +13,7 @@ export default function AdminDashboardLayout({
             <Header variant="admin" />
             <section className='min-h-[90dvh] flex'>
                 <AdminDashboardLinks />
-                <div className='bg-ligher-gray w-full'>
+                <div className='bg-ligher-gray w-full p-2 font-bold md:p-4'>
                     {children}
                 </div>
             </section>
