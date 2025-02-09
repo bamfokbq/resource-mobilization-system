@@ -3,8 +3,9 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ['latin']
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap'
 })
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.variable} antialiased`}
+        className={`${outfit.className} antialiased`}
       >
         {children}
       </body>
