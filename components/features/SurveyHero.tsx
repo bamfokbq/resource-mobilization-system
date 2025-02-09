@@ -12,7 +12,7 @@ export default function SurveyHero() {
                     <p className='text-center text-light-blue max-w-md mx-auto'>Your feedback is crucial in driving change. Participate in our survey to help us improve services, meet community needs, and create lasting, positive impacts.</p>
                     <div className='flex gap-5 justify-between md:justify-start'>
                         <PrimaryButton
-                            href="/survey"
+                            href="/login"
                             text="Take the Survey"
                             bgColor="bg-pine-yellow"
                             textColor="text-gray-100"

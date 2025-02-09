@@ -3,28 +3,28 @@ import React from 'react'
 
 export default function LoginPage() {
     return (
-        <section className="flex flex-col md:flex-row mx-auto min-h-screen w-full overflow-hidden">
+        <section className="flex flex-col md:flex-row mx-auto h-[100dvh] w-full overflow-hidden">
             {/* Left instructional section */}
-            <div className="flex-1 relative bg-gradient-to-br from-navy-blue to-blue-900 p-4 md:p-8">
-                <div className="flex items-center justify-center h-full relative z-10 py-8 md:py-0">
-                    <div className="text-center max-w-lg">
-                        <h3 className="text-xl md:text-4xl text-mint-green font-bold mb-4 md:mb-6">
+            <div className="hidden md:block flex-1 relative bg-gradient-to-br from-navy-blue to-blue-900 p-4 md:p-8">
+                <div className="flex items-center justify-center h-full relative z-10 py-4 md:py-8">
+                    <div className="text-center max-w-lg px-4 md:px-0">
+                        <h3 className="text-lg md:text-4xl text-mint-green font-bold mb-2 md:mb-6">
                             How to complete the survey
                         </h3>
-                        <p className="text-white/90 text-base md:text-lg mb-6 md:mb-10">
+                        <p className="text-white/90 text-sm md:text-lg mb-4 md:mb-10">
                             Follow the steps below for a seamless survey experience:
                         </p>
-                        <ul className="space-y-3 md:space-y-4 text-white/85 text-base md:text-lg">
-                            <li className="flex items-center space-x-3">
-                                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-mint-green/20 flex items-center justify-center">1</span>
+                        <ul className="space-y-2 md:space-y-4 text-white/85 text-sm md:text-lg">
+                            <li className="flex items-center space-x-2 md:space-x-3">
+                                <span className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-mint-green/20 flex items-center justify-center text-mint-green font-semibold text-xs md:text-sm drop-shadow-sm">1</span>
                                 <span>Sign in with your provided credentials.</span>
                             </li>
-                            <li className="flex items-center space-x-3">
-                                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-mint-green/20 flex items-center justify-center">2</span>
+                            <li className="flex items-center space-x-2 md:space-x-3">
+                                <span className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-mint-green/20 flex items-center justify-center text-mint-green font-semibold text-xs md:text-sm drop-shadow-sm">2</span>
                                 <span>Open the form, then disconnect to enter data offline.</span>
                             </li>
-                            <li className="flex items-center space-x-3">
-                                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-mint-green/20 flex items-center justify-center">3</span>
+                            <li className="flex items-center space-x-2 md:space-x-3">
+                                <span className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-mint-green/20 flex items-center justify-center text-mint-green font-semibold text-xs md:text-sm drop-shadow-sm">3</span>
                                 <span>Your data syncs automatically when online.</span>
                             </li>
                         </ul>
