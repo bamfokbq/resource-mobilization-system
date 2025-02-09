@@ -1,5 +1,3 @@
-import Header from '@/components/shared/Header';
-
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -7,7 +5,6 @@ export default function RootLayout({
 }>) {
     return (
         <section>
-            <Header />
             {children}
         </section>
     );
