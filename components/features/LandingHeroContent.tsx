@@ -19,7 +19,7 @@ export default function LandingHeroContent() {
                     href="/login"
                     text="Take the Survey"
                     bgColor="bg-pine-yellow"
-                    textColor="text-gray-100"
+                    textColor="text-navy-blue"
                 />
                 <OutlineButton
                     href="/explore-data"
