@@ -1,3 +1,8 @@
+import { MdOutlinePoll } from "react-icons/md"
+import { FiUsers } from "react-icons/fi"
+import { BsCalendar3 } from "react-icons/bs"
+import { AiOutlineProject } from "react-icons/ai"
+
 const NAVIGATION = [
     {
         name: 'Home',
@@ -93,16 +98,103 @@ const RESOURCES_ACTION = [
 ]
 
 const ADMIN_STATS = [
-    { id: 1, name: 'Survey', amount: 3500 },
-    { id: 2, name: "Users", amount: 235 },
-    { id: 3, name: 'Current year', amount: 2025 },
-    { id: 4, name: 'Projects', amount: 219 }
+    { id: 1, name: 'Survey', amount: 3500, icon: MdOutlinePoll },
+    { id: 2, name: "Users", amount: 235, icon: FiUsers },
+    { id: 3, name: 'Current year', amount: 2025, icon: BsCalendar3 },
+    { id: 4, name: 'Projects', amount: 219, icon: AiOutlineProject }
 ]
+
+const SURVEY_LISTS = Array.from({ length: 50 }, (_, index) => ({
+    id: index + 1,
+    organisation: [
+        "Green Earth", "Ocean Savers", "Wildlife Protectors", "City Planners",
+        "Farmers United", "Tech Innovators", "Health Advocates", "Clean Energy",
+        "Water Guardians", "Education for All", "Housing for All", "Food Security",
+        "Tech for Good", "Healthcare Providers", "Green Transport", "Disaster Relief",
+        "Climate Action", "Renewable Energy Network", "Smart Agriculture", "Urban Sustainability",
+        "Public Safety Initiative", "Eco Warriors", "Medical Outreach", "STEM for Kids",
+        "Women Empowerment Network", "Youth Leadership Program", "Digital Inclusion",
+        "Biodiversity Conservation", "Forest Restoration", "Affordable Healthcare",
+        "Access to Clean Water", "Mental Health Awareness", "AI for Social Good",
+        "Sustainable Fisheries", "Wildlife Conservation Fund", "Solar Energy Solutions",
+        "Zero Waste Initiative", "Road Safety Alliance", "Community Resilience",
+        "Green Building Council", "Disaster Preparedness", "Food Waste Reduction",
+        "Coastal Protection", "Public Health Research", "Educational Equity",
+        "Tech for Seniors", "Waste Management Coalition", "Local Economic Development",
+        "Renewable Infrastructure"
+    ][index % 50],
+    region: ["North America", "Europe", "Asia", "Africa", "South America", "Australia", "Middle East"][Math.floor(Math.random() * 7)],
+    project_name: [
+        "Tree Plantation", "Beach Cleanup", "Elephant Conservation", "Urban Development",
+        "Sustainable Agriculture", "Smart City Solutions", "Public Health Awareness",
+        "Solar Panel Installation", "River Restoration", "School Building",
+        "Affordable Housing", "Community Gardens", "Tech Education",
+        "Medical Clinics", "Electric Buses", "Disaster Relief Operations",
+        "Climate Change Mitigation", "Wind Power Expansion", "Precision Farming",
+        "Sustainable Urban Planning", "Emergency Response Training",
+        "Reforestation Projects", "Rural Health Campaign", "Coding for Kids",
+        "Women's Rights Advocacy", "Youth Empowerment Workshops", "Bridging the Digital Divide",
+        "Endangered Species Protection", "Forest Regeneration", "Telemedicine Services",
+        "Clean Drinking Water Projects", "Suicide Prevention Awareness",
+        "AI-driven Disaster Response", "Sustainable Fishing Practices",
+        "Animal Rehabilitation Centers", "Off-Grid Solar Installations",
+        "Zero Waste Lifestyle Education", "Traffic Safety Improvements",
+        "Community Resilience Training", "Eco-friendly Architecture",
+        "Emergency Relief Supplies", "Reducing Food Waste Campaigns",
+        "Marine Habitat Conservation", "Epidemiological Studies",
+        "Access to Quality Education", "Senior Digital Literacy Programs",
+        "Plastic-Free Living Campaigns", "Microfinance for Small Businesses",
+        "Green Infrastructure Projects"
+    ][index % 50],
+    description: `This is a detailed description of the '${[
+        "Tree Plantation", "Beach Cleanup", "Elephant Conservation", "Urban Development",
+        "Sustainable Agriculture", "Smart City Solutions", "Public Health Awareness",
+        "Solar Panel Installation", "River Restoration", "School Building",
+        "Affordable Housing", "Community Gardens", "Tech Education",
+        "Medical Clinics", "Electric Buses", "Disaster Relief Operations",
+        "Climate Change Mitigation", "Wind Power Expansion", "Precision Farming",
+        "Sustainable Urban Planning", "Emergency Response Training",
+        "Reforestation Projects", "Rural Health Campaign", "Coding for Kids",
+        "Women's Rights Advocacy", "Youth Empowerment Workshops", "Bridging the Digital Divide",
+        "Endangered Species Protection", "Forest Regeneration", "Telemedicine Services",
+        "Clean Drinking Water Projects", "Suicide Prevention Awareness",
+        "AI-driven Disaster Response", "Sustainable Fishing Practices",
+        "Animal Rehabilitation Centers", "Off-Grid Solar Installations",
+        "Zero Waste Lifestyle Education", "Traffic Safety Improvements",
+        "Community Resilience Training", "Eco-friendly Architecture",
+        "Emergency Relief Supplies", "Reducing Food Waste Campaigns",
+        "Marine Habitat Conservation", "Epidemiological Studies",
+        "Access to Quality Education", "Senior Digital Literacy Programs",
+        "Plastic-Free Living Campaigns", "Microfinance for Small Businesses",
+        "Green Infrastructure Projects"
+    ][index % 50]}' initiative, led by '${[
+        "Green Earth", "Ocean Savers", "Wildlife Protectors", "City Planners",
+        "Farmers United", "Tech Innovators", "Health Advocates", "Clean Energy",
+        "Water Guardians", "Education for All", "Housing for All", "Food Security",
+        "Tech for Good", "Healthcare Providers", "Green Transport", "Disaster Relief",
+        "Climate Action", "Renewable Energy Network", "Smart Agriculture", "Urban Sustainability",
+        "Public Safety Initiative", "Eco Warriors", "Medical Outreach", "STEM for Kids",
+        "Women Empowerment Network", "Youth Leadership Program", "Digital Inclusion",
+        "Biodiversity Conservation", "Forest Restoration", "Affordable Healthcare",
+        "Access to Clean Water", "Mental Health Awareness", "AI for Social Good",
+        "Sustainable Fisheries", "Wildlife Conservation Fund", "Solar Energy Solutions",
+        "Zero Waste Initiative", "Road Safety Alliance", "Community Resilience",
+        "Green Building Council", "Disaster Preparedness", "Food Waste Reduction",
+        "Coastal Protection", "Public Health Research", "Educational Equity",
+        "Tech for Seniors", "Waste Management Coalition", "Local Economic Development",
+        "Renewable Infrastructure"
+    ][index % 50]}'.`,
+    contact: `contact${index + 1}@example.com`,
+    status: ["Active", "In Progress", "Completed", "On Hold"][Math.floor(Math.random() * 4)]
+}));
+
+
 
 export {
     NAVIGATION,
     FEATURES,
     RESOURCES_LINK,
     RESOURCES_ACTION,
-    ADMIN_STATS
+    ADMIN_STATS,
+    SURVEY_LISTS
 }

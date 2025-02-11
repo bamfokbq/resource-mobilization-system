@@ -11,7 +11,7 @@ export default function AdminDashboardLinks() {
     const pathname = usePathname()
 
     const linkClass = (path: string) => `
-    flex items-center gap-2 text-xl 
+    flex items-center gap-2 text-lg
     ${pathname === path
             ? 'text-mint-green'
             : 'text-light-blue'
