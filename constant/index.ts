@@ -92,9 +92,17 @@ const RESOURCES_ACTION = [
     }
 ]
 
+const ADMIN_STATS = [
+    { id: 1, name: 'Survey', amount: 3500 },
+    { id: 2, name: "Users", amount: 235 },
+    { id: 3, name: 'Current year', amount: 2025 },
+    { id: 4, name: 'Projects', amount: 219 }
+]
+
 export {
     NAVIGATION,
     FEATURES,
     RESOURCES_LINK,
-    RESOURCES_ACTION
+    RESOURCES_ACTION,
+    ADMIN_STATS
 }
