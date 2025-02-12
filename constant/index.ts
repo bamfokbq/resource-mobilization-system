@@ -147,47 +147,73 @@ const SURVEY_LISTS = Array.from({ length: 50 }, (_, index) => ({
         "Green Infrastructure Projects"
     ][index % 50],
     description: `This is a detailed description of the '${[
-        "Tree Plantation", "Beach Cleanup", "Elephant Conservation", "Urban Development",
-        "Sustainable Agriculture", "Smart City Solutions", "Public Health Awareness",
-        "Solar Panel Installation", "River Restoration", "School Building",
-        "Affordable Housing", "Community Gardens", "Tech Education",
-        "Medical Clinics", "Electric Buses", "Disaster Relief Operations",
-        "Climate Change Mitigation", "Wind Power Expansion", "Precision Farming",
-        "Sustainable Urban Planning", "Emergency Response Training",
-        "Reforestation Projects", "Rural Health Campaign", "Coding for Kids",
-        "Women's Rights Advocacy", "Youth Empowerment Workshops", "Bridging the Digital Divide",
-        "Endangered Species Protection", "Forest Regeneration", "Telemedicine Services",
-        "Clean Drinking Water Projects", "Suicide Prevention Awareness",
-        "AI-driven Disaster Response", "Sustainable Fishing Practices",
-        "Animal Rehabilitation Centers", "Off-Grid Solar Installations",
-        "Zero Waste Lifestyle Education", "Traffic Safety Improvements",
-        "Community Resilience Training", "Eco-friendly Architecture",
-        "Emergency Relief Supplies", "Reducing Food Waste Campaigns",
-        "Marine Habitat Conservation", "Epidemiological Studies",
-        "Access to Quality Education", "Senior Digital Literacy Programs",
-        "Plastic-Free Living Campaigns", "Microfinance for Small Businesses",
-        "Green Infrastructure Projects"
-    ][index % 50]}' initiative, led by '${[
-        "Green Earth", "Ocean Savers", "Wildlife Protectors", "City Planners",
-        "Farmers United", "Tech Innovators", "Health Advocates", "Clean Energy",
-        "Water Guardians", "Education for All", "Housing for All", "Food Security",
-        "Tech for Good", "Healthcare Providers", "Green Transport", "Disaster Relief",
-        "Climate Action", "Renewable Energy Network", "Smart Agriculture", "Urban Sustainability",
-        "Public Safety Initiative", "Eco Warriors", "Medical Outreach", "STEM for Kids",
-        "Women Empowerment Network", "Youth Leadership Program", "Digital Inclusion",
-        "Biodiversity Conservation", "Forest Restoration", "Affordable Healthcare",
-        "Access to Clean Water", "Mental Health Awareness", "AI for Social Good",
-        "Sustainable Fisheries", "Wildlife Conservation Fund", "Solar Energy Solutions",
-        "Zero Waste Initiative", "Road Safety Alliance", "Community Resilience",
-        "Green Building Council", "Disaster Preparedness", "Food Waste Reduction",
-        "Coastal Protection", "Public Health Research", "Educational Equity",
-        "Tech for Seniors", "Waste Management Coalition", "Local Economic Development",
-        "Renewable Infrastructure"
-    ][index % 50]}'.`,
+            "Tree Plantation", "Beach Cleanup", "Elephant Conservation", "Urban Development",
+            "Sustainable Agriculture", "Smart City Solutions", "Public Health Awareness",
+            "Solar Panel Installation", "River Restoration", "School Building",
+            "Affordable Housing", "Community Gardens", "Tech Education",
+            "Medical Clinics", "Electric Buses", "Disaster Relief Operations",
+            "Climate Change Mitigation", "Wind Power Expansion", "Precision Farming",
+            "Sustainable Urban Planning", "Emergency Response Training",
+            "Reforestation Projects", "Rural Health Campaign", "Coding for Kids",
+            "Women's Rights Advocacy", "Youth Empowerment Workshops", "Bridging the Digital Divide",
+            "Endangered Species Protection", "Forest Regeneration", "Telemedicine Services",
+            "Clean Drinking Water Projects", "Suicide Prevention Awareness",
+            "AI-driven Disaster Response", "Sustainable Fishing Practices",
+            "Animal Rehabilitation Centers", "Off-Grid Solar Installations",
+            "Zero Waste Lifestyle Education", "Traffic Safety Improvements",
+            "Community Resilience Training", "Eco-friendly Architecture",
+            "Emergency Relief Supplies", "Reducing Food Waste Campaigns",
+            "Marine Habitat Conservation", "Epidemiological Studies",
+            "Access to Quality Education", "Senior Digital Literacy Programs",
+            "Plastic-Free Living Campaigns", "Microfinance for Small Businesses",
+            "Green Infrastructure Projects"
+        ][index % 50]
+        }' initiative, led by '${[
+            "Green Earth", "Ocean Savers", "Wildlife Protectors", "City Planners",
+            "Farmers United", "Tech Innovators", "Health Advocates", "Clean Energy",
+            "Water Guardians", "Education for All", "Housing for All", "Food Security",
+            "Tech for Good", "Healthcare Providers", "Green Transport", "Disaster Relief",
+            "Climate Action", "Renewable Energy Network", "Smart Agriculture", "Urban Sustainability",
+            "Public Safety Initiative", "Eco Warriors", "Medical Outreach", "STEM for Kids",
+            "Women Empowerment Network", "Youth Leadership Program", "Digital Inclusion",
+            "Biodiversity Conservation", "Forest Restoration", "Affordable Healthcare",
+            "Access to Clean Water", "Mental Health Awareness", "AI for Social Good",
+            "Sustainable Fisheries", "Wildlife Conservation Fund", "Solar Energy Solutions",
+            "Zero Waste Initiative", "Road Safety Alliance", "Community Resilience",
+            "Green Building Council", "Disaster Preparedness", "Food Waste Reduction",
+            "Coastal Protection", "Public Health Research", "Educational Equity",
+            "Tech for Seniors", "Waste Management Coalition", "Local Economic Development",
+            "Renewable Infrastructure"
+        ][index % 50]
+        }'.`,
     contact: `contact${index + 1}@example.com`,
     status: ["Active", "In Progress", "Completed", "On Hold"][Math.floor(Math.random() * 4)]
 }));
 
+
+const REGIONS_GHANA = [
+    "Ahafo", "Ashanti", "Bono", "Bono East", "Central", "Eastern", "Greater Accra",
+    "North East", "Northern", "Oti", "Savannah", "Upper East", "Upper West",
+    "Volta", "Western", "Western North"
+];
+
+const USER_LISTS = Array.from({ length: 50 }, (_, index) => {
+    const firstNames = ["John", "Jane", "Michael", "Sarah", "David", "Emma", "James", "Lisa", "Robert", "Mary"];
+    const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"];
+    const organisations = ["Ministry of Health", "Ghana Health Service", "WHO Ghana", "UNICEF Ghana", "PATH Ghana", "NCD Alliance"];
+
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+
+    return {
+        id: index + 1,
+        name: `${firstName} ${lastName}`,
+        email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
+        region: REGIONS_GHANA[Math.floor(Math.random() * REGIONS_GHANA.length)],
+        telephone: `+233${Math.floor(Math.random() * 900000000 + 100000000)}`,
+        organisation: organisations[Math.floor(Math.random() * organisations.length)]
+    };
+});
 
 
 export {
@@ -196,5 +222,6 @@ export {
     RESOURCES_LINK,
     RESOURCES_ACTION,
     ADMIN_STATS,
-    SURVEY_LISTS
+    SURVEY_LISTS,
+    USER_LISTS
 }

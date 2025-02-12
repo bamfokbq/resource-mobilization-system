@@ -1,23 +1,29 @@
 'use client';
 
-import { useState, useMemo, useEffect, Suspense } from "react";
-import { 
-    useReactTable, 
-    getCoreRowModel, 
-    flexRender, 
-    ColumnDef, 
-    getPaginationRowModel,
-    SortingState,
-    getSortedRowModel,
-} from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { FaEye, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight, FaBuilding, 
-         FaMapMarkerAlt, FaProjectDiagram, FaSort, FaSortUp, FaSortDown, FaInfoCircle, 
-         FaEnvelope, FaCheckCircle } from 'react-icons/fa';
-import { Badge } from "@/components/ui/badge";
-import { MdEmail } from 'react-icons/md';
 import { SURVEY_LISTS } from '@/constant';
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    SortingState,
+    useReactTable,
+} from "@tanstack/react-table";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import {
+    FaAngleDoubleLeft, FaAngleDoubleRight, FaBuilding,
+    FaCheckCircle,
+    FaChevronLeft, FaChevronRight,
+    FaEnvelope,
+    FaInfoCircle,
+    FaMapMarkerAlt, FaProjectDiagram, FaSort,
+    FaSortDown,
+    FaSortUp
+} from 'react-icons/fa';
 import SearchTable from '../shared/SearchTable';
 import SearchTableSkeletion from '../skeletons/SearchTableSkeletion';
 
@@ -26,6 +32,9 @@ export default function SurveyListTable() {
     const [isLoading, setIsLoading] = useState(true);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedProject, setSelectedProject] = useState<typeof SURVEY_LISTS[0] | null>(null);
+
+    console.log(selectedProject);
+
 
     useEffect(() => {
         setData(SURVEY_LISTS);
