@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import AdminTitle from '@/components/shared/AdminTitle'
 import SearchTable from '@/components/shared/SearchTable'
 import { Button } from '@/components/ui/button'
 import { FaPlus } from 'react-icons/fa6'
+import SearchTableSkeletion from '@/components/skeletons/SearchTableSkeletion'
 
 export default function AdminDashboardUserPage() {
     return (
@@ -16,7 +17,9 @@ export default function AdminDashboardUserPage() {
             </div>
 
             <div>
-                <SearchTable />
+                <Suspense fallback={<SearchTableSkeletion />}>
+                    <SearchTable />
+                </Suspense>
                 <h1>USER TABLES</h1>
             </div>
         </div>

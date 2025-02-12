@@ -2,14 +2,16 @@ import AdminTitle from '@/components/shared/AdminTitle'
 import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
 import SurveyListTable from '@/components/tables/SurveyListTable'
 import { ADMIN_STATS } from '@/constant'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 export default function AdminDashboardPage() {
     return (
         <section className='flex flex-col gap-6'>
             <div className='flex gap-10 items-center'>
                 <AdminTitle title='Analytics' />
-                <DateRangeSelector />
+                <Suspense fallback={<div>LOADING</div>}>
+                    <DateRangeSelector />
+                </Suspense>
             </div>
             <div className='min-h-[300px] w-full flex flex-col lg:flex-row gap-8'>
                 <div className='min-h-[300px] flex-1 grid gap-4 grid-cols-1 sm:grid-cols-2'>

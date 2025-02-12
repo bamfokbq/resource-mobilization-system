@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { 
     useReactTable, 
     getCoreRowModel, 
@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { MdEmail } from 'react-icons/md';
 import { SURVEY_LISTS } from '@/constant';
 import SearchTable from '../shared/SearchTable';
+import SearchTableSkeletion from '../skeletons/SearchTableSkeletion';
 
 export default function SurveyListTable() {
     const [data, setData] = useState<typeof SURVEY_LISTS>([]);
@@ -243,7 +244,9 @@ export default function SurveyListTable() {
                     <FaProjectDiagram className="text-primary" />
                     Survey List
                 </h2>
-                <SearchTable />
+                <Suspense fallback={<SearchTableSkeletion />}>
+                    <SearchTable />
+                </Suspense>
             </div>
             <div className="rounded-lg overflow-hidden border bg-white shadow-lg">
                 <div className="overflow-x-auto">
