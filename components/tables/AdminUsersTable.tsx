@@ -37,7 +37,6 @@ const userFormSchema = z.object({
   organisation: z.string().optional(),
 });
 
-type UserFormValues = z.infer<typeof userFormSchema>;
 
 export default function AdminUsersTable() {
     const [data, setData] = useState<typeof USER_LISTS>([]);

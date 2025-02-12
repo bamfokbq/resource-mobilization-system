@@ -1,10 +1,9 @@
-import React, { Suspense } from 'react'
+import { AddNewUserModal } from '@/components/features/AddNewUserModal'
 import AdminTitle from '@/components/shared/AdminTitle'
 import SearchTable from '@/components/shared/SearchTable'
-import { Button } from '@/components/ui/button'
-import { FaPlus } from 'react-icons/fa6'
 import SearchTableSkeletion from '@/components/skeletons/SearchTableSkeletion'
 import AdminUsersTable from '@/components/tables/AdminUsersTable'
+import { Suspense } from 'react'
 
 
 export default function AdminDashboardUserPage() {
@@ -12,10 +11,7 @@ export default function AdminDashboardUserPage() {
         <div className='flex flex-row md:flex-col gap-3 md:gap-6'>
             <div className='flex items-center justify-between'>
                 <AdminTitle title="User's List" />
-                <Button className='bg-navy-blue hover:bg-blue-600 cursor-pointer'>
-                    <FaPlus />
-                    <span>Add New User</span>
-                </Button>
+                <AddNewUserModal />
             </div>
 
             <div className='flex md:flex-col gap-8'>
