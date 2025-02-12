@@ -28,10 +28,7 @@ export default function AdminDashboardPage() {
                     <div className='bg-white flex-1 rounded-lg'></div>
                 </div>
             </div>
-
-            <div>
-                <SurveyListTable />
-            </div>
+            <SurveyListTable />
         </section>
     )
 }

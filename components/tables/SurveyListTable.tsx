@@ -146,71 +146,71 @@ export default function SurveyListTable() {
                             View Details
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px] animate-in slide-in-from-top duration-300 ease-in-out">
+                    <DialogContent className="sm:max-w-[600px] animate-in slide-in-from-top duration-300 ease-in-out bg-background">
                         <DialogHeader>
-                            <DialogTitle className="flex items-center gap-2 text-2xl pb-4 border-b">
-                                <div className="p-2 rounded-full bg-primary/10">
-                                    <FaProjectDiagram className="text-primary h-6 w-6" />
+                            <DialogTitle className="flex items-center gap-2 text-2xl pb-4 border-b border-border">
+                                <div className="p-2 rounded-full bg-navy-blue/10">
+                                    <FaProjectDiagram className="text-navy-blue h-6 w-6" />
                                 </div>
-                                <span className="flex-1">{row.original.project_name}</span>
-                                <Badge className={`${getStatusBadge(row.original.status)} hover:bg-none ml-2 px-4 py-1 text-sm`}>
+                                <span className="flex-1 text-foreground">{row.original.project_name}</span>
+                                {/* <Badge className={`${getStatusBadge(row.original.status)} hover:bg-none ml-2 px-4 py-1 text-sm`}>
                                     {row.original.status}
-                                </Badge>
+                                </Badge> */}
                             </DialogTitle>
                         </DialogHeader>
                         
                         <div className="grid gap-8 py-6">
-                            <div className="bg-gray-50/50 p-6 rounded-xl space-y-6 border">
+                            <div className="bg-muted/50 p-6 rounded-xl space-y-6 border border-border shadow-sm">
                                 <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-primary/10">
-                                        <FaBuilding className="text-primary h-5 w-5" />
+                                    <div className="p-3 rounded-lg bg-navy-blue/10">
+                                        <FaBuilding className="text-navy-blue h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 mb-1">Organisation</p>
-                                        <p className="text-base font-semibold">{row.original.organisation}</p>
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">Organisation</p>
+                                        <p className="text-base font-semibold text-foreground">{row.original.organisation}</p>
                                     </div>
                                 </div>
                                 
                                 <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-primary/10">
-                                        <FaMapMarkerAlt className="text-primary h-5 w-5" />
+                                    <div className="p-3 rounded-lg bg-navy-blue/10">
+                                        <FaMapMarkerAlt className="text-navy-blue h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 mb-1">Region</p>
-                                        <p className="text-base font-semibold">{row.original.region}</p>
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">Region</p>
+                                        <p className="text-base font-semibold text-foreground">{row.original.region}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-6">
                                 <div className="flex items-start gap-4">
-                                    <div className="p-3 rounded-lg bg-primary/10">
-                                        <FaInfoCircle className="text-primary h-5 w-5" />
+                                    <div className="p-3 rounded-lg bg-navy-blue/10">
+                                        <FaInfoCircle className="text-navy-blue h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 mb-1">Description</p>
-                                        <p className="text-base text-gray-700 leading-relaxed">
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">Description</p>
+                                        <p className="text-base text-foreground/90 leading-relaxed">
                                             {row.original.description}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-primary/10">
-                                        <FaEnvelope className="text-primary h-5 w-5" />
+                                    <div className="p-3 rounded-lg bg-navy-blue/10">
+                                        <FaEnvelope className="text-navy-blue h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 mb-1">Contact</p>
-                                        <p className="text-base font-semibold">{row.original.contact}</p>
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">Contact</p>
+                                        <p className="text-base font-semibold text-foreground">{row.original.contact}</p>
                                     </div>
                                 </div>
                                 
                                 <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-primary/10">
-                                        <FaCheckCircle className="text-primary h-5 w-5" />
+                                    <div className="p-3 rounded-lg bg-navy-blue/10">
+                                        <FaCheckCircle className="text-navy-blue h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500 mb-1">Status</p>
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">Status</p>
                                         <Badge className={`${getStatusBadge(row.original.status)} px-4 py-1`}>
                                             {row.original.status}
                                         </Badge>
@@ -249,8 +249,7 @@ export default function SurveyListTable() {
     return (
         <div className="space-y-4">
             <div className='flex items-center justify-between'>
-                <h2 className="text-2xl w-3/3 font-bold text-gray-800 flex items-center gap-2">
-                    <FaProjectDiagram className="text-primary" />
+                <h2 className="text-xl w-3/3 font-medium text-navy-blue flex items-center gap-2">
                     Survey List
                 </h2>
                 <Suspense fallback={<SearchTableSkeletion />}>
