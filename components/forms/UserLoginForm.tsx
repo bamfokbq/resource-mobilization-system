@@ -55,7 +55,7 @@ export default function UserLoginForm() {
               </p>
             )}
           </div>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -70,7 +70,7 @@ export default function UserLoginForm() {
             >
               Forgot Password?
             </a>
-          </div>
+          </div> */}
           <button
             type="submit"
             disabled={isPending}

@@ -47,6 +47,6 @@ export async function loginAction(prevState: any, formData: FormData) {
       errors: {}
     };
   } finally {
-    redirect('/dashboard/survey_form');
+    redirect('/dashboard');
   }
 }
