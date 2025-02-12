@@ -215,6 +215,13 @@ const USER_LISTS = Array.from({ length: 50 }, (_, index) => {
     };
 });
 
+const ADMIN_PROFILE = {
+    firstName: "Paa",
+    lastName: "Bamfo",
+    email: "paa@gmail.com",
+    telephone: "+233 123 456 789",
+    bio: "I am a software engineer with a passion for building products that solve real-world problems. I am currently working on a project that aims to improve the quality of healthcare in Ghana.",
+}
 
 export {
     NAVIGATION,
@@ -223,5 +230,6 @@ export {
     RESOURCES_ACTION,
     ADMIN_STATS,
     SURVEY_LISTS,
-    USER_LISTS
+    USER_LISTS,
+    ADMIN_PROFILE
 }
