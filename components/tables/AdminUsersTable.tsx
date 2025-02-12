@@ -44,6 +44,7 @@ export default function AdminUsersTable() {
     const [isLoading, setIsLoading] = useState(true);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedUser, setSelectedUser] = useState<typeof USER_LISTS[0] | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -65,10 +66,24 @@ export default function AdminUsersTable() {
         e.preventDefault();
         // Handle form submission here
         console.log('Form submitted:', formData);
+        setIsDialogOpen(false);
     };
 
-    console.log(selectedUser);
-    
+    // Update useEffect to set form data when selectedUser changes
+    useEffect(() => {
+        if (selectedUser) {
+            const [firstName, lastName] = selectedUser.name.split(' ');
+            setFormData({
+                firstName: firstName || '',
+                lastName: lastName || '',
+                email: selectedUser.email,
+                password: '',
+                telephone: selectedUser.telephone || '',
+                region: selectedUser.region,
+                organisation: selectedUser.organisation || ''
+            });
+        }
+    }, [selectedUser]);
 
     useEffect(() => {
         setData(USER_LISTS);
@@ -145,7 +160,7 @@ export default function AdminUsersTable() {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
-                <Dialog>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                         <Button
                             variant="outline"
@@ -255,7 +270,25 @@ export default function AdminUsersTable() {
                             </div>
 
                             <div className="flex justify-end gap-4">
-                                <Button type="button" variant="outline">Cancel</Button>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => {
+                                        setIsDialogOpen(false);
+                                        setFormData({
+                                            firstName: '',
+                                            lastName: '',
+                                            email: '',
+                                            password: '',
+                                            telephone: '',
+                                            region: '',
+                                            organisation: ''
+                                        });
+                                        setSelectedUser(null);
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
                                 <Button type="submit">Save Changes</Button>
                             </div>
                         </form>
@@ -263,7 +296,7 @@ export default function AdminUsersTable() {
                 </Dialog>
             )
         }
-    ], []);
+    ], [isDialogOpen, formData]);
 
     const table = useReactTable({
         data,

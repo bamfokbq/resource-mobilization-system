@@ -39,58 +39,37 @@ const userFormSchema = z.object({
 
 type UserFormValues = z.infer<typeof userFormSchema>;
 
-export default function AdminUsersTableCopy() {
+export default function AdminUsersTablePrefered() {
     const [data, setData] = useState<typeof USER_LISTS>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedUser, setSelectedUser] = useState<typeof USER_LISTS[0] | null>(null);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-    const form = useForm<UserFormValues>({
-        resolver: zodResolver(userFormSchema),
-        defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            telephone: "",
-            region: "",
-            organisation: "",
-        },
+    const [isDialogOpen, setIsDialogOpen] = useState(false);  // Add this line
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        telephone: '',
+        region: '',
+        organisation: ''
     });
 
-    // Update form when selectedUser changes
-    useEffect(() => {
-        if (selectedUser) {
-            const [firstName, lastName] = selectedUser.name.split(' ');
-            form.reset({
-                firstName: firstName || '',
-                lastName: lastName || '',
-                email: selectedUser.email,
-                password: '',
-                telephone: selectedUser.telephone || '',
-                region: selectedUser.region,
-                organisation: selectedUser.organisation || ''
-            });
-        }
-    }, [selectedUser, form]);
-
-    const onSubmit = async (values: UserFormValues) => {
-        try {
-            console.log('Form submitted:', values);
-            console.log('Updating user:', selectedUser?.id);
-            // Add your API call here
-            
-            // Close dialog after successful submission
-            setIsDialogOpen(false);
-            
-            // Reset form
-            form.reset();
-            setSelectedUser(null);
-        } catch (error) {
-            console.error('Error updating user:', error);
-        }
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
     };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Handle form submission here
+        console.log('Form submitted:', formData);
+    };
+
+    console.log(selectedUser);
+    
 
     useEffect(() => {
         setData(USER_LISTS);
@@ -173,7 +152,18 @@ export default function AdminUsersTableCopy() {
                             variant="outline"
                             size="sm"
                             className="transition-all cursor-pointer bg-green-600 hover:bg-green-500 text-white duration-200 hover:text-gray-100"
-                            onClick={() => setSelectedUser(row.original)}
+                            onClick={() => {
+                                setSelectedUser(row.original);
+                                setFormData({
+                                    firstName: row.original.name.split(' ')[0] || '',
+                                    lastName: row.original.name.split(' ')[1] || '',
+                                    email: row.original.email,
+                                    password: '',
+                                    telephone: row.original.telephone || '',
+                                    region: row.original.region,
+                                    organisation: row.original.organisation || ''
+                                });
+                            }}
                         >
                             View Details
                         </Button>
@@ -188,77 +178,91 @@ export default function AdminUsersTableCopy() {
                             </DialogTitle>
                         </DialogHeader>
                         
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6 py-4">
+                        <form onSubmit={handleSubmit} className="grid gap-6 py-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
                                     <Label className='font-light text-gray-600' htmlFor="firstName">First Name</Label>
                                     <Input
-                                        className={`shadow-none active:outline-0 ${form.formState.errors.firstName ? 'border-red-500' : ''}`}
-                                        {...form.register("firstName")}
+                                        className='shadow-none'
+                                        id="firstName"
+                                        name="firstName"
+                                        value={formData.firstName}
+                                        onChange={handleInputChange}
+                                        placeholder="First Name"
                                     />
-                                    {form.formState.errors.firstName && (
-                                        <span className="text-sm text-red-500">{form.formState.errors.firstName.message}</span>
-                                    )}
                                 </div>
                                 <div className="grid gap-2">
                                     <Label className='font-light text-gray-600' htmlFor="lastName">Last Name</Label>
                                     <Input
-                                        className={`shadow-none active:outline-0 ${form.formState.errors.lastName ? 'border-red-500' : ''}`}
-                                        {...form.register("lastName")}
+                                        className='shadow-none'
+                                        id="lastName"
+                                        name="lastName"
+                                        value={formData.lastName}
+                                        onChange={handleInputChange}
+                                        placeholder="Last Name"
                                     />
-                                    {form.formState.errors.lastName && (
-                                        <span className="text-sm text-red-500">{form.formState.errors.lastName.message}</span>
-                                    )}
                                 </div>
                             </div>
                             
                             <div className="grid gap-2">
                                 <Label className='font-light text-gray-600' htmlFor="email">Email</Label>
                                 <Input
-                                    className={`shadow-none active:outline-0 ${form.formState.errors.email ? 'border-red-500' : ''}`}
+                                    className='shadow-none'
+                                    id="email"
+                                    name="email"
                                     type="email"
-                                    {...form.register("email")}
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="Email"
                                 />
-                                {form.formState.errors.email && (
-                                    <span className="text-sm text-red-500">{form.formState.errors.email.message}</span>
-                                )}
                             </div>
 
                             <div className="grid gap-2">
-                                <Label className='font-light text-gray-600' htmlFor="password">
-                                    Password {selectedUser ? '(Leave blank to keep current)' : ''}
-                                </Label>
+                                <Label className='font-light text-gray-600' htmlFor="password">Password</Label>
                                 <Input
-                                    className="shadow-none active:outline-0"
+                                    className='shadow-none'
+                                    id="password"
+                                    name="password"
                                     type="password"
-                                    {...form.register("password")}
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    placeholder="Password"
                                 />
                             </div>
 
                             <div className="grid gap-2">
                                 <Label className='font-light text-gray-600' htmlFor="telephone">Telephone</Label>
                                 <Input
-                                    className="shadow-none active:outline-0"
-                                    {...form.register("telephone")}
+                                    className='shadow-none'
+                                    id="telephone"
+                                    name="telephone"
+                                    value={formData.telephone}
+                                    onChange={handleInputChange}
+                                    placeholder="Telephone"
                                 />
                             </div>
 
                             <div className="grid gap-2">
                                 <Label className='font-light text-gray-600' htmlFor="region">Region</Label>
                                 <Input
-                                    className={`shadow-none active:outline-0 ${form.formState.errors.region ? 'border-red-500' : ''}`}
-                                    {...form.register("region")}
+                                    className='shadow-none'
+                                    id="region"
+                                    name="region"
+                                    value={formData.region}
+                                    onChange={handleInputChange}
+                                    placeholder="Region"
                                 />
-                                {form.formState.errors.region && (
-                                    <span className="text-sm text-red-500">{form.formState.errors.region.message}</span>
-                                )}
                             </div>
 
                             <div className="grid gap-2">
                                 <Label className='font-light text-gray-600' htmlFor="organisation">Organisation</Label>
                                 <Input
-                                    className="shadow-none active:outline-0"
-                                    {...form.register("organisation")}
+                                    className='shadow-none'
+                                    id="organisation"
+                                    name="organisation"
+                                    value={formData.organisation}
+                                    onChange={handleInputChange}
+                                    placeholder="Organisation"
                                 />
                             </div>
 
@@ -268,25 +272,28 @@ export default function AdminUsersTableCopy() {
                                     variant="outline"
                                     onClick={() => {
                                         setIsDialogOpen(false);
-                                        form.reset();
+                                        setFormData({
+                                            firstName: '',
+                                            lastName: '',
+                                            email: '',
+                                            password: '',
+                                            telephone: '',
+                                            region: '',
+                                            organisation: ''
+                                        });
                                         setSelectedUser(null);
                                     }}
                                 >
                                     Cancel
                                 </Button>
-                                <Button 
-                                    type="submit"
-                                    disabled={form.formState.isSubmitting}
-                                >
-                                    {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
-                                </Button>
+                                <Button type="submit">Save Changes</Button>
                             </div>
                         </form>
                     </DialogContent>
                 </Dialog>
             )
         }
-    ], [isDialogOpen, form.formState.isSubmitting]);
+    ], [isDialogOpen]); // Add isDialogOpen to dependencies
 
     const table = useReactTable({
         data,

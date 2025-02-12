@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { FaPlus } from 'react-icons/fa6'
 import SearchTableSkeletion from '@/components/skeletons/SearchTableSkeletion'
 import AdminUsersTable from '@/components/tables/AdminUsersTable'
-import AdminUsersTableCopy from '@/components/tables/AdminUsersTableCopy'
+
 
 export default function AdminDashboardUserPage() {
     return (
@@ -22,8 +22,7 @@ export default function AdminDashboardUserPage() {
                 <Suspense fallback={<SearchTableSkeletion />}>
                     <SearchTable />
                 </Suspense>
-                {/* <AdminUsersTable /> */}
-                <AdminUsersTableCopy />
+                <AdminUsersTable />
             </div>
         </div>
     )
