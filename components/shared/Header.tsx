@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export default function Header({ variant = 'default' }: HeaderProps) {
     return (
-        <header className={`relative bg-white ${variant === 'default' ? 'shadow-2xl' : 'shadow-md'} p-4 flex justify-between items-center`}>
+        <header className={`relative flex-shrink-0 bg-white ${variant === 'default' ? 'shadow-2xl' : 'shadow-md'} p-4 flex justify-between items-center`}>
             <Link href={variant === 'admin' ? '/admin/dashboard' : '/'} className='text-navy-blue text-xl font-black'>
                 NCD NAVIGATOR
             </Link>

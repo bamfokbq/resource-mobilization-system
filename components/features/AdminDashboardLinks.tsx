@@ -20,7 +20,7 @@ export default function AdminDashboardLinks() {
   `
 
     return (
-        <div className='bg-navy-blue w-[200px] flex flex-col items-center justify-between py-4'>
+        <div className='bg-navy-blue flex-shrink-0 w-[200px] flex flex-col items-center justify-between py-4'>
             <ul className='flex flex-col gap-4'>
                 <Link
                     className={linkClass('/admin/dashboard')}

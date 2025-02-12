@@ -18,6 +18,7 @@ import { FaEye, FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleR
 import { Badge } from "@/components/ui/badge";
 import { MdEmail } from 'react-icons/md';
 import { SURVEY_LISTS } from '@/constant';
+import SearchTable from '../shared/SearchTable';
 
 export default function SurveyListTable() {
     const [data, setData] = useState<typeof SURVEY_LISTS>([]);
@@ -80,12 +81,7 @@ export default function SurveyListTable() {
                     </div>
                 )
             },
-            cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <FaBuilding className="text-gray-500" />
-                    <span>{row.original.organisation}</span>
-                </div>
-            )
+            cell: ({ row }) => <div>{row.original.organisation}</div>
         },
         { 
             accessorKey: "region", 
@@ -104,12 +100,7 @@ export default function SurveyListTable() {
                     </div>
                 )
             },
-            cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <FaMapMarkerAlt className="text-gray-500" />
-                    <span>{row.original.region}</span>
-                </div>
-            )
+            cell: ({ row }) => <div>{row.original.region}</div>
         },
         { 
             accessorKey: "project_name", 
@@ -128,12 +119,7 @@ export default function SurveyListTable() {
                     </div>
                 )
             },
-            cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <FaProjectDiagram className="text-gray-500" />
-                    <span>{row.original.project_name}</span>
-                </div>
-            )
+            cell: ({ row }) => <div>{row.original.project_name}</div>
         },
         {
             id: "actions",
@@ -144,64 +130,78 @@ export default function SurveyListTable() {
                         <Button
                             variant="outline"
                             size="sm"
-                            className="transition-all duration-200 hover:bg-primary hover:text-white"
+                            className="transition-all cursor-pointer bg-green-600 hover:bg-green-500 text-white duration-200  hover:text-gray-100"
                             onClick={() => setSelectedProject(row.original)}
                         >
-                            <FaEye className="mr-2 h-4 w-4" /> View Details
+                            View Details
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px]">
+                    <DialogContent className="sm:max-w-[600px] animate-in slide-in-from-top duration-300 ease-in-out">
                         <DialogHeader>
-                            <DialogTitle className="flex items-center gap-2 text-xl pb-2 border-b">
-                                <FaProjectDiagram className="text-primary" />
+                            <DialogTitle className="flex items-center gap-2 text-2xl pb-4 border-b">
+                                <div className="p-2 rounded-full bg-primary/10">
+                                    <FaProjectDiagram className="text-primary h-6 w-6" />
+                                </div>
                                 <span className="flex-1">{row.original.project_name}</span>
-                                <Badge className={`${getStatusBadge(row.original.status)} ml-2`}>
+                                <Badge className={`${getStatusBadge(row.original.status)} hover:bg-none ml-2 px-4 py-1 text-sm`}>
                                     {row.original.status}
                                 </Badge>
                             </DialogTitle>
                         </DialogHeader>
                         
-                        <div className="grid gap-6 py-4">
-                            <div className="bg-gray-50 p-4 rounded-lg space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <FaBuilding className="text-gray-500 h-5 w-5" />
+                        <div className="grid gap-8 py-6">
+                            <div className="bg-gray-50/50 p-6 rounded-xl space-y-6 border">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 rounded-lg bg-primary/10">
+                                        <FaBuilding className="text-primary h-5 w-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Organisation</p>
-                                        <p className="text-base">{row.original.organisation}</p>
+                                        <p className="text-sm font-medium text-gray-500 mb-1">Organisation</p>
+                                        <p className="text-base font-semibold">{row.original.organisation}</p>
                                     </div>
                                 </div>
                                 
-                                <div className="flex items-center gap-3">
-                                    <FaMapMarkerAlt className="text-gray-500 h-5 w-5" />
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 rounded-lg bg-primary/10">
+                                        <FaMapMarkerAlt className="text-primary h-5 w-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Region</p>
-                                        <p className="text-base">{row.original.region}</p>
+                                        <p className="text-sm font-medium text-gray-500 mb-1">Region</p>
+                                        <p className="text-base font-semibold">{row.original.region}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="space-y-4">
-                                <div className="flex items-start gap-3">
-                                    <FaInfoCircle className="text-gray-500 h-5 w-5 mt-1" />
+                            <div className="space-y-6">
+                                <div className="flex items-start gap-4">
+                                    <div className="p-3 rounded-lg bg-primary/10">
+                                        <FaInfoCircle className="text-primary h-5 w-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Description</p>
-                                        <p className="text-base text-gray-700">{row.original.description}</p>
+                                        <p className="text-sm font-medium text-gray-500 mb-1">Description</p>
+                                        <p className="text-base text-gray-700 leading-relaxed">
+                                            {row.original.description}
+                                        </p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3">
-                                    <FaEnvelope className="text-gray-500 h-5 w-5" />
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 rounded-lg bg-primary/10">
+                                        <FaEnvelope className="text-primary h-5 w-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Contact</p>
-                                        <p className="text-base">{row.original.contact}</p>
+                                        <p className="text-sm font-medium text-gray-500 mb-1">Contact</p>
+                                        <p className="text-base font-semibold">{row.original.contact}</p>
                                     </div>
                                 </div>
                                 
-                                <div className="flex items-center gap-3">
-                                    <FaCheckCircle className="text-gray-500 h-5 w-5" />
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 rounded-lg bg-primary/10">
+                                        <FaCheckCircle className="text-primary h-5 w-5" />
+                                    </div>
                                     <div>
-                                        <p className="text-sm font-medium text-gray-500">Status</p>
-                                        <Badge className={getStatusBadge(row.original.status)}>
+                                        <p className="text-sm font-medium text-gray-500 mb-1">Status</p>
+                                        <Badge className={`${getStatusBadge(row.original.status)} px-4 py-1`}>
                                             {row.original.status}
                                         </Badge>
                                     </div>
@@ -237,12 +237,15 @@ export default function SurveyListTable() {
     }
 
     return (
-        <div className="space-y-4 p-4">
-            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                <FaProjectDiagram className="text-primary" />
-                Survey List
-            </h2>
-            <div className="rounded-lg border bg-white shadow-lg">
+        <div className="space-y-4">
+            <div className='flex items-center justify-between'>
+                <h2 className="text-2xl w-3/3 font-bold text-gray-800 flex items-center gap-2">
+                    <FaProjectDiagram className="text-primary" />
+                    Survey List
+                </h2>
+                <SearchTable />
+            </div>
+            <div className="rounded-lg overflow-hidden border bg-white shadow-lg">
                 <div className="overflow-x-auto">
                     <table className="min-w-full">
                         <thead className="bg-gray-50">
