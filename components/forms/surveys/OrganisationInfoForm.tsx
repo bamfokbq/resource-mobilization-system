@@ -106,7 +106,7 @@ export default function OrganisationInfoForm({ handleNext, handlePrevious }: Org
             value={formState.address}
             onChange={(e) => handleChange('address', e.target.value)}
             className="w-full p-2 border rounded bg-white"
-            rows={3}
+            rows={2}
           />
         </div>
 

@@ -114,7 +114,7 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                 value={partner.contribution}
                 onChange={(e) => updatePartner(index, 'contribution', e.target.value)}
                 className="w-full p-2 border rounded bg-white"
-                rows={3}
+                rows={2}
               />
             </div>
 

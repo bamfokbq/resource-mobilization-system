@@ -104,7 +104,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                 value={activity.description}
                 onChange={(e) => updateActivity(index, 'description', e.target.value)}
                 className="w-full p-2 border rounded bg-white"
-                rows={3}
+                rows={2}
                 required
               />
             </div>
