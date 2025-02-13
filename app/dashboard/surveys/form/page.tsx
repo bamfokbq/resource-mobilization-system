@@ -9,6 +9,7 @@ import PartnersInfoForm from '@/components/forms/surveys/PartnersInfoForm';
 import ProjectActivitiesForm from '@/components/forms/surveys/ProjectActivitiesForm';
 import ProjectInfoForm from '@/components/forms/surveys/ProjectInfoForm';
 import { useFormStore } from '@/store/useFormStore';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function SurveyFormPage() {
   const { activeForm, setActiveForm, handleNext, handlePrevious, isFirstStep } = useFormStore();
@@ -34,14 +35,14 @@ export default function SurveyFormPage() {
   };
 
   return (
-    <section className='bg-white rounded-lg p-4 flex shadow-2xl min-h-screen w-full'>
+    <section className='bg-white h-[85dvh] 2xl:h-[90dvh] rounded-lg p-4 flex shadow-2xl w-full'>
       <FormSidebar
         activeForm={activeForm}
         onFormChange={setActiveForm}
       />
-      <div className='bg-gray-100 flex-1 rounded-r-lg p-4'>
+      <ScrollArea className='bg-gray-100 h-auto flex-1 rounded-r-lg p-4'>
         {renderForm()}
-      </div>
+      </ScrollArea>
     </section>
   );
 }

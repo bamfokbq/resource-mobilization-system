@@ -7,7 +7,7 @@ interface FormSidebarProps {
 
 export default function FormSidebar({ activeForm, onFormChange }: FormSidebarProps) {
   return (
-    <div className='h-full w-[250px] bg-gray-200 rounded-l-lg p-4 flex flex-col'>
+    <div className='h-auto w-[250px] bg-gray-200 rounded-l-lg p-4 flex flex-col'>
       <ul className='flex-1 flex flex-col justify-between'>
         {formSteps.map((form, index) => (
           <li
