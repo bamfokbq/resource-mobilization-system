@@ -12,7 +12,7 @@ export default function UserDashboardLayout({
             <Header variant="user" />
             <div className="flex flex-1 overflow-hidden">
                 <UserDashboardLinks />
-                <ScrollArea className="flex-1 p-2 md:p-4 bg-gray-100">
+                <ScrollArea className="flex-1 bg-gray-100">
                     <div className="w-full h-full bg-gray-100">
                         <div className="p-4">
                             {children}
