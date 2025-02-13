@@ -26,7 +26,7 @@ export default function UserLoginForm() {
               name="email"
               type="email"
               required
-              className={`w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all duration-200 ${state.errors?.email ? 'bg-white' : 'bg-white'}`}
+              className={`w-full p-2 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all duration-200 ${state.errors?.email ? 'bg-white' : 'bg-white'}`}
               placeholder="email@example.com"
               aria-describedby="email-error"
             />
@@ -45,7 +45,7 @@ export default function UserLoginForm() {
               name="password"
               type="password"
               required
-              className={`w-full p-3 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all duration-200 ${state.errors?.password ? 'bg-white' : 'bg-white'}`}
+              className={`w-full p-2 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all duration-200 ${state.errors?.password ? 'bg-white' : 'bg-white'}`}
               placeholder="••••••••"
               aria-describedby="password-error"
             />

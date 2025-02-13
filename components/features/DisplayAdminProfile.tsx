@@ -52,7 +52,7 @@ export default function DisplayAdminProfile() {
             <div className="space-y-4">
               {/* Contact Information */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-3 bg-ligher-gray rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-lg">
                   <FiMail className="h-5 w-5 text-navy-blue" />
                   <div>
                     <p className="text-sm text-dark-gray">Email</p>
@@ -60,7 +60,7 @@ export default function DisplayAdminProfile() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-ligher-gray rounded-lg">
+                <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-lg">
                   <FiPhone className="h-5 w-5 text-navy-blue" />
                   <div>
                     <p className="text-sm text-dark-gray">Phone</p>
@@ -70,7 +70,7 @@ export default function DisplayAdminProfile() {
               </div>
 
               {/* Bio Section */}
-              <div className="p-3 sm:p-4 bg-ligher-gray rounded-lg">
+              <div className="p-3 sm:p-4 bg-gray-100 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <MdOutlineBiotech className="h-5 w-5 text-navy-blue" />
                   <h3 className="font-semibold">Biography</h3>
