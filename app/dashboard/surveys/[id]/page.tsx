@@ -7,9 +7,10 @@ import Link from "next/link";
 export default async function SurveyPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: number }>
 }) {
-  const survey = SURVEY_HISTORY_LISTS.find(data => data.id === Number(params.id));
+  const { id } = (await params);
+  const survey = SURVEY_HISTORY_LISTS.find(data => data.id === Number(id));
 
   if (!survey) {
     return <div>Survey not found</div>;
