@@ -1,5 +1,6 @@
 import AdminTitle from '@/components/shared/AdminTitle'
 import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
+import SurveyHistoryList from '@/components/tables/SurveyHistoryList'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React, { Suspense } from 'react'
@@ -22,6 +23,7 @@ export default function SurveysPage() {
           </Link>
         </div>
       </div>
+      <SurveyHistoryList />
     </section>
   )
 }
