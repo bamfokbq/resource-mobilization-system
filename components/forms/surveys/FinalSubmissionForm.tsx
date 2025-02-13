@@ -94,14 +94,14 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
       <div className="flex justify-between mt-8">
         <button
           onClick={handlePrevious}
-          className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+          className="bg-gray-500 rounded-3xl text-white px-6 py-2 hover:bg-gray-600"
           disabled={isSubmitting}
         >
           Previous
         </button>
         <button
           onClick={handleSubmit}
-          className={`bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 flex items-center ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+          className={`bg-red-500 text-white px-6 rounded-3xl py-2 hover:bg-red-600 flex items-center ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
             }`}
           disabled={isSubmitting}
         >
@@ -114,7 +114,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               Submitting...
             </>
           ) : (
-            'Submit Application'
+              'Submit Survey'
           )}
         </button>
       </div>

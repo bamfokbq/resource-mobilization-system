@@ -11,7 +11,7 @@ export default function ProjectOverviewForm({ handleNext, handlePrevious }: Proj
       <div>ProjectOverviewForm</div>
       <div className='flex justify-between mt-4'>
         <button onClick={handlePrevious} className='bg-blue-500 text-white px-4 py-2 rounded'>Previous</button>
-        <button onClick={handleNext} className='bg-blue-500 text-white px-4 py-2 rounded'>Next</button>
+        <button onClick={handleNext} className="bg-navy-blue rounded-3xl text-white px-6 py-2 hover:bg-blue-700">Next</button>
       </div>
     </div>
   )

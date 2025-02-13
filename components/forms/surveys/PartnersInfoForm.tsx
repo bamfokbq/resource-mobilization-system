@@ -151,13 +151,13 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
       <div className="flex justify-between mt-8">
         <button
           onClick={handlePrevious}
-          className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+          className="bg-gray-500 rounded-3xl text-white px-6 py-2 hover:bg-gray-600"
         >
           Previous
         </button>
         <button
           onClick={handleSubmit}
-          className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+          className="bg-navy-blue rounded-3xl text-white px-6 py-2 hover:bg-blue-700"
         >
           Next
         </button>

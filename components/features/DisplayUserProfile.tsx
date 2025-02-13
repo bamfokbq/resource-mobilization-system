@@ -8,7 +8,7 @@ import { FiEdit3, FiMail, FiPhone, FiUser } from 'react-icons/fi';
 import { MdOutlineBiotech } from 'react-icons/md';
 import AdminProfileForm from './AdminProfileForm';
 
-export default function DisplayAdminProfile() {
+export default function DisplayUserProfile() {
   const [isEditing, setIsEditing] = useState(false)
 
   const handleSubmit = (data: AdminProfile) => {
@@ -32,7 +32,7 @@ export default function DisplayAdminProfile() {
               {!isEditing ? (
                 <div>
                   <h1 className="text-xl sm:text-2xl font-bold">{`${firstName} ${lastName}`}</h1>
-                  <p className="text-light-blue">Administrator</p>
+                  <p className="text-light-blue">User</p>
                 </div>
               ) : null}
             </div>
@@ -82,7 +82,7 @@ export default function DisplayAdminProfile() {
             {/* Additional Info or Badge */}
             <div className="flex items-center justify-center p-3 sm:p-4 bg-mint-green/20 rounded-lg">
               <BsPersonVcard className="h-5 w-5 text-smit-green mr-2" />
-              <span className="text-smit-green font-medium">Verified Administrator</span>
+              <span className="text-smit-green font-medium">Verified User</span>
             </div>
           </div>
         ) : (

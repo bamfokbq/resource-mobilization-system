@@ -108,13 +108,13 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
         <button
           type="button"
           onClick={handlePrevious}
-          className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+          className="bg-gray-500 rounded-3xl text-white px-6 py-2 hover:bg-gray-600"
         >
           Previous
         </button>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+          className="bg-navy-blue rounded-3xl text-white px-6 py-2 hover:bg-blue-700"
         >
           Next
         </button>
