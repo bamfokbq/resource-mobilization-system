@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from "react"
+import { useActionState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -30,55 +30,14 @@ export function AddNewUserForm() {
     errors: {},
   })
 
-  const [isLoading, setIsLoading] = useState(false)
-  
   const {
     register,
-    handleSubmit,
     formState: { errors },
     setValue,
-    reset,
-    watch,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   })
 
-  // const onSubmit = async (data: FormValues) => {
-  //   setIsLoading(true)
-  //   try {
-  //     // Add your API call here
-  //     console.log(data)
-  //     // Show success message
-  //   } catch (error) {
-  //     // Handle error
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
-  // const onSubmit = async (data: FormValues) => {
-  //   setIsLoading(true)
-
-  //   const formData = new FormData()
-  //   Object.entries(data).forEach(([key, value]) => {
-  //     formData.append(key, value)
-  //   })
-
-  //   console.log('Form Data:', formData);
-
-  //   try {
-  //     const result = await addNewUser(formData)
-
-  //     if (result?.success) {
-  //       // Reset form on success
-  //       reset()
-  //     }
-  //   } catch (error) {
-  //     console.error('Submission error:', error)
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
 
   return (
     <form
