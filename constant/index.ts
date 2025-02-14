@@ -309,6 +309,25 @@ const ADMIN_PROFILE = {
     bio: "I am a software engineer with a passion for building products that solve real-world problems. I am currently working on a project that aims to improve the quality of healthcare in Ghana.",
 }
 
+const GHANA_REGIONS = {
+    ahafo: "Ahafo Region",
+    ashanti: "Ashanti Region",
+    bono: "Bono Region",
+    "bono-east": "Bono East Region",
+    central: "Central Region",
+    eastern: "Eastern Region",
+    "greater-accra": "Greater Accra Region",
+    "north-east": "North East Region",
+    northern: "Northern Region",
+    oti: "Oti Region",
+    savannah: "Savannah Region",
+    "upper-east": "Upper East Region",
+    "upper-west": "Upper West Region",
+    volta: "Volta Region",
+    western: "Western Region",
+    "western-north": "Western North Region",
+} as const
+
 export {
     NAVIGATION,
     FEATURES,
@@ -318,5 +337,6 @@ export {
     SURVEY_LISTS,
     USER_LISTS,
     ADMIN_PROFILE,
-    SURVEY_HISTORY_LISTS
+    SURVEY_HISTORY_LISTS,
+    GHANA_REGIONS
 }
