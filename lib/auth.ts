@@ -7,6 +7,10 @@ const db = client.db()
 
 export const auth = betterAuth({
     database: mongodbAdapter(db),
+    secret: process.env.BETTER_AUTH_SECRET as string,
+    emailAndPassword: {
+        enabled: true
+    },
     user: {
         additionalFields: {
             firstName: {
@@ -27,7 +31,6 @@ export const auth = betterAuth({
             }
         }
     },
-    emailAndPassword: {
-       enabled: true
-    }
 });
+
+type Session = typeof auth.$Infer.Session;
