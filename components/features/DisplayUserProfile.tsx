@@ -1,17 +1,46 @@
 "use client";
-import type { AdminProfile } from '@/types';
 import { useUserStore } from '@/store/userStore';
+import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { BsPersonVcard } from 'react-icons/bs';
 import { FiEdit3, FiMail, FiPhone, FiUser } from 'react-icons/fi';
 import { MdOutlineBiotech } from 'react-icons/md';
-import { toast } from 'sonner';
 import AdminProfileForm from './AdminProfileForm';
-import { updateUserProfile } from '@/actions/users';
+
+interface FormInputs {
+  firstName: string;
+  lastName: string;
+  email: string;
+  telephone: string;
+  bio: string;
+}
+
+interface AdminProfileFormProps {
+  defaultValues: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    telephone: string;
+    bio: string;
+  };
+  userId: string;
+  onCancel: () => void;
+  onSubmit: (data: any) => void;
+}
 
 export default function DisplayUserProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const userInfo = useUserStore((state) => state.userInfo);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
+
+  const onSubmit = (data: FormInputs) => {
+    console.log('Form submitted:', data);
+    setIsEditing(false);
+  };
 
   console.log('userInfo:', userInfo);
 
@@ -89,17 +118,22 @@ export default function DisplayUserProfile() {
             </div>
           </div>
         ) : (
-          <AdminProfileForm 
-              defaultValues={{
-                firstName: userInfo.firstName || '',
-                lastName: userInfo.lastName || '',
-                email: userInfo.email || '',
-                telephone: userInfo.telephone || '',
-                bio: userInfo.bio || ''
-              }}
-              userId={userInfo._id}
-              onCancel={() => setIsEditing(false)}
-          />
+            <div></div>
+            // <AdminProfileForm
+            //     defaultValues={{
+            //       firstName: userInfo.firstName || '',
+            //       lastName: userInfo.lastName || '',
+            //       email: userInfo.email || '',
+            //       telephone: userInfo.telephone || '',
+            //       bio: userInfo.bio || ''
+            //     }}
+            //     userId={userInfo._id}
+            //     onCancel={() => {
+            //       console.log('Edit cancelled');
+            //       setIsEditing(false);
+            //     }}
+            //     onSubmit={handleSubmit(onSubmit)}
+            // />
         )}
       </div>
     </div>
