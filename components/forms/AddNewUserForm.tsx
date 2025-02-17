@@ -1,5 +1,6 @@
 'use client'
 
+
 import { useState } from "react"
 import { toast } from "sonner"
 import { useForm } from "react-hook-form"
@@ -237,7 +238,7 @@ export function AddNewUserForm() {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
               <Label htmlFor="region" className="sm:text-right text-[hsl(var(--dark-gray))]">
-                Region <span className="text-gray-400">(Optional)</span>
+                Region
               </Label>
               <div className="sm:col-span-3">
                 <Select
@@ -269,7 +270,7 @@ export function AddNewUserForm() {
 
             <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
               <Label htmlFor="organisation" className="sm:text-right text-[hsl(var(--dark-gray))]">
-                Organisation <span className="text-gray-400">(Optional)</span>
+                Organisation
               </Label>
               <div className="sm:col-span-3">
                 <Select
