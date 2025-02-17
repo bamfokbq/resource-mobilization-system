@@ -15,39 +15,6 @@ export default function DisplayUserProfile() {
 
   console.log('userInfo:', userInfo);
 
-
-  const handleSubmit = async (data: AdminProfile) => {
-    if (!userInfo?._id) {
-      toast.error('User ID not found');
-      return;
-    }
-
-    try {
-      const result = await updateUserProfile(userInfo._id, data);
-
-      if (!result) {
-        toast.error('Failed to update profile');
-        return;
-      }
-
-      // Update the store with the new data while preserving other fields
-      useUserStore.setState((state) => ({
-        ...state,
-        userInfo: {
-          ...state.userInfo!,
-          ...data,
-          name: state.userInfo?.name || ''
-        }
-      }));
-
-      setIsEditing(false);
-      toast.success('Profile updated successfully');
-    } catch (error) {
-      console.error('Profile update error:', error);
-      toast.error('An error occurred while updating the profile');
-    }
-  }
-
   if (!userInfo) {
     return <div>Loading...</div>;
   }
@@ -130,8 +97,8 @@ export default function DisplayUserProfile() {
                 telephone: userInfo.telephone || '',
                 bio: userInfo.bio || ''
               }}
-            onSubmit={handleSubmit}
-            onCancel={() => setIsEditing(false)}
+              userId={userInfo._id}
+              onCancel={() => setIsEditing(false)}
           />
         )}
       </div>

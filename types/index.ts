@@ -12,3 +12,4 @@ export type AdminProfile = {
     telephone: string
     bio: string
 }
+
