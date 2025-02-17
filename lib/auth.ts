@@ -19,6 +19,9 @@ export const auth = betterAuth({
             lastName: {
                 type: 'string',
             },
+            telephone: {
+                type: 'string',
+            },
             role: {
                 type: 'string',
                 default: 'user'

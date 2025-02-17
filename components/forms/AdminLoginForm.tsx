@@ -1,92 +1,141 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
+import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 import { adminLoginAction } from '@/actions/admin'
+import { signIn } from '@/lib/auth-client'
+
+const formSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 export default function AdminLoginForm() {
-  const [state, formAction, isPending] = useActionState(adminLoginAction, {
-    success: false,
-    message: '',
-    errors: {},
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    mode: 'onBlur'
   })
+
+  const onSubmit = async (data: FormValues) => {
+    setLoading(true)
+    const loadingToast = toast.loading('Signing in...', {
+      icon: <Loader2 className="animate-spin" />,
+      description: 'Please wait while we verify your credentials'
+    })
+
+    try {
+      const res = await signIn.email({ email: data.email, password: data.password });
+      if (res.error) {
+        toast.dismiss(loadingToast);
+        toast.error('Sign in failed', {
+          icon: <XCircle className="text-red-500 h-5 w-5" />,
+          description: res.error.message || 'Please check your credentials and try again',
+        });
+      } else {
+        toast.dismiss(loadingToast);
+        toast.success('Signed in successfully', {
+          icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
+          description: 'Welcome back!'
+        });
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error('Something went wrong', {
+        icon: <AlertCircle className="text-red-500 h-5 w-5" />,
+        description: 'An unexpected error occurred. Please try again later.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="flex-1 flex items-center justify-center bg-ligher-gray p-4 md:p-0">
-      <div className="p-6 md:p-10 w-full max-w-md mx-4 md:mx-0">
-        <h4 className="text-2xl md:text-3xl font-bold text-navy-blue mb-6 md:mb-8 text-center">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-md mx-auto p-6 md:p-10 space-y-4 border border-ligher-gray rounded-lg"
+      >
+        <h4 className="text-2xl md:text-3xl font-bold text-[hsl(var(--navy-blue))] mb-6 md:mb-8 text-center">
           Admin Login
         </h4>
-        <form action={formAction} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className={`w-full p-2 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all duration-200 ${state.errors?.email ? 'bg-white' : 'bg-white'}`}
-              placeholder="email@example.com"
-              aria-describedby="email-error"
-            />
-            {state.errors?.email && (
-              <p id="email-error" className="text-red-500 text-sm mt-1">
-                {state.errors.email}
-              </p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className={`w-full p-2 border bg-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all duration-200 ${state.errors?.password ? 'bg-white' : 'bg-white'}`}
-              placeholder="••••••••"
-              aria-describedby="password-error"
-            />
-            {state.errors?.password && (
-              <p id="password-error" className="text-red-500 text-sm mt-1">
-                {state.errors.password}
-              </p>
-            )}
-          </div>
-          {/* <div className="flex items-center justify-between">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="remember"
-                className="rounded text-mint-green focus:ring-mint-green mr-2"
-              />
-              <span className="text-sm text-gray-600">Remember me</span>
-            </label>
-            <a
-              href="#"
-              className="text-sm text-smit-green hover:text-smit-green/80 font-medium transition-colors"
-            >
-              Forgot Password?
-            </a>
-          </div> */}
-          <button
-            type="submit"
-            disabled={isPending}
-            className="w-full bg-gradient-to-r from-navy-blue to-blue-700 text-white py-3 rounded-lg font-medium 
-            hover:from-blue-700 hover:to-navy-blue transform hover:-translate-y-0.5 transition-all duration-200
-            focus:ring-2 focus:ring-offset-2 focus:ring-navy-blue
-            disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isPending ? 'Logging in...' : 'Login'}
-          </button>
 
-          {state.message && (
-            <p className="text-red-500 text-center mt-4">{state.message}</p>
-          )}
-        </form>
-      </div>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-2">
+            <Label htmlFor="email" className="text-[hsl(var(--dark-gray))]">
+              Email
+            </Label>
+            <Input
+              {...register('email')}
+              id="email"
+              type="email"
+              placeholder="Enter email address"
+              className={`border-2 ${errors.email
+                ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
+                : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
+                } shadow-none`}
+            />
+            {errors.email && (
+              <p className="text-[hsl(var(--nobe-red))] text-sm">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 gap-2">
+            <Label htmlFor="password" className="text-[hsl(var(--dark-gray))]">
+              Password
+            </Label>
+            <Input
+              {...register('password')}
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              className={`border-2 ${errors.password
+                ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
+                : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
+                } shadow-none`}
+            />
+            {errors.password && (
+              <p className="text-[hsl(var(--nobe-red))] text-sm">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full bg-[hsl(var(--navy-blue))] hover:bg-[hsl(var(--navy-blue))]/90 text-white"
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Signing in...
+              </span>
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+        </div>
+      </form>
     </div>
   )
 }

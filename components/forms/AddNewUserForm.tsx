@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useForm } from "react-hook-form"
@@ -18,16 +17,16 @@ const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  region: z.string().min(1, "Please select a region"),
-  organisation: z.string().min(1, "Please select an organisation"),
-  role: z.enum(["User", "Admin"]).default("User"),
+  telephone: z.string().min(10, "Phone number must be at least 10 digits"),
+  role: z.enum(["User", "Admin"]),
+  region: z.string().optional(),
+  organisation: z.string().optional(),
   password: z.string().default("ncd@2025"),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 export function AddNewUserForm() {
-  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
@@ -42,9 +41,10 @@ export function AddNewUserForm() {
     mode: 'onBlur'
   })
 
-  // Watch region and organisation values to maintain controlled Select components state
+  // Watch region, organisation, and role values
   const regionValue = watch('region');
   const organisationValue = watch('organisation');
+  const roleValue = watch('role');
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true)
@@ -55,15 +55,20 @@ export function AddNewUserForm() {
     });
 
     try {
-      await signUp.email({
+      const signupData = {
         email: data.email,
         password: data.password,
         name: `${data.firstName} ${data.lastName}`,
         firstName: data.firstName,
         lastName: data.lastName,
-        role: data.role,
-        region: data.region,
-        organisation: data.organisation,
+        telephone: data.telephone,
+        region: data.region || 'none',
+        organisation: data.organisation || '',
+        ...(data.role && { role: data.role }),
+      };
+
+      await signUp.email({
+        ...signupData,
         fetchOptions: {
           onResponse: (response) => {
             toast.dismiss(loadingToast);
@@ -101,6 +106,7 @@ export function AddNewUserForm() {
               firstName: '',
               lastName: '',
               email: '',
+              telephone: '',
               region: '',
               organisation: '',
               role: 'User',
@@ -184,66 +190,20 @@ export function AddNewUserForm() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
-          <Label htmlFor="region" className="sm:text-right text-[hsl(var(--dark-gray))]">
-            Region
+          <Label htmlFor="telephone" className="sm:text-right text-[hsl(var(--dark-gray))]">
+            Telephone
           </Label>
           <div className="sm:col-span-3">
-            <Select
-              value={regionValue}
-              onValueChange={(value) => {
-                setValue('region', value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                  shouldTouch: true,
-                });
-              }}
-            >
-              <SelectTrigger className={`border-2 ${errors.region
+            <Input
+              {...register("telephone")}
+              id="telephone"
+              type="tel"
+              placeholder="Enter phone number"
+              className={`border-2 ${errors.telephone
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
-                } shadow-none`}>
-                <SelectValue placeholder="Select a region" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(GHANA_REGIONS).map(([value, label]) => (
-                  <SelectItem key={value} value={value}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
-          <Label htmlFor="organisation" className="sm:text-right text-[hsl(var(--dark-gray))]">
-            Organisation
-          </Label>
-          <div className="sm:col-span-3">
-            <Select
-              value={organisationValue}
-              onValueChange={(value) => {
-                setValue('organisation', value, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                  shouldTouch: true,
-                });
-              }}
-            >
-              <SelectTrigger className={`border-2 ${errors.organisation
-                ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
-                : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
-                } shadow-none`}>
-                <SelectValue placeholder="Select an organisation" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="vercel">Vercel</SelectItem>
-                <SelectItem value="google">Google</SelectItem>
-                <SelectItem value="microsoft">Microsoft</SelectItem>
-                <SelectItem value="amazon">Amazon</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
+                } shadow-none`}
+            />
           </div>
         </div>
 
@@ -272,6 +232,74 @@ export function AddNewUserForm() {
             </Select>
           </div>
         </div>
+
+        {roleValue !== "Admin" && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+              <Label htmlFor="region" className="sm:text-right text-[hsl(var(--dark-gray))]">
+                Region <span className="text-gray-400">(Optional)</span>
+              </Label>
+              <div className="sm:col-span-3">
+                <Select
+                  value={regionValue}
+                  onValueChange={(value) => {
+                    setValue('region', value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                      shouldTouch: true,
+                    });
+                  }}
+                >
+                  <SelectTrigger className={`border-2 ${errors.region
+                    ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
+                    : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
+                    } shadow-none`}>
+                    <SelectValue placeholder="Select a region" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(GHANA_REGIONS).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+              <Label htmlFor="organisation" className="sm:text-right text-[hsl(var(--dark-gray))]">
+                Organisation <span className="text-gray-400">(Optional)</span>
+              </Label>
+              <div className="sm:col-span-3">
+                <Select
+                  value={organisationValue}
+                  onValueChange={(value) => {
+                    setValue('organisation', value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                      shouldTouch: true,
+                    });
+                  }}
+                >
+                  <SelectTrigger className={`border-2 ${errors.organisation
+                    ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
+                    : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
+                    } shadow-none`}>
+                    <SelectValue placeholder="Select an organisation" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="vercel">Vercel</SelectItem>
+                    <SelectItem value="google">Google</SelectItem>
+                    <SelectItem value="microsoft">Microsoft</SelectItem>
+                    <SelectItem value="amazon">Amazon</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="flex justify-end mt-6">
           <Button 
