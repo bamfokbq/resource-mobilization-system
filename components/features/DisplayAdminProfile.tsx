@@ -87,9 +87,15 @@ export default function DisplayAdminProfile() {
           </div>
         ) : (
           <AdminProfileForm 
-            defaultValues={ADMIN_PROFILE}
-            onSubmit={handleSubmit}
-            onCancel={() => setIsEditing(false)}
+              defaultValues={{
+                firstName: firstName || '',
+                lastName: lastName || '',
+                email: email || '',
+                telephone: telephone || '',
+                bio: bio || ''
+              }}
+              userId="admin"
+              onCancel={() => setIsEditing(false)}
           />
         )}
       </div>
