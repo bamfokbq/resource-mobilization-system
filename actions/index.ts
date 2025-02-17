@@ -3,55 +3,59 @@
 import { z } from 'zod'
 
 const formSchema = z.object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    region: z.string().min(1, "Please select a region"),
-    organisation: z.string().min(1, "Please select an organisation"),
+    firstName: z.string().min(2, "First name must be at least 2 characters").nonempty("First name is required"),
+    lastName: z.string().min(2, "Last name must be at least 2 characters").nonempty("Last name is required"),
+    email: z.string().email("Invalid email address").nonempty("Email is required"),
+    region: z.string().nonempty("Region is required"),
+    organisation: z.string().nonempty("Organisation is required"),
+    role: z.enum(["User", "Admin"], {
+        required_error: "Role is required",
+        invalid_type_error: "Role must be either User or Admin"
+    }).default("User"),
+    password: z.string().default(process.env.DEFAULT_PASSWORD || 'ncd@2025')
 })
 
 export async function addNewUser(prevState: any, formData: FormData) {
     try {
-        // Parse the form data using Zod schema
         const rawData = {
             firstName: String(formData.get('firstName') ?? ''),
             lastName: String(formData.get('lastName') ?? ''),
             email: String(formData.get('email') ?? ''),
-            password: String(formData.get('password') ?? ''),
+            password: 'ncd@2025', // Using default password
             region: String(formData.get('region') ?? ''),
-            organisation: String(formData.get('organisation') ?? '')
+            organisation: String(formData.get('organisation') ?? ''),
+            role: String(formData.get('role') ?? 'User')
         }
 
-        // Validate the data
-        // const validatedData = formSchema.parse(rawData)
+        const validatedData = formSchema.parse(rawData)
 
-        // Here you would typically:
-        // 1. Hash the password
-        // 2. Save to database
-        // 3. Send confirmation email, etc.
-        console.log('Validated User Data:', rawData)
+        console.log('Validated User Data:', validatedData)
 
         return {
             success: true,
-            errors: {},
+            errors: null,
             message: 'User added successfully'
         }
     } catch (error) {
         console.error('Error adding user:', error)
 
         if (error instanceof z.ZodError) {
+            const fieldErrors: Record<string, string> = {};
+            error.errors.forEach((err) => {
+                const fieldName = err.path[0] as string;
+                fieldErrors[fieldName] = err.message;
+            });
+
             return {
                 success: false,
-                errors: error.errors.map(err => ({
-                    path: err.path.join('.'),
-                    message: err.message
-                }))
+                errors: fieldErrors,
+                message: 'Please check the form for errors'
             }
         }
 
         return {
             success: false,
+            errors: null,
             message: 'An unexpected error occurred'
         }
     }
