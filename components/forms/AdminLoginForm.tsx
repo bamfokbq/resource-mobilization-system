@@ -54,7 +54,7 @@ export default function AdminLoginForm() {
           icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
           description: 'Welcome back!'
         });
-        router.push('/dashboard');
+        router.push('/admin/dashboard');
       }
     } catch (error) {
       toast.dismiss(loadingToast);
@@ -87,10 +87,10 @@ export default function AdminLoginForm() {
               id="email"
               type="email"
               placeholder="Enter email address"
-              className={`border-2 ${errors.email
+              className={`border-2 bg-white ${errors.email
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
-                } shadow-none`}
+                } shadow-none bg-white`}
             />
             {errors.email && (
               <p className="text-[hsl(var(--nobe-red))] text-sm">
@@ -108,10 +108,10 @@ export default function AdminLoginForm() {
               id="password"
               type="password"
               placeholder="••••••••"
-              className={`border-2 ${errors.password
+              className={`border-2 bg-white ${errors.password
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
-                } shadow-none`}
+                } shadow-none bg-white`}
             />
             {errors.password && (
               <p className="text-[hsl(var(--nobe-red))] text-sm">

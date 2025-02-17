@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
+import { after } from 'next/server';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -19,6 +20,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  after(() => {
+    // Execute after the layout is rendered and sent to the user
+    console.log('Layout rendered');
+  })
+
   return (
     <html lang="en">
       <body

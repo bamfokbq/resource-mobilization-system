@@ -147,7 +147,7 @@ export function AddNewUserForm() {
               {...register("firstName")}
               id="firstName"
               placeholder="Enter first name"
-              className={`border-2 ${errors.firstName
+              className={`border-2 bg-white ${errors.firstName
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                 } shadow-none`}
@@ -164,7 +164,7 @@ export function AddNewUserForm() {
               {...register("lastName")}
               id="lastName"
               placeholder="Enter last name"
-              className={`border-2 ${errors.lastName
+              className={`border-2 bg-white ${errors.lastName
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                 } shadow-none`}
@@ -182,7 +182,7 @@ export function AddNewUserForm() {
               id="email"
               type="email"
               placeholder="Enter email address"
-              className={`border-2 ${errors.email
+              className={`border-2 bg-white ${errors.email
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                 } shadow-none`}
@@ -200,7 +200,7 @@ export function AddNewUserForm() {
               id="telephone"
               type="tel"
               placeholder="Enter phone number"
-              className={`border-2 ${errors.telephone
+              className={`border-2 bg-white ${errors.telephone
                 ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                 : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                 } shadow-none`}
@@ -219,7 +219,7 @@ export function AddNewUserForm() {
               defaultValue="User"
             >
               <SelectTrigger
-                className={`border-2 ${errors.role
+                className={`border-2 bg-white ${errors.role
                   ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                   : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                   } shadow-none`}
@@ -251,7 +251,7 @@ export function AddNewUserForm() {
                     });
                   }}
                 >
-                  <SelectTrigger className={`border-2 ${errors.region
+                  <SelectTrigger className={`border-2 bg-white ${errors.region
                     ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                     : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                     } shadow-none`}>
@@ -283,7 +283,7 @@ export function AddNewUserForm() {
                     });
                   }}
                 >
-                  <SelectTrigger className={`border-2 ${errors.organisation
+                  <SelectTrigger className={`border-2 bg-white ${errors.organisation
                     ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
                     : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
                     } shadow-none`}>
