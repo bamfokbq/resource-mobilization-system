@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Loader2, XCircle, Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -23,6 +23,7 @@ type FormValues = z.infer<typeof formSchema>
 export default function AdminLoginForm() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const {
     register,
@@ -103,16 +104,29 @@ export default function AdminLoginForm() {
             <Label htmlFor="password" className="text-[hsl(var(--dark-gray))]">
               Password
             </Label>
-            <Input
-              {...register('password')}
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              className={`border-2 bg-white ${errors.password
-                ? "border-[hsl(var(--nobe-red))] focus:border-[hsl(var(--nobe-red))]"
-                : "border-[hsl(var(--ligher-gray))] focus:border-[hsl(var(--navy-blue))]"
-                } shadow-none bg-white`}
-            />
+            <div className="relative">
+              <Input
+                {...register('password')}
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                className={`border bg-white pr-10 ${errors.password
+                  ? "border-nobe-red focus:border-nobe-red"
+                  : "border-ligher-gray focus:border-navy-blue"
+                  } shadow-none bg-white`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {errors.password && (
               <p className="text-[hsl(var(--nobe-red))] text-sm">
                 {errors.password.message}
