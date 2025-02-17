@@ -8,12 +8,21 @@ type AdminProfileFormProps = {
 }
 
 export default function AdminProfileForm({ defaultValues, onSubmit, onCancel }: AdminProfileFormProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm<AdminProfile>({
-    defaultValues
-  })
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<AdminProfile>({
+    defaultValues,
+    mode: 'onBlur'
+  });
+
+  const onSubmitHandler = handleSubmit(async (data) => {
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error('Form submission error:', error);
+    }
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-6 space-y-4">
+    <form onSubmit={onSubmitHandler} className="p-4 sm:p-6 space-y-4">
       {/* Name Fields */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -75,15 +84,17 @@ export default function AdminProfileForm({ defaultValues, onSubmit, onCancel }: 
         <button
           type="button"
           onClick={onCancel}
-          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-ligher-gray text-dark-gray hover:bg-gray-200 transition-colors"
+          disabled={isSubmitting}
+          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-ligher-gray text-dark-gray hover:bg-gray-200 transition-colors disabled:opacity-50"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-navy-blue text-white hover:bg-navy-blue/90 transition-colors"
+          disabled={isSubmitting}
+          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-navy-blue text-white hover:bg-navy-blue/90 transition-colors disabled:opacity-50"
         >
-          Save Changes
+          {isSubmitting ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
     </form>

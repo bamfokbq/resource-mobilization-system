@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
-import { after } from 'next/server';
+import ClientProvider from "@/components/providers/ClientProvider";
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -20,18 +20,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  after(() => {
-    // Execute after the layout is rendered and sent to the user
-    console.log('Layout rendered');
-  })
-
   return (
     <html lang="en">
-      <body
-        className={`${outfit.className} antialiased`}
-      >
+      <body className={`${outfit.className} antialiased`}>
+        <ClientProvider />
         {children}
-        <Toaster position="top-center" />
+        <Toaster position="top-right" />
       </body>
     </html>
   );
