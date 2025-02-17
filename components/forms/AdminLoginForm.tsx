@@ -38,7 +38,8 @@ export default function AdminLoginForm() {
     setLoading(true)
     const loadingToast = toast.loading('Signing in...', {
       icon: <Loader2 className="animate-spin" />,
-      description: 'Please wait while we verify your credentials'
+      description: 'Please wait while we verify your credentials',
+      position: 'top-center'
     })
 
     try {
@@ -48,12 +49,14 @@ export default function AdminLoginForm() {
         toast.error('Sign in failed', {
           icon: <XCircle className="text-red-500 h-5 w-5" />,
           description: res.error.message || 'Please check your credentials and try again',
+          position: 'top-center'
         });
       } else {
         toast.dismiss(loadingToast);
         toast.success('Signed in successfully', {
           icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
-          description: 'Welcome back!'
+          description: 'Welcome back!',
+          position: 'top-center'
         });
         router.push('/admin/dashboard');
       }
@@ -61,7 +64,8 @@ export default function AdminLoginForm() {
       toast.dismiss(loadingToast);
       toast.error('Something went wrong', {
         icon: <AlertCircle className="text-red-500 h-5 w-5" />,
-        description: 'An unexpected error occurred. Please try again later.'
+        description: 'An unexpected error occurred. Please try again later.',
+        position: 'top-center'
       });
     } finally {
       setLoading(false);
