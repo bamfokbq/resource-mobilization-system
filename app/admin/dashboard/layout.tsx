@@ -1,17 +1,18 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import AdminDashboardLinks from '@/components/features/AdminDashboardLinks'
 import Header from '@/components/shared/Header'
-import { after } from 'next/server'
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
-export default function AdminDashboardLayout({
+export default async function AdminDashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    after(() => {
-        // Execute after the layout is rendered and sent to the user
-        console.log('AdminDashboardLayout rendered');
-    })
+    const session = await auth();
+    if (!session) {
+        return redirect('/');
+    }
 
     return (
         <div className="flex flex-col h-screen">

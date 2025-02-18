@@ -1,12 +1,18 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import Header from '@/components/shared/Header'
 import UserDashboardLinks from '@/components/features/UserDashboardLinks';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
-export default function UserDashboardLayout({
+export default async function UserDashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await auth();
+    if (!session) {
+        return redirect('/auth/signin');
+    }
     return (
         <div className="flex flex-col h-screen">
             <Header />
