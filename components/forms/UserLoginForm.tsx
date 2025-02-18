@@ -17,10 +17,10 @@ export default function UserLoginForm() {
             password: formData.get("password"),
           })
 
-          if (result?.error) {
-            throw new Error(result.error)
+          if (!result?.error) {
+            return redirect("/dashboard")
           }
-          return redirect("/dashboard")
+          return redirect("/auth/signIn");
         }}
       >
         <h4 className="text-2xl md:text-3xl font-bold text-[hsl(var(--navy-blue))] mb-6 md:mb-8 text-center">
