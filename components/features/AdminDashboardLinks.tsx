@@ -7,7 +7,6 @@ import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { MdSettings } from 'react-icons/md'
 import { Button } from '../ui/button'
-import { authClient } from '@/lib/auth-client'
 import { Loader2, LogOut, CheckCircle2, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -33,7 +32,6 @@ export default function AdminDashboardLinks() {
         })
 
         try {
-            await authClient.signOut()
             toast.dismiss(loadingToast)
             toast.success('Signed out successfully', {
                 icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,

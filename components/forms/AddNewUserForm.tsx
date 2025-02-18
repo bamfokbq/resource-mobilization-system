@@ -1,6 +1,5 @@
 'use client'
 
-
 import { useState } from "react"
 import { toast } from "sonner"
 import { useForm } from "react-hook-form"
@@ -12,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { GHANA_REGIONS } from '@/constant'
 import { AlertCircle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
-import { signUp } from '@/lib/auth-client'
+import { createNewUser } from "@/actions/users"
 
 const formSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -36,13 +35,12 @@ export function AddNewUserForm() {
     setValue,
     handleSubmit,
     watch,
-    reset, // Add reset to the destructured items
+    reset,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur'
   })
 
-  // Watch region, organisation, and role values
   const regionValue = watch('region');
   const organisationValue = watch('organisation');
   const roleValue = watch('role');
@@ -50,81 +48,54 @@ export function AddNewUserForm() {
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true)
 
-    const loadingToast = toast.loading('Creating your account...', {
+    const loadingToast = toast.loading('Creating user account...', {
       icon: <Loader2 className="animate-spin" />,
-      description: 'Please wait while we set up your account'
+      description: 'Please wait while we set up the account'
     });
 
     try {
-      const signupData = {
-        email: data.email,
-        password: data.password,
-        name: `${data.firstName} ${data.lastName}`,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        telephone: data.telephone,
-        region: data.region || 'none',
-        organisation: data.organisation || '',
-        ...(data.role && { role: data.role }),
-      };
+      const formData = new FormData()
+      Object.entries(data).forEach(([key, value]) => {
+        if (value) formData.append(key, value)
+      })
 
-      await signUp.email({
-        ...signupData,
-        fetchOptions: {
-          onResponse: (response) => {
-            toast.dismiss(loadingToast);
-            setIsSubmitting(false);
-          },
-          onRequest: () => {
-            setIsSubmitting(true);
-          },
-          onError: (ctx) => {
-            console.error('Sign up error:', ctx.error);
-            toast.dismiss(loadingToast);
+      const result = await createNewUser(formData)
 
-            let errorMessage = 'Please check your information and try again';
-            if (ctx.error.message?.includes('already exists')) {
-              errorMessage = 'An account with this email already exists';
-            } else if (ctx.error.message?.includes('invalid')) {
-              errorMessage = 'Please provide valid information for all fields';
-            }
+      if (!result.success) {
+        toast.dismiss(loadingToast)
+        toast.error(result.error || 'Failed to create user', {
+          icon: <XCircle className="text-red-500 h-5 w-5" />,
+          description: 'Please try again'
+        })
+        return
+      }
 
-            toast.error('Sign up failed', {
-              icon: <XCircle className="text-red-500 h-5 w-5" />,
-              description: errorMessage
-            });
-            setIsSubmitting(false);
-          },
-          onSuccess: async (response) => {
-            const user = response.data.user;
-            toast.dismiss(loadingToast);
-            toast.success(`Account successfully created for ${user.name}`, {
-              icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
-              description: 'Form cleared for next entry'
-            });
-            // Reset the form instead of redirecting
-            reset({
-              firstName: '',
-              lastName: '',
-              email: '',
-              telephone: '',
-              region: '',
-              organisation: '',
-              role: 'User',
-              password: 'ncd@2025'
-            });
-            setIsSubmitting(false);
-          },
-        },
-      });
+      toast.dismiss(loadingToast)
+      toast.success(`Account successfully created for ${data.firstName} ${data.lastName}`, {
+        icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
+        description: 'Form cleared for next entry'
+      })
+
+      // Reset form
+      reset({
+        firstName: '',
+        lastName: '',
+        email: '',
+        telephone: '',
+        region: '',
+        organisation: '',
+        role: 'User',
+        password: 'ncd@2025'
+      })
+
     } catch (error) {
-      console.error('Unexpected error during sign up:', error);
-      toast.dismiss(loadingToast);
+      toast.dismiss(loadingToast)
       toast.error('Something went wrong', {
         icon: <AlertCircle className="text-red-500 h-5 w-5" />,
         description: 'An unexpected error occurred. Please try again later.'
-      });
-      setIsSubmitting(false);
+      })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 

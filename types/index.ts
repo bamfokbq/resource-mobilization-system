@@ -1,3 +1,5 @@
+
+import { AdapterUser } from "next-auth/adapters"
 export interface PrimaryButtonProps {
     href: string;
     text: string;
@@ -12,4 +14,9 @@ export type AdminProfile = {
     telephone: string
     bio: string
 }
+
+interface CustomAdapterUser extends AdapterUser {
+    address?: string;
+}
+
 

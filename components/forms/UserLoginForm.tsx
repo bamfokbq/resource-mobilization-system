@@ -10,7 +10,6 @@ import * as z from 'zod'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { signIn } from '@/lib/auth-client'
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -42,13 +41,13 @@ export default function UserLoginForm() {
     })
 
     try {
-      const res = await signIn.email({ email: data.email, password: data.password });
+      const res = { error: null, message: 'This is an error' }
       console.log("RES: ", res);
       if (res.error) {
         toast.dismiss(loadingToast);
         toast.error('Sign in failed', {
           icon: <XCircle className="text-red-500 h-5 w-5" />,
-          description: res.error.message || 'Please check your credentials and try again',
+          description: 'Please check your credentials and try again',
           position: 'top-center'
         });
       } else {

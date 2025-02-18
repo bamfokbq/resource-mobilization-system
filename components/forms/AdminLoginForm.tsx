@@ -10,8 +10,6 @@ import * as z from 'zod'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { adminLoginAction } from '@/actions/admin'
-import { signIn } from '@/lib/auth-client'
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -42,33 +40,36 @@ export default function AdminLoginForm() {
       position: 'top-center'
     })
 
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
     try {
-      const res = await signIn.email({ email: data.email, password: data.password });
-      if (res.error) {
-        toast.dismiss(loadingToast);
-        toast.error('Sign in failed', {
-          icon: <XCircle className="text-red-500 h-5 w-5" />,
-          description: res.error.message || 'Please check your credentials and try again',
-          position: 'top-center'
-        });
-      } else {
-        toast.dismiss(loadingToast);
+      // Placeholder logic - in real app, replace with actual authentication
+      if (data.email === 'admin@example.com' && data.password === 'admin123') {
+        toast.dismiss(loadingToast)
         toast.success('Signed in successfully', {
           icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
           description: 'Welcome back!',
           position: 'top-center'
-        });
-        router.push('/admin/dashboard');
+        })
+        router.push('/admin/dashboard')
+      } else {
+        toast.dismiss(loadingToast)
+        toast.error('Sign in failed', {
+          icon: <XCircle className="text-red-500 h-5 w-5" />,
+          description: 'Invalid email or password',
+          position: 'top-center'
+        })
       }
     } catch (error) {
-      toast.dismiss(loadingToast);
+      toast.dismiss(loadingToast)
       toast.error('Something went wrong', {
         icon: <AlertCircle className="text-red-500 h-5 w-5" />,
         description: 'An unexpected error occurred. Please try again later.',
         position: 'top-center'
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
