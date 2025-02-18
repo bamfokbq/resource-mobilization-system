@@ -43,6 +43,7 @@ export default function UserLoginForm() {
 
     try {
       const res = await signIn.email({ email: data.email, password: data.password });
+      console.log("RES: ", res);
       if (res.error) {
         toast.dismiss(loadingToast);
         toast.error('Sign in failed', {
