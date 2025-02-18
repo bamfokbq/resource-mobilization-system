@@ -16,7 +16,7 @@ export default function LandingHeroContent() {
             </div>
             <div className='flex gap-5 justify-between md:justify-start'>
                 <PrimaryButton
-                    href="/login"
+                    href="/auth/signin"
                     text="Take the Survey"
                     bgColor="bg-pine-yellow"
                     textColor="text-navy-blue"

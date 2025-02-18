@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { FaHome } from 'react-icons/fa'
 import { MdAssignment } from 'react-icons/md'
 import { MdLogout, MdSettings } from 'react-icons/md'
+import { signOut } from 'next-auth/react'
 
 export default function UserDashboardLinks() {
     const pathname = usePathname()
@@ -18,6 +19,10 @@ export default function UserDashboardLinks() {
         } 
     hover:text-mint-green/70 transition-colors duration-200
   `
+
+    const handleSignOut = async () => {
+        await signOut({ redirect: true, callbackUrl: '/auth/signin' })
+    }
 
     return (
         <div className='bg-navy-blue flex-shrink-0 w-[80px] md:w-[200px] flex flex-col items-center justify-between py-4'>
@@ -46,10 +51,13 @@ export default function UserDashboardLinks() {
             </ul>
 
             <div>
-                <Link className='text-xl text-white flex items-center gap-1' href={'/login'}>
+                <button
+                    onClick={handleSignOut}
+                    className='text-xl text-white flex items-center gap-1 hover:text-mint-green/70 transition-colors duration-200'
+                >
                     <MdLogout className="text-2xl" />
                     <span className="hidden md:inline">Logout</span>
-                </Link>
+                </button>
             </div>
         </div>
     )
