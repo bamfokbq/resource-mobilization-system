@@ -13,6 +13,12 @@ export default async function AdminDashboardLayout({
     if (!session) {
         return redirect('/');
     }
+    const role = session?.user?.role;
+
+    if (role && role !== 'Admin') {
+        return redirect('/dashboard');
+    }
+
 
     return (
         <div className="flex flex-col h-screen">

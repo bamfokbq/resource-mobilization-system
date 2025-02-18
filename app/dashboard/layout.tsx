@@ -13,6 +13,13 @@ export default async function UserDashboardLayout({
     if (!session) {
         return redirect('/auth/signin');
     }
+
+    const role = session?.user?.role;
+
+    if (role && role !== 'User') {
+        return redirect('/admin/dashboard');
+    }
+
     return (
         <div className="flex flex-col h-screen">
             <Header />
