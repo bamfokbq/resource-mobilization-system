@@ -20,8 +20,6 @@ export default function UserLoginForm() {
           if (result?.error) {
             throw new Error(result.error)
           }
-
-          // Redirect after successful login
           return redirect("/dashboard")
         }}
       >
