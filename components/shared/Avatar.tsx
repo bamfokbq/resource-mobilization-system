@@ -1,14 +1,11 @@
 import { auth } from '@/auth';
 import React from 'react'
 
-interface AvatarProps {
-    variant: 'admin' | 'user';
-}
-
-export default async function Avatar({ variant }: AvatarProps) {
+export default async function Avatar() {
     const session = await auth();
     const userInfo = session?.user;
     const firstLetter = userInfo?.name?.split(' ').map(name => name[0]).join('') ?? 'U';
+    const role = userInfo?.role;
     
     return (
         <div className='flex items-center gap-2'>
@@ -17,7 +14,7 @@ export default async function Avatar({ variant }: AvatarProps) {
             </div>
             <div className='flex flex-col'>
                 <p className='text-sm font-medium'>{userInfo?.name}</p>
-                <p className='text-xs text-gray-600'>{variant === 'admin' ? "ADMIN" : "USER"}</p>
+                <p className='text-xs text-gray-600'>{role}</p>
             </div>
         </div>
     )

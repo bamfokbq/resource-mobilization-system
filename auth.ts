@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { getUserbyEmailAndHashPassword } from "@/actions/users"
-import { Credentials as CustomCredentials } from './types/auth'
+import { Credentials as CustomCredentials } from "./types/auth"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -20,6 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           const { email, password } = credentials as CustomCredentials
 
+          // Fetch user including role from the database
           const user = await getUserbyEmailAndHashPassword(email, password)
 
           if (!user) {
@@ -30,9 +31,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             id: user._id.toString(),
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
+            role: user.role, // ✅ Add role here
           }
         } catch (error) {
-          console.error('Auth error:', error)
+          console.error("Auth error:", error)
           return null
         }
       },
@@ -43,34 +45,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
+        token.id = user.id
+        token.email = user.email
+        token.name = user.name
+        token.role = user.role // ✅ Add role to JWT
       }
-      return token;
+      return token
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.email = token.email as string;
-        session.user.name = token.name as string;
+        session.user.id = token.id as string
+        session.user.email = token.email as string
+        session.user.name = token.name as string
+        session.user.role = token.role as string // ✅ Add role to session
       }
-      return session;
+      return session
     },
     async redirect({ url, baseUrl }) {
-      // Handle dashboard redirect explicitly
-      if (url.includes('/dashboard')) {
+      if (url.includes("/dashboard")) {
         return `${baseUrl}/dashboard`
       }
-      // Allows relative callback URLs
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`
       }
-      // Allows callback URLs on the same origin
       if (new URL(url).origin === baseUrl) {
         return url
       }
       return baseUrl
-    }
-  }
+    },
+  },
 })
