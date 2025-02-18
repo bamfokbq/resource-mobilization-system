@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { BsPersonVcard } from 'react-icons/bs';
 import { FiEdit3, FiMail, FiPhone, FiUser } from 'react-icons/fi';
 import { MdOutlineBiotech } from 'react-icons/md';
-import AdminProfileForm from './AdminProfileForm';
 
 interface FormInputs {
   firstName: string;
