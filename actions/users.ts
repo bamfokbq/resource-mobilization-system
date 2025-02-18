@@ -1,13 +1,12 @@
 "use server"
 
-import { AdminProfile } from "@/types"
 import client from "@/lib/db"
 import { ObjectId } from "mongodb"
 import { comparePassword, hashPassword } from "@/lib/password"
 
 export async function updateUserProfile(userId: string, formData: FormData) {
   console.log(formData);
-  const profileData: AdminProfile = {
+  const profileData = {
     firstName: formData.get('firstName') as string,
     lastName: formData.get('lastName') as string,
     email: formData.get('email') as string,
@@ -17,7 +16,7 @@ export async function updateUserProfile(userId: string, formData: FormData) {
 
   try {
     const db = client.db()
-    const result = await db.collection("user").updateOne(
+    const result = await db.collection("users").updateOne(  // Changed from "user" to "users"
       { _id: new ObjectId(userId) },
       { $set: profileData }
     )
@@ -35,12 +34,17 @@ export async function updateUserProfile(userId: string, formData: FormData) {
 
 export async function createNewUser(formData: FormData) {
   try {
+    const role = formData.get('role') as string;
+    if (role !== 'User' && role !== 'Admin') {
+      return { success: false, error: "Invalid role" };
+    }
+
     const userData = {
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
       email: formData.get('email') as string,
       telephone: formData.get('telephone') as string,
-      role: formData.get('role') as "User" | "Admin",
+      role: role as "User" | "Admin",
       region: formData.get('region') as string | null,
       organisation: formData.get('organisation') as string | null,
       password: await hashPassword('ncd@2025'), // Using default password
