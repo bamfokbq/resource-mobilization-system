@@ -15,7 +15,7 @@ export default function AdminDashboardLayout({
 
     return (
         <div className="flex flex-col h-screen">
-            <Header variant="admin" />
+            <Header />
             <div className="flex flex-1 overflow-hidden">
                 <AdminDashboardLinks />
                 <ScrollArea className="flex-1 p-2 md:p-4 bg-gray-100">

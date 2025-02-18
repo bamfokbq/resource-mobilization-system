@@ -9,7 +9,7 @@ export default function UserDashboardLayout({
 }>) {
     return (
         <div className="flex flex-col h-screen">
-            <Header variant="user" />
+            <Header />
             <div className="flex flex-1 overflow-hidden">
                 <UserDashboardLinks />
                 <ScrollArea className="flex-1 bg-gray-100">
