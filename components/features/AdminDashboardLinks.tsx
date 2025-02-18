@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { MdSettings } from 'react-icons/md'
@@ -32,6 +33,7 @@ export default function AdminDashboardLinks() {
         })
 
         try {
+            await signOut({ redirect: false })
             toast.dismiss(loadingToast)
             toast.success('Signed out successfully', {
                 icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
