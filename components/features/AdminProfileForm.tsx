@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import type { AdminProfile } from '@/types'
 import { updateUserProfile } from '@/actions/users'
 
 interface AdminProfileFormProps {
@@ -15,7 +14,7 @@ interface AdminProfileFormProps {
 }
 
 export default function AdminProfileForm({ defaultValues, userId, onCancel }: AdminProfileFormProps) {
-  const { register, formState: { errors, isSubmitting } } = useForm<AdminProfile>({
+  const { register, formState: { errors, isSubmitting } } = useForm({
     defaultValues,
     mode: 'onBlur'
   });

@@ -1,13 +1,13 @@
 import { AdapterUser } from "next-auth/adapters"
 
-export interface PrimaryButtonProps {
+interface PrimaryButtonProps {
     href: string;
     text: string;
     bgColor?: string;
     textColor?: string;
 }
 
-export interface AdminProfile {
+interface AdminProfile {
     firstName: string;
     lastName: string;
     email: string;
@@ -15,7 +15,7 @@ export interface AdminProfile {
     bio: string;
 }
 
-export interface CustomAdapterUser extends AdapterUser {
+interface CustomAdapterUser extends AdapterUser {
     firstName?: string;
     lastName?: string;
     email: string;
@@ -27,9 +27,11 @@ export interface CustomAdapterUser extends AdapterUser {
     bio?: string;
 }
 
-export interface UserData extends Omit<CustomAdapterUser, 'id' | 'emailVerified'> {
+interface UserData extends Omit<CustomAdapterUser, 'id' | 'emailVerified'> {
     password: string;
     createdAt: Date;
 }
 
 
+
+export type { PrimaryButtonProps, AdminProfile, CustomAdapterUser, UserData }

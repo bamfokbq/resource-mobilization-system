@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { PrimaryButtonProps } from '@/types'
+import { PrimaryButtonProps } from '@/types/index'
 
 export default function OutlineButton({
     href,

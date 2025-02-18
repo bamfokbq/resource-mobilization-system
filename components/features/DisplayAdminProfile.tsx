@@ -1,7 +1,6 @@
 "use client";
 
 import { ADMIN_PROFILE } from '@/constant';
-import type { AdminProfile } from '@/types';
 import { useState } from 'react';
 import { BsPersonVcard } from 'react-icons/bs';
 import { FiEdit3, FiMail, FiPhone, FiUser } from 'react-icons/fi';
@@ -10,12 +9,6 @@ import AdminProfileForm from './AdminProfileForm';
 
 export default function DisplayAdminProfile() {
   const [isEditing, setIsEditing] = useState(false)
-
-  const handleSubmit = (data: AdminProfile) => {
-    console.log(data)
-    setIsEditing(false)
-    // Here you would typically update the data in your backend
-  }
 
   const { firstName, lastName, email, telephone, bio } = ADMIN_PROFILE
 
