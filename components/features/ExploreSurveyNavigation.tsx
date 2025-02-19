@@ -3,27 +3,37 @@
 import NcdStrategyNav from '@/components/features/NcdStrategyNav'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { FaBars, FaTimes } from 'react-icons/fa'
 
 export default function ExploreSurveyNavigation() {
-    const pathname = usePathname()
+    const [isOpen, setIsOpen] = useState(true)
 
-    const linkClass = (path: string) => `
-    flex items-center gap-2 text-lg
-    ${(pathname === path || (path === '/dashboard/surveys' && pathname.startsWith('/dashboard/surveys/form')))
-            ? 'text-mint-green'
-            : 'text-light-blue'
-        } 
-    hover:text-mint-green/70 transition-colors duration-200
-  `
     return (
-        <div className='bg-navy-blue flex-shrink-0 w-[300px] h-screen flex flex-col items-stretch justify-between p-4'>
-            <Link href={'/'}  className='text-white mb-4 text-center text-xl font-black'>
-                NCD NAVIGATOR
-            </Link>
-            <ScrollArea className="flex-1">
-                <NcdStrategyNav />
-            </ScrollArea>
+        <div className={`
+            bg-navy-blue h-screen flex flex-col items-stretch justify-between p-4
+            transition-all duration-300 ease-in-out
+            ${isOpen ? 'w-[300px]' : 'w-[80px]'}
+        `}>
+            <div className="flex items-center justify-between mb-4">
+                {isOpen && (
+                    <Link href={'/'} className='text-white text-xl font-black'>
+                        NCD NAVIGATOR
+                    </Link>
+                )}
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="text-white hover:text-mint-green p-2"
+                >
+                    {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+                </button>
+            </div>
+
+            {isOpen && (
+                <ScrollArea className="flex-1">
+                    <NcdStrategyNav />
+                </ScrollArea>
+            )}
         </div>
     )
 }
