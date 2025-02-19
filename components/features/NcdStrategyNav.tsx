@@ -38,7 +38,11 @@ export default function NcdStrategyNav() {
   return (
       <div className="w-full">
           <div className="mb-2">
-              <Link href={'/survey-data'} className="text-lg font-medium text-white px-2 py-2">
+              <Link
+                  href={'/survey-data'}
+                  className="text-lg font-medium text-white px-2 py-2"
+                  onClick={() => setOpenItem(undefined)}
+              >
                   Dashboard
               </Link>
           </div>
