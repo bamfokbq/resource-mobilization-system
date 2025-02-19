@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
 import OrganisationSelector from '@/components/shared/OrganisationSelector'
 import RegionSelector from '@/components/shared/RegionSelector'
@@ -8,16 +8,18 @@ import GhanaMap from '@/components/survey_data/dashboard/GhanaMap'
 
 export default function SurveyDataPage() {
   return (
-    <section>
+    <section className='relative'>
       <h1 className='text-3xl text-navy-blue font-medium'>Analytics</h1>
       {/* DATA ANALYTICS */}
       <div className='flex flex-col gap-2 mt-4'>
         <StatsSection />
-        <FilterSection>
-          <DateRangeSelector />
-          <RegionSelector />
-          <OrganisationSelector />
-        </FilterSection>
+        <Suspense fallback={<div>Loading...</div>}>
+          <FilterSection>
+            <DateRangeSelector />
+            <OrganisationSelector />
+            <RegionSelector />
+          </FilterSection>
+        </Suspense>
       </div>
 
       {/* DASHBOARD */}
