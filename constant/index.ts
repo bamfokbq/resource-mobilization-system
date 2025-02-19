@@ -18,7 +18,7 @@ const NAVIGATION = [
     },
     {
         name: 'Explore Data',
-        href: '/explore-data',
+        href: '/survey-data',
     },
     {
         name: 'Resources',

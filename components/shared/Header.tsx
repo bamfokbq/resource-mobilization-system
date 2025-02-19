@@ -10,7 +10,7 @@ export default async function Header() {
     const isAuthenticated = !!session?.user;
 
     return (
-        <header className={`relative flex-shrink-0 bg-white ${!isAuthenticated ? 'shadow-2xl' : 'shadow-md'} p-4 flex justify-between items-center`}>
+        <header className={`relative flex-shrink-0 bg-white shadow-md p-4 flex justify-between items-center`}>
             <h1 className='text-navy-blue text-xl font-black'>
                 NCD NAVIGATOR
             </h1>
