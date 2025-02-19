@@ -75,7 +75,7 @@ export default function NcdStrategyNav() {
                               {section.subItems.map((item) => (
                                   <Link
                                       key={item}
-                                      href={`${section.href}/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                      href={`${section.href}/#${item.toLowerCase().replace(/\s+/g, '-')}`}
                                       className="text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded px-3 py-2"
                                   >
                                       {item}
