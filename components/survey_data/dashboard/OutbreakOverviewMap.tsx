@@ -24,76 +24,93 @@ type RegionName =
     | "Bono East"
     | "Ahafo";
 
-interface DiseaseData {
-    meningitis: number;
-    cholera: number;
+interface ActivityData {
+    total: number;
 }
 
-type RegionDiseaseData = {
-    [K in RegionName]: DiseaseData;
+type RegionActivityData = {
+    [K in RegionName]: ActivityData;
 }
 
-const diseaseData: RegionDiseaseData = {
-    "Greater Accra": { meningitis: 10, cholera: 50 },
-    "Ashanti": { meningitis: 20, cholera: 30 },
-    "Western": { meningitis: 5, cholera: 10 },
-    "Western North": { meningitis: 8, cholera: 15 },
-    "Central": { meningitis: 12, cholera: 25 },
-    "Eastern": { meningitis: 15, cholera: 20 },
-    "Volta": { meningitis: 7, cholera: 18 },
-    "Oti": { meningitis: 9, cholera: 12 },
-    "Northern": { meningitis: 30, cholera: 5 },
-    "Savannah": { meningitis: 25, cholera: 8 },
-    "North East": { meningitis: 28, cholera: 6 },
-    "Upper East": { meningitis: 22, cholera: 9 },
-    "Upper West": { meningitis: 20, cholera: 7 },
-    "Bono": { meningitis: 11, cholera: 16 },
-    "Bono East": { meningitis: 13, cholera: 14 },
-    "Ahafo": { meningitis: 10, cholera: 13 }
+const activities: RegionActivityData = {
+    "Greater Accra": { total: 169 },
+    "Ashanti": { total: 90 },
+    "Western": { total: 89 },
+    "Western North": { total: 23 },
+    "Central": { total: 37 },
+    "Eastern": { total: 35 },
+    "Volta": { total: 25 },
+    "Oti": { total: 21 },
+    "Northern": { total: 35 },
+    "Savannah": { total: 33 },
+    "North East": { total: 34 },
+    "Upper East": { total: 31 },
+    "Upper West": { total: 27 },
+    "Bono": { total: 27 },
+    "Bono East": { total: 27 },
+    "Ahafo": { total: 23 }
 };
 
-const getColor = (meningitis: number, cholera: number) => {
-    const totalCases = meningitis + cholera;
-    if (totalCases > 40) return '#0a2472'; // Dark blue
-    if (totalCases > 30) return '#1e3799'; // Medium dark blue
-    if (totalCases > 20) return '#4a69bd'; // Medium blue
-    if (totalCases > 10) return '#6a89cc'; // Light blue
-    return '#c7ecee'; // Very light blue
+const getColor = (total: number) => {
+    if (total > 100) return '#0a2472';
+    if (total > 75) return '#1e3799';
+    if (total > 50) return '#4a69bd';
+    if (total > 25) return '#6a89cc';
+    return '#c7ecee';
+};
+
+const calculateTotalActivities = () => {
+    return Object.values(activities).reduce((sum, { total }) => sum + total, 0);
 };
 
 const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Layer) => {
+    if (!feature.properties?.name) {
+        console.warn('Feature missing name property:', feature);
+        return;
+    }
+
     const region = feature.properties.name as RegionName;
-    const { meningitis = 0, cholera = 0 } = diseaseData[region] || { meningitis: 0, cholera: 0 };
-    const total = meningitis + cholera;
+    if (!activities[region]) {
+        console.warn(`No activity data found for region: ${region}`);
+        return;
+    }
+
+    const { total = 0 } = activities[region];
+    const totalActivities = calculateTotalActivities();
+    const percentage = ((total / totalActivities) * 100).toFixed(1);
     
     const style: PathOptions = {
-        fillColor: getColor(meningitis, cholera),
+        fillColor: getColor(total),
         weight: 2,
         opacity: 1,
         color: 'white',
         fillOpacity: 0.7,
     };
 
-    (layer as unknown as { setStyle: (style: PathOptions) => void }).setStyle(style);
-    layer.bindPopup(`
-        <div class="custom-popup">
-            <h3 class="popup-title">${region}</h3>
-            <div class="popup-content">
-                <div class="disease-stat">
-                    <span class="label">Meningitis:</span>
-                    <span class="value">${meningitis} cases</span>
-                </div>
-                <div class="disease-stat">
-                    <span class="label">Cholera:</span>
-                    <span class="value">${cholera} cases</span>
-                </div>
-                <div class="total-stat">
-                    <span class="label">Total:</span>
-                    <span class="value">${total} cases</span>
+    try {
+        (layer as unknown as { setStyle: (style: PathOptions) => void }).setStyle(style);
+        layer.bindPopup(`
+            <div class="custom-popup">
+                <h3 class="popup-title">${region}</h3>
+                <div class="popup-content">
+                    <div class="total-stat">
+                        <span class="label">Total Activities:</span>
+                        <span class="value">${total} (${percentage}%)</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    `);
+        `);
+
+        // Add event listeners to ensure popup works
+        layer.on('click', () => {
+            layer.openPopup();
+        });
+        layer.on('mouseover', () => {
+            layer.openPopup();
+        });
+    } catch (error) {
+        console.error(`Error setting up layer for region ${region}:`, error);
+    }
 };
 
 // Add this new constant for region label positions
@@ -160,23 +177,28 @@ export default function OutbreakOverviewMap() {
                         position={position}
                         icon={divIcon({
                             className: 'region-label',
-                            html: `<span>${region}</span>`,
-                            iconSize: [120, 20], // increased width to accommodate longer text
-                            iconAnchor: [60, 10] // adjusted anchor point
+                            html: `
+                                <div class="label-container">
+                                    <span class="region-name">${region}</span>
+                                    <span class="region-total">${activities[region as RegionName].total}</span>
+                                </div>
+                            `,
+                            iconSize: [120, 40], // increased height for two lines
+                            iconAnchor: [60, 20] // adjusted anchor point
                         })}
                     />
                 ))}
             </MapContainer>
             <div className="absolute bottom-4 left-4 bg-white/95 p-2 shadow-lg rounded-md z-[1000] scale-75 origin-bottom-left">
-                <h3 className="font-bold mb-1 text-sm text-gray-800">Disease Cases</h3>
+                <h3 className="font-bold mb-1 text-sm text-gray-800">Activities</h3>
                 <div className="flex flex-col space-y-1">
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#0a2472] inline-block rounded-sm"></span> Over 40</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#1e3799] inline-block rounded-sm"></span> 31-40</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#4a69bd] inline-block rounded-sm"></span> 21-30</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#6a89cc] inline-block rounded-sm"></span> 11-20</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#c7ecee] inline-block rounded-sm"></span> 0-10</div>
+                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#0a2472] inline-block rounded-sm"></span> Over 100</div>
+                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#1e3799] inline-block rounded-sm"></span> 76-100</div>
+                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#4a69bd] inline-block rounded-sm"></span> 51-75</div>
+                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#6a89cc] inline-block rounded-sm"></span> 26-50</div>
+                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#c7ecee] inline-block rounded-sm"></span> 0-25</div>
                 </div>
-                <p className="text-[10px] mt-1 text-gray-600 font-medium">*Total cases</p>
+                <p className="text-[10px] mt-1 text-gray-600 font-medium">*Total activities</p>
             </div>
             <style>{`
                 .map-tiles {
@@ -194,19 +216,19 @@ export default function OutbreakOverviewMap() {
                     line-height: 1.4;
                 }
                 .custom-popup {
-                    min-width: 200px;
+                    min-width: 160px;
                 }
                 .popup-title {
                     background: #2c3e50;
                     color: white;
-                    padding: 4px 6px;
+                    padding: 3px 6px;
                     margin: 0;
-                    font-size: 14px;
+                    font-size: 12px;
                     font-weight: 600;
                     border-radius: 8px 8px 0 0;
                 }
                 .popup-content {
-                    padding: 6px;
+                    padding: 4px 6px;
                 }
                 .disease-stat {
                     display: flex;
@@ -217,11 +239,11 @@ export default function OutbreakOverviewMap() {
                 .total-stat {
                     display: flex;
                     justify-content: space-between;
-                    margin-top: 8px;
-                    padding-top: 8px;
+                    margin-top: 4px;
+                    padding-top: 4px;
                     border-top: 1px solid #eee;
                     font-weight: 600;
-                    font-size: 13px;
+                    font-size: 11px;
                 }
                 .label {
                     color: #666;
@@ -234,7 +256,13 @@ export default function OutbreakOverviewMap() {
                     border: none;
                     box-shadow: none;
                 }
-                .region-label span {
+                .label-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+                .region-name {
                     font-size: 10px;
                     font-weight: 600;
                     color: #2c3e50;
@@ -244,6 +272,15 @@ export default function OutbreakOverviewMap() {
                         -1px 1px 0 #fff,
                         1px 1px 0 #fff;
                     white-space: nowrap;
+                }
+                .region-total {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    background: white;
+                    padding: 0 4px;
+                    border-radius: 8px;
+                    margin-top: 2px;
                 }
             `}</style>
         </div>
