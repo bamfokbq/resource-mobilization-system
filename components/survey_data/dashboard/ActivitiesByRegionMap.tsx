@@ -63,6 +63,10 @@ const calculateTotalActivities = () => {
     return Object.values(activities).reduce((sum, { total }) => sum + total, 0);
 };
 
+const calculatePercentage = (value: number, total: number) => {
+    return ((value / total) * 100).toFixed(1);
+};
+
 const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Layer) => {
     if (!feature.properties?.name) {
         console.warn('Feature missing name property:', feature);
@@ -77,7 +81,7 @@ const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Laye
 
     const { total = 0 } = activities[region];
     const totalActivities = calculateTotalActivities();
-    const percentage = ((total / totalActivities) * 100).toFixed(1);
+    const percentage = calculatePercentage(total, totalActivities);
     
     const style: PathOptions = {
         fillColor: getColor(total),
@@ -91,11 +95,11 @@ const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Laye
         (layer as unknown as { setStyle: (style: PathOptions) => void }).setStyle(style);
         layer.bindPopup(`
             <div class="custom-popup">
-                <h3 class="popup-title">${region}</h3>
+                <div class="popup-header">${region}</div>
                 <div class="popup-content">
-                    <div class="total-stat">
-                        <span class="label">Total Activities:</span>
-                        <span class="value">${total} (${percentage}%)</span>
+                    <div class="stat-row">
+                        <span class="stat-value">${percentage}%</span>
+                        <span class="stat-label">of total activities</span>
                     </div>
                 </div>
             </div>
@@ -133,7 +137,7 @@ const regionLabels: { [K in RegionName]: [number, number] } = {
     "Ahafo": [6.9, -2.1]
 };
 
-export default function OutbreakOverviewMap() {
+export default function ActivitiesByRegionMap() {
     const typedGeoData = geoData as FeatureCollection;
     const ghanaBounds = new LatLngBounds(
         [4.7, -3.5], // Southwest coordinates
@@ -171,23 +175,25 @@ export default function OutbreakOverviewMap() {
                         fillOpacity: 0.7,
                     }}
                 />
-                {Object.entries(regionLabels).map(([region, position]) => (
-                    <Marker
-                        key={region}
-                        position={position}
-                        icon={divIcon({
-                            className: 'region-label',
-                            html: `
-                                <div class="label-container">
-                                    <span class="region-name">${region}</span>
-                                    <span class="region-total">${activities[region as RegionName].total}</span>
-                                </div>
-                            `,
-                            iconSize: [120, 40], // increased height for two lines
-                            iconAnchor: [60, 20] // adjusted anchor point
-                        })}
-                    />
-                ))}
+                {Object.entries(regionLabels).map(([region, position]) => {
+                    const { total } = activities[region as RegionName];
+                    return (
+                        <Marker
+                            key={region}
+                            position={position}
+                            icon={divIcon({
+                                className: 'region-label',
+                                html: `
+                                    <div class="label-container">
+                                        <span class="region-total">${total}</span>
+                                    </div>
+                                `,
+                                iconSize: [40, 20],
+                                iconAnchor: [20, 10]
+                            })}
+                        />
+                    );
+                })}
             </MapContainer>
             <div className="absolute bottom-4 left-4 bg-white/95 p-2 shadow-lg rounded-md z-[1000] scale-75 origin-bottom-left">
                 <h3 className="font-bold mb-1 text-sm text-gray-800">Activities</h3>
@@ -198,7 +204,7 @@ export default function OutbreakOverviewMap() {
                     <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#6a89cc] inline-block rounded-sm"></span> 26-50</div>
                     <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#c7ecee] inline-block rounded-sm"></span> 0-25</div>
                 </div>
-                <p className="text-[10px] mt-1 text-gray-600 font-medium">*Total activities</p>
+                <p className="text-[10px] mt-1 text-gray-600 font-medium">*Number of activities</p>
             </div>
             <style>{`
                 .map-tiles {
@@ -216,40 +222,49 @@ export default function OutbreakOverviewMap() {
                     line-height: 1.4;
                 }
                 .custom-popup {
-                    min-width: 160px;
+                    min-width: 120px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 }
-                .popup-title {
+                .popup-header {
                     background: #2c3e50;
                     color: white;
-                    padding: 3px 6px;
-                    margin: 0;
+                    padding: 3px 5px;
                     font-size: 12px;
                     font-weight: 600;
-                    border-radius: 8px 8px 0 0;
+                    border-radius: 4px 4px 0 0;
                 }
                 .popup-content {
-                    padding: 4px 6px;
+                    padding: 3px 5px;
+                    background: white;
+                    border-radius: 0 0 4px 4px;
                 }
-                .disease-stat {
+                .stat-row {
                     display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 4px;
-                    font-size: 13px;
+                    align-items: baseline;
+                    gap: 4px;
                 }
-                .total-stat {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 4px;
-                    padding-top: 4px;
-                    border-top: 1px solid #eee;
-                    font-weight: 600;
+                .stat-value {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                }
+                .stat-label {
                     font-size: 11px;
+                    color: #666;
+                    text-transform: uppercase;
                 }
                 .label {
                     color: #666;
                 }
                 .value {
                     color: #2c3e50;
+                }
+                .region-name {
+                    font-weight: 600;
+                    color: #2c3e50;
+                }
+                .total-value {
+                    color: #666;
                 }
                 .region-label {
                     background: transparent;
@@ -258,29 +273,17 @@ export default function OutbreakOverviewMap() {
                 }
                 .label-container {
                     display: flex;
-                    flex-direction: column;
+                    justify-content: center;
                     align-items: center;
-                    text-align: center;
-                }
-                .region-name {
-                    font-size: 10px;
-                    font-weight: 600;
-                    color: #2c3e50;
-                    text-shadow: 
-                        -1px -1px 0 #fff,
-                        1px -1px 0 #fff,
-                        -1px 1px 0 #fff,
-                        1px 1px 0 #fff;
-                    white-space: nowrap;
                 }
                 .region-total {
-                    font-size: 11px;
+                    font-size: 12px;
                     font-weight: 700;
                     color: #2c3e50;
                     background: white;
-                    padding: 0 4px;
-                    border-radius: 8px;
-                    margin-top: 2px;
+                    padding: 2px 6px;
+                    border-radius: 12px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
             `}</style>
         </div>

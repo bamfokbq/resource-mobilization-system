@@ -21,7 +21,7 @@ const pieData = [
 export default function GhanaMap() {
   const LandingPageMapComponent = React.useMemo(() => {
     return dynamic(
-      () => import('./OutbreakOverviewMap'),
+      () => import('./ActivitiesByRegionMap'),
       {
         loading: () => <p>Loading Map...</p>,
         ssr: false
