@@ -14,7 +14,7 @@ export default function ActivityByRegion() {
     );
   }, []);
   return (
-      <section className='mb-8' id='activity-by-region'>
+    <section className='mb-8' id='regional-activities'>
       <h1 className='text-3xl text-navy-blue font-medium'>Activity By Region</h1>
 
       <div className='h-[100dvh] bg-white rounded-2xl overflow-hidden'>
