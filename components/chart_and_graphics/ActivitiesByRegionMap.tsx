@@ -145,7 +145,7 @@ export default function ActivitiesByRegionMap() {
     );
     
     return (
-        <div className="relative h-full w-full flex-col flex items-center justify-center">
+        <div className="relative h-full w-full flex-col z-40 flex items-center justify-center">
             <MapContainer 
                 center={[8.0, -1.0]}
                 zoom={6.5} 
