@@ -29,10 +29,14 @@ export default function ExploreSurveyNavigation() {
                 </button>
             </div>
 
-            {isOpen && (
+            {isOpen ? (
                 <ScrollArea className="flex-1">
-                    <NcdStrategyNav />
+                    <NcdStrategyNav isOpen={isOpen} />
                 </ScrollArea>
+            ) : (
+                <div className="flex-1">
+                    <NcdStrategyNav isOpen={isOpen} />
+                </div>
             )}
         </div>
     )

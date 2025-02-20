@@ -9,16 +9,44 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import Link from 'next/link'
+import { MdDashboard, MdOutlinePreview } from 'react-icons/md'
+import { IoInformationCircleOutline } from 'react-icons/io5'
+import { BiTask } from 'react-icons/bi'
+import { TbActivityHeartbeat } from 'react-icons/tb'
 
-export default function NcdStrategyNav() {
+interface NcdStrategyNavProps {
+    isOpen: boolean;
+}
+
+export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
   const pathname = usePathname()
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
 
   const items = [
-    { name: 'Overview', href: '/survey-data/overview', subItems: ['Activities by Region', 'Diseases Area', 'Activities by Continuum of Care'] },
-    { name: 'Background', href: '/survey-data/background', subItems: ['Stakeholders per Region', 'Sectors', 'Number of Projects', 'Funding Source', 'Stakeholder Details'] },
-    { name: 'Activity Overview', href: '/survey-data/activity-overview', subItems: ['Activities by Region', 'Diseases Area', 'Activities by Continuum of Care', 'Primary Target Population', 'Organisations', 'Activities by Age Group', 'Activities by Setting', 'Activities by Gender', 'Persons Reached', 'Partners'] },
-    { name: 'Activity Morbidity', href: '/survey-data/activity-morbidity', subItems: ['Hypertension', 'Diabetes Mellitus', 'Road Traffic Accidents', 'Asthma', 'Sickle Cell Disease', 'Stroke', 'Schizophrenia', 'Prostate Cancer', 'Lymphoma', 'Breast Cancer', 'Cervical Cancer'] },
+      {
+          name: 'Overview',
+          href: '/survey-data/overview',
+          icon: <MdOutlinePreview className="w-5 h-5" />,
+          subItems: ['Regional Activities', 'Diseases', 'Continuum of Care']
+      },
+      {
+          name: 'Background',
+          href: '/survey-data/background',
+          icon: <IoInformationCircleOutline className="w-5 h-5" />,
+          subItems: ['Regional Stakeholders', 'Sectors', 'Projects', 'Funding', 'Stakeholder Info']
+      },
+      {
+          name: 'Activities',
+          href: '/survey-data/activity-overview',
+          icon: <BiTask className="w-5 h-5" />,
+          subItems: ['By Region', 'Diseases', 'Care Continuum', 'Target Groups', 'Organizations', 'Age Groups', 'Settings', 'Gender', 'Reach', 'Partners']
+      },
+      {
+          name: 'Morbidity',
+          href: '/survey-data/activity-morbidity',
+          icon: <TbActivityHeartbeat className="w-5 h-5" />,
+          subItems: ['Hypertension', 'Diabetes', 'Traffic Accidents', 'Asthma', 'Sickle Cell', 'Stroke', 'Schizophrenia', 'Prostate Cancer', 'Lymphoma', 'Breast Cancer', 'Cervical Cancer']
+      },
   ]
 
   useEffect(() => {
@@ -35,14 +63,34 @@ export default function NcdStrategyNav() {
     }
   }, [pathname]);
 
+    if (!isOpen) {
+        return (
+            <div className="w-full flex flex-col gap-4 items-center pt-2">
+                <Link href="/survey-data" className="text-white hover:text-white/90">
+                    <MdDashboard className="w-5 h-5" />
+                </Link>
+                {items.map((section, idx) => (
+                    <Link
+                        key={section.name}
+                        href={section.href}
+                        className="text-white hover:text-white/90"
+                    >
+                        {section.icon}
+                    </Link>
+                ))}
+            </div>
+        );
+    }
+
   return (
       <div className="w-full">
           <div className="mb-2">
               <Link
                   href={'/survey-data'}
-                  className="text-lg font-medium text-white px-2 py-2"
+                  className="text-lg font-medium text-white px-2 py-2 flex items-center gap-2"
                   onClick={() => setOpenItem(undefined)}
               >
+                  <MdDashboard className="w-5 h-5" />
                   Dashboard
               </Link>
           </div>
@@ -64,9 +112,10 @@ export default function NcdStrategyNav() {
                       >
                           <Link 
                               href={section.href} 
-                              className="flex-1 text-left"
+                              className="flex-1 text-left flex items-center gap-2"
                               onClick={(e) => e.stopPropagation()}
                           >
+                              {section.icon}
                               {section.name}
                           </Link>
                       </AccordionTrigger>
