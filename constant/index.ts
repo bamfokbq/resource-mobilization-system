@@ -360,6 +360,29 @@ const ACTIVITIES_BY_REGION_DATA = [
     { name: "All NCDs (General)", value: 89 },
     { name: "Other NCDs", value: 89 }
 ];
+
+const YEARLY_DATA = [
+    { name: '2022', value: 400 },
+    { name: '2023', value: 300 },
+    { name: '2024', value: 600 },
+    { name: '2025', value: 800 },
+    { name: '2026', value: 500 },
+];
+
+const SECTORS_DATA = [
+    { name: 'Local NGO', value: 100 },
+    { name: 'International NGO', value: 200 },
+    { name: 'Civil Society Organisation', value: 300 },
+    { name: 'Ghana Government', value: 300 },
+    { name: 'Faith-based Organisation', value: 400 },
+    { name: 'Multilateral', value: 4 },
+    { name: 'Private', value: 500 },
+    { name: 'Academic/Research', value: 600 },
+    { name: 'Foundation', value: 70 },
+    { name: "Patient Organisation", value: 80 },
+    { name: 'Foreign Government', value: 90 },
+]
+
 export {
     NAVIGATION,
     FEATURES,
@@ -372,5 +395,7 @@ export {
     SURVEY_HISTORY_LISTS,
     GHANA_REGIONS,
     CONTINUUM_OF_CARE_DATA,
-    ACTIVITIES_BY_REGION_DATA
+    ACTIVITIES_BY_REGION_DATA,
+    SECTORS_DATA,
+    YEARLY_DATA
 }
