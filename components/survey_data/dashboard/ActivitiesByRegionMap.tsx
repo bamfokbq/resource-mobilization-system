@@ -119,22 +119,22 @@ const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Laye
 
 // Add this new constant for region label positions
 const regionLabels: { [K in RegionName]: [number, number] } = {
-    "Greater Accra": [5.6, 0.2],
-    "Ashanti": [6.7, -1.0],
-    "Western": [5.5, -1.8],
-    "Western North": [6.2, -2.5],
-    "Central": [5.5, -0.5], // adjusted position
-    "Eastern": [6.3, -0.1],
-    "Volta": [6.5, 1.0], // adjusted position
-    "Oti": [7.9, 0.8], // adjusted position
-    "Northern": [9.6, 0.3], // adjusted position
-    "Savannah": [9.2, -1.5],
-    "North East": [10.4, -0.4],
-    "Upper East": [10.8, -0.5],
-    "Upper West": [10.3, -1.8],
-    "Bono": [7.6, -2.0],
-    "Bono East": [7.9, -1.0],
-    "Ahafo": [6.9, -2.1]
+    "Greater Accra": [5.7, 0.1],
+    "Ashanti": [6.7, -1.5],
+    "Western": [5.5, -2.2],
+    "Western North": [6.2, -2.8],
+    "Central": [5.5, -1.0],
+    "Eastern": [6.3, -0.4],
+    "Volta": [6.5, 0.5],
+    "Oti": [7.9, 0.2],
+    "Northern": [9.6, -0.3],
+    "Savannah": [9.2, -1.7],
+    "North East": [10.4, -0.6],
+    "Upper East": [10.8, -0.9],
+    "Upper West": [10.3, -2.2],
+    "Bono": [7.6, -2.4],
+    "Bono East": [7.9, -1.2],
+    "Ahafo": [6.9, -2.6]
 };
 
 export default function ActivitiesByRegionMap() {
