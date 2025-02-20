@@ -4,27 +4,24 @@ import { useState, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceLine, Legend, LabelList } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
 
-const data = [
-    { name: "Hypertension", value: 980 },
-    { name: "Diabetes Mellitus", value: 832 },
-    { name: "Breast Cancer", value: 234 },
-    { name: "Cervical Cancer", value: 273 },
-    { name: "Mental Health", value: 100 },
-    { name: "Childhood Cancers", value: 50 },
-    { name: "Prostate Cancer", value: 500 },
-    { name: "Road Accidents", value: 129 },
-    { name: "Domestic Injuries", value: 30 },
-    { name: "Childhood Cancers (Dup)", value: 10 },
-    { name: "COPD & Asthma", value: 60 },
-    { name: "Sickle Cell Disease", value: 901 },
-    { name: "CVD & Stroke", value: 875 },
-    { name: "All NCDs (General)", value: 89 },
-    { name: "Other NCDs", value: 89 }
-];
+interface DataItem {
+    name: string;
+    value: number;
+}
 
-const totalActivities = data.reduce((sum, item) => sum + item.value, 0);
+interface VerticalBarchartProps {
+    data: DataItem[];
+    name: string;
+}
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const formatValue = (value: number) => {
+    if (value >= 1000) {
+        return `${(value / 1000).toFixed(1)}k`;
+    }
+    return value.toString();
+};
+
+const CustomTooltip = ({ active, payload, label, totalActivities }: any) => {
     if (!active || !payload?.length) return null;
     
     const value = payload[0].value;
@@ -37,7 +34,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                 <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-indigo-600" />
                     <p className="text-indigo-600 font-semibold">
-                        {new Intl.NumberFormat().format(value)}
+                        {formatValue(value)}
                     </p>
                 </div>
                 <div className="flex items-center gap-2 pl-4">
@@ -50,8 +47,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
 };
 
-const ActivitiesByDieseaseArea = () => {
+const VerticalBarchart = ({ data, name }: VerticalBarchartProps) => {
     const [sortedData, setSortedData] = useState(data);
+    const totalActivities = data.reduce((sum, item) => sum + item.value, 0);
     
     const handleSort = useCallback(() => {
         setSortedData([...sortedData].sort((a, b) => b.value - a.value));
@@ -79,7 +77,7 @@ const ActivitiesByDieseaseArea = () => {
                     <BarChart
                         layout="vertical"
                         data={sortedData}
-                        margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
+                        margin={{ top: 10, right: 50, left: 0, bottom: 10 }}
                         style={{ cursor: 'default' }}
                     >
                         <defs>
@@ -92,7 +90,7 @@ const ActivitiesByDieseaseArea = () => {
                         <XAxis 
                             type="number" 
                             stroke="#6b7280"
-                            tickFormatter={(value) => new Intl.NumberFormat().format(value)}
+                            tickFormatter={(value) => formatValue(value)}
                         />
                         <YAxis 
                             dataKey="name" 
@@ -100,14 +98,19 @@ const ActivitiesByDieseaseArea = () => {
                             width={190}
                             stroke="#6b7280"
                             fontSize={13}
-                            tick={{
-                                fill: '#374151',
-                                textAnchor: 'end',
-                                width: 190,
-                            }}
-                            tickMargin={4}
+                            tick={({ x, y, payload }) => (
+                                <g transform={`translate(${x},${y})`}>
+                                    <foreignObject width="180" height="30" x="-185" y="-15">
+                                        <div className="h-full flex items-center">
+                                            <span className="px-3 py-1 bg-gray-50 rounded-full text-gray-700 text-sm truncate">
+                                                {payload.value}
+                                            </span>
+                                        </div>
+                                    </foreignObject>
+                                </g>
+                            )}
                         />
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip content={<CustomTooltip totalActivities={totalActivities} />} />
                         <Legend 
                             verticalAlign="top"
                             align="right"
@@ -119,13 +122,13 @@ const ActivitiesByDieseaseArea = () => {
                             strokeDasharray="3 3"
                             label={{
                                 position: 'right',
-                                value: `Avg: ${Math.round(average)}`,
+                                value: `Avg: ${formatValue(Math.round(average))}`,
                                 fill: '#EA580C',
                                 fontSize: 12
                             }}
                         />
                         <Bar 
-                            name="Number of Activities"
+                            name={name}
                             dataKey="value" 
                             fill="url(#barGradient)"
                             radius={[0, 4, 4, 0]}
@@ -150,7 +153,7 @@ const ActivitiesByDieseaseArea = () => {
                             <LabelList
                                 dataKey="value"
                                 position="right"
-                                formatter={(value: number) => new Intl.NumberFormat().format(value)}
+                                formatter={(value: number) => formatValue(value)}
                                 style={{ fill: '#6b7280', fontSize: '12px' }}
                             />
                         </Bar>
@@ -161,4 +164,4 @@ const ActivitiesByDieseaseArea = () => {
     );
 };
 
-export default ActivitiesByDieseaseArea;
+export default VerticalBarchart;

@@ -328,6 +328,38 @@ const GHANA_REGIONS = {
     "western-north": "Western North Region",
 } as const
 
+
+const CONTINUUM_OF_CARE_DATA = [
+    { name: "Health Promotion / Primary Prevention", value: 2987 },
+    { name: "Link Patients to Care", value: 2218 },
+    { name: "Care / Treatment with Follow-up", value: 1848 },
+    { name: "Screening / Risk Assessment", value: 1779 },
+    { name: "Policy / Systems Strength", value: 1778 },
+    { name: "Diagnosis / Testing", value: 1562 },
+    { name: "Access to Products / Devices / Diagnostics", value: 1463 },
+    { name: "Access to Medicines", value: 1404 },
+    { name: "Reintegration / Rehabilitation", value: 890 },
+    { name: "Palliative Care", value: 860 },
+    { name: "Care / Treatment without Follow-up", value: 432 },
+    { name: "Vaccination", value: 104 },
+];
+const ACTIVITIES_BY_REGION_DATA = [
+    { name: "Hypertension", value: 980 },
+    { name: "Diabetes Mellitus", value: 832 },
+    { name: "Breast Cancer", value: 234 },
+    { name: "Cervical Cancer", value: 273 },
+    { name: "Mental Health", value: 100 },
+    { name: "Childhood Cancers", value: 50 },
+    { name: "Prostate Cancer", value: 500 },
+    { name: "Road Accidents", value: 129 },
+    { name: "Domestic Injuries", value: 30 },
+    { name: "Childhood Cancers (Dup)", value: 10 },
+    { name: "COPD & Asthma", value: 60 },
+    { name: "Sickle Cell Disease", value: 901 },
+    { name: "CVD & Stroke", value: 875 },
+    { name: "All NCDs (General)", value: 89 },
+    { name: "Other NCDs", value: 89 }
+];
 export {
     NAVIGATION,
     FEATURES,
@@ -338,5 +370,7 @@ export {
     USER_LISTS,
     ADMIN_PROFILE,
     SURVEY_HISTORY_LISTS,
-    GHANA_REGIONS
+    GHANA_REGIONS,
+    CONTINUUM_OF_CARE_DATA,
+    ACTIVITIES_BY_REGION_DATA
 }
