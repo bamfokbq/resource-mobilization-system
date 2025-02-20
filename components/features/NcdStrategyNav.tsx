@@ -8,6 +8,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import Link from 'next/link'
 import { MdDashboard, MdOutlinePreview } from 'react-icons/md'
 import { IoInformationCircleOutline } from 'react-icons/io5'
@@ -66,18 +72,40 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
     if (!isOpen) {
         return (
             <div className="w-full flex flex-col gap-4 items-center pt-2">
-                <Link href="/survey-data" className="text-white hover:text-white/90">
-                    <MdDashboard className="w-5 h-5" />
-                </Link>
-                {items.map((section, idx) => (
-                    <Link
-                        key={section.name}
-                        href={section.href}
-                        className="text-white hover:text-white/90"
-                    >
-                        {section.icon}
-                    </Link>
-                ))}
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link href="/survey-data" className="text-white hover:text-white/90">
+                                <MdDashboard className="w-5 h-5" />
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent
+                            side="right"
+                            className="bg-white text-blue-600 z-50 font-medium"
+                        >
+                            <p>Dashboard</p>
+                        </TooltipContent>
+                    </Tooltip>
+
+                    {items.map((section, idx) => (
+                        <Tooltip key={section.name}>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href={section.href}
+                                    className="text-white hover:text-white/90"
+                                >
+                                    {section.icon}
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent
+                                side="right"
+                                className="bg-white text-blue-600 z-50 font-medium"
+                            >
+                                <p>{section.name}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    ))}
+                </TooltipProvider>
             </div>
         );
     }
