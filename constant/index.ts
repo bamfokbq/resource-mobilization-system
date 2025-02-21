@@ -365,8 +365,7 @@ const YEARLY_DATA = [
     { name: '2022', value: 400 },
     { name: '2023', value: 300 },
     { name: '2024', value: 600 },
-    { name: '2025', value: 800 },
-    { name: '2026', value: 500 },
+    { name: '2025', value: 0 },
 ];
 
 const SECTORS_DATA = [
