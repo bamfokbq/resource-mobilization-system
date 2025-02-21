@@ -382,6 +382,252 @@ const SECTORS_DATA = [
     { name: 'Foreign Government', value: 90 },
 ]
 
+const SECTORS = {
+    CivilSocietyOrganization: "Civil Society Organization",
+    LocalNGO: "Local NGO",
+    InternationalNGO: "International NGO",
+    ForeignGovernment: "Foreign Government",
+    PatientOrganization: "Patient Organization",
+    Foundation: "Foundation",
+    AcademiaResearch: "Academia / Research",
+    Multilateral: "Multilateral",
+    Private: "Private"
+};
+
+const STAKEHOLDERS_BY_REGIONS = [
+    {
+        region: "Ahafo",
+        stakeholders: [
+            {
+                category: "Civil Society Organisation",
+                organisations: ["Human Care and Maintenance Foundation HUCA"]
+            },
+            {
+                category: "Foundation",
+                organisations: ["Firm Foundation and Environment Ghana"]
+            }
+        ]
+    },
+    {
+        region: "Ashanti",
+        stakeholders: [
+            {
+                category: "International NGO",
+                organisations: ["World Vision Ghana", "CARE International"]
+            },
+            {
+                category: "Local NGO",
+                organisations: ["Kumasi Youth Foundation", "Ashanti Development"]
+            }
+        ]
+    },
+    {
+        region: "Bono",
+        stakeholders: [
+            {
+                category: "Academia / Research",
+                organisations: ["University of Energy and Natural Resources Research Institute"]
+            },
+            {
+                category: "Private",
+                organisations: ["Bono Business Network"]
+            }
+        ]
+    },
+    {
+        region: "Bono East",
+        stakeholders: [
+            {
+                category: "Local NGO",
+                organisations: ["Eastern Corridor Development Foundation"]
+            },
+            {
+                category: "Multilateral",
+                organisations: ["UNICEF Ghana"]
+            }
+        ]
+    },
+    {
+        region: "Central",
+        stakeholders: [
+            {
+                category: "Civil Society Organisation",
+                organisations: ["Central Regional Development Network"]
+            },
+            {
+                category: "Academia / Research",
+                organisations: ["University of Cape Coast Research Hub"]
+            }
+        ]
+    },
+    {
+        region: "Eastern",
+        stakeholders: [
+            {
+                category: "Local NGO",
+                organisations: ["Eastern Volunteers Association"]
+            },
+            {
+                category: "Foundation",
+                organisations: ["The Rural Empowerment Foundation"]
+            }
+        ]
+    },
+    {
+        region: "Greater Accra",
+        stakeholders: [
+            {
+                category: "International NGO",
+                organisations: ["Plan International Ghana", "Oxfam Ghana"]
+            },
+            {
+                category: "Multilateral",
+                organisations: ["United Nations Development Programme (UNDP)"]
+            },
+            {
+                category: "Private",
+                organisations: ["Accra Chamber of Commerce"]
+            }
+        ]
+    },
+    {
+        region: "North East",
+        stakeholders: [
+            {
+                category: "Foreign Government",
+                organisations: ["USAID Ghana"]
+            },
+            {
+                category: "Local NGO",
+                organisations: ["North East Youth Development Initiative"]
+            }
+        ]
+    },
+    {
+        region: "Northern",
+        stakeholders: [
+            {
+                category: "International NGO",
+                organisations: ["Savannah Women Empowerment Group"]
+            },
+            {
+                category: "Multilateral",
+                organisations: ["World Food Programme (WFP)"]
+            }
+        ]
+    },
+    {
+        region: "Oti",
+        stakeholders: [
+            {
+                category: "Local NGO",
+                organisations: ["Oti Region Community Development Association"]
+            },
+            {
+                category: "Foundation",
+                organisations: ["Oti Foundation for Rural Progress"]
+            }
+        ]
+    },
+    {
+        region: "Savannah",
+        stakeholders: [
+            {
+                category: "Academia / Research",
+                organisations: ["Savannah Agricultural Research Institute"]
+            },
+            {
+                category: "Civil Society Organisation",
+                organisations: ["Savannah Development Union"]
+            }
+        ]
+    },
+    {
+        region: "Upper East",
+        stakeholders: [
+            {
+                category: "International NGO",
+                organisations: ["ActionAid Ghana"]
+            },
+            {
+                category: "Local NGO",
+                organisations: ["Upper East Women's Empowerment Coalition"]
+            }
+        ]
+    },
+    {
+        region: "Upper West",
+        stakeholders: [
+            {
+                category: "Foreign Government",
+                organisations: ["Embassy of Canada in Ghana"]
+            },
+            {
+                category: "Local NGO",
+                organisations: ["Upper West Development Foundation"]
+            }
+        ]
+    },
+    {
+        region: "Volta",
+        stakeholders: [
+            {
+                category: "Multilateral",
+                organisations: ["World Health Organization (WHO) Ghana"]
+            },
+            {
+                category: "Local NGO",
+                organisations: ["Volta Youth Empowerment Group"]
+            }
+        ]
+    },
+    {
+        region: "Western",
+        stakeholders: [
+            {
+                category: "International NGO",
+                organisations: ["Friends of the Earth Ghana"]
+            },
+            {
+                category: "Foundation",
+                organisations: ["Western Coastal Development Foundation"]
+            }
+        ]
+    },
+    {
+        region: "Western North",
+        stakeholders: [
+            {
+                category: "Local NGO",
+                organisations: ["Western North Community Empowerment Group"]
+            },
+            {
+                category: "Academia / Research",
+                organisations: ["Forestry Research Institute of Ghana"]
+            }
+        ]
+    }
+];
+
+const REGIONAL_SECTOR_DATA = {
+    "Greater Accra": { total: 23 },
+    "Ashanti": { total: 20 },
+    "Western": { total: 19 },
+    "Western North": { total: 23 },
+    "Central": { total: 37 },
+    "Eastern": { total: 5 },
+    "Volta": { total: 21 },
+    "Oti": { total: 21 },
+    "Northern": { total: 35 },
+    "Savannah": { total: 33 },
+    "North East": { total: 34 },
+    "Upper East": { total: 31 },
+    "Upper West": { total: 27 },
+    "Bono": { total: 27 },
+    "Bono East": { total: 27 },
+    "Ahafo": { total: 23 }
+}
+
 export {
     NAVIGATION,
     FEATURES,
@@ -396,5 +642,7 @@ export {
     CONTINUUM_OF_CARE_DATA,
     ACTIVITIES_BY_REGION_DATA,
     SECTORS_DATA,
-    YEARLY_DATA
+    YEARLY_DATA,
+    STAKEHOLDERS_BY_REGIONS,
+    REGIONAL_SECTOR_DATA
 }
