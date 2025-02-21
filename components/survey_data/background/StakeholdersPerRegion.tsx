@@ -1,7 +1,7 @@
 import React from 'react'
 import StakeholdersTable from '@/components/tables/StakeholdersTable'
-import RegionalSectorMap from '@/components/chart_and_graphics/RegionalSectorMap'
 import { REGIONAL_SECTOR_DATA } from '@/constant'
+import SectorMap from '@/components/chart_and_graphics/SectorMap'
 
 export default function StakeholdersPerRegion() {
   return (
@@ -12,7 +12,7 @@ export default function StakeholdersPerRegion() {
       <div className='min-h-[90vh] p-3 bg-white rounded-2xl'>
         <div className='grid grid-cols-2 gap-8 h-full'>
           <div className='relative overflow-hidden w-full h-[90vh]'>
-            <RegionalSectorMap regionalData={REGIONAL_SECTOR_DATA} />
+            <SectorMap regionalData={REGIONAL_SECTOR_DATA} />
           </div>
           <div className='h-[90vh]'>
             <StakeholdersTable />
