@@ -22,7 +22,7 @@ export default function LandingHeroContent() {
                     textColor="text-navy-blue"
                 />
                 <OutlineButton
-                    href="/explore-data"
+                    href="/survey-data"
                     text="Explore Data"
                 />
             </div>
