@@ -23,7 +23,7 @@ export default function FilterSection({ children }: FilterSectionProps) {
         for (const key of Array.from(params.keys())) {
             params.delete(key)
         }
-        router.push(`?${params.toString()}`, { scroll: false })
+      router.replace(`?${params.toString()}`, { scroll: false })
     }
 
   return (

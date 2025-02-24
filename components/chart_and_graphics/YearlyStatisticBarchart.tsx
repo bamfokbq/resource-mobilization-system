@@ -93,7 +93,7 @@ export default function YearlyStatisticBarchart() {
               </CardContent>
           </Card>
 
-          <Card className="p-4">
+          {/* <Card className="p-4">
               <div className="mb-4">
                   <h3 className='text-lg font-medium text-gray-700'>Distribution</h3>
                   <p className='text-sm text-gray-500'>Category breakdown</p>
@@ -129,7 +129,7 @@ export default function YearlyStatisticBarchart() {
                       </PieChart>
                   </ResponsiveContainer>
               </CardContent>
-          </Card>
+          </Card> */}
       </div>
   );
 }

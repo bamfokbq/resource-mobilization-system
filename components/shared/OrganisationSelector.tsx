@@ -40,7 +40,7 @@ export function OrganisationSelector({
     } else {
       params.set('organisation', selectedOrg)
     }
-    router.push(`?${params.toString()}`)
+    router.push(`?${params.toString()}`, { scroll: false })
   }
 
   return (

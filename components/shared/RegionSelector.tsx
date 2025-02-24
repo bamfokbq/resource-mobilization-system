@@ -43,7 +43,7 @@ export function RegionSelector({
   const handleRegionSelect = (selectedRegion: string) => {
     const params = new URLSearchParams(searchParams)
     params.set('region', selectedRegion)
-    router.push(`?${params.toString()}`)
+    router.push(`?${params.toString()}`, { scroll: false })
   }
 
   return (

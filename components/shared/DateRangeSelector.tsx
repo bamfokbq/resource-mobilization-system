@@ -58,7 +58,7 @@ export function DateRangeSelector({
       params.set('startDate', selectedDate.from.toISOString())
       params.set('endDate', selectedDate.to.toISOString())
 
-      router.push(`?${params.toString()}`)
+      router.replace(`?${params.toString()}`, { scroll: false })
     }
   }
 
