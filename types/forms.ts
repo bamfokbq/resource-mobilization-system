@@ -38,8 +38,8 @@ export interface PartnersInfo {
 export interface AdditionalInfo {
   risks: string;
   sustainability: string;
-  monitoringPlan: string;
-  additionalNotes: string;
+  evaluation: string;
+  notes: string;
 }
 
 export interface ProjectInfoFormData {
@@ -53,10 +53,10 @@ export interface ProjectInfoFormData {
 }
 
 export interface FormData extends 
-  OrganisationInfo,
+  Partial<OrganisationInfo>,
   ProjectInfo,
   ProjectActivities,
   PartnersInfo,
-  AdditionalInfo {
+  Partial<AdditionalInfo> {
   projectInfo: ProjectInfoFormData;
 }

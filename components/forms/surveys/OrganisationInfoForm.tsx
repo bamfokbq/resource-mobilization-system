@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useFormStore } from '@/store/useFormStore';
 import { OrganisationInfo } from '@/types/forms';
 
@@ -12,40 +12,47 @@ interface OrganisationInfoFormProps {
 export default function OrganisationInfoForm({ handleNext, handlePrevious }: OrganisationInfoFormProps) {
   const { formData, updateFormData } = useFormStore();
   const [error, setError] = useState<string>('');
-  const [formState, setFormState] = useState<OrganisationInfo>(
-    formData?.organisationName ? {
-      organisationName: formData.organisationName,
-      registrationNumber: formData.registrationNumber || '',
-      address: formData.address || '',
-      contactPerson: formData.contactPerson || '',
-      email: formData.email || '',
-      phone: formData.phone || ''
-    } : {
-      organisationName: '',
-      registrationNumber: '',
-      address: '',
-      contactPerson: '',
-      email: '',
-      phone: ''
-    }
-  );
+  const [formState, setFormState] = useState<OrganisationInfo>({
+    organisationName: '',
+    registrationNumber: '',
+    address: '',
+    contactPerson: '',
+    email: '',
+    phone: ''
+  });
+
+  const formStateRef = useRef(formState);
 
   // Sync with store data
   useEffect(() => {
-    if (formData?.organisationName) {
-      setFormState({
-        organisationName: formData.organisationName,
+    if (formData) {
+      const newFormState: OrganisationInfo = {
+        organisationName: formData.organisationName || '',
         registrationNumber: formData.registrationNumber || '',
         address: formData.address || '',
         contactPerson: formData.contactPerson || '',
         email: formData.email || '',
         phone: formData.phone || ''
-      });
+      };
+
+      // Compare the new form state with the current form state
+      if (
+        newFormState.organisationName !== formStateRef.current.organisationName ||
+        newFormState.registrationNumber !== formStateRef.current.registrationNumber ||
+        newFormState.address !== formStateRef.current.address ||
+        newFormState.contactPerson !== formStateRef.current.contactPerson ||
+        newFormState.email !== formStateRef.current.email ||
+        newFormState.phone !== formStateRef.current.phone
+      ) {
+        setFormState(newFormState);
+        formStateRef.current = newFormState;
+      }
     }
   }, [formData]);
 
   // Update store whenever form state changes
   useEffect(() => {
+    formStateRef.current = formState;
     updateFormData({
       organisationName: formState.organisationName,
       registrationNumber: formState.registrationNumber,
@@ -68,6 +75,16 @@ export default function OrganisationInfoForm({ handleNext, handlePrevious }: Org
       setError('Please fill in all required fields');
       return;
     }
+
+    // Update form data in the store before proceeding
+    updateFormData({
+      organisationName: formState.organisationName,
+      registrationNumber: formState.registrationNumber,
+      address: formState.address,
+      contactPerson: formState.contactPerson,
+      email: formState.email,
+      phone: formState.phone
+    });
 
     handleNext();
   };

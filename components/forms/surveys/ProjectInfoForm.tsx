@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useFormStore } from '@/store/useFormStore';
 import { ProjectInfoFormData } from '@/types/forms';
-import { useForm } from 'react-hook-form';
 
 interface ProjectInfoFormProps {
   handleNext: () => void;
@@ -10,12 +9,67 @@ interface ProjectInfoFormProps {
 
 export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectInfoFormProps) {
   const { formData, updateFormData } = useFormStore();
-  const { register, handleSubmit, formState: { errors } } = useForm<ProjectInfoFormData>({
-    defaultValues: formData.projectInfo
+  const [error, setError] = useState<string>('');
+  const [formState, setFormState] = useState<ProjectInfoFormData>({
+    projectName: '',
+    projectDescription: '',
+    startDate: '',
+    endDate: '',
+    targetBeneficiaries: '',
+    projectLocation: '',
+    estimatedBudget: ''
   });
 
-  const onSubmit = (data: ProjectInfoFormData) => {
-    updateFormData({ projectInfo: data });
+  const formStateRef = useRef(formState);
+
+  // Sync with store data
+  useEffect(() => {
+    if (formData && formData.projectInfo) {
+      const newFormState: ProjectInfoFormData = {
+        projectName: formData.projectInfo.projectName || '',
+        projectDescription: formData.projectInfo.projectDescription || '',
+        startDate: formData.projectInfo.startDate || '',
+        endDate: formData.projectInfo.endDate || '',
+        targetBeneficiaries: formData.projectInfo.targetBeneficiaries || '',
+        projectLocation: formData.projectInfo.projectLocation || '',
+        estimatedBudget: formData.projectInfo.estimatedBudget || ''
+      };
+
+      if (
+        newFormState.projectName !== formStateRef.current.projectName ||
+        newFormState.projectDescription !== formStateRef.current.projectDescription ||
+        newFormState.startDate !== formStateRef.current.startDate ||
+        newFormState.endDate !== formStateRef.current.endDate ||
+        newFormState.targetBeneficiaries !== formStateRef.current.targetBeneficiaries ||
+        newFormState.projectLocation !== formStateRef.current.projectLocation ||
+        newFormState.estimatedBudget !== formStateRef.current.estimatedBudget
+      ) {
+        setFormState(newFormState);
+        formStateRef.current = newFormState;
+      }
+    }
+  }, [formData]);
+
+  // Update store whenever form state changes
+  useEffect(() => {
+    formStateRef.current = formState;
+    updateFormData({ projectInfo: formState });
+  }, [formState, updateFormData]);
+
+  const handleChange = (field: keyof ProjectInfoFormData, value: string) => {
+    setFormState(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (!formState.projectName || !formState.projectDescription || !formState.startDate || !formState.endDate || !formState.targetBeneficiaries || !formState.projectLocation || !formState.estimatedBudget) {
+      setError('Please fill in all required fields');
+      return;
+    }
+
+    updateFormData({ projectInfo: formState });
     handleNext();
   };
 
@@ -23,27 +77,29 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
     <div className="space-y-6 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold">Project Information</h2>
 
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+
       <div className="space-y-4">
         <div>
           <label className="block mb-1 text-gray-600">Project Name *</label>
           <input
             type="text"
-            {...register("projectName", { required: "Project name is required" })}
+            value={formState.projectName}
+            onChange={(e) => handleChange('projectName', e.target.value)}
             className="w-full p-2 border rounded bg-white"
             required
           />
-          {errors.projectName && <p className="text-red-500 text-sm">{errors.projectName.message}</p>}
         </div>
 
         <div>
           <label className="block mb-1 text-gray-600">Project Description *</label>
           <textarea
-            {...register("projectDescription", { required: "Description is required" })}
+            value={formState.projectDescription}
+            onChange={(e) => handleChange('projectDescription', e.target.value)}
             className="w-full p-2 border rounded bg-white"
             rows={2}
             required
           />
-          {errors.projectDescription && <p className="text-red-500 text-sm">{errors.projectDescription.message}</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -51,56 +107,56 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
             <label className="block mb-1 text-gray-600">Start Date *</label>
             <input
               type="date"
-              {...register("startDate", { required: "Start date is required" })}
+              value={formState.startDate}
+              onChange={(e) => handleChange('startDate', e.target.value)}
               className="w-full p-2 border rounded bg-white"
               required
             />
-            {errors.startDate && <p className="text-red-500 text-sm">{errors.startDate.message}</p>}
           </div>
 
           <div>
             <label className="block mb-1 text-gray-600">End Date *</label>
             <input
               type="date"
-              {...register("endDate", { required: "End date is required" })}
+              value={formState.endDate}
+              onChange={(e) => handleChange('endDate', e.target.value)}
               className="w-full p-2 border rounded bg-white"
               required
             />
-            {errors.endDate && <p className="text-red-500 text-sm">{errors.endDate.message}</p>}
           </div>
         </div>
 
         <div>
           <label className="block mb-1 text-gray-600">Target Beneficiaries *</label>
           <textarea
-            {...register("targetBeneficiaries", { required: "Target beneficiaries is required" })}
+            value={formState.targetBeneficiaries}
+            onChange={(e) => handleChange('targetBeneficiaries', e.target.value)}
             className="w-full p-2 border rounded bg-white"
             rows={2}
             required
           />
-          {errors.targetBeneficiaries && <p className="text-red-500 text-sm">{errors.targetBeneficiaries.message}</p>}
         </div>
 
         <div>
           <label className="block mb-1 text-gray-600">Project Location *</label>
           <input
             type="text"
-            {...register("projectLocation", { required: "Project location is required" })}
+            value={formState.projectLocation}
+            onChange={(e) => handleChange('projectLocation', e.target.value)}
             className="w-full p-2 border rounded bg-white"
             required
           />
-          {errors.projectLocation && <p className="text-red-500 text-sm">{errors.projectLocation.message}</p>}
         </div>
 
         <div>
           <label className="block mb-1 text-gray-600">Estimated Budget *</label>
           <input
             type="text"
-            {...register("estimatedBudget", { required: "Estimated budget is required" })}
+            value={formState.estimatedBudget}
+            onChange={(e) => handleChange('estimatedBudget', e.target.value)}
             className="w-full p-2 border rounded bg-white"
             required
           />
-          {errors.estimatedBudget && <p className="text-red-500 text-sm">{errors.estimatedBudget.message}</p>}
         </div>
       </div>
 
@@ -113,7 +169,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
           Previous
         </button>
         <button
-          type="submit"
+          onClick={handleSubmit}
           className="bg-navy-blue rounded-3xl text-white px-6 py-2 hover:bg-blue-700"
         >
           Next
