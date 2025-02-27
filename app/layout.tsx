@@ -25,7 +25,7 @@ export default function RootLayout({
       <ReactScan />
       <body className={`${outfit.className} antialiased`}>
         {children}
-        <Toaster position="top-right" />
+        <Toaster richColors closeButton position="top-center" />
       </body>
     </html>
   );

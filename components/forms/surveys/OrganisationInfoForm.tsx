@@ -1,64 +1,67 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormStore } from '@/store/useFormStore';
-import { OrganisationInfo } from '@/types/forms';
+import { OrganisationInfo, FormData } from '@/types/forms';
+import { toast } from 'sonner';
+
+const GHANA_REGIONS = [
+  'Ahafo',
+  'Ashanti',
+  'Bono',
+  'Bono East',
+  'Central',
+  'Eastern',
+  'Greater Accra',
+  'North East',
+  'Northern',
+  'Oti',
+  'Savannah',
+  'Upper East',
+  'Upper West',
+  'Volta',
+  'Western',
+  'Western North'
+];
+
+const SECTORS = [
+  'Ghana Government',
+  'Patient Organisation',
+  'Local NGO',
+  'International NGO',
+  'Foundation'
+];
 
 interface OrganisationInfoFormProps {
   handleNext: () => void;
-  handlePrevious: () => void;
 }
 
-export default function OrganisationInfoForm({ handleNext, handlePrevious }: OrganisationInfoFormProps) {
+export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFormProps) {
   const { formData, updateFormData } = useFormStore();
-  const [error, setError] = useState<string>('');
   const [formState, setFormState] = useState<OrganisationInfo>({
     organisationName: '',
-    registrationNumber: '',
-    address: '',
-    contactPerson: '',
+    region: '',
+    hasRegionalOffice: false,
+    regionalOfficeLocation: '',
+    gpsCoordinates: {
+      latitude: '',
+      longitude: ''
+    },
+    ghanaPostGPS: '',
+    sector: '',
+    hqPhoneNumber: '',
+    regionalPhoneNumber: '',
     email: '',
-    phone: ''
+    website: ''
   });
 
-  const formStateRef = useRef(formState);
-
-  // Sync with store data
   useEffect(() => {
-    if (formData && formData.organisationInfo) {
-      const newFormState: OrganisationInfo = {
-        organisationName: formData.organisationInfo.organisationName || '',
-        registrationNumber: formData.organisationInfo.registrationNumber || '',
-        address: formData.organisationInfo.address || '',
-        contactPerson: formData.organisationInfo.contactPerson || '',
-        email: formData.organisationInfo.email || '',
-        phone: formData.organisationInfo.phone || ''
-      };
-
-      // Compare the new form state with the current form state
-      if (
-        newFormState.organisationName !== formStateRef.current.organisationName ||
-        newFormState.registrationNumber !== formStateRef.current.registrationNumber ||
-        newFormState.address !== formStateRef.current.address ||
-        newFormState.contactPerson !== formStateRef.current.contactPerson ||
-        newFormState.email !== formStateRef.current.email ||
-        newFormState.phone !== formStateRef.current.phone
-      ) {
-        setFormState(newFormState);
-        formStateRef.current = newFormState;
-      }
+    if (formData?.organisationInfo) {
+      setFormState(formData.organisationInfo);
     }
   }, [formData]);
 
-  // Update store whenever form state changes
-  useEffect(() => {
-    formStateRef.current = formState;
-    updateFormData({
-      organisationInfo: formState
-    });
-  }, [formState, updateFormData]);
-
-  const handleChange = (field: keyof OrganisationInfo, value: string) => {
+  const handleChange = (field: keyof OrganisationInfo, value: any) => {
     setFormState(prev => ({
       ...prev,
       [field]: value
@@ -66,93 +69,269 @@ export default function OrganisationInfoForm({ handleNext, handlePrevious }: Org
   };
 
   const handleSubmit = () => {
-    if (!formState.organisationName || !formState.email) {
-      setError('Please fill in all required fields');
+    if (!formState.organisationName || !formState.region || !formState.sector ||
+      !formState.hqPhoneNumber || !formState.email) {
+      toast.error('Please fill in all required fields', {
+        position: 'top-center',
+        duration: 4000,
+      });
       return;
     }
 
-    // Update form data in the store before proceeding
-    updateFormData({
-      organisationInfo: formState
-    });
+    if (formState.hasRegionalOffice && !formState.regionalOfficeLocation) {
+      toast.error('Please provide regional office location', {
+        position: 'top-center',
+        duration: 4000,
+      });
+      return;
+    }
 
+    const updateData: Partial<FormData> = {
+      organisationInfo: formState
+    };
+
+    updateFormData(updateData);
+    toast.success('Information saved successfully', {
+      position: 'top-center',
+      duration: 2000,
+    });
     handleNext();
   };
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold">Organisation Information</h2>
+    <div className=" bg-white rounded-lg shadow-sm p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Section A: Organisation Information</h2>
+        <p className="text-gray-600">Please provide accurate information about your organization</p>
+      </div>
 
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-
-      <div className="space-y-4">
-        <div>
-          <label className="block mb-1 text-gray-600">Organisation Name *</label>
+      <div className="space-y-8">
+        {/* Organization Name */}
+        <div className="form-group">
+          <label className="block mb-2">
+            <span className="text-gray-700 font-medium">A1. What is the full name of your organization?</span>
+            <span className="text-red-500 ml-1">*</span>
+            <p className="text-sm text-gray-500 mt-1">Please provide the official name that was used for registration with the Government.</p>
+          </label>
           <input
             type="text"
+            className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             value={formState.organisationName}
             onChange={(e) => handleChange('organisationName', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
+            placeholder="Enter your organization's official registered name"
             required
           />
         </div>
 
-        <div>
-          <label className="block mb-1 text-gray-600">Registration Number</label>
-          <input
-            type="text"
-            value={formState.registrationNumber}
-            onChange={(e) => handleChange('registrationNumber', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-          />
+        {/* Location Information */}
+        <div className="bg-gray-50 p-6 rounded-lg space-y-6">
+          <h3 className="text-lg font-medium text-gray-800 mb-4">Location Details</h3>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Region Selection */}
+            <div>
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A2. Head Office Region</span>
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <select
+                className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.region}
+                onChange={(e) => handleChange('region', e.target.value)}
+                required
+              >
+                <option value="">Select region</option>
+                {GHANA_REGIONS.map(region => (
+                  <option key={region} value={region}>{region}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Regional Office Radio */}
+            <div>
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A2.a. Regional Office</span>
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <div className="space-x-6">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio text-blue-600"
+                    checked={formState.hasRegionalOffice}
+                    onChange={() => handleChange('hasRegionalOffice', true)}
+                  />
+                  <span className="ml-2">Yes</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio text-blue-600"
+                    checked={!formState.hasRegionalOffice}
+                    onChange={() => handleChange('hasRegionalOffice', false)}
+                  />
+                  <span className="ml-2">No</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Conditional Regional Office Location */}
+          {formState.hasRegionalOffice && (
+            <div className="mt-4">
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A2.b. Regional Office Location</span>
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <input
+                type="text"
+                className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.regionalOfficeLocation}
+                onChange={(e) => handleChange('regionalOfficeLocation', e.target.value)}
+                placeholder="Enter the location of your regional office"
+                required
+              />
+            </div>
+          )}
         </div>
 
-        <div>
-          <label className="block mb-1 text-gray-600">Address</label>
-          <textarea
-            value={formState.address}
-            onChange={(e) => handleChange('address', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            rows={2}
-          />
+        {/* GPS Coordinates */}
+        <div className="bg-gray-50 p-6 rounded-lg space-y-6">
+          <h3 className="text-lg font-medium text-gray-800 mb-4">Location Coordinates</h3>
+
+          <div>
+            <label className="block mb-2">
+              <span className="text-gray-700 font-medium">A3. GPS Coordinates</span>
+              <p className="text-sm text-gray-500 mt-1">If your HQ is different from your regional office, kindly provide the coordinates of the HQ.</p>
+            </label>
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                className="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.gpsCoordinates.latitude}
+                onChange={(e) => handleChange('gpsCoordinates', { ...formState.gpsCoordinates, latitude: e.target.value })}
+                placeholder="Latitude"
+              />
+              <input
+                type="text"
+                className="p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.gpsCoordinates.longitude}
+                onChange={(e) => handleChange('gpsCoordinates', { ...formState.gpsCoordinates, longitude: e.target.value })}
+                placeholder="Longitude"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block mb-2">
+              <span className="text-gray-700 font-medium">A3a. GhanaPost GPS Address</span>
+              <p className="text-sm text-gray-500 mt-1">If your HQ is different from your regional office, kindly provide the address of the HQ.</p>
+            </label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              value={formState.ghanaPostGPS}
+              onChange={(e) => handleChange('ghanaPostGPS', e.target.value)}
+              placeholder="Enter your GhanaPost GPS address"
+            />
+          </div>
         </div>
 
-        <div>
-          <label className="block mb-1 text-gray-600">Contact Person</label>
-          <input
-            type="text"
-            value={formState.contactPerson}
-            onChange={(e) => handleChange('contactPerson', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-          />
+        {/* Contact Information */}
+        <div className="bg-gray-50 p-6 rounded-lg space-y-6">
+          <h3 className="text-lg font-medium text-gray-800 mb-4">Contact Information</h3>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Phone Numbers */}
+            <div>
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A5a. HQ Phone Number</span>
+                <span className="text-red-500 ml-1">*</span>
+                <p className="text-sm text-gray-500 mt-1">Enter without country code</p>
+              </label>
+              <input
+                type="tel"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.hqPhoneNumber}
+                onChange={(e) => handleChange('hqPhoneNumber', e.target.value)}
+                placeholder="Enter phone number"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A5b. Regional Office Phone</span>
+                <p className="text-sm text-gray-500 mt-1">If different from HQ</p>
+              </label>
+              <input
+                type="tel"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.regionalPhoneNumber}
+                onChange={(e) => handleChange('regionalPhoneNumber', e.target.value)}
+                placeholder="Enter regional office number"
+              />
+            </div>
+          </div>
+
+          {/* Email and Website */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A6. Email Address</span>
+                <span className="text-red-500 ml-1">*</span>
+                <p className="text-sm text-gray-500 mt-1">Active email address</p>
+              </label>
+              <input
+                type="email"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+                placeholder="organization@example.com"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block mb-2">
+                <span className="text-gray-700 font-medium">A7. Website</span>
+                <p className="text-sm text-gray-500 mt-1">Optional</p>
+              </label>
+              <input
+                type="url"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={formState.website}
+                onChange={(e) => handleChange('website', e.target.value)}
+                placeholder="https://www.example.com"
+              />
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label className="block mb-1 text-gray-600">Email *</label>
-          <input
-            type="email"
-            value={formState.email}
-            onChange={(e) => handleChange('email', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
+        {/* Sector Selection */}
+        <div className="form-group">
+          <label className="block mb-2">
+            <span className="text-gray-700 font-medium">A4. Organization Sector</span>
+            <span className="text-red-500 ml-1">*</span>
+          </label>
+          <select
+            className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value={formState.sector}
+            onChange={(e) => handleChange('sector', e.target.value)}
             required
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 text-gray-600">Phone</label>
-          <input
-            type="text"
-            value={formState.phone}
-            onChange={(e) => handleChange('phone', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-          />
+          >
+            <option value="">Select your organization's sector</option>
+            {SECTORS.map(sector => (
+              <option key={sector} value={sector}>{sector}</option>
+            ))}
+          </select>
         </div>
       </div>
 
-      <div className="flex justify-end mt-8">
+      <div className="mt-8 flex justify-end">
         <button
           onClick={handleSubmit}
-          className="bg-navy-blue rounded-3xl text-white px-6 py-2 hover:bg-blue-700"
+          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
         >
           Next
         </button>

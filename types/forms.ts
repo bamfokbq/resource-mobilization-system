@@ -1,10 +1,18 @@
 export interface OrganisationInfo {
   organisationName: string;
-  registrationNumber: string;
-  address: string;
-  contactPerson: string;
+  region: string;
+  hasRegionalOffice: boolean;
+  regionalOfficeLocation?: string;
+  gpsCoordinates: {
+    latitude: string;
+    longitude: string;
+  };
+  ghanaPostGPS: string;
+  sector: string;
+  hqPhoneNumber: string;
+  regionalPhoneNumber?: string;
   email: string;
-  phone: string;
+  website?: string;
 }
 
 export interface ProjectInfo {
