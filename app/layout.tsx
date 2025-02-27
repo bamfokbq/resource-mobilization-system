@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
+import { ReactScan } from '@/providers/ReactScan';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -21,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <ReactScan />
       <body className={`${outfit.className} antialiased`}>
         {children}
         <Toaster position="top-right" />
