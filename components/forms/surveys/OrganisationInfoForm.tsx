@@ -25,14 +25,14 @@ export default function OrganisationInfoForm({ handleNext, handlePrevious }: Org
 
   // Sync with store data
   useEffect(() => {
-    if (formData) {
+    if (formData && formData.organisationInfo) {
       const newFormState: OrganisationInfo = {
-        organisationName: formData.organisationName || '',
-        registrationNumber: formData.registrationNumber || '',
-        address: formData.address || '',
-        contactPerson: formData.contactPerson || '',
-        email: formData.email || '',
-        phone: formData.phone || ''
+        organisationName: formData.organisationInfo.organisationName || '',
+        registrationNumber: formData.organisationInfo.registrationNumber || '',
+        address: formData.organisationInfo.address || '',
+        contactPerson: formData.organisationInfo.contactPerson || '',
+        email: formData.organisationInfo.email || '',
+        phone: formData.organisationInfo.phone || ''
       };
 
       // Compare the new form state with the current form state
@@ -54,12 +54,7 @@ export default function OrganisationInfoForm({ handleNext, handlePrevious }: Org
   useEffect(() => {
     formStateRef.current = formState;
     updateFormData({
-      organisationName: formState.organisationName,
-      registrationNumber: formState.registrationNumber,
-      address: formState.address,
-      contactPerson: formState.contactPerson,
-      email: formState.email,
-      phone: formState.phone
+      organisationInfo: formState
     });
   }, [formState, updateFormData]);
 
@@ -78,12 +73,7 @@ export default function OrganisationInfoForm({ handleNext, handlePrevious }: Org
 
     // Update form data in the store before proceeding
     updateFormData({
-      organisationName: formState.organisationName,
-      registrationNumber: formState.registrationNumber,
-      address: formState.address,
-      contactPerson: formState.contactPerson,
-      email: formState.email,
-      phone: formState.phone
+      organisationInfo: formState
     });
 
     handleNext();

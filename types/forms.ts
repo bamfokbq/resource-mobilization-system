@@ -11,28 +11,23 @@ export interface ProjectInfo {
   projectName: string;
   startDate: string;
   endDate: string;
-  totalBudget: number;
+  totalBudget: string;
   projectSummary: string;
-  objectives: string[];
 }
 
-export interface ProjectActivities {
-  activities: {
-    name: string;
-    description: string;
-    timeline: string;
-    budget: number;
-  }[];
+export interface Activity {
+  name: string;
+  description: string;
+  timeline: string;
+  budget: number;
 }
 
-export interface PartnersInfo {
-  partners: {
-    organisationName: string;
-    role: string;
-    contribution: string;
-    contactPerson: string;
-    email: string;
-  }[];
+export interface Partner {
+  organisationName: string;
+  role: string;
+  contribution: string;
+  contactPerson: string;
+  email: string;
 }
 
 export interface AdditionalInfo {
@@ -52,11 +47,14 @@ export interface ProjectInfoFormData {
   estimatedBudget: string;
 }
 
-export interface FormData extends 
-  Partial<OrganisationInfo>,
-  ProjectInfo,
-  ProjectActivities,
-  PartnersInfo,
-  Partial<AdditionalInfo> {
-  projectInfo: ProjectInfoFormData;
+export interface FormData {
+  organisationInfo?: OrganisationInfo;
+  projectInfo?: ProjectInfoFormData;
+  activities?: Activity[];
+  partners?: Partner[];
+  risks?: string;
+  sustainability?: string;
+  monitoringPlan?: string;
+  evaluation?: string;
+  notes?: string;
 }

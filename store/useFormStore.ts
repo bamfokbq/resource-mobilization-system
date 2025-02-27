@@ -15,8 +15,8 @@ interface FormStore {
   resetForm: () => void;
 }
 
-const initialState = {
-  activeForm: 'organisation' as FormStepId,
+const initialState: Pick<FormStore, 'activeForm' | 'isFirstStep' | 'isLastStep' | 'formData'> = {
+  activeForm: 'organisation',
   isFirstStep: true,
   isLastStep: false,
   formData: {},

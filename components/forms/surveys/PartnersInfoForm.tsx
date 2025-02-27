@@ -2,18 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useFormStore } from '@/store/useFormStore';
+import { Partner } from '@/types/forms';
 
 interface PartnersInfoFormProps {
   handleNext: () => void;
   handlePrevious: () => void;
-}
-
-interface Partner {
-  organisationName: string;
-  role: string;
-  contribution: string;
-  contactPerson: string;
-  email: string;
 }
 
 export default function PartnersInfoForm({ handleNext, handlePrevious }: PartnersInfoFormProps) {

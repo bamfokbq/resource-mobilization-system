@@ -2,17 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useFormStore } from '@/store/useFormStore';
+import { Activity } from '@/types/forms';
 
 interface ProjectActivitiesFormProps {
   handleNext: () => void;
   handlePrevious: () => void;
-}
-
-interface Activity {
-  name: string;
-  description: string;
-  timeline: string;
-  budget: number;
 }
 
 export default function ProjectActivitiesForm({ handleNext, handlePrevious }: ProjectActivitiesFormProps) {

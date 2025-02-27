@@ -40,11 +40,13 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
 
   // Update store whenever form state changes
   useEffect(() => {
+    formStateRef.current = formState;
     const updateData: Partial<FormData> = {
       risks: formState.risks,
       sustainability: formState.sustainability,
       evaluation: formState.evaluation,
-      notes: formState.notes
+      notes: formState.notes,
+      monitoringPlan: formState.evaluation // Add this line to match FormData interface
     };
 
     updateFormData(updateData);
@@ -67,7 +69,8 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
       risks: formState.risks,
       sustainability: formState.sustainability,
       evaluation: formState.evaluation,
-      notes: formState.notes
+      notes: formState.notes,
+      monitoringPlan: formState.evaluation // Add this line to match FormData interface
     };
 
     updateFormData(updateData);

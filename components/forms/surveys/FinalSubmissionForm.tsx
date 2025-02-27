@@ -34,12 +34,12 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
         <section className="border p-4 rounded-lg bg-gray-50">
           <h3 className="text-lg font-semibold mb-3 text-gray-800">Organization Information</h3>
           <div className="space-y-2 text-gray-600">
-            <p><strong className="text-gray-800">Name:</strong> {formData.organisationName}</p>
-            <p><strong className="text-gray-800">Registration Number:</strong> {formData.registrationNumber}</p>
-            <p><strong className="text-gray-800">Address:</strong> {formData.address}</p>
-            <p><strong className="text-gray-800">Contact Person:</strong> {formData.contactPerson}</p>
-            <p><strong className="text-gray-800">Email:</strong> {formData.email}</p>
-            <p><strong className="text-gray-800">Phone:</strong> {formData.phone}</p>
+            <p><strong className="text-gray-800">Name:</strong> {formData.organisationInfo?.organisationName}</p>
+            <p><strong className="text-gray-800">Registration Number:</strong> {formData.organisationInfo?.registrationNumber}</p>
+            <p><strong className="text-gray-800">Address:</strong> {formData.organisationInfo?.address}</p>
+            <p><strong className="text-gray-800">Contact Person:</strong> {formData.organisationInfo?.contactPerson}</p>
+            <p><strong className="text-gray-800">Email:</strong> {formData.organisationInfo?.email}</p>
+            <p><strong className="text-gray-800">Phone:</strong> {formData.organisationInfo?.phone}</p>
           </div>
         </section>
 
@@ -47,10 +47,10 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
         <section className="border p-4 rounded-lg bg-gray-50">
           <h3 className="text-lg font-semibold mb-3 text-gray-800">Project Information</h3>
           <div className="space-y-2 text-gray-600">
-            <p><strong className="text-gray-800">Project Name:</strong> {formData.projectName}</p>
-            <p><strong className="text-gray-800">Duration:</strong> {formData.startDate} to {formData.endDate}</p>
-            <p><strong className="text-gray-800">Total Budget:</strong> ${formData.totalBudget}</p>
-            <p><strong className="text-gray-800">Summary:</strong> {formData.projectSummary}</p>
+            <p><strong className="text-gray-800">Project Name:</strong> {formData.projectInfo?.projectName}</p>
+            <p><strong className="text-gray-800">Duration:</strong> {formData.projectInfo?.startDate} to {formData.projectInfo?.endDate}</p>
+            <p><strong className="text-gray-800">Total Budget:</strong> ${formData.projectInfo?.estimatedBudget}</p>
+            <p><strong className="text-gray-800">Summary:</strong> {formData.projectInfo?.projectDescription}</p>
           </div>
         </section>
 
