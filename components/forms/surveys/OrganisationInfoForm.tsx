@@ -38,6 +38,7 @@ interface OrganisationInfoFormProps {
 
 export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFormProps) {
   const { formData, updateFormData } = useFormStore();
+  const [errors, setErrors] = useState<Partial<Record<keyof OrganisationInfo, string>>>({});
   const [formState, setFormState] = useState<OrganisationInfo>({
     organisationName: '',
     region: '',
@@ -69,17 +70,39 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
   };
 
   const handleSubmit = () => {
-    if (!formState.organisationName || !formState.region || !formState.sector ||
-      !formState.hqPhoneNumber || !formState.email) {
-      toast.error('Please fill in all required fields', {
-        position: 'top-center',
-        duration: 4000,
-      });
-      return;
+    const newErrors: Partial<Record<keyof OrganisationInfo, string>> = {};
+    let hasErrors = false;
+
+    // Validate required fields
+    if (!formState.organisationName) {
+      newErrors.organisationName = 'Organization name is required';
+      hasErrors = true;
+    }
+    if (!formState.region) {
+      newErrors.region = 'Region is required';
+      hasErrors = true;
+    }
+    if (!formState.sector) {
+      newErrors.sector = 'Sector is required';
+      hasErrors = true;
+    }
+    if (!formState.hqPhoneNumber) {
+      newErrors.hqPhoneNumber = 'HQ phone number is required';
+      hasErrors = true;
+    }
+    if (!formState.email) {
+      newErrors.email = 'Email is required';
+      hasErrors = true;
+    }
+    if (formState.hasRegionalOffice && !formState.regionalOfficeLocation) {
+      newErrors.regionalOfficeLocation = 'Regional office location is required';
+      hasErrors = true;
     }
 
-    if (formState.hasRegionalOffice && !formState.regionalOfficeLocation) {
-      toast.error('Please provide regional office location', {
+    setErrors(newErrors);
+
+    if (hasErrors) {
+      toast.error('Please fill in all required fields', {
         position: 'top-center',
         duration: 4000,
       });
@@ -115,12 +138,16 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
           </label>
           <input
             type="text"
-            className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            className={`w-full p-3 border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.organisationName ? 'border-red-500' : 'border-gray-300'
+              }`}
             value={formState.organisationName}
             onChange={(e) => handleChange('organisationName', e.target.value)}
             placeholder="Enter your organization's official registered name"
             required
           />
+          {errors.organisationName && (
+            <p className="mt-1 text-red-500 text-sm">{errors.organisationName}</p>
+          )}
         </div>
 
         {/* Location Information */}
@@ -135,7 +162,8 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                 <span className="text-red-500 ml-1">*</span>
               </label>
               <select
-                className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-3 border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.region ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 value={formState.region}
                 onChange={(e) => handleChange('region', e.target.value)}
                 required
@@ -145,6 +173,9 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   <option key={region} value={region}>{region}</option>
                 ))}
               </select>
+              {errors.region && (
+                <p className="mt-1 text-red-500 text-sm">{errors.region}</p>
+              )}
             </div>
 
             {/* Regional Office Radio */}
@@ -185,12 +216,16 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
               </label>
               <input
                 type="text"
-                className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-3 border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.regionalOfficeLocation ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 value={formState.regionalOfficeLocation}
                 onChange={(e) => handleChange('regionalOfficeLocation', e.target.value)}
                 placeholder="Enter the location of your regional office"
                 required
               />
+              {errors.regionalOfficeLocation && (
+                <p className="mt-1 text-red-500 text-sm">{errors.regionalOfficeLocation}</p>
+              )}
             </div>
           )}
         </div>
@@ -251,12 +286,16 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
               </label>
               <input
                 type="tel"
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.hqPhoneNumber ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 value={formState.hqPhoneNumber}
                 onChange={(e) => handleChange('hqPhoneNumber', e.target.value)}
                 placeholder="Enter phone number"
                 required
               />
+              {errors.hqPhoneNumber && (
+                <p className="mt-1 text-red-500 text-sm">{errors.hqPhoneNumber}</p>
+              )}
             </div>
 
             <div>
@@ -284,12 +323,16 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
               </label>
               <input
                 type="email"
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
                 value={formState.email}
                 onChange={(e) => handleChange('email', e.target.value)}
                 placeholder="organization@example.com"
                 required
               />
+              {errors.email && (
+                <p className="mt-1 text-red-500 text-sm">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -315,7 +358,8 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
             <span className="text-red-500 ml-1">*</span>
           </label>
           <select
-            className="w-full p-3 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className={`w-full p-3 border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.sector ? 'border-red-500' : 'border-gray-300'
+              }`}
             value={formState.sector}
             onChange={(e) => handleChange('sector', e.target.value)}
             required
@@ -325,6 +369,9 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
               <option key={sector} value={sector}>{sector}</option>
             ))}
           </select>
+          {errors.sector && (
+            <p className="mt-1 text-red-500 text-sm">{errors.sector}</p>
+          )}
         </div>
       </div>
 
