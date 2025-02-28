@@ -1,14 +1,12 @@
 "use client"
 
 import { useEffect } from "react"
-import type { JSX } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFormStore } from "@/store/useFormStore"
 import type { NCDType, NCDSpecificInfo } from "@/types/forms"
-import { projectInfoSchema, ProjectInfoFormData, GHANA_REGIONS, NCD_TYPES, FUNDING_SOURCES } from "@/schemas/projectInfoSchema"
+import { projectInfoSchema, ProjectInfoFormData, GHANA_REGIONS, FUNDING_SOURCES } from "@/schemas/projectInfoSchema"
 import { toast } from "sonner"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -18,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
+import { NCDs_LISTS } from '@/constant'
 
 interface ProjectInfoFormProps {
   handleNext: () => void
@@ -323,18 +322,19 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                   </FormDescription>
                   <div className="border rounded-md p-4 bg-white">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {NCD_TYPES.map((ncd) => (
-                        <div key={ncd} className="flex items-center space-x-2">
+                      {NCDs_LISTS.map((ncd) => (
+                        <div key={ncd.value} className="flex items-center space-x-2">
                           <Checkbox
-                            id={`ncd-${ncd}`}
-                            checked={form.watch("targetedNCDs").includes(ncd)}
-                            onCheckedChange={() => toggleNCD(ncd as NCDType)}
+                            id={`ncd-${ncd.value}`}
+                            checked={form.watch("targetedNCDs").includes(ncd.value as NCDType)}
+                            onCheckedChange={() => toggleNCD(ncd.value as NCDType)}
+                            className="border-navy-blue data-[state=checked]:bg-navy-blue"
                           />
                           <label
-                            htmlFor={`ncd-${ncd}`}
+                            htmlFor={`ncd-${ncd.value}`}
                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
-                            {ncd}
+                            {ncd.label}
                           </label>
                         </div>
                       ))}
@@ -349,7 +349,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                       ))}
                     </div>
                   )}
-                  {form.formState.errors.targetedNCDs && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.targetedNCDs.message}</FormMessage>}
+                  {form.formState.errors.targetedNCDs?.message && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.targetedNCDs.message || 'Please select at least one NCD'}</FormMessage>}
                 </FormItem>
               )}
             />

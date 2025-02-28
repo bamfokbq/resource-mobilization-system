@@ -13,8 +13,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronRight } from 'lucide-react'
+import { cn } from "@/lib/utils"
 
 const GHANA_REGIONS = [
   "Ahafo",
@@ -40,20 +41,28 @@ const SECTORS = ["Ghana Government", "Patient Organisation", "Local NGO", "Inter
 // Create a schema for form validation
 const formSchema = z
   .object({
-    organisationName: z.string().min(1, { message: "Organization name is required" }),
-    region: z.string().min(1, { message: "Region is required" }),
+    organisationName: z.string().min(1, { message: "Please enter your organization's name" }),
+    region: z.string().min(1, { message: "Please select your head office region" }),
     hasRegionalOffice: z.boolean(),
-    regionalOfficeLocation: z.string().optional(),
+    regionalOfficeLocation: z.string()
+      .optional()
+      .refine((val) => {
+        return true;
+      }, { message: "Please enter the regional office location" }),
     gpsCoordinates: z.object({
       latitude: z.string().default(""),
       longitude: z.string().default(""),
     }),
     ghanaPostGPS: z.string().optional(),
-    sector: z.string().min(1, { message: "Sector is required" }),
-    hqPhoneNumber: z.string().min(1, { message: "HQ phone number is required" }),
+    sector: z.string().min(1, { message: "Please select your organization's sector" }),
+    hqPhoneNumber: z.string().min(1, { message: "Please enter your HQ phone number" })
+      .regex(/^[0-9]+$/, { message: "Phone number must contain only numbers" })
+      .min(10, { message: "Phone number must be at least 10 digits" }),
     regionalPhoneNumber: z.string().optional(),
-    email: z.string().email({ message: "Invalid email address" }),
-    website: z.string().url({ message: "Invalid URL" }).optional().or(z.literal("")),
+    email: z.string()
+      .min(1, { message: "Please enter your email address" })
+      .email({ message: "Please enter a valid email address" }),
+    website: z.string().url({ message: "Please enter a valid URL (e.g., https://www.example.com)" }).optional().or(z.literal("")),
     registrationNumber: z.string().optional(),
     address: z.string().optional(),
     contactPerson: z.string().optional(),
@@ -98,18 +107,40 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
   }, [formData, form])
 
   // Handle form submission
-  function onSubmit(values: FormSchema) {
-    const organisationInfo: OrganisationInfo = {
-      ...values,
-      gpsCoordinates: {
-        latitude: values.gpsCoordinates.latitude || '',
-        longitude: values.gpsCoordinates.longitude || '',
-      },
-      ghanaPostGPS: values.ghanaPostGPS || ''
+  async function onSubmit(values: FormSchema) {
+    try {
+      const organisationInfo: OrganisationInfo = {
+        ...values,
+        gpsCoordinates: {
+          latitude: values.gpsCoordinates.latitude || '',
+          longitude: values.gpsCoordinates.longitude || '',
+        },
+        ghanaPostGPS: values.ghanaPostGPS || ''
+      }
+
+      updateFormData({ organisationInfo })
+
+      toast.success("Organisation information saved successfully", {
+        description: "Your changes have been saved and you can proceed to the next section.",
+        duration: 3000,
+      })
+
+      handleNext()
+    } catch (error) {
+      toast.error("Failed to save information", {
+        description: error instanceof Error ? error.message : "Please try again or contact support if the issue persists.",
+        duration: 5000,
+      })
     }
-    updateFormData({ organisationInfo })
-    toast.success("Information saved successfully")
-    handleNext()
+  }
+
+  const onError = (errors: any) => {
+    console.log(errors);
+
+    toast.error("Please check your inputs", {
+      description: "There are some required fields that need to be filled correctly.",
+      duration: 5000,
+    })
   }
 
   return (
@@ -120,14 +151,14 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
           {/* Organization Name */}
           <FormField
             control={form.control}
             name="organisationName"
             render={({ field }) => (
               <FormItem className="bg-gray-50 p-6 rounded-lg">
-                <FormLabel className="text-lg font-semibold">
+                <FormLabel className="text-lg font-semibold !text-current">
                   A1. What is the full name of your organization? <span className="text-destructive">*</span>
                 </FormLabel>
                 <FormDescription className="text-gray-600">
@@ -136,7 +167,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                 <FormControl>
                   <Input className="mt-2" placeholder="Enter your organization's official registered name" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="min-h-[20px] mt-2" />
               </FormItem>
             )}
           />
@@ -154,13 +185,13 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="region"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
+                      <FormLabel className='!text-current'>
                         A2. Head Office Region <span className="text-destructive">*</span>
                       </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value || ""}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select region" />
+                            <SelectValue defaultValue={field.value} placeholder="Select region" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -171,7 +202,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                           ))}
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -182,7 +213,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="hasRegionalOffice"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
-                      <FormLabel>
+                      <FormLabel className='!text-current'>
                         A2.a. Regional Office <span className="text-destructive">*</span>
                       </FormLabel>
                       <FormControl>
@@ -195,7 +226,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                             <FormControl>
                               <RadioGroupItem value="true" />
                             </FormControl>
-                            <FormLabel className="font-normal">Yes</FormLabel>
+                            <FormLabel className="font-normal !text-current">Yes</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-2 space-y-0">
                             <FormControl>
@@ -205,7 +236,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                           </FormItem>
                         </RadioGroup>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -218,13 +249,13 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="regionalOfficeLocation"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
+                      <FormLabel className='!text-current'>
                         A2.b. Regional Office Location <span className="text-destructive">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input placeholder="Enter the location of your regional office" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -239,7 +270,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
             </CardHeader>
             <CardContent className="space-y-8 p-6">
               <div>
-                <FormLabel>A3. GPS Coordinates</FormLabel>
+                <FormLabel className='!text-current'>A3. GPS Coordinates</FormLabel>
                 <FormDescription>
                   If your HQ is different from your regional office, kindly provide the coordinates of the HQ.
                 </FormDescription>
@@ -252,7 +283,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                         <FormControl>
                           <Input placeholder="Latitude" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="min-h-[20px] mt-2" />
                       </FormItem>
                     )}
                   />
@@ -264,7 +295,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                         <FormControl>
                           <Input placeholder="Longitude" {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="min-h-[20px] mt-2" />
                       </FormItem>
                     )}
                   />
@@ -276,14 +307,14 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                 name="ghanaPostGPS"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>A3a. GhanaPost GPS Address</FormLabel>
+                    <FormLabel className='!text-current'>A3a. GhanaPost GPS Address</FormLabel>
                     <FormDescription>
                       If your HQ is different from your regional office, kindly provide the address of the HQ.
                     </FormDescription>
                     <FormControl>
                       <Input placeholder="Enter your GhanaPost GPS address" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="min-h-[20px] mt-2" />
                   </FormItem>
                 )}
               />
@@ -303,14 +334,14 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="hqPhoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
+                      <FormLabel className='!text-current'>
                         A5a. HQ Phone Number <span className="text-destructive">*</span>
                       </FormLabel>
                       <FormDescription>Enter without country code</FormDescription>
                       <FormControl>
                         <Input type="tel" placeholder="Enter phone number" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -319,13 +350,13 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   control={form.control}
                   name="regionalPhoneNumber"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className='!text-current'>
                       <FormLabel>A5b. Regional Office Phone</FormLabel>
                       <FormDescription>If different from HQ</FormDescription>
                       <FormControl>
                         <Input type="tel" placeholder="Enter regional office number" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -338,14 +369,14 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
+                      <FormLabel className='!text-current'>
                         A6. Email Address <span className="text-destructive">*</span>
                       </FormLabel>
                       <FormDescription>Active email address</FormDescription>
                       <FormControl>
                         <Input type="email" placeholder="organization@example.com" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -355,12 +386,12 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="website"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>A7. Website</FormLabel>
+                      <FormLabel className='!text-current'>A7. Website</FormLabel>
                       <FormDescription>Optional</FormDescription>
                       <FormControl>
                         <Input type="url" placeholder="https://www.example.com" {...field} />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px] mt-2" />
                     </FormItem>
                   )}
                 />
@@ -374,13 +405,13 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
             name="sector"
             render={({ field }) => (
               <FormItem className="bg-gray-50 p-6 rounded-lg">
-                <FormLabel className="text-lg font-semibold">
+                <FormLabel className="text-lg font-semibold !text-current">
                   A4. Organization Sector <span className="text-destructive">*</span>
                 </FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value || ""}>
                   <FormControl>
                     <SelectTrigger className="mt-2">
-                      <SelectValue placeholder="Select your organization's sector" />
+                      <SelectValue defaultValue={field.value} placeholder="Select your organization's sector" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -391,7 +422,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     ))}
                   </SelectContent>
                 </Select>
-                <FormMessage />
+                <FormMessage className="min-h-[20px] mt-2" />
               </FormItem>
             )}
           />

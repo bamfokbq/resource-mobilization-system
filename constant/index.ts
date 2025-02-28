@@ -2,6 +2,7 @@ import { MdOutlinePoll } from "react-icons/md"
 import { FiUsers } from "react-icons/fi"
 import { BsCalendar3 } from "react-icons/bs"
 import { AiOutlineProject } from "react-icons/ai"
+import { Label } from 'recharts'
 
 const NAVIGATION = [
     {
@@ -361,6 +362,24 @@ const ACTIVITIES_BY_REGION_DATA = [
     { name: "Other NCDs", value: 89 }
 ];
 
+const NCDs_LISTS = [
+    { label: "Hypertension", value: 'Hypertension' },
+    { label: "Diabetes Mellitus", value: 'Diabetes Mellitus' },
+    { label: "Breast Cancer", value: 'Breast Cancer' },
+    { label: "Cervical Cancer", value: 'Cervical Cancer' },
+    { label: "Mental Health", value: 'Mental Health' },
+    { label: "Childhood Cancers", value: 'Childhood Cancers' },
+    { label: "Prostate Cancer", value: 'Prostate Cancer' },
+    { label: "Road Accidents", value: 'Road Accidents' },
+    { label: "Domestic Injuries", value: 'Domestic Injuries' },
+    { label: "Childhood Cancers (Dup)", value: 'Childhood Cancers (Dup)' },
+    { label: "COPD & Asthma", value: 'COPD & Asthma' },
+    { label: "Sickle Cell Disease", value: 'Sickle Cell Disease' },
+    { label: "CVD & Stroke", value: 'CVD & Stroke' },
+    { label: "All NCDs (General)", value: 'All NCDs (General)' },
+    { label: "Other NCDs", value: 'Other NCDs' }
+];
+
 const YEARLY_DATA = [
     { name: '2022', value: 400 },
     { name: '2023', value: 300 },
@@ -659,5 +678,6 @@ export {
     REGIONAL_SECTOR_DATA,
     REGIONS_GHANA,
     SECTORS,
-    SECTORS_SELECT
+    SECTORS_SELECT,
+    NCDs_LISTS
 }
