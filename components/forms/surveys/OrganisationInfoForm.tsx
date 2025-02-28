@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ChevronRight } from 'lucide-react'
 
 const GHANA_REGIONS = [
   "Ahafo",
@@ -112,296 +113,301 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
   }
 
   return (
-    <Card className="w-full shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-2xl">Section A: Organisation Information</CardTitle>
-        <CardDescription>Please provide accurate information about your organization</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Organization Name */}
-            <FormField
-              control={form.control}
-              name="organisationName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    A1. What is the full name of your organization? <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <FormDescription>
-                    Please provide the official name that was used for registration with the Government.
-                  </FormDescription>
-                  <FormControl>
-                    <Input placeholder="Enter your organization's official registered name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-8">
+      <div className="mb-10">
+        <h2 className="text-3xl font-bold text-gray-900 mb-3">Section A: Organisation Information</h2>
+        <p className="text-gray-600 text-lg">Please provide accurate information about your organization</p>
+      </div>
 
-            {/* Location Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Location Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Region Selection */}
-                  <FormField
-                    control={form.control}
-                    name="region"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          A2. Head Office Region <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select region" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {GHANA_REGIONS.map((region) => (
-                              <SelectItem key={region} value={region}>
-                                {region}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Organization Name */}
+          <FormField
+            control={form.control}
+            name="organisationName"
+            render={({ field }) => (
+              <FormItem className="bg-gray-50 p-6 rounded-lg">
+                <FormLabel className="text-lg font-semibold">
+                  A1. What is the full name of your organization? <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormDescription className="text-gray-600">
+                  Please provide the official name that was used for registration with the Government.
+                </FormDescription>
+                <FormControl>
+                  <Input className="mt-2" placeholder="Enter your organization's official registered name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-                  {/* Regional Office Radio */}
-                  <FormField
-                    control={form.control}
-                    name="hasRegionalOffice"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
-                        <FormLabel>
-                          A2.a. Regional Office <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={(value) => field.onChange(value === "true")}
-                            defaultValue={field.value ? "true" : "false"}
-                            className="flex space-x-6"
-                          >
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="true" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Yes</FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="false" />
-                              </FormControl>
-                              <FormLabel className="font-normal">No</FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Conditional Regional Office Location */}
-                {form.watch("hasRegionalOffice") && (
-                  <FormField
-                    control={form.control}
-                    name="regionalOfficeLocation"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          A2.b. Regional Office Location <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter the location of your regional office" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </CardContent>
-            </Card>
-
-            {/* GPS Coordinates */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Location Coordinates</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <FormLabel>A3. GPS Coordinates</FormLabel>
-                  <FormDescription>
-                    If your HQ is different from your regional office, kindly provide the coordinates of the HQ.
-                  </FormDescription>
-                  <div className="grid md:grid-cols-2 gap-4 mt-2">
-                    <FormField
-                      control={form.control}
-                      name="gpsCoordinates.latitude"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input placeholder="Latitude" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="gpsCoordinates.longitude"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input placeholder="Longitude" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-
+          {/* Location Information */}
+          <Card className="shadow-none border-none bg-gray-50">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900">Location Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-8 p-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Region Selection */}
                 <FormField
                   control={form.control}
-                  name="ghanaPostGPS"
+                  name="region"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>A3a. GhanaPost GPS Address</FormLabel>
-                      <FormDescription>
-                        If your HQ is different from your regional office, kindly provide the address of the HQ.
-                      </FormDescription>
+                      <FormLabel>
+                        A2. Head Office Region <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select region" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {GHANA_REGIONS.map((region) => (
+                            <SelectItem key={region} value={region}>
+                              {region}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Regional Office Radio */}
+                <FormField
+                  control={form.control}
+                  name="hasRegionalOffice"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>
+                        A2.a. Regional Office <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your GhanaPost GPS address" {...field} />
+                        <RadioGroup
+                          onValueChange={(value) => field.onChange(value === "true")}
+                          defaultValue={field.value ? "true" : "false"}
+                          className="flex space-x-6"
+                        >
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="true" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Yes</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="false" />
+                            </FormControl>
+                            <FormLabel className="font-normal">No</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Contact Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Phone Numbers */}
-                  <FormField
-                    control={form.control}
-                    name="hqPhoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          A5a. HQ Phone Number <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormDescription>Enter without country code</FormDescription>
-                        <FormControl>
-                          <Input type="tel" placeholder="Enter phone number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="regionalPhoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>A5b. Regional Office Phone</FormLabel>
-                        <FormDescription>If different from HQ</FormDescription>
-                        <FormControl>
-                          <Input type="tel" placeholder="Enter regional office number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Email and Website */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          A6. Email Address <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormDescription>Active email address</FormDescription>
-                        <FormControl>
-                          <Input type="email" placeholder="organization@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="website"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>A7. Website</FormLabel>
-                        <FormDescription>Optional</FormDescription>
-                        <FormControl>
-                          <Input type="url" placeholder="https://www.example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Sector Selection */}
-            <FormField
-              control={form.control}
-              name="sector"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    A4. Organization Sector <span className="text-destructive">*</span>
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your organization's sector" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {SECTORS.map((sector) => (
-                        <SelectItem key={sector} value={sector}>
-                          {sector}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
+              {/* Conditional Regional Office Location */}
+              {form.watch("hasRegionalOffice") && (
+                <FormField
+                  control={form.control}
+                  name="regionalOfficeLocation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        A2.b. Regional Office Location <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter the location of your regional office" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
-            />
+            </CardContent>
+          </Card>
 
-            <div className="flex justify-end">
-              <Button type="submit">Next</Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          {/* GPS Coordinates */}
+          <Card className="shadow-none border-none bg-gray-50">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900">Location Coordinates</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-8 p-6">
+              <div>
+                <FormLabel>A3. GPS Coordinates</FormLabel>
+                <FormDescription>
+                  If your HQ is different from your regional office, kindly provide the coordinates of the HQ.
+                </FormDescription>
+                <div className="grid md:grid-cols-2 gap-4 mt-2">
+                  <FormField
+                    control={form.control}
+                    name="gpsCoordinates.latitude"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="Latitude" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="gpsCoordinates.longitude"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="Longitude" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="ghanaPostGPS"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>A3a. GhanaPost GPS Address</FormLabel>
+                    <FormDescription>
+                      If your HQ is different from your regional office, kindly provide the address of the HQ.
+                    </FormDescription>
+                    <FormControl>
+                      <Input placeholder="Enter your GhanaPost GPS address" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Contact Information */}
+          <Card className="shadow-none border-none bg-gray-50">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900">Contact Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-8 p-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Phone Numbers */}
+                <FormField
+                  control={form.control}
+                  name="hqPhoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        A5a. HQ Phone Number <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <FormDescription>Enter without country code</FormDescription>
+                      <FormControl>
+                        <Input type="tel" placeholder="Enter phone number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="regionalPhoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>A5b. Regional Office Phone</FormLabel>
+                      <FormDescription>If different from HQ</FormDescription>
+                      <FormControl>
+                        <Input type="tel" placeholder="Enter regional office number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Email and Website */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        A6. Email Address <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <FormDescription>Active email address</FormDescription>
+                      <FormControl>
+                        <Input type="email" placeholder="organization@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="website"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>A7. Website</FormLabel>
+                      <FormDescription>Optional</FormDescription>
+                      <FormControl>
+                        <Input type="url" placeholder="https://www.example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Sector Selection */}
+          <FormField
+            control={form.control}
+            name="sector"
+            render={({ field }) => (
+              <FormItem className="bg-gray-50 p-6 rounded-lg">
+                <FormLabel className="text-lg font-semibold">
+                  A4. Organization Sector <span className="text-destructive">*</span>
+                </FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="mt-2">
+                      <SelectValue placeholder="Select your organization's sector" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {SECTORS.map((sector) => (
+                      <SelectItem key={sector} value={sector}>
+                        {sector}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex justify-end pt-4">
+            <Button
+              type="submit"
+              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
   )
 }
 
