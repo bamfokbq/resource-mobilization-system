@@ -394,6 +394,18 @@ const SECTORS = {
     Private: "Private"
 };
 
+const SECTORS_SELECT = [
+    { value: "CivilSocietyOrganization", label: "Civil Society Organization" },
+    { value: "LocalNGO", label: "Local NGO" },
+    { value: "InternationalNGO", label: "International NGO" },
+    { value: "ForeignGovernment", label: "Foreign Government" },
+    { value: "PatientOrganization", label: "Patient Organization" },
+    { value: "Foundation", label: "Foundation" },
+    { value: "AcademiaResearch", label: "Academia / Research" },
+    { value: "Multilateral", label: "Multilateral" },
+    { value: "Private", label: "Private" }
+];
+
 const STAKEHOLDERS_BY_REGIONS = [
     {
         region: "Ahafo",
@@ -644,5 +656,8 @@ export {
     SECTORS_DATA,
     YEARLY_DATA,
     STAKEHOLDERS_BY_REGIONS,
-    REGIONAL_SECTOR_DATA
+    REGIONAL_SECTOR_DATA,
+    REGIONS_GHANA,
+    SECTORS,
+    SECTORS_SELECT
 }
