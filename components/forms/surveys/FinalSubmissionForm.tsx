@@ -35,11 +35,13 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
           <h3 className="text-lg font-semibold mb-3 text-gray-800">Organization Information</h3>
           <div className="space-y-2 text-gray-600">
             <p><strong className="text-gray-800">Name:</strong> {formData.organisationInfo?.organisationName}</p>
-            <p><strong className="text-gray-800">Registration Number:</strong> {formData.organisationInfo?.registrationNumber}</p>
-            <p><strong className="text-gray-800">Address:</strong> {formData.organisationInfo?.address}</p>
-            <p><strong className="text-gray-800">Contact Person:</strong> {formData.organisationInfo?.contactPerson}</p>
+            <p><strong className="text-gray-800">Region:</strong> {formData.organisationInfo?.region}</p>
+            <p><strong className="text-gray-800">Ghana Post GPS:</strong> {formData.organisationInfo?.ghanaPostGPS}</p>
+            <p><strong className="text-gray-800">Phone (HQ):</strong> {formData.organisationInfo?.hqPhoneNumber}</p>
             <p><strong className="text-gray-800">Email:</strong> {formData.organisationInfo?.email}</p>
-            <p><strong className="text-gray-800">Phone:</strong> {formData.organisationInfo?.phone}</p>
+            {formData.organisationInfo?.website && (
+              <p><strong className="text-gray-800">Website:</strong> {formData.organisationInfo.website}</p>
+            )}
           </div>
         </section>
 

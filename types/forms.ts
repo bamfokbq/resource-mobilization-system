@@ -13,6 +13,10 @@ export interface OrganisationInfo {
   regionalPhoneNumber?: string;
   email: string;
   website?: string;
+  registrationNumber?: string;
+  address?: string;
+  contactPerson?: string;
+  phone?: string;
 }
 
 export type NCDType = "Cancer" | "Cardiovascular Disease" | "Diabetes" | "Chronic Respiratory Disease" | "Mental Health" | "Sickle Cell Disease";
@@ -90,6 +94,13 @@ export interface ProjectInfo {
   targetedNCDs: NCDType[];
   fundingSource: FundingSource;
   ncdSpecificInfo: { [K in NCDType]?: NCDSpecificInfo };
+}
+
+export interface AdditionalInfo {
+  risks: string;
+  sustainability: string;
+  evaluation: string;
+  notes: string;
 }
 
 export interface FormData {
