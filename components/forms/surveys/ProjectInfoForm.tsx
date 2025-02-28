@@ -102,7 +102,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
   return (
     <div className="bg-white rounded-lg shadow-sm p-8">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">SECTION B: PROJECT INFORMATION</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Section B: Project Information</h2>
         <p className="text-gray-600 mb-2">
           This section focuses on your project(s). Projects have a definitive start and end date, specific
           deliverables and funding to achieve a certain set goals and objectives.
@@ -136,7 +136,8 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                       min={0}
-                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-xs"
+
+                      className="w-full p-3 border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                     />
                   </FormControl>
                   <FormMessage className="mt-1 text-red-500 text-sm" />
