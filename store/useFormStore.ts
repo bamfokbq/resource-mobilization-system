@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { FormStepId, formSteps } from '@/constant/formSteps';
-import { FormData } from '@/types/forms';
+import type { FormData } from '@/types/forms';
 import { persist } from 'zustand/middleware';
 
 interface FormStore {
@@ -10,7 +10,7 @@ interface FormStore {
   handlePrevious: () => void;
   isFirstStep: boolean;
   isLastStep: boolean;
-  formData: Partial<FormData>;
+  formData: FormData;
   updateFormData: (data: Partial<FormData>) => void;
   resetForm: () => void;
 }
@@ -19,7 +19,9 @@ const initialState: Pick<FormStore, 'activeForm' | 'isFirstStep' | 'isLastStep' 
   activeForm: 'organisation',
   isFirstStep: true,
   isLastStep: false,
-  formData: {},
+  formData: {
+    projectInfo: undefined
+  } as FormData,
 };
 
 export const useFormStore = create<FormStore>()(

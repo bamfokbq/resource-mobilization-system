@@ -1,180 +1,452 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useFormStore } from '@/store/useFormStore';
-import { ProjectInfoFormData } from '@/types/forms';
+"use client"
+
+import { useEffect } from "react"
+import type { JSX } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useFormStore } from "@/store/useFormStore"
+import type { NCDType, NCDSpecificInfo } from "@/types/forms"
+import { projectInfoSchema, ProjectInfoFormData, GHANA_REGIONS, NCD_TYPES, FUNDING_SOURCES } from "@/schemas/projectInfoSchema"
+import { toast } from "sonner"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Badge } from "@/components/ui/badge"
 
 interface ProjectInfoFormProps {
-  handleNext: () => void;
-  handlePrevious: () => void;
+  handleNext: () => void
+  handlePrevious: () => void
 }
 
 export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectInfoFormProps) {
-  const { formData, updateFormData } = useFormStore();
-  const [error, setError] = useState<string>('');
-  const [formState, setFormState] = useState<ProjectInfoFormData>({
-    projectName: '',
-    projectDescription: '',
-    startDate: '',
-    endDate: '',
-    targetBeneficiaries: '',
-    projectLocation: '',
-    estimatedBudget: ''
-  });
+  const { formData, updateFormData } = useFormStore()
 
-  const formStateRef = useRef(formState);
+  const form = useForm<ProjectInfoFormData>({
+    resolver: zodResolver(projectInfoSchema),
+    defaultValues: {
+      totalProjects: 0,
+      projectName: "",
+      projectDescription: "",
+      startDate: "",
+      endDate: "",
+      projectGoal: "",
+      projectObjectives: "",
+      targetBeneficiaries: "",
+      projectLocation: "",
+      estimatedBudget: "",
+      regions: [],
+      targetedNCDs: [],
+      fundingSource: "Ghana Government",
+      ncdSpecificInfo: {}
+    }
+  })
 
-  // Sync with store data
   useEffect(() => {
-    if (formData && formData.projectInfo) {
-      const newFormState: ProjectInfoFormData = {
-        projectName: formData.projectInfo.projectName || '',
-        projectDescription: formData.projectInfo.projectDescription || '',
-        startDate: formData.projectInfo.startDate || '',
-        endDate: formData.projectInfo.endDate || '',
-        targetBeneficiaries: formData.projectInfo.targetBeneficiaries || '',
-        projectLocation: formData.projectInfo.projectLocation || '',
-        estimatedBudget: formData.projectInfo.estimatedBudget || ''
-      };
+    if (formData?.projectInfo) {
+      form.reset(formData.projectInfo)
+    }
+  }, [formData, form])
 
-      if (
-        newFormState.projectName !== formStateRef.current.projectName ||
-        newFormState.projectDescription !== formStateRef.current.projectDescription ||
-        newFormState.startDate !== formStateRef.current.startDate ||
-        newFormState.endDate !== formStateRef.current.endDate ||
-        newFormState.targetBeneficiaries !== formStateRef.current.targetBeneficiaries ||
-        newFormState.projectLocation !== formStateRef.current.projectLocation ||
-        newFormState.estimatedBudget !== formStateRef.current.estimatedBudget
-      ) {
-        setFormState(newFormState);
-        formStateRef.current = newFormState;
+  const onSubmit = (data: ProjectInfoFormData) => {
+    updateFormData({ projectInfo: data })
+    toast.success("Project information saved successfully")
+    handleNext()
+  }
+
+  const toggleRegion = (region: string) => {
+    const currentRegions = form.getValues("regions")
+    const newRegions = currentRegions.includes(region)
+      ? currentRegions.filter((r) => r !== region)
+      : [...currentRegions, region]
+    form.setValue("regions", newRegions, { shouldValidate: true })
+  }
+
+  const toggleNCD = (ncd: NCDType) => {
+    const currentNCDs = form.getValues("targetedNCDs")
+    const newNCDs = currentNCDs.includes(ncd)
+      ? currentNCDs.filter((n) => n !== ncd)
+      : [...currentNCDs, ncd]
+
+    form.setValue("targetedNCDs", newNCDs, { shouldValidate: true })
+
+    // Update NCD specific info
+    const currentNCDInfo = form.getValues("ncdSpecificInfo") || {}
+    const updatedNCDInfo: Partial<Record<NCDType, NCDSpecificInfo>> = { ...currentNCDInfo }
+
+    if (!currentNCDs.includes(ncd)) {
+      delete updatedNCDInfo[ncd]
+    } else if (!updatedNCDInfo[ncd]) {
+      updatedNCDInfo[ncd] = {
+        districts: [],
+        continuumOfCare: [],
+        activityDescription: "",
+        primaryTargetPopulation: "General Population",
+        ageRanges: [],
+        gender: "both",
+        activityLevel: [],
+        implementationArea: "Both",
+        whoGapTargets: [],
+        strategyDomain: []
       }
     }
-  }, [formData]);
 
-  // Update store whenever form state changes
-  useEffect(() => {
-    formStateRef.current = formState;
-    updateFormData({ projectInfo: formState });
-  }, [formState, updateFormData]);
-
-  const handleChange = (field: keyof ProjectInfoFormData, value: string) => {
-    setFormState(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const handleSubmit = () => {
-    if (!formState.projectName || !formState.projectDescription || !formState.startDate || !formState.endDate || !formState.targetBeneficiaries || !formState.projectLocation || !formState.estimatedBudget) {
-      setError('Please fill in all required fields');
-      return;
-    }
-
-    updateFormData({ projectInfo: formState });
-    handleNext();
-  };
+    form.setValue("ncdSpecificInfo", updatedNCDInfo)
+  }
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold">Project Information</h2>
+    <div className="bg-white rounded-lg shadow-sm p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">SECTION B: PROJECT INFORMATION</h2>
+        <p className="text-gray-600 mb-2">
+          This section focuses on your project(s). Projects have a definitive start and end date, specific
+          deliverables and funding to achieve a certain set goals and objectives.
+        </p>
+        <p className="text-gray-600">
+          We want to ensure your work is represented accurately in the database and to other stakeholders. Please take
+          time to complete all the requested information for each project.
+        </p>
+      </div>
 
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-
-      <div className="space-y-4">
-        <div>
-          <label className="block mb-1 text-gray-600">Project Name *</label>
-          <input
-            type="text"
-            value={formState.projectName}
-            onChange={(e) => handleChange('projectName', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 text-gray-600">Project Description *</label>
-          <textarea
-            value={formState.projectDescription}
-            onChange={(e) => handleChange('projectDescription', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            rows={2}
-            required
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1 text-gray-600">Start Date *</label>
-            <input
-              type="date"
-              value={formState.startDate}
-              onChange={(e) => handleChange('startDate', e.target.value)}
-              className="w-full p-2 border rounded bg-white"
-              required
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* B1.2 Total Projects */}
+          <div className="form-group">
+            <FormField
+              control={form.control}
+              name="totalProjects"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B1.2 What is the total number of Noncommunicable Disease (NCD) projects your organization is
+                    currently implementing?
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">
+                    Enter only the number of distinct project(s).
+                  </FormDescription>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      min={0}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-xs"
+                    />
+                  </FormControl>
+                  <FormMessage className="mt-1 text-red-500 text-sm" />
+                </FormItem>
+              )}
             />
           </div>
 
-          <div>
-            <label className="block mb-1 text-gray-600">End Date *</label>
-            <input
-              type="date"
-              value={formState.endDate}
-              onChange={(e) => handleChange('endDate', e.target.value)}
-              className="w-full p-2 border rounded bg-white"
-              required
+          <div className="bg-gray-50 p-6 rounded-lg space-y-6">
+            <h3 className="text-lg font-medium text-gray-800 mb-4">Section B2: Project(s) Overview</h3>
+
+            {/* B2.1 Project Name */}
+            <FormField
+              control={form.control}
+              name="projectName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.1. What is the project name?
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter project name" aria-required="true" aria-invalid={!!form.formState.errors.projectName} className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                  </FormControl>
+                  {form.formState.errors.projectName && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.projectName.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+
+            {/* B2.2 Start Date */}
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.2. When did this project start? (yyyy-mm)
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="month"
+                      {...field}
+                      aria-required="true"
+                      aria-invalid={!!form.formState.errors.startDate}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-xs"
+                    />
+                  </FormControl>
+                  {form.formState.errors.startDate && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.startDate.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+
+            {/* B2.3 End Date (Optional) */}
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.3. When is this project expected to end? (yyyy-mm)
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="month"
+                      {...field}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-xs"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* B2.4a Project Goal */}
+            <FormField
+              control={form.control}
+              name="projectGoal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.4a. What is the goal of the project?
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">This should be concise and specific to the project</FormDescription>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Enter the main goal of your project"
+                      rows={3}
+                      aria-required="true"
+                      aria-invalid={!!form.formState.errors.projectGoal}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </FormControl>
+                  {form.formState.errors.projectGoal && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.projectGoal.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+
+            {/* B2.4b Project Objectives */}
+            <FormField
+              control={form.control}
+              name="projectObjectives"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.4b. What are the objectives of the project?
+                  </FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">
+                    Please provide each objective in a sentence separated by a semi colon (;)
+                  </FormDescription>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Enter project objectives separated by semicolons"
+                      rows={4}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* B2.5 Regions */}
+            <FormField
+              control={form.control}
+              name="regions"
+              render={() => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.5. Which Region(s) is the project being implemented?
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">Select all regions where the project is active</FormDescription>
+                  <div className="border rounded-md p-4 bg-white">
+                    <ScrollArea className="h-60 w-full pr-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {GHANA_REGIONS.map((region) => (
+                          <div key={region} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`region-${region}`}
+                              checked={form.watch("regions").includes(region)}
+                              onCheckedChange={() => toggleRegion(region)}
+                            />
+                            <label
+                              htmlFor={`region-${region}`}
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                              {region} Region
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                  {form.watch("regions").length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {form.watch("regions").map((region) => (
+                        <Badge key={region} variant="outline" className="bg-primary/10">
+                          {region} Region
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  {form.formState.errors.regions && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.regions.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+
+            {/* B2.6 NCDs */}
+            <FormField
+              control={form.control}
+              name="targetedNCDs"
+              render={() => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.6. Which NCDs does this project address?
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">
+                    Please select the disease(s) the project focuses on. Please note that questions will be asked
+                    for each disease that you select.
+                  </FormDescription>
+                  <div className="border rounded-md p-4 bg-white">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {NCD_TYPES.map((ncd) => (
+                        <div key={ncd} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`ncd-${ncd}`}
+                            checked={form.watch("targetedNCDs").includes(ncd)}
+                            onCheckedChange={() => toggleNCD(ncd as NCDType)}
+                          />
+                          <label
+                            htmlFor={`ncd-${ncd}`}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            {ncd}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {form.watch("targetedNCDs").length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {form.watch("targetedNCDs").map((ncd) => (
+                        <Badge key={ncd} variant="secondary">
+                          {ncd}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  {form.formState.errors.targetedNCDs && <FormMessage className="mt-1 text-red-500 text-sm">{form.formState.errors.targetedNCDs.message}</FormMessage>}
+                </FormItem>
+              )}
+            />
+
+            {/* B2.7 Project Description (Optional) */}
+            <FormField
+              control={form.control}
+              name="projectDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">B2.7. Brief description of the project</FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">Provide a short overview of what the project entails</FormDescription>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Enter a brief description of your project"
+                      rows={3}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {/* B2.8 Funding Source */}
+            <FormField
+              control={form.control}
+              name="fundingSource"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">
+                    B2.8. What is the main source of funding for this project?
+                  </FormLabel>
+                  <FormDescription className="text-sm text-gray-500 mt-1">
+                    Your main source of funding contributes at least 60% of funds for your project.
+                  </FormDescription>
+                  <Select
+                    value={field.value}
+                    onValueChange={(value) => field.onChange(value)}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-md">
+                        <SelectValue placeholder="Select funding source" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {FUNDING_SOURCES.map((source) => (
+                        <SelectItem key={source} value={source}>
+                          {source}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+
+            {/* B2.9 Estimated Budget (Optional) */}
+            <FormField
+              control={form.control}
+              name="estimatedBudget"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-700 font-medium">B2.9. Estimated project budget (GHS)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      {...field}
+                      placeholder="Enter estimated budget"
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-xs"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
             />
           </div>
-        </div>
 
-        <div>
-          <label className="block mb-1 text-gray-600">Target Beneficiaries *</label>
-          <textarea
-            value={formState.targetBeneficiaries}
-            onChange={(e) => handleChange('targetBeneficiaries', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            rows={2}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 text-gray-600">Project Location *</label>
-          <input
-            type="text"
-            value={formState.projectLocation}
-            onChange={(e) => handleChange('projectLocation', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 text-gray-600">Estimated Budget *</label>
-          <input
-            type="text"
-            value={formState.estimatedBudget}
-            onChange={(e) => handleChange('estimatedBudget', e.target.value)}
-            className="w-full p-2 border rounded bg-white"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-between mt-8">
-        <button
-          type="button"
-          onClick={handlePrevious}
-          className="bg-gray-500 rounded-3xl text-white px-6 py-2 hover:bg-gray-600"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="bg-navy-blue rounded-3xl text-white px-6 py-2 hover:bg-blue-700"
-        >
-          Next
-        </button>
-      </div>
+          {/* Navigation Buttons */}
+          <div className="mt-8 flex justify-between">
+            <Button
+              type="button"
+              onClick={handlePrevious} 
+              className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </Button>
+            <Button
+              type="submit"
+              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
-  );
+  )
 }
+

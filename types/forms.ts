@@ -15,12 +15,49 @@ export interface OrganisationInfo {
   website?: string;
 }
 
-export interface ProjectInfo {
-  projectName: string;
-  startDate: string;
-  endDate: string;
-  totalBudget: string;
-  projectSummary: string;
+export type NCDType = "Cancer" | "Cardiovascular Disease" | "Diabetes" | "Chronic Respiratory Disease" | "Mental Health" | "Sickle Cell Disease";
+
+export type FundingSource =
+  | 'Ghana Government'
+  | 'Local NGO'
+  | 'International NGO'
+  | 'Individual Donors'
+  | 'Foundation'
+  | 'Others'
+  | 'Private Sector'
+  | 'Academic/Research Institution'
+  | 'UN Agency';
+
+export type ContinuumOfCare = 'Health Promotion/Primary prevention' | 'Screening/Risk Assessment' | 'Vaccination';
+
+export type TargetPopulation = 'General Population' | 'Individuals at risk' | 'School Children';
+
+export type AgeRange = 'Children (Under age 10)' | 'Adolescents (Between ages 20-44)';
+
+export type ActivityLevel = 'Purely National level activity' | 'Purely Regional level activity' | 'Purely District level activity';
+
+export type WhoGapTarget = 'Advocacy: raise the priority of NCDs' | 'Research and development';
+
+export type StrategyDomain = 'Primary Prevention' | 'Financing';
+
+export type PreventionArea = 'Rehabilitation' | 'Clinical Care/Case Management';
+
+export type ResearchActivity = 'Nationwide survey on biological and social drivers of NCDs' | 'Longitudinal population-based studies' | 'Studies on compliance and adherence to medication for NCDs';
+
+export interface NCDSpecificInfo {
+  districts: string[];
+  continuumOfCare: string[];
+  activityDescription: string;
+  primaryTargetPopulation: string;
+  secondaryTargetPopulation?: string;
+  ageRanges: string[];
+  gender: "male" | "female" | "both";
+  activityLevel: string[];
+  implementationArea: "Urban" | "Rural" | "Both";
+  whoGapTargets: string[];
+  strategyDomain: string[];
+  secondaryPreventionFocus?: string[];
+  researchFocus?: string[];
 }
 
 export interface Activity {
@@ -38,26 +75,26 @@ export interface Partner {
   email: string;
 }
 
-export interface AdditionalInfo {
-  risks: string;
-  sustainability: string;
-  evaluation: string;
-  notes: string;
-}
-
-export interface ProjectInfoFormData {
+export interface ProjectInfo {
+  totalProjects: number;
   projectName: string;
-  projectDescription: string;
+  projectDescription?: string;
   startDate: string;
-  endDate: string;
-  targetBeneficiaries: string;
-  projectLocation: string;
-  estimatedBudget: string;
+  endDate?: string;
+  projectGoal: string;
+  projectObjectives?: string;
+  targetBeneficiaries?: string;
+  projectLocation?: string;
+  estimatedBudget?: string;
+  regions: string[];
+  targetedNCDs: NCDType[];
+  fundingSource: FundingSource;
+  ncdSpecificInfo: { [K in NCDType]?: NCDSpecificInfo };
 }
 
 export interface FormData {
+  projectInfo?: ProjectInfo;
   organisationInfo?: OrganisationInfo;
-  projectInfo?: ProjectInfoFormData;
   activities?: Activity[];
   partners?: Partner[];
   risks?: string;

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useFormStore } from '@/store/useFormStore';
-import { Activity } from '@/types/forms';
+import { Activity, NCDType, NCDSpecificInfo, ContinuumOfCare } from '@/types/forms';
 
 interface ProjectActivitiesFormProps {
   handleNext: () => void;
@@ -11,14 +11,14 @@ interface ProjectActivitiesFormProps {
 
 export default function ProjectActivitiesForm({ handleNext, handlePrevious }: ProjectActivitiesFormProps) {
   const { formData, updateFormData } = useFormStore();
-  const [activities, setActivities] = useState<Activity[]>(formData.activities || []);
+  const [activities, setActivities] = useState<Activity[]>(formData?.activities || []);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (formData.activities) {
+    if (formData?.activities) {
       setActivities(formData.activities);
     }
-  }, [formData.activities]);
+  }, [formData?.activities]);
 
   useEffect(() => {
     updateFormData({ activities });
@@ -62,79 +62,106 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
     handleNext();
   };
 
+  const handleNCDInfoChange = (ncd: NCDType, field: keyof NCDSpecificInfo, value: any) => {
+    if (!formData?.projectInfo?.ncdSpecificInfo) return;
+
+    const updatedFormData = {
+      ...formData,
+      projectInfo: {
+        ...formData.projectInfo,
+        ncdSpecificInfo: {
+          ...formData.projectInfo.ncdSpecificInfo,
+          [ncd]: {
+            ...formData.projectInfo.ncdSpecificInfo[ncd],
+            [field]: value
+          }
+        }
+      }
+    };
+
+    updateFormData(updatedFormData);
+  };
+
+  const continuumOfCareOptions: ContinuumOfCare[] = [
+    'Health Promotion/Primary prevention',
+    'Screening/Risk Assessment',
+    'Vaccination'
+  ];
+
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Project Activities</h2>
+      <div className="bg-white p-6 rounded-lg">
+        <h2 className="text-2xl font-bold mb-4">Section B.3: Project Activities</h2>
+        <p className="text-gray-600 mb-6">
+          Activities are the day to day, month to month tasks that you do to achieve your objectives.
+          Activities have a focus in that they are done in a specific place (region/district/community),
+          they target a certain population, address a set of disease area(s) and seek to improve a section
+          on the continuum of care.
+        </p>
 
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+        {formData?.projectInfo?.targetedNCDs?.map((ncd) => (
+          <div key={ncd} className="border p-4 rounded-lg space-y-4 bg-gray-50 mb-6">
+            <h3 className="text-lg font-semibold">{ncd}</h3>
 
-      {activities.map((activity, index) => (
-        <div key={index} className="border p-4 rounded-lg space-y-4 bg-gray-50">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Activity {index + 1}</h3>
-            <button
-              onClick={() => removeActivity(index)}
-              className="text-red-500 hover:text-red-700"
-            >
-              Remove
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block mb-1 text-gray-600">Activity Name *</label>
-              <input
-                type="text"
-                value={activity.name}
-                onChange={(e) => updateActivity(index, 'name', e.target.value)}
-                className="w-full p-2 border rounded bg-white"
-                required
-              />
+            {/* Districts */}
+            <div className="form-group">
+              <label className="block mb-2">
+                <span className="text-gray-700">B3.0e. Which district(s) is the project being implemented?</span>
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <select
+                multiple
+                className="w-full p-2 border rounded"
+                value={formData?.projectInfo?.ncdSpecificInfo[ncd]?.districts || []}
+                onChange={(e) => {
+                  const values = Array.from(e.target.selectedOptions, option => option.value);
+                  handleNCDInfoChange(ncd, 'districts', values);
+                }}
+              >
+                {/* Add your district options here */}
+              </select>
             </div>
 
-            <div>
-              <label className="block mb-1 text-gray-600">Description *</label>
+            {/* Continuum of Care */}
+            <div className="form-group">
+              <label className="block mb-2">
+                <span className="text-gray-700">B3.1. Continuum of care</span>
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <select
+                multiple
+                className="w-full p-2 border rounded"
+                value={formData?.projectInfo?.ncdSpecificInfo[ncd]?.continuumOfCare || []}
+                onChange={(e) => {
+                  const values = Array.from(e.target.selectedOptions, option => option.value) as ContinuumOfCare[];
+                  handleNCDInfoChange(ncd, 'continuumOfCare', values);
+                }}
+              >
+                {continuumOfCareOptions.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Activity Description */}
+            <div className="form-group">
+              <label className="block mb-2">
+                <span className="text-gray-700">B3.2. Activity description</span>
+                <span className="text-red-500 ml-1">*</span>
+              </label>
               <textarea
-                value={activity.description}
-                onChange={(e) => updateActivity(index, 'description', e.target.value)}
-                className="w-full p-2 border rounded bg-white"
-                rows={2}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 text-gray-600">Timeline</label>
-              <input
-                type="text"
-                value={activity.timeline}
-                onChange={(e) => updateActivity(index, 'timeline', e.target.value)}
-                className="w-full p-2 border rounded bg-white"
-                placeholder="e.g., Q1 2024"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 text-gray-600">Budget</label>
-              <input
-                type="number"
-                value={activity.budget}
-                onChange={(e) => updateActivity(index, 'budget', Number(e.target.value))}
-                className="w-full p-2 border rounded bg-white"
-                min="0"
+                className="w-full p-2 border rounded"
+                value={formData?.projectInfo?.ncdSpecificInfo[ncd]?.activityDescription || ''}
+                onChange={(e) => handleNCDInfoChange(ncd, 'activityDescription', e.target.value)}
+                placeholder="Please briefly describe (2-3 sentences) the key activities associated with the project."
+                rows={3}
               />
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
-      <button
-        onClick={addActivity}
-        className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-      >
-        Add Activity
-      </button>
-
+      {/* Navigation buttons */}
       <div className="flex justify-between mt-8">
         <button
           onClick={handlePrevious}
