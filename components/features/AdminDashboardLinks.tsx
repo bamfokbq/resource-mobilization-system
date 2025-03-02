@@ -6,24 +6,26 @@ import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
-import { MdSettings } from 'react-icons/md'
+import { MdSettings, MdChevronLeft, MdChevronRight, MdLogout } from 'react-icons/md'
 import { Button } from '../ui/button'
-import { Loader2, LogOut, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function AdminDashboardLinks() {
     const pathname = usePathname()
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
 
     const linkClass = (path: string) => `
-    flex items-center gap-2 text-lg
-    ${pathname === path
-            ? 'text-mint-green'
+        relative flex items-center gap-3 text-lg p-3 rounded-lg
+        ${pathname === path
+        ? 'text-mint-green before:absolute before:inset-0 before:bg-mint-green/10 before:rounded-lg before:animate-pulse'
             : 'text-light-blue'
         } 
-    hover:text-mint-green/70 transition-colors duration-200
-  `
+        hover:text-mint-green/70 transition-all duration-300 hover:scale-105
+        group
+    `
 
     const handleSignOut = async () => {
         setLoading(true)
@@ -53,46 +55,60 @@ export default function AdminDashboardLinks() {
     }
 
     return (
-        <div className='bg-navy-blue flex-shrink-0 w-[200px] flex flex-col items-center justify-between py-4'>
-            <ul className='flex flex-col gap-4'>
+        <div className={`bg-navy-blue flex-shrink-0 ${isOpen ? 'w-[240px]' : 'w-[80px]'} flex flex-col items-center justify-between py-6 relative transition-all duration-300 shadow-xl`}>
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="absolute -right-4 top-0 bg-white rounded-full p-2 z-10 text-navy-blue hover:text-mint-green 
+                          transition-all duration-300 border-2 border-light-blue/20 hover:border-mint-green
+                          hover:scale-110 hover:rotate-[360deg]"
+            >
+                {isOpen ? <MdChevronLeft size={20} /> : <MdChevronRight size={20} />}
+            </button>
+
+            <ul className='flex flex-col gap-3 w-full px-4'>
                 <Link
                     className={linkClass('/admin/dashboard')}
                     href={'/admin/dashboard'}
+                    title={!isOpen ? 'Dashboard' : ''}
                 >
-                    <FaHome />
-                    <span>Dashboard</span>
+                    <FaHome className="text-2xl" />
+                    {isOpen && <span>Dashboard</span>}
                 </Link>
                 <Link
                     className={linkClass('/admin/dashboard/users')}
                     href={'/admin/dashboard/users'}
+                    title={!isOpen ? 'Users' : ''}
                 >
-                    <FaUser />
-                    <span>Users</span>
+                    <FaUser className="text-2xl" />
+                    {isOpen && <span>Users</span>}
                 </Link>
                 <Link
                     className={linkClass('/admin/dashboard/profile')}
                     href={'/admin/dashboard/profile'}
+                    title={!isOpen ? 'Profile' : ''}
                 >
-                    <MdSettings />
-                    <span>Profile</span>
+                    <MdSettings className="text-2xl" />
+                    {isOpen && <span>Profile</span>}
                 </Link>
             </ul>
 
-            <div>
-                <Button
-                    className='text-xl text-white bg-transparent shadow-none hover:bg-transparent hover:shadow-none hover:text-gray-200 flex items-center gap-1 cursor-pointer'
+            <div className="w-full px-4">
+                <button
                     onClick={handleSignOut}
+                    className='w-full flex items-center gap-3 p-3 rounded-lg text-white hover:bg-red-500/10 
+                              hover:text-red-400 transition-all duration-300 group'
+                    title={!isOpen ? 'Logout' : ''}
                     disabled={loading}
                 >
                     {loading ? (
-                        <Loader2 className="animate-spin" />
+                        <Loader2 className="animate-spin text-2xl" />
                     ) : (
                         <>
-                            <LogOut />
-                            <span>Logout</span>
+                                <MdLogout className="text-2xl" />
+                                {isOpen && <span>Logout</span>}
                         </>
                     )}
-                </Button>
+                </button>
             </div>
         </div>
     )
