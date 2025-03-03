@@ -414,15 +414,19 @@ const SECTORS = {
 };
 
 const SECTORS_SELECT = [
-    { value: "CivilSocietyOrganization", label: "Civil Society Organization" },
+    { value: "GhanaGovernment", label: "Ghana Government" },
+    { value: "PatientOrganization", label: "Patient Organization" },
     { value: "LocalNGO", label: "Local NGO" },
     { value: "InternationalNGO", label: "International NGO" },
-    { value: "ForeignGovernment", label: "Foreign Government" },
-    { value: "PatientOrganization", label: "Patient Organization" },
+    { value: "CivilSocietyOrganization", label: "Civil Society Organization" },
     { value: "Foundation", label: "Foundation" },
+    { value: "FaithBasedOrganisation", label: "Faith-based Organisation" },
+    { value: "ForeignGovernment", label: "Foreign Government" },
+    { value: "Private", label: "Private" },
     { value: "AcademiaResearch", label: "Academia / Research" },
     { value: "Multilateral", label: "Multilateral" },
-    { value: "Private", label: "Private" }
+    { value: "FunderDonor", label: "Funder / Donor" },
+    { value: "OtherSector", label: "Other Sector" }
 ];
 
 const STAKEHOLDERS_BY_REGIONS = [

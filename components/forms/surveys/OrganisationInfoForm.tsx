@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronRight } from 'lucide-react'
-import { cn } from "@/lib/utils"
+import { SECTORS_SELECT } from '@/constant'
 
 const GHANA_REGIONS = [
   "Ahafo",
@@ -36,7 +36,7 @@ const GHANA_REGIONS = [
   "Western North",
 ]
 
-const SECTORS = ["Ghana Government", "Patient Organisation", "Local NGO", "International NGO", "Foundation"]
+// const SECTORS = ["Ghana Government", "Patient Organisation", "Local NGO", "International NGO", "Foundation"]
 
 // Create a schema for form validation
 const formSchema = z
@@ -415,9 +415,9 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {SECTORS.map((sector) => (
-                      <SelectItem key={sector} value={sector}>
-                        {sector}
+                    {SECTORS_SELECT.map((sector) => (
+                      <SelectItem key={sector.value} value={sector.value}>
+                        {sector.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
