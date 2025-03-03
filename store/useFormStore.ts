@@ -20,8 +20,17 @@ const initialState: Pick<FormStore, 'activeForm' | 'isFirstStep' | 'isLastStep' 
   isFirstStep: true,
   isLastStep: false,
   formData: {
-    projectInfo: undefined
-  } as FormData,
+    projectInfo: undefined,
+    organisationInfo: undefined,
+    projectActivities: undefined,
+    activities: undefined,
+    partners: undefined,
+    risks: undefined,
+    sustainability: undefined,
+    monitoringPlan: undefined,
+    evaluation: undefined,
+    notes: undefined
+  },
 };
 
 export const useFormStore = create<FormStore>()(
@@ -48,7 +57,14 @@ export const useFormStore = create<FormStore>()(
         }
       },
       updateFormData: (data) => set((state) => ({
-        formData: { ...state.formData, ...data }
+        formData: {
+          ...state.formData,
+          ...data,
+          // Ensure nested objects are properly merged
+          projectActivities: data.projectActivities
+            ? { ...state.formData.projectActivities, ...data.projectActivities }
+            : state.formData.projectActivities
+        }
       })),
       resetForm: () => set(initialState),
     }),
