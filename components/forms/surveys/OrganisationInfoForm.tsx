@@ -78,6 +78,7 @@ interface OrganisationInfoFormProps {
 export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFormProps) {
   const { formData, updateFormData } = useFormStore()
 
+
   // Initialize form with react-hook-form and zod validation
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -102,7 +103,23 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
   // Load existing data from store if available
   useEffect(() => {
     if (formData?.organisationInfo) {
-      form.reset(formData.organisationInfo)
+      const orgInfo = formData.organisationInfo;
+
+      // Find the matching sector value from SECTORS_SELECT
+      const sectorMatch = SECTORS_SELECT.find(s =>
+        s.value === orgInfo.sector || s.label === orgInfo.sector
+      );
+
+      form.reset({
+        ...orgInfo,
+        region: orgInfo.region || "",
+        sector: sectorMatch?.value || "", // Use the matched sector value
+        hasRegionalOffice: orgInfo.hasRegionalOffice || false,
+        gpsCoordinates: {
+          latitude: orgInfo.gpsCoordinates?.latitude || "",
+          longitude: orgInfo.gpsCoordinates?.longitude || "",
+        }
+      });
     }
   }, [formData, form])
 
