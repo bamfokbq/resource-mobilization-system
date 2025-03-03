@@ -310,24 +310,24 @@ const ADMIN_PROFILE = {
     bio: "I am a software engineer with a passion for building products that solve real-world problems. I am currently working on a project that aims to improve the quality of healthcare in Ghana.",
 }
 
-const GHANA_REGIONS = {
-    ahafo: "Ahafo Region",
-    ashanti: "Ashanti Region",
-    bono: "Bono Region",
-    "bono-east": "Bono East Region",
-    central: "Central Region",
-    eastern: "Eastern Region",
-    "greater-accra": "Greater Accra Region",
-    "north-east": "North East Region",
-    northern: "Northern Region",
-    oti: "Oti Region",
-    savannah: "Savannah Region",
-    "upper-east": "Upper East Region",
-    "upper-west": "Upper West Region",
-    volta: "Volta Region",
-    western: "Western Region",
-    "western-north": "Western North Region",
-} as const
+// const GHANA_REGIONS = {
+//     ahafo: "Ahafo Region",
+//     ashanti: "Ashanti Region",
+//     bono: "Bono Region",
+//     "bono-east": "Bono East Region",
+//     central: "Central Region",
+//     eastern: "Eastern Region",
+//     "greater-accra": "Greater Accra Region",
+//     "north-east": "North East Region",
+//     northern: "Northern Region",
+//     oti: "Oti Region",
+//     savannah: "Savannah Region",
+//     "upper-east": "Upper East Region",
+//     "upper-west": "Upper West Region",
+//     volta: "Volta Region",
+//     western: "Western Region",
+//     "western-north": "Western North Region",
+// } as const
 
 
 const CONTINUUM_OF_CARE_DATA = [
@@ -662,6 +662,75 @@ const REGIONAL_SECTOR_DATA = {
     "Bono East": { total: 27 },
     "Ahafo": { total: 23 }
 }
+
+
+const GHANA_REGIONS = [
+    "Ahafo",
+    "Ashanti",
+    "Bono",
+    "Bono East",
+    "Central",
+    "Eastern",
+    "Greater Accra",
+    "North East",
+    "Northern",
+    "Oti",
+    "Savannah",
+    "Upper East",
+    "Upper West",
+    "Volta",
+    "Western",
+    "Western North",
+]
+
+// "Hypertension",
+//   "Diabetes Mellitus",
+//   "Breast Cancer",
+//   "Cervical Cancer",
+//   "Mental Health",
+//   "Childhood Cancers",
+//   "Prostate Cancer",
+//   "Road Accidents",
+//   "Domestic Injuries",
+//   "Childhood Cancers (Dup)",
+//   "COPD & Asthma",
+//   "Sickle Cell Disease",
+//   "CVD & Stroke",
+//   "All NCDs (General)",
+//   "Other NCDs"
+
+export const NCD_DATA = [
+    "Hypertension",
+    "Diabetes Mellitus",
+    "Breast Cancer",
+    "Cervical Cancer",
+    "Mental Health",
+    "Childhood Cancers",
+    "Prostate Cancer",
+    "Road Accidents",
+    "Domestic Injuries",
+    "Childhood Cancers (Dup)",
+    "COPD & Asthma",
+    "Sickle Cell Disease",
+    "CVD & Stroke",
+    "All NCDs (General)",
+    "Other NCDs"
+] as const
+
+export type NCDType = typeof NCD_DATA[number];
+
+
+export const FUNDING_SOURCES = [
+    'Ghana Government',
+    'Local NGO',
+    'International NGO',
+    'Individual Donors',
+    'Foundation',
+    'Others',
+    'Private Sector',
+    'Academic/Research Institution',
+    'UN Agency'
+] as const
 
 export {
     NAVIGATION,

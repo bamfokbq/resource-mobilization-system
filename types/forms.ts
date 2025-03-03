@@ -1,3 +1,5 @@
+import { NCDType } from '@/constant';
+
 export interface OrganisationInfo {
   organisationName: string;
   region: string;
@@ -18,8 +20,6 @@ export interface OrganisationInfo {
   contactPerson?: string;
   phone?: string;
 }
-
-export type NCDType = "Cancer" | "Cardiovascular Disease" | "Diabetes" | "Chronic Respiratory Disease" | "Mental Health" | "Sickle Cell Disease";
 
 export type FundingSource =
   | 'Ghana Government'

@@ -152,8 +152,6 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
   }
 
   const onError = (errors: any) => {
-    console.log(errors);
-
     toast.error("Please check your inputs", {
       description: "There are some required fields that need to be filled correctly.",
       duration: 5000,

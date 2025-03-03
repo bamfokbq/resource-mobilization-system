@@ -1,46 +1,5 @@
+import { FUNDING_SOURCES, NCD_DATA, type NCDType } from '@/constant'
 import * as z from "zod"
-
-export const GHANA_REGIONS = [
-  "Ahafo",
-  "Ashanti",
-  "Bono",
-  "Bono East",
-  "Central",
-  "Eastern",
-  "Greater Accra",
-  "North East",
-  "Northern",
-  "Oti",
-  "Savannah",
-  "Upper East",
-  "Upper West",
-  "Volta",
-  "Western",
-  "Western North",
-]
-
-export const NCD_TYPES = [
-  "Cancer",
-  "Cardiovascular Disease",
-  "Diabetes",
-  "Chronic Respiratory Disease",
-  "Mental Health",
-  "Sickle Cell Disease"
-] as const
-
-export type NCDType = typeof NCD_TYPES[number]
-
-export const FUNDING_SOURCES = [
-  'Ghana Government',
-  'Local NGO',
-  'International NGO',
-  'Individual Donors',
-  'Foundation',
-  'Others',
-  'Private Sector',
-  'Academic/Research Institution',
-  'UN Agency'
-] as const
 
 const ncdSpecificInfoSchema = z.object({
   districts: z.array(z.string()).default([]),
@@ -70,9 +29,9 @@ export const projectInfoSchema = z.object({
   projectLocation: z.string().optional(),
   estimatedBudget: z.string().optional(),
   regions: z.array(z.string()).min(1, "At least one region must be selected"),
-  targetedNCDs: z.array(z.enum(NCD_TYPES)).min(1, "At least one NCD must be selected"),
+  targetedNCDs: z.array(z.enum(NCD_DATA as readonly [NCDType, ...NCDType[]])).min(1, "At least one NCD must be selected"),
   fundingSource: z.enum(FUNDING_SOURCES),
-  ncdSpecificInfo: z.record(z.enum(NCD_TYPES), ncdSpecificInfoSchema).optional().default({})
+  ncdSpecificInfo: z.record(z.enum(NCD_DATA), ncdSpecificInfoSchema).optional().default({})
 })
 
 export type ProjectInfoFormData = z.infer<typeof projectInfoSchema>

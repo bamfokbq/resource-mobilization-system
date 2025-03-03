@@ -4,8 +4,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFormStore } from "@/store/useFormStore"
-import type { NCDType, NCDSpecificInfo } from "@/types/forms"
-import { projectInfoSchema, ProjectInfoFormData, GHANA_REGIONS, FUNDING_SOURCES } from "@/schemas/projectInfoSchema"
+import { projectInfoSchema, ProjectInfoFormData } from "@/schemas/projectInfoSchema"
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -16,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
-import { NCDs_LISTS } from '@/constant'
+import { FUNDING_SOURCES, GHANA_REGIONS, NCD_DATA } from '@/constant'
 
 interface ProjectInfoFormProps {
   handleNext: () => void
@@ -53,9 +52,29 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
   }, [formData, form])
 
   const onSubmit = (data: ProjectInfoFormData) => {
-    updateFormData({ projectInfo: data })
-    toast.success("Project information saved successfully")
-    handleNext()
+    try {
+      const { totalProjects, projectName, projectDescription, startDate, endDate, projectGoal, projectObjectives, targetBeneficiaries, projectLocation, estimatedBudget, regions, targetedNCDs, fundingSource, ncdSpecificInfo } = data
+      updateFormData({ projectInfo: { totalProjects, projectName, projectDescription, startDate, endDate, projectGoal, projectObjectives, targetBeneficiaries, projectLocation, estimatedBudget, regions, targetedNCDs, fundingSource, ncdSpecificInfo } })
+
+      handleNext()
+
+      toast.success("Project information saved successfully", {
+        description: "Your changes have been saved and you can proceed to the next section.",
+        duration: 3000,
+      })
+    } catch (error) {
+      toast.error("Failed to save information", {
+        description: error instanceof Error ? error.message : "Please try again or contact support if the issue persists.",
+        duration: 5000,
+      })
+    }
+  }
+
+  const onError = (errors: any) => {
+    toast.error("Please check your inputs", {
+      description: "There are some required fields that need to be filled correctly.",
+      duration: 5000,
+    })
   }
 
   const toggleRegion = (region: string) => {
@@ -65,6 +84,8 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
       : [...currentRegions, region]
     form.setValue("regions", newRegions, { shouldValidate: true })
   }
+
+  type NCDType = typeof NCD_DATA[number];
 
   const toggleNCD = (ncd: NCDType) => {
     const currentNCDs = form.getValues("targetedNCDs")
@@ -76,7 +97,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
 
     // Update NCD specific info
     const currentNCDInfo = form.getValues("ncdSpecificInfo") || {}
-    const updatedNCDInfo: Partial<Record<NCDType, NCDSpecificInfo>> = { ...currentNCDInfo }
+    const updatedNCDInfo = { ...currentNCDInfo }
 
     if (!currentNCDs.includes(ncd)) {
       delete updatedNCDInfo[ncd]
@@ -113,7 +134,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
           {/* B1.2 Total Projects */}
           <div className="form-group">
             <FormField
@@ -320,21 +341,21 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                     Please select the disease(s) the project focuses on. Please note that questions will be asked
                     for each disease that you select.
                   </FormDescription>
-                  <div className="border rounded-md p-4 bg-white">
+                  <div className="border rounded-md p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {NCDs_LISTS.map((ncd) => (
-                        <div key={ncd.value} className="flex items-center space-x-2">
+                      {NCD_DATA.map((ncd, index) => (
+                        <div key={index} className="flex items-center space-x-2">
                           <Checkbox
-                            id={`ncd-${ncd.value}`}
-                            checked={form.watch("targetedNCDs").includes(ncd.value as NCDType)}
-                            onCheckedChange={() => toggleNCD(ncd.value as NCDType)}
+                            id={`ncd-${ncd}`}
+                            checked={form.watch("targetedNCDs").includes(ncd)}
+                            onCheckedChange={() => toggleNCD(ncd)}
                             className="border-navy-blue data-[state=checked]:bg-navy-blue"
                           />
                           <label
-                            htmlFor={`ncd-${ncd.value}`}
+                            htmlFor={`ncd-${ncd}`}
                             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
-                            {ncd.label}
+                            {ncd}
                           </label>
                         </div>
                       ))}
