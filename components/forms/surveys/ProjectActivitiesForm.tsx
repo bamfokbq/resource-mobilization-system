@@ -4,6 +4,13 @@ import { useFormStore } from "@/store/useFormStore"
 import { Info, ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "motion/react"
 import { Button } from "@/components/ui/button"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { useState } from "react"
 
 interface ProjectActivitiesFormProps {
   handleNext: () => void
@@ -13,6 +20,7 @@ interface ProjectActivitiesFormProps {
 export default function ProjectActivitiesForm({ handleNext, handlePrevious }: ProjectActivitiesFormProps) {
   const { formData } = useFormStore()
   const ncdsSelectedFromProjectInfoForm = formData?.projectInfo?.targetedNCDs || []
+  const [activeAccordion, setActiveAccordion] = useState<string | undefined>(undefined)
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -55,19 +63,34 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg"
+              className="mt-8 space-y-6"
             >
-              <h4 className="text-green-800 font-medium mb-2">Selected NCDs:</h4>
-              <div className="flex flex-wrap gap-2">
-                {ncdsSelectedFromProjectInfoForm.map((ncd, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm"
-                  >
-                    {ncd}
-                  </span>
-                ))}
-              </div>
+              {ncdsSelectedFromProjectInfoForm.map((ncd, index) => (
+                <Accordion
+                  key={index} 
+                  type="single"
+                  value={activeAccordion}
+                  onValueChange={setActiveAccordion}
+                  collapsible
+                  className="bg-gradient-to-r from-background to-background/80 rounded-xl shadow-sm border border-border/40 overflow-hidden transition-all duration-200 hover:shadow-md"
+                >
+                  <AccordionItem value={`item-${index}`} className="px-6 border-none">
+                    <AccordionTrigger className="hover:bg-muted/30 rounded-lg py-5 px-4 transition-all duration-200">
+                      <div className="flex items-center gap-4">
+                        <div className="h-3 w-3 rounded-full bg-gradient-to-r from-smit-green to-mint-green shadow-sm"></div>
+                        <span className="text-dark-gray font-semibold tracking-wide">
+                          {ncd}
+                        </span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="animate-accordion-down duration-300">
+                      <div className="flex flex-wrap gap-6 p-8 bg-muted/20 rounded-xl border border-border/30 my-3 backdrop-blur-sm">
+                        <p className="text-muted-foreground font-medium">Questions</p>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              ))}
             </motion.div>
           )}
         </div>
