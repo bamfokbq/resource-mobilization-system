@@ -15,61 +15,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronRight } from 'lucide-react'
-import { SECTORS_SELECT } from '@/constant'
+import { REGIONS_GHANA, SECTORS_SELECT } from '@/constant'
+import { organisationInfoSchema } from '@/schemas/organisationInfoSchema'
 
-const GHANA_REGIONS = [
-  "Ahafo",
-  "Ashanti",
-  "Bono",
-  "Bono East",
-  "Central",
-  "Eastern",
-  "Greater Accra",
-  "North East",
-  "Northern",
-  "Oti",
-  "Savannah",
-  "Upper East",
-  "Upper West",
-  "Volta",
-  "Western",
-  "Western North",
-]
-
-// const SECTORS = ["Ghana Government", "Patient Organisation", "Local NGO", "International NGO", "Foundation"]
-
-// Create a schema for form validation
-const formSchema = z
-  .object({
-    organisationName: z.string().min(1, { message: "Please enter your organization's name" }),
-    region: z.string().min(1, { message: "Please select your head office region" }),
-    hasRegionalOffice: z.boolean(),
-    regionalOfficeLocation: z.string()
-      .optional()
-      .refine((val) => {
-        return true;
-      }, { message: "Please enter the regional office location" }),
-    gpsCoordinates: z.object({
-      latitude: z.string().default(""),
-      longitude: z.string().default(""),
-    }),
-    ghanaPostGPS: z.string().optional(),
-    sector: z.string().min(1, { message: "Please select your organization's sector" }),
-    hqPhoneNumber: z.string().min(1, { message: "Please enter your HQ phone number" })
-      .regex(/^[0-9]+$/, { message: "Phone number must contain only numbers" })
-      .min(10, { message: "Phone number must be at least 10 digits" }),
-    regionalPhoneNumber: z.string().optional(),
-    email: z.string()
-      .min(1, { message: "Please enter your email address" })
-      .email({ message: "Please enter a valid email address" }),
-    website: z.string().url({ message: "Please enter a valid URL (e.g., https://www.example.com)" }).optional().or(z.literal("")),
-    registrationNumber: z.string().optional(),
-    address: z.string().optional(),
-    contactPerson: z.string().optional(),
-    phone: z.string().optional(),
-  })
-
-type FormSchema = z.infer<typeof formSchema>
+type FormSchema = z.infer<typeof organisationInfoSchema>
 
 interface OrganisationInfoFormProps {
   handleNext: () => void
@@ -78,10 +27,8 @@ interface OrganisationInfoFormProps {
 export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFormProps) {
   const { formData, updateFormData } = useFormStore()
 
-
-  // Initialize form with react-hook-form and zod validation
   const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(organisationInfoSchema),
     defaultValues: {
       organisationName: "",
       region: "",
@@ -210,7 +157,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {GHANA_REGIONS.map((region) => (
+                          {REGIONS_GHANA.map((region) => (
                             <SelectItem key={region} value={region}>
                               {region}
                             </SelectItem>

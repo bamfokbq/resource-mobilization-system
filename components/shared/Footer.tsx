@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { FaFacebook, FaLinkedin, FaSquareXTwitter } from "react-icons/fa6";
+import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa6";
 
 export default function Footer() {
     return (
@@ -37,7 +37,7 @@ export default function Footer() {
                             <p>LinkedIn</p>
                         </Link>
                         <Link className='flex items-center gap-2' href='https://facebook.com'>
-                            <FaSquareXTwitter />
+                            <FaTwitter />
                             <p>Twitter</p>
                         </Link>
                     </div>

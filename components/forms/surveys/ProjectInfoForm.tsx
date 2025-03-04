@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
-import { FUNDING_SOURCES, GHANA_REGIONS, NCD_DATA } from '@/constant'
+import { FUNDING_SOURCES, NCD_DATA, REGIONS_GHANA } from '@/constant'
 
 interface ProjectInfoFormProps {
   handleNext: () => void
@@ -295,7 +295,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                   <div className="border rounded-md p-4 bg-white">
                     <ScrollArea className="h-60 w-full pr-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {GHANA_REGIONS.map((region) => (
+                        {REGIONS_GHANA.map((region) => (
                           <div key={region} className="flex items-center space-x-2">
                             <Checkbox
                               id={`region-${region}`}
