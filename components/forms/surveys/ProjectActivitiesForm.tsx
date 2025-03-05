@@ -45,6 +45,8 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
           gender: "",
           activityLevel: "",
           activityImplementedArea: "",
+          nationalNCDStrategyWHOGapTarget: "",
+          domainAreaOfStrategy: "",
           expectedOutcomes: "",
           challenges: ""
         }
@@ -303,6 +305,79 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                 </FormItem>
                               )}
                             />
+
+                            <div>
+                              <h3 className="text-lg font-semibold text-blue-900 mb-4">
+                                National NCD Strategy
+                              </h3>
+                              <FormField
+                                control={form.control}
+                                name={`ncdActivities.${ncd}.nationalNCDStrategyWHOGapTarget`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="font-medium">
+                                      B3.14 {ncd}: Where does this activity align with the WHO GAP targets?
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Describe the target population..."
+                                        className="min-h-[100px] resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+
+                            <div className='space-y-4'>
+                              <div>
+                                <h3 className="text-lg font-semibold text-blue-900">
+                                  Ghana NCD Strategy Alignment
+                                </h3>
+                                <p className='mb-4'>The following section collects information on how your activities on {ncd} aligns with the National NCD strategy.</p>
+                              </div>
+                              <FormField
+                                control={form.control}
+                                name={`ncdActivities.${ncd}.domainAreaOfStrategy`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="font-medium">
+                                      B3.15. {ncd}: Which domain area of the strategy are your activities focusing?
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Describe the target population..."
+                                        className="min-h-[100px] resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={form.control}
+                                name={`ncdActivities.${ncd}.domainAreaOfStrategy`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="font-medium">
+                                      B3.17. {ncd}: For secondary and tertiary prevention: Which strategic area are you focusing?
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Describe the target population..."
+                                        className="min-h-[100px] resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
                           </div>
                         </div>
                       </AccordionContent>
