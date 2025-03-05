@@ -184,7 +184,31 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                 label: `B3.3. Primary target population: For ${ncd}, How would you characterize the primary target population of your activities?`,
                                 placeholder: "Describe the target population..."
                               },
-                              // ...remaining fields
+                              {
+                                name: "secondaryTargetPopulation",
+                                label: `B3.3.b Who are your secondary target population for the activity on for ${ncd}?`,
+                                placeholder: "Describe the secondary target population..."
+                              },
+                              {
+                                name: "ageRange",
+                                label: ` B3.4. AGE: For ${ncd}, What is the general age range of the target population for this activity? Select all that apply`,
+                                placeholder: "Describe the age range of the target population..."
+                              },
+                              {
+                                name: "gender",
+                                label: ` B3.5. Gender: For ${ncd}, are the beneﬁciaries of your activities primarily ({'>'}80%) male, female, or both?`,
+                                placeholder: "Describe the age range of the target population..."
+                              },
+                              {
+                                name: "activityLevel",
+                                label: ` B3.12. For ${ncd}: At what level is the activity being implement? Check all that apply.`,
+                                placeholder: "Describe the activity level..."
+                              },
+                              {
+                                name: "activityImplementedArea",
+                                label: `B3.13. For ${ncd}: Are the activities being implemented at the urban, rural or both?`,
+                                placeholder: "Describe the activity implemented area..."
+                              }
                             ].map((field, index) => (
                               <div key={index} className="bg-white/50 p-6 rounded-lg border border-border/50 shadow-sm">
                                 <FormField
@@ -214,7 +238,25 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                 <Info className="h-5 w-5 text-blue-500" />
                                 National NCD Strategy
                               </h3>
-                              {/* ...existing strategy fields... */}
+                              <FormField
+                                control={form.control}
+                                name={`ncdActivities.${ncd}.nationalNCDStrategyWHOGapTarget`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base text-gray-700 mb-3 block">
+                                      B3.14 {ncd}: Where does this activity align with the WHO GAP targets?
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Describe the target population..."
+                                        className="min-h-[100px] resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
                             </div>
 
                             <div className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 shadow-sm">
@@ -226,7 +268,45 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                   The following section collects information on how your activities on {ncd} aligns with the National NCD strategy.
                                 </p>
                               </div>
-                              {/* ...existing strategy alignment fields... */}
+                              <FormField
+                                control={form.control}
+                                name={`ncdActivities.${ncd}.domainAreaOfStrategy`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base text-gray-700 mb-3 block">
+                                      B3.15. {ncd}: Which domain area of the strategy are your activities focusing?
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Describe the target population..."
+                                        className="min-h-[100px] resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={form.control}
+                                name={`ncdActivities.${ncd}.domainAreaOfStrategy`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel className="text-base text-gray-700 mb-3 block">
+                                      B3.17. {ncd}: For secondary and tertiary prevention: Which strategic area are you focusing?
+                                    </FormLabel>
+                                    <FormControl>
+                                      <Textarea
+                                        placeholder="Describe the target population..."
+                                        className="min-h-[100px] resize-none"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
                             </div>
                           </div>
                         </div>
