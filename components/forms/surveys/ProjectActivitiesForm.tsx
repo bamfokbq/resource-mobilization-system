@@ -83,7 +83,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
             </h2>
 
             <div className="space-y-6 bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-blue-100 shadow-sm">
-              <h3 className="text-xl font-semibold text-blue-900 mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-semibold text-gray-700 mb-6 flex items-center gap-2">
                 <Info className="text-blue-500" />
                 Important Notes
               </h3>
@@ -134,7 +134,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                 name={`ncdActivities.${ncd}.projectDistrict`}
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel className="text-base font-semibold text-blue-900 mb-3 block">
+                                    <FormLabel className='!text-current'>
                                       B3.0e. For {ncd}: Which district(s) in {regionsSelectedFromProjectInfoForm[0]} Region is the project being implemented?
                                     </FormLabel>
                                     <FormControl>
@@ -192,7 +192,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                   name={`ncdActivities.${ncd}.${field.name}`}
                                   render={({ field: formField }) => (
                                     <FormItem>
-                                      <FormLabel className="text-base font-semibold text-blue-900 mb-3 block">
+                                      <FormLabel className="text-base text-gray-700 mb-3 block">
                                         {field.label}
                                       </FormLabel>
                                       <FormControl>
@@ -210,7 +210,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                             ))}
 
                             <div className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 shadow-sm">
-                              <h3 className="text-lg font-semibold text-blue-900 mb-6 flex items-center gap-2">
+                              <h3 className="text-lg text-gray-700 mb-6 flex items-center gap-2">
                                 <Info className="h-5 w-5 text-blue-500" />
                                 National NCD Strategy
                               </h3>
@@ -219,7 +219,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
 
                             <div className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 shadow-sm">
                               <div className="mb-6">
-                                <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                                <h3 className="text-lg text-gray-700 mb-2">
                                   Ghana NCD Strategy Alignment
                                 </h3>
                                 <p className='text-gray-600'>
