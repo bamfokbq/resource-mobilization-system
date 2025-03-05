@@ -1,5 +1,11 @@
-
 import * as z from "zod";
+
+export const ncdActivitySchema = z.object({
+  activityDescription: z.string().min(1, "Activity description is required"),
+  targetPopulation: z.string().min(1, "Target population is required"),
+  expectedOutcomes: z.string().min(1, "Expected outcomes are required"),
+  challenges: z.string().min(1, "Challenges description is required"),
+});
 
 export const projectActivitiesSchema = z.object({
   districts: z.array(z.string()).min(1, "Select at least one district"),
@@ -13,5 +19,6 @@ export const projectActivitiesSchema = z.object({
   implementationArea: z.enum(["urban", "rural", "both"]),
   whoGapTargets: z.array(z.string()).min(1, "Select at least one WHO GAP target"),
   ncdStrategyDomain: z.string().min(1, "Select a strategy domain"),
-  preventionFocus: z.string().optional()
-})
+  preventionFocus: z.string().optional(),
+  ncdActivities: z.record(z.string(), ncdActivitySchema),
+});

@@ -2,7 +2,7 @@ import { MdOutlinePoll } from "react-icons/md"
 import { FiUsers } from "react-icons/fi"
 import { BsCalendar3 } from "react-icons/bs"
 import { AiOutlineProject } from "react-icons/ai"
-import { Label } from 'recharts'
+import regionsData from './regions.json';
 
 const NAVIGATION = [
     {
@@ -711,6 +711,16 @@ export const FUNDING_SOURCES = [
     'Academic/Research Institution',
     'UN Agency'
 ] as const
+
+export const getDistrictsByRegion = (regionName: string): string[] => {
+    const region = regionsData.regions.find(r => r.region === regionName);
+    if (!region) return [];
+    return region.districts.map(district => district.district);
+};
+
+// You can also add a type definition for better TypeScript support
+export type RegionData = typeof regionsData;
+
 
 export {
     NAVIGATION,
