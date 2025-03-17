@@ -1,0 +1,189 @@
+{
+    "Ghana": {
+        "Lymphoma": 1428,
+        "Breast Cancer": 2451,
+        "Cervical Cancer": 1185,
+        "Prostate Cancer": 6823,
+        "Hypertension": 584362,
+        "Diabetes Mellitus": 199321,
+        "Stroke": 26780,
+        "Kidney Related Diseases": 30368,
+        "Chronic Kidney Disease_NCD": 30
+    },
+    "Ahafo": {
+        "Lymphoma": 6,
+        "Breast Cancer": 12,
+        "Cervical Cancer": 7,
+        "Prostate Cancer": 28,
+        "Hypertension": 9390,
+        "Diabetes Mellitus": 2403,
+        "Stroke": 164,
+        "Kidney Related Diseases": 414,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Ashanti": {
+        "Lymphoma": 319,
+        "Breast Cancer": 561,
+        "Cervical Cancer": 522,
+        "Prostate Cancer": 1013,
+        "Hypertension": 140216,
+        "Diabetes Mellitus": 55303,
+        "Stroke": 9601,
+        "Kidney Related Diseases": 5767,
+        "Chronic Kidney Disease_NCD": 7
+    },
+    "Bono": {
+        "Lymphoma": 9,
+        "Breast Cancer": 31,
+        "Cervical Cancer": 34,
+        "Prostate Cancer": 1371,
+        "Hypertension": 22193,
+        "Diabetes Mellitus": 8060,
+        "Stroke": 652,
+        "Kidney Related Diseases": 469,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Bono East": {
+        "Lymphoma": 96,
+        "Breast Cancer": 46,
+        "Cervical Cancer": 41,
+        "Prostate Cancer": 148,
+        "Hypertension": 26912,
+        "Diabetes Mellitus": 10760,
+        "Stroke": 553,
+        "Kidney Related Diseases": 2924,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Central": {
+        "Lymphoma": 86,
+        "Breast Cancer": 82,
+        "Cervical Cancer": 94,
+        "Prostate Cancer": 387,
+        "Hypertension": 36717,
+        "Diabetes Mellitus": 11858,
+        "Stroke": 1388,
+        "Kidney Related Diseases": 1547,
+        "Chronic Kidney Disease_NCD": 7
+    },
+    "Eastern": {
+        "Lymphoma": 122,
+        "Breast Cancer": 150,
+        "Cervical Cancer": 65,
+        "Prostate Cancer": 273,
+        "Hypertension": 51781,
+        "Diabetes Mellitus": 17721,
+        "Stroke": 1932,
+        "Kidney Related Diseases": 1589,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Greater Accra": {
+        "Lymphoma": 234,
+        "Breast Cancer": 797,
+        "Cervical Cancer": 170,
+        "Prostate Cancer": 2355,
+        "Hypertension": 145539,
+        "Diabetes Mellitus": 53748,
+        "Stroke": 6771,
+        "Kidney Related Diseases": 10771,
+        "Chronic Kidney Disease_NCD": 16
+    },
+    "North East": {
+        "Lymphoma": null,
+        "Breast Cancer": 1,
+        "Cervical Cancer": 1,
+        "Prostate Cancer": 2,
+        "Hypertension": 5969,
+        "Diabetes Mellitus": 565,
+        "Stroke": 29,
+        "Kidney Related Diseases": 65,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Northern": {
+        "Lymphoma": 40,
+        "Breast Cancer": 232,
+        "Cervical Cancer": 37,
+        "Prostate Cancer": 340,
+        "Hypertension": 18697,
+        "Diabetes Mellitus": 3312,
+        "Stroke": 873,
+        "Kidney Related Diseases": 721,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Oti": {
+        "Lymphoma": 62,
+        "Breast Cancer": 3,
+        "Cervical Cancer": 2,
+        "Prostate Cancer": 27,
+        "Hypertension": 9304,
+        "Diabetes Mellitus": 2120,
+        "Stroke": 652,
+        "Kidney Related Diseases": 117,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Savannah": {
+        "Lymphoma": 14,
+        "Breast Cancer": 16,
+        "Cervical Cancer": 5,
+        "Prostate Cancer": 54,
+        "Hypertension": 4459,
+        "Diabetes Mellitus": 718,
+        "Stroke": 72,
+        "Kidney Related Diseases": 304,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Upper East": {
+        "Lymphoma": 41,
+        "Breast Cancer": 27,
+        "Cervical Cancer": 19,
+        "Prostate Cancer": 53,
+        "Hypertension": 23738,
+        "Diabetes Mellitus": 4539,
+        "Stroke": 288,
+        "Kidney Related Diseases": 726,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Upper West": {
+        "Lymphoma": 39,
+        "Breast Cancer": 50,
+        "Cervical Cancer": 13,
+        "Prostate Cancer": 63,
+        "Hypertension": 7172,
+        "Diabetes Mellitus": 2152,
+        "Stroke": 660,
+        "Kidney Related Diseases": 871,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Volta": {
+        "Lymphoma": 129,
+        "Breast Cancer": 217,
+        "Cervical Cancer": 110,
+        "Prostate Cancer": 395,
+        "Hypertension": 30105,
+        "Diabetes Mellitus": 7475,
+        "Stroke": 1586,
+        "Kidney Related Diseases": 1184,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Western": {
+        "Lymphoma": 171,
+        "Breast Cancer": 200,
+        "Cervical Cancer": 39,
+        "Prostate Cancer": 287,
+        "Hypertension": 40108,
+        "Diabetes Mellitus": 14591,
+        "Stroke": 1151,
+        "Kidney Related Diseases": 2182,
+        "Chronic Kidney Disease_NCD": null
+    },
+    "Western North": {
+        "Lymphoma": 60,
+        "Breast Cancer": 26,
+        "Cervical Cancer": 26,
+        "Prostate Cancer": 27,
+        "Hypertension": 12062,
+        "Diabetes Mellitus": 4896,
+        "Stroke": 408,
+        "Kidney Related Diseases": 717,
+        "Chronic Kidney Disease_NCD": null
+    }
+}
