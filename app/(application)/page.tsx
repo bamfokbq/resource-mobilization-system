@@ -1,3 +1,4 @@
+import HealthStats from '@/components/chart_and_graphics/HealthStats';
 import NcdStats from '@/components/chart_and_graphics/NcdStats';
 import Assistance from '@/components/features/Assistance';
 import Contributions from '@/components/features/Contributions';
@@ -12,6 +13,7 @@ export default function Home() {
       <Features />
       <Contributions />
       <NcdStats />
+      <HealthStats />
       <ResourcesAction />
       <Assistance />
     </main>
