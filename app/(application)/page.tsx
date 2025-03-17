@@ -1,3 +1,4 @@
+import NcdStats from '@/components/chart_and_graphics/NcdStats';
 import Assistance from '@/components/features/Assistance';
 import Contributions from '@/components/features/Contributions';
 import Features from '@/components/features/Features';
@@ -10,6 +11,7 @@ export default function Home() {
       <LandingHero />
       <Features />
       <Contributions />
+      <NcdStats />
       <ResourcesAction />
       <Assistance />
     </main>
