@@ -1,0 +1,3142 @@
+[
+  {
+    "region": "Ahafo",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 1026
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 115
+          },
+          {
+            "level": "Polyclinic",
+            "total": 1
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 272
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 13
+          },
+          {
+            "level": "Health Centre",
+            "total": 263
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Sickle Cell Disease",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 150
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 75
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Prostate Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 200
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 50
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Cervical Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 180
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 60
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Breast Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 220
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 80
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Lymphoma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 130
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 40
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Hypertension",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 300
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 120
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Diabetes Mellitus",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 250
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 90
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Stroke",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 170
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 60
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Chronic Obstructed Pulmonary Disease (COPD)",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 140
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 50
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 160
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 70
+          },
+          {
+            "level": "Polyclinic",
+            "total": 0
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 0
+          },
+          {
+            "level": "District Hospital",
+            "total": 0
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 0
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Ashanti",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 1568
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 235
+          },
+          {
+            "level": "Clinic",
+            "total": 325
+          },
+          {
+            "level": "Polyclinic",
+            "total": 78
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 452
+          },
+          {
+            "level": "District Hospital",
+            "total": 546
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 380
+          },
+          {
+            "level": "CHPS",
+            "total": 42
+          },
+          {
+            "level": "Health Centre",
+            "total": 356
+          },
+          {
+            "level": "Maternity Home",
+            "total": 15
+          }
+        ]
+      },
+      {
+        "disease": "Sickle Cell Disease",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 327
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 114
+          },
+          {
+            "level": "Clinic",
+            "total": 89
+          },
+          {
+            "level": "Polyclinic",
+            "total": 25
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 142
+          },
+          {
+            "level": "District Hospital",
+            "total": 135
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 98
+          },
+          {
+            "level": "CHPS",
+            "total": 8
+          },
+          {
+            "level": "Health Centre",
+            "total": 45
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Prostate Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 312
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 98
+          },
+          {
+            "level": "Clinic",
+            "total": 65
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 87
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 125
+          },
+          {
+            "level": "CHPS",
+            "total": 5
+          },
+          {
+            "level": "Health Centre",
+            "total": 29
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Cervical Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 278
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 87
+          },
+          {
+            "level": "Clinic",
+            "total": 75
+          },
+          {
+            "level": "Polyclinic",
+            "total": 25
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 98
+          },
+          {
+            "level": "District Hospital",
+            "total": 76
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 105
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 35
+          },
+          {
+            "level": "Maternity Home",
+            "total": 12
+          }
+        ]
+      },
+      {
+        "disease": "Breast Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 345
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 110
+          },
+          {
+            "level": "Clinic",
+            "total": 98
+          },
+          {
+            "level": "Polyclinic",
+            "total": 32
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 125
+          },
+          {
+            "level": "District Hospital",
+            "total": 95
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 132
+          },
+          {
+            "level": "CHPS",
+            "total": 7
+          },
+          {
+            "level": "Health Centre",
+            "total": 42
+          },
+          {
+            "level": "Maternity Home",
+            "total": 15
+          }
+        ]
+      },
+      {
+        "disease": "Lymphoma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 189
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 76
+          },
+          {
+            "level": "Clinic",
+            "total": 52
+          },
+          {
+            "level": "Polyclinic",
+            "total": 15
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 65
+          },
+          {
+            "level": "District Hospital",
+            "total": 45
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 87
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 18
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Hypertension",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 1257
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 356
+          },
+          {
+            "level": "Clinic",
+            "total": 487
+          },
+          {
+            "level": "Polyclinic",
+            "total": 198
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 523
+          },
+          {
+            "level": "District Hospital",
+            "total": 678
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 287
+          },
+          {
+            "level": "CHPS",
+            "total": 156
+          },
+          {
+            "level": "Health Centre",
+            "total": 432
+          },
+          {
+            "level": "Maternity Home",
+            "total": 45
+          }
+        ]
+      },
+      {
+        "disease": "Diabetes Mellitus",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 876
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 298
+          },
+          {
+            "level": "Clinic",
+            "total": 345
+          },
+          {
+            "level": "Polyclinic",
+            "total": 156
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 432
+          },
+          {
+            "level": "District Hospital",
+            "total": 532
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 254
+          },
+          {
+            "level": "CHPS",
+            "total": 87
+          },
+          {
+            "level": "Health Centre",
+            "total": 321
+          },
+          {
+            "level": "Maternity Home",
+            "total": 21
+          }
+        ]
+      },
+      {
+        "disease": "Stroke",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 356
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 129
+          },
+          {
+            "level": "Clinic",
+            "total": 87
+          },
+          {
+            "level": "Polyclinic",
+            "total": 43
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 165
+          },
+          {
+            "level": "District Hospital",
+            "total": 187
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 154
+          },
+          {
+            "level": "CHPS",
+            "total": 12
+          },
+          {
+            "level": "Health Centre",
+            "total": 76
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Chronic Obstructed Pulmonary Disease (COPD)",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 287
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 98
+          },
+          {
+            "level": "Clinic",
+            "total": 76
+          },
+          {
+            "level": "Polyclinic",
+            "total": 35
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 102
+          },
+          {
+            "level": "District Hospital",
+            "total": 124
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 87
+          },
+          {
+            "level": "CHPS",
+            "total": 8
+          },
+          {
+            "level": "Health Centre",
+            "total": 54
+          },
+          {
+            "level": "Maternity Home",
+            "total": 1
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 243
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 87
+          },
+          {
+            "level": "Clinic",
+            "total": 65
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 95
+          },
+          {
+            "level": "District Hospital",
+            "total": 78
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 112
+          },
+          {
+            "level": "CHPS",
+            "total": 5
+          },
+          {
+            "level": "Health Centre",
+            "total": 32
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Bono",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 876
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 45
+          },
+          {
+            "level": "Clinic",
+            "total": 187
+          },
+          {
+            "level": "Polyclinic",
+            "total": 32
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 198
+          },
+          {
+            "level": "District Hospital",
+            "total": 356
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 65
+          },
+          {
+            "level": "Health Centre",
+            "total": 245
+          },
+          {
+            "level": "Maternity Home",
+            "total": 8
+          }
+        ]
+      },
+      {
+        "disease": "Sickle Cell Disease",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 178
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 21
+          },
+          {
+            "level": "Clinic",
+            "total": 65
+          },
+          {
+            "level": "Polyclinic",
+            "total": 12
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 65
+          },
+          {
+            "level": "District Hospital",
+            "total": 87
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 5
+          },
+          {
+            "level": "Health Centre",
+            "total": 32
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Prostate Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 165
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 18
+          },
+          {
+            "level": "Clinic",
+            "total": 45
+          },
+          {
+            "level": "Polyclinic",
+            "total": 8
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 45
+          },
+          {
+            "level": "District Hospital",
+            "total": 65
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 21
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Cervical Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 156
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 15
+          },
+          {
+            "level": "Clinic",
+            "total": 54
+          },
+          {
+            "level": "Polyclinic",
+            "total": 12
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 42
+          },
+          {
+            "level": "District Hospital",
+            "total": 58
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 0
+          },
+          {
+            "level": "Health Centre",
+            "total": 26
+          },
+          {
+            "level": "Maternity Home",
+            "total": 5
+          }
+        ]
+      },
+      {
+        "disease": "Breast Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 187
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 25
+          },
+          {
+            "level": "Clinic",
+            "total": 67
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 65
+          },
+          {
+            "level": "District Hospital",
+            "total": 78
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 35
+          },
+          {
+            "level": "Maternity Home",
+            "total": 8
+          }
+        ]
+      },
+      {
+        "disease": "Lymphoma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 98
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 12
+          },
+          {
+            "level": "Clinic",
+            "total": 32
+          },
+          {
+            "level": "Polyclinic",
+            "total": 8
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 35
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 1
+          },
+          {
+            "level": "Health Centre",
+            "total": 15
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Hypertension",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 675
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 87
+          },
+          {
+            "level": "Clinic",
+            "total": 287
+          },
+          {
+            "level": "Polyclinic",
+            "total": 98
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 267
+          },
+          {
+            "level": "District Hospital",
+            "total": 398
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 87
+          },
+          {
+            "level": "Health Centre",
+            "total": 243
+          },
+          {
+            "level": "Maternity Home",
+            "total": 18
+          }
+        ]
+      },
+      {
+        "disease": "Diabetes Mellitus",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 532
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 65
+          },
+          {
+            "level": "Clinic",
+            "total": 198
+          },
+          {
+            "level": "Polyclinic",
+            "total": 76
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 187
+          },
+          {
+            "level": "District Hospital",
+            "total": 276
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 34
+          },
+          {
+            "level": "Health Centre",
+            "total": 178
+          },
+          {
+            "level": "Maternity Home",
+            "total": 9
+          }
+        ]
+      },
+      {
+        "disease": "Stroke",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 187
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 28
+          },
+          {
+            "level": "Clinic",
+            "total": 65
+          },
+          {
+            "level": "Polyclinic",
+            "total": 21
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 76
+          },
+          {
+            "level": "District Hospital",
+            "total": 98
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 5
+          },
+          {
+            "level": "Health Centre",
+            "total": 43
+          },
+          {
+            "level": "Maternity Home",
+            "total": 1
+          }
+        ]
+      },
+      {
+        "disease": "Chronic Obstructed Pulmonary Disease (COPD)",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 154
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 21
+          },
+          {
+            "level": "Clinic",
+            "total": 54
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 43
+          },
+          {
+            "level": "District Hospital",
+            "total": 76
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 32
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 145
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 18
+          },
+          {
+            "level": "Clinic",
+            "total": 43
+          },
+          {
+            "level": "Polyclinic",
+            "total": 12
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 48
+          },
+          {
+            "level": "District Hospital",
+            "total": 56
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 28
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Bono East",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 742
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 165
+          },
+          {
+            "level": "Polyclinic",
+            "total": 28
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 156
+          },
+          {
+            "level": "District Hospital",
+            "total": 287
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 45
+          },
+          {
+            "level": "Health Centre",
+            "total": 198
+          },
+          {
+            "level": "Maternity Home",
+            "total": 5
+          }
+        ]
+      },
+      {
+        "disease": "Sickle Cell Disease",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 145
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 54
+          },
+          {
+            "level": "Polyclinic",
+            "total": 8
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 43
+          },
+          {
+            "level": "District Hospital",
+            "total": 67
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 25
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Prostate Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 132
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 38
+          },
+          {
+            "level": "Polyclinic",
+            "total": 7
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 35
+          },
+          {
+            "level": "District Hospital",
+            "total": 48
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 21
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Cervical Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 145
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 54
+          },
+          {
+            "level": "Polyclinic",
+            "total": 8
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 43
+          },
+          {
+            "level": "District Hospital",
+            "total": 67
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 25
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Breast Cancer",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 187
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 25
+          },
+          {
+            "level": "Clinic",
+            "total": 67
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 65
+          },
+          {
+            "level": "District Hospital",
+            "total": 78
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 35
+          },
+          {
+            "level": "Maternity Home",
+            "total": 8
+          }
+        ]
+      },
+      {
+        "disease": "Lymphoma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 98
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 12
+          },
+          {
+            "level": "Clinic",
+            "total": 32
+          },
+          {
+            "level": "Polyclinic",
+            "total": 8
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 35
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 1
+          },
+          {
+            "level": "Health Centre",
+            "total": 15
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Hypertension",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 675
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 87
+          },
+          {
+            "level": "Clinic",
+            "total": 287
+          },
+          {
+            "level": "Polyclinic",
+            "total": 98
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 267
+          },
+          {
+            "level": "District Hospital",
+            "total": 398
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 87
+          },
+          {
+            "level": "Health Centre",
+            "total": 243
+          },
+          {
+            "level": "Maternity Home",
+            "total": 18
+          }
+        ]
+      },
+      {
+        "disease": "Diabetes Mellitus",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 532
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 65
+          },
+          {
+            "level": "Clinic",
+            "total": 198
+          },
+          {
+            "level": "Polyclinic",
+            "total": 76
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 187
+          },
+          {
+            "level": "District Hospital",
+            "total": 276
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 34
+          },
+          {
+            "level": "Health Centre",
+            "total": 178
+          },
+          {
+            "level": "Maternity Home",
+            "total": 9
+          }
+        ]
+      },
+      {
+        "disease": "Stroke",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 187
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 28
+          },
+          {
+            "level": "Clinic",
+            "total": 65
+          },
+          {
+            "level": "Polyclinic",
+            "total": 21
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 76
+          },
+          {
+            "level": "District Hospital",
+            "total": 98
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 5
+          },
+          {
+            "level": "Health Centre",
+            "total": 43
+          },
+          {
+            "level": "Maternity Home",
+            "total": 1
+          }
+        ]
+      },
+      {
+        "disease": "Chronic Obstructed Pulmonary Disease (COPD)",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 154
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 21
+          },
+          {
+            "level": "Clinic",
+            "total": 54
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 43
+          },
+          {
+            "level": "District Hospital",
+            "total": 76
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 3
+          },
+          {
+            "level": "Health Centre",
+            "total": 32
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 145
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 18
+          },
+          {
+            "level": "Clinic",
+            "total": 43
+          },
+          {
+            "level": "Polyclinic",
+            "total": 12
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 48
+          },
+          {
+            "level": "District Hospital",
+            "total": 56
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 28
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Central",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Eastern",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Greater Accra",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "North East",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Northern",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Oti",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Savannah",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Upper East",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Upper West",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Volta",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Western",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "region": "Western North",
+    "diseases": [
+      {
+        "disease": "Asthma",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 587
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 145
+          },
+          {
+            "level": "Polyclinic",
+            "total": 18
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 120
+          },
+          {
+            "level": "District Hospital",
+            "total": 223
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 28
+          },
+          {
+            "level": "Health Centre",
+            "total": 165
+          },
+          {
+            "level": "Maternity Home",
+            "total": 3
+          }
+        ]
+      },
+      {
+        "disease": "Kidney Related Diseases",
+        "levels": [
+          {
+            "level": "Hospital",
+            "total": 123
+          },
+          {
+            "level": "University Hospital/Clinic",
+            "total": 0
+          },
+          {
+            "level": "Clinic",
+            "total": 34
+          },
+          {
+            "level": "Polyclinic",
+            "total": 5
+          },
+          {
+            "level": "Regional Hospital",
+            "total": 28
+          },
+          {
+            "level": "District Hospital",
+            "total": 42
+          },
+          {
+            "level": "Teaching Hospital",
+            "total": 0
+          },
+          {
+            "level": "CHPS",
+            "total": 2
+          },
+          {
+            "level": "Health Centre",
+            "total": 19
+          },
+          {
+            "level": "Maternity Home",
+            "total": 0
+          }
+        ]
+      }
+    ]
+  }
+]
