@@ -1,5 +1,5 @@
 import HealthStats from '@/components/chart_and_graphics/HealthStats';
-// import NcdStats from '@/components/chart_and_graphics/NcdStats';
+import NcdStats from '@/components/chart_and_graphics/NcdStats';
 import Assistance from '@/components/features/Assistance';
 import Contributions from '@/components/features/Contributions';
 import Features from '@/components/features/Features';
@@ -12,7 +12,7 @@ export default function Home() {
       <LandingHero />
       <Features />
       <Contributions />
-      {/* <NcdStats /> */}
+      <NcdStats />
       <HealthStats />
       <ResourcesAction />
       <Assistance />
