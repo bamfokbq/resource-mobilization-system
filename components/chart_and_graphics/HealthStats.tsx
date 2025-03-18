@@ -323,7 +323,7 @@ export default function HealthStats() {
     switch(chartType) {
       case 'pie':
         return (
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={500}>
             <PieChart>
               <Pie
                 data={filteredData}
@@ -347,50 +347,65 @@ export default function HealthStats() {
         );
       case 'line':
         return (
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={500}>
             <LineChart
               data={filteredData}
               margin={{
                 top: 5,
                 right: 30,
                 left: 20,
-                bottom: 5,
+                bottom: 70, // Increased bottom margin for vertical labels
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis
+                dataKey="name"
+                angle={-90}
+                textAnchor="end"
+                height={60}
+                tick={{ fontSize: 12 }}
+              />
               <YAxis />
               <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
               <Legend />
-              {filteredData.map((entry, index) => (
-                <Line 
-                  key={`line-${entry.name}`}
-                  type="monotone" 
-                  dataKey="value" 
-                  name={entry.name}
-                  data={[entry]}
-                  stroke={regionColorMap[entry.name] || COLORS[index % COLORS.length]} 
-                  activeDot={{ r: 8 }}
-                />
-              ))}
+              <Line 
+                type="monotone"
+                dataKey="value" 
+                name="Cases"
+                stroke="#8884d8"
+                strokeWidth={2}
+                dot={{
+                  stroke: '#8884d8',
+                  strokeWidth: 2,
+                  r: 6,
+                  fill: 'white'
+                }}
+                activeDot={{ r: 8 }}
+              />
             </LineChart>
           </ResponsiveContainer>
         );
       case 'bar':
       default:
         return (
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={500}>
             <BarChart
               data={filteredData}
               margin={{
                 top: 5,
                 right: 30,
                 left: 20,
-                bottom: 5,
+                bottom: 70, // Increased bottom margin to accommodate vertical labels
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis
+                dataKey="name"
+                angle={-90}
+                textAnchor="end"
+                height={60} // Increased height for the labels
+                tick={{ fontSize: 12 }} // Optional: control font size
+              />
               <YAxis />
               <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
               <Legend />
@@ -574,7 +589,7 @@ export default function HealthStats() {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <a href="mailto:info@ghsict.gov" className="text-sm text-blue-600 hover:underline">info@ghsict.gov</a>
+                <a href="mailto:info@ghsict.gov" className="text-sm text-blue-600 hover:underline">info@ghs.gov.gh</a>
               </div>
               <div className="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
