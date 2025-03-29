@@ -354,7 +354,7 @@ export default function HealthStats() {
                 top: 5,
                 right: 30,
                 left: 20,
-                bottom: 70, // Increased bottom margin for vertical labels
+                bottom: 70
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -526,7 +526,7 @@ export default function HealthStats() {
   };
 
   return (
-    <section className="w-full max-w-7xl mx-auto p-6 md:p-10 my-8 md:my-16 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 shadow-lg">
+    <section className="w-full max-w-7xl mx-auto p-6 md:p-10 my-8 md:my-16 bg-gradient-to-br from-gray-50 to-gray-100">
       <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 border-b pb-4 border-gray-200">
         Regional Distribution of NCDs for 2024
       </h2>
