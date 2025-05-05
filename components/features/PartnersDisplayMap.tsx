@@ -80,19 +80,19 @@ export default function PartnersDisplayMap() {
     );
 
     return (
-        <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-10 md:p-20 relative">
+        <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-6 md:p-16 relative">
             <div className="absolute inset-0 bg-pattern opacity-5 z-0"></div>
             <div className="relative z-10">
                 <div className="mb-8">
                     <h2 className="text-3xl font-bold text-navy-blue mb-2">Partners by Region</h2>
                     <div className="w-20 h-1 bg-gradient-to-r from-navy-blue to-mode-blue rounded-full"></div>
                 </div>
-                <div className="flex flex-col md:flex-row gap-6" style={{ minHeight: '70vh' }}>
+                <div className="flex flex-col md:flex-row gap-6" style={{ height: '600px' }}>
                     {/* Map Panel */}
                     <div
                         className="flex-1 bg-white rounded-lg shadow-md overflow-hidden"
                         style={{
-                            height: '70vh',
+                            height: '600px',
                             minWidth: 0,
                             display: 'flex',
                             flexDirection: 'column',
@@ -101,12 +101,12 @@ export default function PartnersDisplayMap() {
                     >
                         {mounted && (
                             <MapContainer
-                                center={[2.9, -1.0]}
+                                center={[4.9, -0.8]}
                                 zoom={7}
                                 style={{ height: '100%', width: '100%' }}
                                 maxBounds={ghanaBounds}
                                 minZoom={6}
-                                maxZoom={8}
+                                maxZoom={7}
                                 boundsOptions={{ padding: [5, 5] }}
                                 zoomControl={false}
                                 scrollWheelZoom={false}
