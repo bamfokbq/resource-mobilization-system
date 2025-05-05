@@ -78,6 +78,8 @@ export default function PartnersDisplayMap() {
         createOnEachFeature(setSelectedRegion, setPopupPosition, selectedRegion),
         [setSelectedRegion, setPopupPosition, selectedRegion]
     );
+    console.log(regionPartners);
+
 
     return (
         <section className="bg-navy-blue min-h-screen text-white">
@@ -92,7 +94,13 @@ export default function PartnersDisplayMap() {
                         minZoom={6}
                         maxZoom={8}
                         boundsOptions={{ padding: [5, 5] }}
-                        zoomControl={true}
+                        zoomControl={false}
+                        scrollWheelZoom={false}
+                        doubleClickZoom={false}
+                        dragging={true}
+                        touchZoom={false}
+                        boxZoom={false}
+                        keyboard={false}
                     >
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
