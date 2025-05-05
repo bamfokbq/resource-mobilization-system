@@ -240,6 +240,10 @@ export default function PartnersDisplayMap() {
                 .leaflet-interactive[style*="stroke: rgb(255, 152, 0)"] {
                     filter: drop-shadow(0 0 6px #ff9800);
                 }
+                /* Remove outline/box on region click/focus */
+                .leaflet-interactive:focus {
+                    outline: none !important;
+                }
             `}</style>
         </section >
     );
