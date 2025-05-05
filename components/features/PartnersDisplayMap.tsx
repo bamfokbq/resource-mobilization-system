@@ -80,132 +80,135 @@ export default function PartnersDisplayMap() {
     );
 
     return (
-        <section className="bg-navy-blue/20 p-10 md:p-20 text-white">
-            <h2 className="text-2xl font-bold mb-4">Partners by Region</h2>
-            <div className="flex flex-col md:flex-row gap-6" style={{ minHeight: '70vh' }}>
-                {/* Map Panel */}
-                <div
-                    className="flex-1"
-                    style={{
-                        height: '70vh',
-                        minWidth: 0,
-                        borderRadius: 8,
-                        overflow: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                    }}
-                >
-                    {mounted && (
-                        <MapContainer
-                            center={[2.9, -1.0]}
-                            zoom={7}
-                            style={{ height: '100%', width: '100%' }}
-                            maxBounds={ghanaBounds}
-                            minZoom={6}
-                            maxZoom={8}
-                            boundsOptions={{ padding: [5, 5] }}
-                            zoomControl={false}
-                            scrollWheelZoom={false}
-                            doubleClickZoom={false}
-                            dragging={true}
-                            touchZoom={false}
-                            boxZoom={false}
-                            keyboard={false}
-                        >
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                className="map-tiles"
-                            />
-                            <GeoJSON
-                                key={selectedRegion || 'none'}
-                                data={geoData as FeatureCollection}
-                                onEachFeature={onEachFeature}
-                                style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
-                            />
-                            {Object.entries(regionLabels).map(([region, position]) => {
-                                const total = getRegionPartnerCount(region);
-                                return (
-                                    <Marker
-                                        key={region}
-                                        position={position}
-                                        icon={divIcon({
-                                            className: 'region-label',
-                                            html: `<div class="label-container">
-                                                    <span class="region-total">${total}</span>
-                                                   </div>`,
-                                            iconSize: [40, 20],
-                                            iconAnchor: [20, 10]
-                                        })}
-                                    />
-                                );
-                            })}
-                            {popupPosition && selectedRegion && (
-                                <Marker position={popupPosition} icon={divIcon({ className: 'region-label', html: '', iconSize: [1, 1] })}>
-                                    <Popup
-                                        position={popupPosition}
-                                        eventHandlers={{
-                                            remove: () => setSelectedRegion(null),
-                                        }}
-                                    >
-                                        <div>
-                                            <h3 className="font-bold text-lg mb-2">{selectedRegion}</h3>
-                                            {regionPartners.length > 0 ? (
-                                                <ul className="text-black max-h-48 overflow-y-auto">
-                                                    {regionPartners.map((p, i) => (
-                                                        <li key={i} className="mb-2 border-b pb-1">
-                                                            <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
-                                                            {p["Activity Area"] && <div>Area: {p["Activity Area"]}</div>}
-                                                            {p["District of Operation"] && <div>District: {p["District of Operation"]}</div>}
-                                                            {p["No. of Years in District"] && <div>Years: {p["No. of Years in District"]}</div>}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            ) : (
-                                                <div className="text-black">No partners found for this region.</div>
-                                            )}
-                                        </div>
-                                    </Popup>
-                                </Marker>
-                            )}
-                        </MapContainer>
-                    )}
+        <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-10 md:p-20 relative">
+            <div className="absolute inset-0 bg-pattern opacity-5 z-0"></div>
+            <div className="relative z-10">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-navy-blue mb-2">Partners by Region</h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-navy-blue to-mode-blue rounded-full"></div>
                 </div>
-                {/* Data Panel */}
-                <div
-                    className="bg-white text-black rounded-lg shadow-lg p-0 overflow-hidden"
-                    style={{ flex: '0 0 60%', maxWidth: '60%', minWidth: 0 }}
-                >
-                    <div className="h-full flex flex-col">
-                        {/* Panel Header */}
-                        <div className="bg-gradient-to-r from-navy-blue to-mode-blue text-white p-4">
-                            {selectedRegion ? (
-                                <div className="flex items-center justify-between">
-                                    <h3 className="font-bold text-xl flex items-center">
-                                        <span className="inline-block mr-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                <div className="flex flex-col md:flex-row gap-6" style={{ minHeight: '70vh' }}>
+                    {/* Map Panel */}
+                    <div
+                        className="flex-1 bg-white rounded-lg shadow-md overflow-hidden"
+                        style={{
+                            height: '70vh',
+                            minWidth: 0,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        {mounted && (
+                            <MapContainer
+                                center={[2.9, -1.0]}
+                                zoom={7}
+                                style={{ height: '100%', width: '100%' }}
+                                maxBounds={ghanaBounds}
+                                minZoom={6}
+                                maxZoom={8}
+                                boundsOptions={{ padding: [5, 5] }}
+                                zoomControl={false}
+                                scrollWheelZoom={false}
+                                doubleClickZoom={false}
+                                dragging={true}
+                                touchZoom={false}
+                                boxZoom={false}
+                                keyboard={false}
+                            >
+                                <TileLayer
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    className="map-tiles"
+                                />
+                                <GeoJSON
+                                    key={selectedRegion || 'none'}
+                                    data={geoData as FeatureCollection}
+                                    onEachFeature={onEachFeature}
+                                    style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
+                                />
+                                {Object.entries(regionLabels).map(([region, position]) => {
+                                    const total = getRegionPartnerCount(region);
+                                    return (
+                                        <Marker
+                                            key={region}
+                                            position={position}
+                                            icon={divIcon({
+                                                className: 'region-label',
+                                                html: `<div class="label-container">
+                                                        <span class="region-total">${total}</span>
+                                                       </div>`,
+                                                iconSize: [40, 20],
+                                                iconAnchor: [20, 10]
+                                            })}
+                                        />
+                                    );
+                                })}
+                                {popupPosition && selectedRegion && (
+                                    <Marker position={popupPosition} icon={divIcon({ className: 'region-label', html: '', iconSize: [1, 1] })}>
+                                        <Popup
+                                            position={popupPosition}
+                                            eventHandlers={{
+                                                remove: () => setSelectedRegion(null),
+                                            }}
+                                        >
+                                            <div>
+                                                <h3 className="font-bold text-lg mb-2">{selectedRegion}</h3>
+                                                {regionPartners.length > 0 ? (
+                                                    <ul className="text-black max-h-48 overflow-y-auto">
+                                                        {regionPartners.map((p, i) => (
+                                                            <li key={i} className="mb-2 border-b pb-1">
+                                                                <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
+                                                                {p["Activity Area"] && <div>Area: {p["Activity Area"]}</div>}
+                                                                {p["District of Operation"] && <div>District: {p["District of Operation"]}</div>}
+                                                                {p["No. of Years in District"] && <div>Years: {p["No. of Years in District"]}</div>}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    <div className="text-black">No partners found for this region.</div>
+                                                )}
+                                            </div>
+                                        </Popup>
+                                    </Marker>
+                                )}
+                            </MapContainer>
+                        )}
+                    </div>
+                    {/* Data Panel */}
+                    <div
+                        className="bg-white text-black rounded-lg shadow-lg p-0 overflow-hidden"
+                        style={{ flex: '0 0 60%', maxWidth: '60%', minWidth: 0 }}
+                    >
+                        <div className="h-full flex flex-col">
+                            {/* Panel Header */}
+                            <div className="bg-gradient-to-r from-navy-blue to-mode-blue text-white p-4">
+                                {selectedRegion ? (
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="font-bold text-xl flex items-center">
+                                            <span className="inline-block mr-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                                </svg>
+                                            </span>
+                                            {selectedRegion}
+                                        </h3>
+                                        <button
+                                            className="flex items-center text-sm bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1.5 rounded-full transition-all duration-200"
+                                            onClick={() => setSelectedRegion(null)}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                             </svg>
-                                        </span>
-                                        {selectedRegion}
-                                    </h3>
-                                    <button
-                                        className="flex items-center text-sm bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1.5 rounded-full transition-all duration-200"
-                                        onClick={() => setSelectedRegion(null)}
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                        </svg>
-                                        All Regions
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="flex items-center justify-between">
-                                    <h3 className="font-bold text-xl flex items-center">
-                                        <span className="inline-block mr-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                            All Regions
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="font-bold text-xl flex items-center">
+                                            <span className="inline-block mr-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
                                             </svg>
                                         </span>
                                         Partners Overview
@@ -293,38 +296,38 @@ export default function PartnersDisplayMap() {
                                 </div>
                             ) : (
                                 <div>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                            {Object.keys(regionLabels).map(region => {
-                                                const count = getRegionPartnerCount(region);
-                                                return (
-                                                    <div
-                                                        key={region}
-                                                        className={`p-3 rounded-lg cursor-pointer transition-all duration-200 transform hover:-translate-y-1 ${count > 0 ? 'bg-gradient-to-br from-light-blue/30 to-light-blue/50 hover:shadow-md' : 'bg-ligher-gray hover:bg-ligher-gray/80'
-                                                            }`}
-                                                        onClick={() => {
-                                                            setSelectedRegion(region);
-                                                            setPopupPosition(regionLabels[region]);
-                                                        }}
-                                                    >
-                                                        <div className="flex flex-col h-full">
-                                                            <div className="text-sm font-medium text-dark-gray mb-1">Region</div>
-                                                            <div className="font-semibold text-navy-blue mb-2 line-clamp-1">{region}</div>
-                                                            <div className="mt-auto pt-2 flex items-center justify-between">
-                                                                <div className={`text-sm flex items-center ${count > 0 ? 'text-mode-blue' : 'text-dark-gray/50'}`}>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                                    </svg>
-                                                                    Partners
+                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                                {Object.keys(regionLabels).map(region => {
+                                                    const count = getRegionPartnerCount(region);
+                                                    return (
+                                                        <div
+                                                            key={region}
+                                                            className={`p-3 rounded-lg cursor-pointer transition-all duration-200 transform hover:-translate-y-1 ${count > 0 ? 'bg-gradient-to-br from-light-blue/30 to-light-blue/50 hover:shadow-md' : 'bg-ligher-gray hover:bg-ligher-gray/80'
+                                                                }`}
+                                                            onClick={() => {
+                                                                setSelectedRegion(region);
+                                                                setPopupPosition(regionLabels[region]);
+                                                            }}
+                                                        >
+                                                            <div className="flex flex-col h-full">
+                                                                <div className="text-sm font-medium text-dark-gray mb-1">Region</div>
+                                                                <div className="font-semibold text-navy-blue mb-2 line-clamp-1">{region}</div>
+                                                                <div className="mt-auto pt-2 flex items-center justify-between">
+                                                                    <div className={`text-sm flex items-center ${count > 0 ? 'text-mode-blue' : 'text-dark-gray/50'}`}>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                                        </svg>
+                                                                        Partners
+                                                                    </div>
+                                                                    <span className={`inline-flex items-center justify-center rounded-full w-6 h-6 text-xs font-semibold ${count > 0 ? 'bg-navy-blue text-white' : 'bg-ligher-gray text-dark-gray/60'
+                                                                        }`}>
+                                                                        {count}
+                                                                    </span>
                                                                 </div>
-                                                                <span className={`inline-flex items-center justify-center rounded-full w-6 h-6 text-xs font-semibold ${count > 0 ? 'bg-navy-blue text-white' : 'bg-ligher-gray text-dark-gray/60'
-                                                                    }`}>
-                                                                    {count}
-                                                                </span>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                );
-                                            })}
+                                                    );
+                                                })}
                                     </div>
                                 </div>
                             )}
@@ -484,7 +487,12 @@ export default function PartnersDisplayMap() {
                 .grid > div:nth-child(n+6) {
                     animation-delay: 0.25s;
                 }
+                
+                .bg-pattern {
+                    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23223b67' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                }
             `}</style>
-        </section >
+            </div>
+        </section>
     );
 }
