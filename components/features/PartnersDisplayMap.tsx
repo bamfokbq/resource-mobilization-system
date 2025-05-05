@@ -83,62 +83,6 @@ export default function PartnersDisplayMap() {
         <section className="bg-navy-blue min-h-screen text-white">
             <h2 className="text-2xl font-bold mb-4">Partners by Region</h2>
             <div className="flex flex-col md:flex-row gap-6" style={{ minHeight: '70vh' }}>
-                {/* Data Panel */}
-                <div
-                    className="bg-white text-black rounded-lg shadow p-4 overflow-y-auto"
-                    style={{ flex: '0 0 60%', maxWidth: '60%', minWidth: 0 }}
-                >
-                    {selectedRegion ? (
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <h3 className="font-bold text-xl">{selectedRegion}</h3>
-                                <button
-                                    className="text-xs text-blue-600 underline"
-                                    onClick={() => setSelectedRegion(null)}
-                                >
-                                    Back
-                                </button>
-                            </div>
-                            {regionPartners.length > 0 ? (
-                                <ul className="max-h-[60vh] overflow-y-auto">
-                                    {regionPartners.map((p, i) => (
-                                        <li key={i} className="mb-3 pb-2 border-b">
-                                            <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
-                                            {p["Activity Area"] && <div className="text-sm">Area: {p["Activity Area"]}</div>}
-                                            {p["District of Operation"] && <div className="text-sm">District: {p["District of Operation"]}</div>}
-                                            {p["No. of Years in District"] && <div className="text-sm">Years: {p["No. of Years in District"]}</div>}
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div>No partners found for this region.</div>
-                            )}
-                        </div>
-                    ) : (
-                        <div>
-                            <h3 className="font-bold text-lg mb-2">Regions Overview</h3>
-                            <ul className="divide-y">
-                                {Object.keys(regionLabels).map(region => (
-                                    <li
-                                        key={region}
-                                        className="py-2 cursor-pointer hover:bg-blue-50 rounded transition"
-                                        onClick={() => {
-                                            setSelectedRegion(region);
-                                            setPopupPosition(regionLabels[region]);
-                                        }}
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <span className="font-medium">{region}</span>
-                                            <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold">
-                                                {getRegionPartnerCount(region)}
-                                            </span>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
                 {/* Map Panel */}
                 <div
                     className="flex-1"
@@ -228,6 +172,63 @@ export default function PartnersDisplayMap() {
                         </MapContainer>
                     )}
                 </div>
+                {/* Data Panel */}
+                <div
+                    className="bg-white text-black rounded-lg shadow p-4 overflow-y-auto"
+                    style={{ flex: '0 0 60%', maxWidth: '60%', minWidth: 0 }}
+                >
+                    {selectedRegion ? (
+                        <div>
+                            <div className="flex items-center justify-between mb-2">
+                                <h3 className="font-bold text-xl">{selectedRegion}</h3>
+                                <button
+                                    className="text-xs text-blue-600 underline"
+                                    onClick={() => setSelectedRegion(null)}
+                                >
+                                    Back
+                                </button>
+                            </div>
+                            {regionPartners.length > 0 ? (
+                                <ul className="max-h-[60vh] overflow-y-auto">
+                                    {regionPartners.map((p, i) => (
+                                        <li key={i} className="mb-3 pb-2 border-b">
+                                            <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
+                                            {p["Activity Area"] && <div className="text-sm">Area: {p["Activity Area"]}</div>}
+                                            {p["District of Operation"] && <div className="text-sm">District: {p["District of Operation"]}</div>}
+                                            {p["No. of Years in District"] && <div className="text-sm">Years: {p["No. of Years in District"]}</div>}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div>No partners found for this region.</div>
+                            )}
+                        </div>
+                    ) : (
+                        <div>
+                            <h3 className="font-bold text-lg mb-2">Regions Overview</h3>
+                            <ul className="divide-y">
+                                {Object.keys(regionLabels).map(region => (
+                                    <li
+                                        key={region}
+                                        className="py-2 cursor-pointer hover:bg-blue-50 rounded transition"
+                                        onClick={() => {
+                                            setSelectedRegion(region);
+                                            setPopupPosition(regionLabels[region]);
+                                        }}
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-medium">{region}</span>
+                                            <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold">
+                                                {getRegionPartnerCount(region)}
+                                            </span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+
             </div>
             <style>{`
                 .map-tiles {
