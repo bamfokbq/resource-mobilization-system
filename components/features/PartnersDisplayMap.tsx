@@ -270,7 +270,7 @@ export default function PartnersDisplayMap() {
                 .stat-value {
                     font-size: 16px;
                     font-weight: 700;
-                    color: #3388ff;
+                    codiv: #3388ff;
                 }
                 .stat-label {
                     font-size: 11px;
