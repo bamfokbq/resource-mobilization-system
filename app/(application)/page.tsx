@@ -4,6 +4,7 @@ import Assistance from '@/components/features/Assistance';
 import Contributions from '@/components/features/Contributions';
 import Features from '@/components/features/Features';
 import LandingHero from '@/components/features/LandingHero';
+import PartnersDisplayMap from '@/components/features/PartnersDisplayMap';
 import ResourcesAction from '@/components/features/ResourcesAction';
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
     <main>
       <LandingHero />
       <Features />
+      <PartnersDisplayMap />
       <Contributions />
       {/* <NcdStats /> */}
       <HealthStats />
