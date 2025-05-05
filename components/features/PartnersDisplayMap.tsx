@@ -78,88 +78,156 @@ export default function PartnersDisplayMap() {
         createOnEachFeature(setSelectedRegion, setPopupPosition, selectedRegion),
         [setSelectedRegion, setPopupPosition, selectedRegion]
     );
-    console.log(regionPartners);
-
 
     return (
         <section className="bg-navy-blue min-h-screen text-white">
             <h2 className="text-2xl font-bold mb-4">Partners by Region</h2>
-            <div style={{ height: '70vh', width: '100%', borderRadius: 8, overflow: 'hidden' }}>
-                {mounted && (
-                    <MapContainer
-                        center={[7.9, -1.0]}
-                        zoom={7}
-                        style={{ height: '100%', width: '100%' }}
-                        maxBounds={ghanaBounds}
-                        minZoom={6}
-                        maxZoom={8}
-                        boundsOptions={{ padding: [5, 5] }}
-                        zoomControl={false}
-                        scrollWheelZoom={false}
-                        doubleClickZoom={false}
-                        dragging={true}
-                        touchZoom={false}
-                        boxZoom={false}
-                        keyboard={false}
-                    >
-                        <TileLayer
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            className="map-tiles"
-                        />
-                        <GeoJSON
-                            key={selectedRegion || 'none'} // <-- force remount on selection
-                            data={geoData as FeatureCollection}
-                            onEachFeature={onEachFeature}
-                            style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
-                        />
-                        {Object.entries(regionLabels).map(([region, position]) => {
-                            const total = getRegionPartnerCount(region);
-                            return (
-                                <Marker
-                                    key={region}
-                                    position={position}
-                                    icon={divIcon({
-                                        className: 'region-label',
-                                        html: `<div class="label-container">
-                                                <span class="region-total">${total}</span>
-                                               </div>`,
-                                        iconSize: [40, 20],
-                                        iconAnchor: [20, 10]
-                                    })}
-                                />
-                            );
-                        })}
-                        {popupPosition && selectedRegion && (
-                            <Marker position={popupPosition} icon={divIcon({ className: 'region-label', html: '', iconSize: [1, 1] })}>
-                                <Popup
-                                    position={popupPosition}
-                                    eventHandlers={{
-                                        remove: () => setSelectedRegion(null),
-                                    }}
+            <div className="flex flex-col md:flex-row gap-6" style={{ minHeight: '70vh' }}>
+                {/* Data Panel */}
+                <div
+                    className="bg-white text-black rounded-lg shadow p-4 overflow-y-auto"
+                    style={{ flex: '0 0 60%', maxWidth: '60%', minWidth: 0 }}
+                >
+                    {selectedRegion ? (
+                        <div>
+                            <div className="flex items-center justify-between mb-2">
+                                <h3 className="font-bold text-xl">{selectedRegion}</h3>
+                                <button
+                                    className="text-xs text-blue-600 underline"
+                                    onClick={() => setSelectedRegion(null)}
                                 >
-                                    <div>
-                                        <h3 className="font-bold text-lg mb-2">{selectedRegion}</h3>
-                                        {regionPartners.length > 0 ? (
-                                            <ul className="text-black max-h-48 overflow-y-auto">
-                                                {regionPartners.map((p, i) => (
-                                                    <li key={i} className="mb-2 border-b pb-1">
-                                                        <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
-                                                        {p["Activity Area"] && <div>Area: {p["Activity Area"]}</div>}
-                                                        {p["District of Operation"] && <div>District: {p["District of Operation"]}</div>}
-                                                        {p["No. of Years in District"] && <div>Years: {p["No. of Years in District"]}</div>}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        ) : (
-                                            <div className="text-black">No partners found for this region.</div>
-                                        )}
-                                    </div>
-                                </Popup>
-                            </Marker>
-                        )}
-                    </MapContainer>
-                )}
+                                    Back
+                                </button>
+                            </div>
+                            {regionPartners.length > 0 ? (
+                                <ul className="max-h-[60vh] overflow-y-auto">
+                                    {regionPartners.map((p, i) => (
+                                        <li key={i} className="mb-3 pb-2 border-b">
+                                            <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
+                                            {p["Activity Area"] && <div className="text-sm">Area: {p["Activity Area"]}</div>}
+                                            {p["District of Operation"] && <div className="text-sm">District: {p["District of Operation"]}</div>}
+                                            {p["No. of Years in District"] && <div className="text-sm">Years: {p["No. of Years in District"]}</div>}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div>No partners found for this region.</div>
+                            )}
+                        </div>
+                    ) : (
+                        <div>
+                            <h3 className="font-bold text-lg mb-2">Regions Overview</h3>
+                            <ul className="divide-y">
+                                {Object.keys(regionLabels).map(region => (
+                                    <li
+                                        key={region}
+                                        className="py-2 cursor-pointer hover:bg-blue-50 rounded transition"
+                                        onClick={() => {
+                                            setSelectedRegion(region);
+                                            setPopupPosition(regionLabels[region]);
+                                        }}
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-medium">{region}</span>
+                                            <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold">
+                                                {getRegionPartnerCount(region)}
+                                            </span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+                {/* Map Panel */}
+                <div
+                    className="flex-1"
+                    style={{
+                        height: '70vh',
+                        minWidth: 0,
+                        borderRadius: 8,
+                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                    }}
+                >
+                    {mounted && (
+                        <MapContainer
+                            center={[2.9, -1.0]}
+                            zoom={7}
+                            style={{ height: '100%', width: '100%' }}
+                            maxBounds={ghanaBounds}
+                            minZoom={6}
+                            maxZoom={8}
+                            boundsOptions={{ padding: [5, 5] }}
+                            zoomControl={false}
+                            scrollWheelZoom={false}
+                            doubleClickZoom={false}
+                            dragging={true}
+                            touchZoom={false}
+                            boxZoom={false}
+                            keyboard={false}
+                        >
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                className="map-tiles"
+                            />
+                            <GeoJSON
+                                key={selectedRegion || 'none'}
+                                data={geoData as FeatureCollection}
+                                onEachFeature={onEachFeature}
+                                style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
+                            />
+                            {Object.entries(regionLabels).map(([region, position]) => {
+                                const total = getRegionPartnerCount(region);
+                                return (
+                                    <Marker
+                                        key={region}
+                                        position={position}
+                                        icon={divIcon({
+                                            className: 'region-label',
+                                            html: `<div class="label-container">
+                                                    <span class="region-total">${total}</span>
+                                                   </div>`,
+                                            iconSize: [40, 20],
+                                            iconAnchor: [20, 10]
+                                        })}
+                                    />
+                                );
+                            })}
+                            {popupPosition && selectedRegion && (
+                                <Marker position={popupPosition} icon={divIcon({ className: 'region-label', html: '', iconSize: [1, 1] })}>
+                                    <Popup
+                                        position={popupPosition}
+                                        eventHandlers={{
+                                            remove: () => setSelectedRegion(null),
+                                        }}
+                                    >
+                                        <div>
+                                            <h3 className="font-bold text-lg mb-2">{selectedRegion}</h3>
+                                            {regionPartners.length > 0 ? (
+                                                <ul className="text-black max-h-48 overflow-y-auto">
+                                                    {regionPartners.map((p, i) => (
+                                                        <li key={i} className="mb-2 border-b pb-1">
+                                                            <div className="font-semibold">{p["Name of NGO/PARTNER"]}</div>
+                                                            {p["Activity Area"] && <div>Area: {p["Activity Area"]}</div>}
+                                                            {p["District of Operation"] && <div>District: {p["District of Operation"]}</div>}
+                                                            {p["No. of Years in District"] && <div>Years: {p["No. of Years in District"]}</div>}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <div className="text-black">No partners found for this region.</div>
+                                            )}
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            )}
+                        </MapContainer>
+                    )}
+                </div>
             </div>
             <style>{`
                 .map-tiles {
