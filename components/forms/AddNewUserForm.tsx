@@ -21,7 +21,7 @@ const formSchema = z.object({
   role: z.enum(["User", "Admin"]),
   region: z.string().optional(),
   organisation: z.string().optional(),
-  password: z.string().default("ncd@2025"),
+  password: z.string(),
 })
 
 type FormValues = z.infer<typeof formSchema>
