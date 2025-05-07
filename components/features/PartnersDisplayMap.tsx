@@ -80,7 +80,7 @@ export default function PartnersDisplayMap() {
     );
 
     return (
-        <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-6 md:p-16 relative">
+        <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-4 md:p-8 relative">
             <div className="absolute inset-0 bg-pattern opacity-5 z-0"></div>
             <div className="relative z-10">
                 <div className="mb-8">
