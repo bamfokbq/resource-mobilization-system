@@ -1,10 +1,9 @@
 import HealthStats from '@/components/chart_and_graphics/HealthStats';
-// import NcdStats from '@/components/chart_and_graphics/NcdStats';
 import Assistance from '@/components/features/Assistance';
 import Contributions from '@/components/features/Contributions';
 import Features from '@/components/features/Features';
 import LandingHero from '@/components/features/LandingHero';
-import PartnersDisplayMap from '@/components/features/PartnersDisplayMap';
+import PartnersMap from '@/components/features/PartnersMap';
 import ResourcesAction from '@/components/features/ResourcesAction';
 
 export default function Home() {
@@ -12,9 +11,8 @@ export default function Home() {
     <main>
       <LandingHero />
       <Features />
-      <PartnersDisplayMap />
+      <PartnersMap />
       <Contributions />
-      {/* <NcdStats /> */}
       <HealthStats />
       <ResourcesAction />
       <Assistance />
