@@ -1,0 +1,4482 @@
+[
+    {
+        "Region": "WESTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv/Aids",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID QUALITY SERVICES FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Inprovement",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GRAND CHALLENGES CANADA",
+        "Activity Area": "Maternal And Newborn Health",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID GLOBAL HEALTH SUPPLY CHAIN, PROCUREMENT AND SUPPLY MANAGEMENT",
+        "Activity Area": "Hiv/Aids, Tb",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID/CHEMONICS",
+        "Activity Area": "Supply Chain Reforms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID ",
+        "Activity Area": "Health Promotion",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": "Capacity Building, Logistics: Building Of Chps, Supportive Supervision System Strengthening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI",
+        "Name of NGO/PARTNER": "MCGL ",
+        "Activity Area": "Maternal & Child Health  :Capacity Building, Logistics And Supportive Supervision  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA ",
+        "Name of NGO/PARTNER": "MCGL ",
+        "Activity Area": "Maternal & Child Health  :Capacity Building, Logistics And Supportive Supervision  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST",
+        "Name of NGO/PARTNER": "Q4H ",
+        "Activity Area": "Quality Improvement, System Strengthening  :Capacity Building, Logistics And Supportive Supervision ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": " SISSALA WEST",
+        "Name of NGO/PARTNER": "Q4H ",
+        "Activity Area": "Quality Improvement, System Strengthening  :Capacity Building, Logistics And Supportive Supervision ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": " DAFFIAM BUSSIE ISSA (DBI)",
+        "Name of NGO/PARTNER": "Q4H ",
+        "Activity Area": "Quality Improvement, System Strengthening  :Capacity Building, Logistics And Supportive Supervision ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI",
+        "Name of NGO/PARTNER": "Q4H ",
+        "Activity Area": "Quality Improvement, System Strengthening  :Capacity Building, Logistics And Supportive Supervision ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST",
+        "Name of NGO/PARTNER": "Q4H ",
+        "Activity Area": "Quality Improvement, System Strengthening  :Capacity Building, Logistics And Supportive Supervision ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "UNICEF ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Maternal &Child Health, And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": " DAFFIAM BUSSIE ISSA (DBI)",
+        "Name of NGO/PARTNER": "ADVANCING NUTRITION  ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Nutrition, Training Of Staff",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": " NADOWLI",
+        "Name of NGO/PARTNER": "ADVANCING NUTRITION  ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Nutrition, Training Of Staff",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST",
+        "Name of NGO/PARTNER": "ADVANCING NUTRITION  ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Nutrition, Training Of Staff",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST",
+        "Name of NGO/PARTNER": "ADVANCING NUTRITION  ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Nutrition, Training Of Staff",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST ",
+        "Name of NGO/PARTNER": "ADVANCING NUTRITION  ",
+        "Activity Area": "Capacity Building, Logistics And Supportive Supervision :Nutrition, Training Of Staff",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "IMPACT MALARIA ",
+        "Activity Area": "Capacity Building,  Monitoring And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST",
+        "Name of NGO/PARTNER": "PLAN INTERNATIONAL  ",
+        "Activity Area": "Adolescent And Child Health  :Capacity Building  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": " WA WEST",
+        "Name of NGO/PARTNER": "PLAN INTERNATIONAL  ",
+        "Activity Area": "Adolescent And Child Health  :Capacity Building  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA",
+        "Name of NGO/PARTNER": "PLAN INTERNATIONAL  ",
+        "Activity Area": "Adolescent And Child Health  :Capacity Building  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Family Planning And Capacity Building",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "MARIE STOPES  ",
+        "Activity Area": "Capacity Building And Supportive Supervision",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": "Capacity Building And Supportive Supervision: Training On Gilmis, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WEST WA",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Adolescent And Child Health  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Adolescent And Child Health  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAP",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Adolescent And Child Health  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST ",
+        "Name of NGO/PARTNER": "UNFPA  ",
+        "Activity Area": "Adolescent And Child Health  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST ",
+        "Name of NGO/PARTNER": "ACCELERATING SOCIAL BEHAVIOR CHANGE PROJECT ",
+        "Activity Area": "Sbcc: ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST ",
+        "Name of NGO/PARTNER": "ACCELERATING SOCIAL BEHAVIOR CHANGE PROJECT ",
+        "Activity Area": "Adolescent And Child Health  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "FHI 360 ",
+        "Activity Area": "Malaria:  Training On Malaria, Vaccine, And Logistics Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "WASH PROJECT ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST ",
+        "Name of NGO/PARTNER": "WASH PROJECT ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST ",
+        "Name of NGO/PARTNER": "WASH PROJECT ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "WASH PROJECT ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": " WA WEST ",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "NORSSAC ",
+        "Activity Area": "Logistics, Supportive Supervision:  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "USAID- ACCERELATE ",
+        "Activity Area": "Roll Out Of E-Tracker ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA MUNICIPAL",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAWRA MUNICIPAL",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI/KALEO DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST DISTRICT",
+        "Name of NGO/PARTNER": "PATH ",
+        "Activity Area": "Training On Malaria Vaccine, And Logistics Management ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "MOVING HEALTH ",
+        "Activity Area": "Provision Of Tricycle ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "MOVING HEALTH ",
+        "Activity Area": "Ambulances  ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "MOVING HEALTH ",
+        "Activity Area": "(Country Innovation Platform Project): ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "MOVING HEALTH ",
+        "Activity Area": "Training Of Community Members On Use Of Tricycle, Ambulances",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "MOVING HEALTH ",
+        "Activity Area": "Provision Of Community Tricycle Ambulances (Country Innovation Platform Project)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "MOVING HEALTH ",
+        "Activity Area": "Development Of Sops For Ambulance Use",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "COMMUNITY DEVELOPMENT ALLIANCE",
+        "Activity Area": "Telemedicine Facility For Improved Maternal, (Country Innovation Platform Project):  Health Outcomes ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE",
+        "Name of NGO/PARTNER": "COMMUNITY DEVELOPMENT ALLIANCE",
+        "Activity Area": "Telemedicine Facility For Improved Maternal, (Country Innovation Platform Project):  Health Outcomes ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA EAST",
+        "Name of NGO/PARTNER": "UNIVERSITY OF HEALTH AND ALLIED SCIENCES, HO",
+        "Activity Area": "Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA WEST",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "Drug Revolving Fund And Community Pharmacies ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA WEST",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "Drug Revolving Fund And Community Pharmacies ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "Drug Revolving Fund And Community Pharmacies ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "EAST",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "(Country Innovation Platform Project): Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "(Country Innovation Platform Project): Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "DAFIAMA BUSSIE ISSA DISTRICT",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "(Country Innovation Platform Project): Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "LAMBUSSIE",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "(Country Innovation Platform Project): Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST",
+        "Name of NGO/PARTNER": "PHARMACEUTICAL SOCIETY OF GHANA ",
+        "Activity Area": "(Country Innovation Platform Project): Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "WA MUNICIPAL",
+        "Name of NGO/PARTNER": "PAEDIATRIC SOCIETY OF GHANA",
+        "Activity Area": "Live Digital Board Monitoring And Service (Country Innovation Platform Project):Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NADOWLI",
+        "Name of NGO/PARTNER": "PAEDIATRIC SOCIETY OF GHANA",
+        "Activity Area": "Live Digital Board Monitoring And Service (Country Innovation Platform Project):Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "JIRAPA",
+        "Name of NGO/PARTNER": "PAEDIATRIC SOCIETY OF GHANA",
+        "Activity Area": "Live Digital Board Monitoring And Service (Country Innovation Platform Project):Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "NANDOM",
+        "Name of NGO/PARTNER": "PAEDIATRIC SOCIETY OF GHANA",
+        "Activity Area": "Live Digital Board Monitoring And Service (Country Innovation Platform Project):Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "UPPER WEST",
+        "District of Operation": "SISSALA EAST",
+        "Name of NGO/PARTNER": "PAEDIATRIC SOCIETY OF GHANA",
+        "Activity Area": "Live Digital Board Monitoring And Service (Country Innovation Platform Project):Community Engagements And Preliminary Surveys",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " KOFIH -KOREA FOUNDATION FOR INTERNATIONAL HEALTH CARE  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GLOBAL FUND  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "JICA  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "PATH",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "ZIPLINE  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "MARRIE STOPES  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD VISION INTERNATIONAL",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CHAI  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "OTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SIGHT SAVERS  ",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "WEST MAMPRUSI",
+        "Name of NGO/PARTNER": "KOICA",
+        "Activity Area": "Transport, Logistics, Administrative Support, Vehicles, Motor Cycles, Tricycles, Bicycles",
+        "No. of Years in District": "January, 2023"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "EAST MAMPRUSI",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Training And Supervision Nutrition, Newborn Care, Epi, Adolescent And Safety Net Program",
+        "No. of Years in District": "2020 to date"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "MAMPRUGU",
+        "Name of NGO/PARTNER": "Q4H",
+        "Activity Area": "Training, Supervision And Equipment",
+        "No. of Years in District": "2021-2025"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "MOADURI",
+        "Name of NGO/PARTNER": "Q4H",
+        "Activity Area": "Training, Supervision And Equipment",
+        "No. of Years in District": "2021-2026"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "CHERIPONI",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Chps Zones And Chaps Review Meetings,",
+        "No. of Years in District": "2022"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "YUNYOO",
+        "Name of NGO/PARTNER": "MARIE STOPE",
+        "Activity Area": "Training, Supervision And Family Planning",
+        "No. of Years in District": "2023"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "NASUAN",
+        "Name of NGO/PARTNER": "MARIE STOPE",
+        "Activity Area": "Training, Supervision And Family Planning",
+        "No. of Years in District": "2023"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "BUNKPURUGU",
+        "Name of NGO/PARTNER": "USAID-CHEMONICS",
+        "Activity Area": "Supply Chain",
+        "No. of Years in District": "2021"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "NAKPANDURI",
+        "Name of NGO/PARTNER": "USAID-CHEMONICS",
+        "Activity Area": "Supply Chain",
+        "No. of Years in District": "2021"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "WEST MAMPRUSI",
+        "Name of NGO/PARTNER": "USAID-GLOBAL HEALTH COMMODITIES",
+        "Activity Area": "Training And Supervision, Wash Logistics",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "EAST MAMPRUSI",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2022"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "MAMPRUGU",
+        "Name of NGO/PARTNER": "CIP",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2022"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "MOADURI",
+        "Name of NGO/PARTNER": "CIP",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2022"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "CHERIPONI",
+        "Name of NGO/PARTNER": "PLAN GHANA",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2024"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "YUNYOO",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2024"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "NASUAN",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2024"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "NAKPANDURI",
+        "Name of NGO/PARTNER": "TOTAL FAMILY HEALTH ORGANIZATION",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2023"
+    },
+    {
+        "Region": "NORTH EAST",
+        "District of Operation": "BUNKPURUGU",
+        "Name of NGO/PARTNER": "TOTAL FAMILY HEALTH ORGANIZATION",
+        "Activity Area": "Training And Supervision",
+        "No. of Years in District": "2023"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "USAID-EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv Data Quality, Supportive Supervision Etc",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "USAID-EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv Data Quality, Supportive Supervision Etc",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "USAID-EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv Data Quality, Supportive Supervision Etc",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "USAID-EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv Data Quality, Supportive Supervision Etc",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "USAID-EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv Data Quality, Supportive Supervision Etc",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "USAID-EQUIP HEALTH GHANA",
+        "Activity Area": "Hiv Data Quality, Supportive Supervision Etc",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUANFO NORTH",
+        "Name of NGO/PARTNER": "HOPE FOR FUTURE GENERATIONS(HFFG)(SUB-CONTRACT TO EQUIP HEALTH)",
+        "Activity Area": "Hiv Community Based Interventions For Key Populations",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "HOPE FOR FUTURE GENERATIONS(HFFG)(SUB-CONTRACT TO EQUIP HEALTH)",
+        "Activity Area": "Hiv Community Based Interventions For Key Populations",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "MISSION OF HOPE FOR SOCIETY(MIHOSO)(SUB-CONTRACT TO EQUIP HEALTH)",
+        "Activity Area": "Hiv Community Based Interventions For Key Populations",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "WEST AFRICAN AIDS FOUNDATION(WAAF)(SUB-CONTRACT TO EQUIP HEALTH)",
+        "Activity Area": "Hiv Community Based Interventions For Key Populations",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Trainings, Supportive Supervision, Cold Chain Equipment Support, Immunization Logistics Support",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Trainings, Supportive Supervision, Cold Chain Equipment Support, Immunization Logistics Support",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Trainings, Supportive Supervision, Cold Chain Equipment Support, Immunization Logistics Support",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Trainings, Supportive Supervision, Cold Chain Equipment Support, Immunization Logistics Support",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Trainings, Supportive Supervision, Cold Chain Equipment Support, Immunization Logistics Support",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Trainings, Supportive Supervision, Cold Chain Equipment Support, Immunization Logistics Support",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Trainings, Supportive Supervisions(Cangive),Stakeholder Sensitization In Health Service Equity, Mental Health(Mhgap)",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Trainings, Supportive Supervisions(Cangive),Stakeholder Sensitization In Health Service Equity, Mental Health(Mhgap)",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Trainings, Supportive Supervisions(Cangive),Stakeholder Sensitization In Health Service Equity, Mental Health(Mhgap)",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Trainings, Supportive Supervisions(Cangive),Stakeholder Sensitization In Health Service Equity, Mental Health(Mhgap)",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Trainings, Supportive Supervisions(Cangive),Stakeholder Sensitization In Health Service Equity, Mental Health(Mhgap)",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Trainings, Supportive Supervisions(Cangive),Stakeholder Sensitization In Health Service Equity, Mental Health(Mhgap)",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "PATH-REACH MALARIA PROJECT",
+        "Activity Area": "Onsite Training And Supportive Supervision",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "PATH-REACH MALARIA PROJECT",
+        "Activity Area": "Onsite Training And Supportive Supervision",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "PATH-REACH MALARIA PROJECT",
+        "Activity Area": "Onsite Training And Supportive Supervision",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "PATH-REACH MALARIA PROJECT",
+        "Activity Area": "Onsite Training And Supportive Supervision",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "PATH-REACH MALARIA PROJECT",
+        "Activity Area": "Onsite Training And Supportive Supervision",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "PATH-REACH MALARIA PROJECT",
+        "Activity Area": "Onsite Training And Supportive Supervision",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Larc Trainings, Family  Planning Technical Working Group Meetings",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Larc Trainings, Family  Planning Technical Working Group Meetings",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Larc Trainings, Family  Planning Technical Working Group Meetings",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Larc Trainings, Family  Planning Technical Working Group Meetings",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Larc Trainings, Family  Planning Technical Working Group Meetings",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Larc Trainings, Family  Planning Technical Working Group Meetings",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "NEWMONT GHANA GOLD LTD/NADEF",
+        "Activity Area": "Buidling New Clinics, Sponsoring Hbb, Hms Trainings",
+        "No. of Years in District": "2020 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "NEWMONT GHANA GOLD LTD/NADEF",
+        "Activity Area": "Buidling New Clinics, Sponsoring Hbb, Hms Trainings",
+        "No. of Years in District": "2020 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "USAID-SEND GHANA",
+        "Activity Area": "Monitoring Hiv Care Service Provision In Art Sites",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO NORTH",
+        "Name of NGO/PARTNER": "USAID-PSM-CHEMONICS",
+        "Activity Area": "Technical, Logistical And Equipment Support For Supply Chain Efficiency",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "USAID-PSM-CHEMONICS",
+        "Activity Area": "Technical, Logistical And Equipment Support For Supply Chain Efficiency",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "USAID-PSM-CHEMONICS",
+        "Activity Area": "Technical, Logistical And Equipment Support For Supply Chain Efficiency",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "USAID-PSM-CHEMONICS",
+        "Activity Area": "Technical, Logistical And Equipment Support For Supply Chain Efficiency",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "USAID-PSM-CHEMONICS",
+        "Activity Area": "Technical, Logistical And Equipment Support For Supply Chain Efficiency",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI SOUTH",
+        "Name of NGO/PARTNER": "USAID-PSM-CHEMONICS",
+        "Activity Area": "Technical, Logistical And Equipment Support For Supply Chain Efficiency",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO SOUTH",
+        "Name of NGO/PARTNER": "VERO SUPPORT",
+        "Activity Area": "Advocacy For Malaria Interventions Uptake, I.E Sp Uptake, Llin Use, Etc",
+        "No. of Years in District": "2021 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "TANO SOUTH",
+        "Name of NGO/PARTNER": "FRANKO INITIATIVE",
+        "Activity Area": "Advocacy For Malaria Interventions Uptake, I.E Sp Uptake, Llin Use, Etc",
+        "No. of Years in District": "2020 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "WOMEN INTEGRATED DEVELOPMENT ORGANIZATION(WIDO)",
+        "Activity Area": "Advocacy For Malaria Interventions Uptake, I.E Sp Uptake, Llin Use, Etc",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUTIFI NORTH",
+        "Name of NGO/PARTNER": "ZOOMLION GHANA LTD",
+        "Activity Area": "Larval Source Management(Lsm) For Vector Control",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "AHAFO",
+        "District of Operation": "ASUNAFO NORTH",
+        "Name of NGO/PARTNER": "ZOOMLION GHANA LTD",
+        "Activity Area": "Larval Source Management(Lsm) For Vector Control",
+        "No. of Years in District": "2022 to date"
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ABURA/ ASEBU/ KWAMANKESE DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA EAST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA WEST MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AJUMAKO/ENYAN/ESIAM DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASIKUMA-ODOBEN-BRAKWA-BREMAN DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN FOSU MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN NORTH DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN SOUTH DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EFFUTU MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EKUMFI DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA CENTRAL DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA EAST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA WEST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "HEMANG LOWER DENKYIRA DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KOMENDA-EDINA-EGUAFO-ABRIM MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "MFANTSIMAN MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "TWIFU ATI MORKWA DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UPPER DENKYIRA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UPPER DENKYIRA WEST DISTRICT",
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Last Mile Distribution Of Commodities From Rms",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ABURA/ ASEBU/ KWAMANKESE DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA EAST DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA WEST MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AJUMAKO/ENYAN/ESIAM DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASIKUMA-ODOBEN-BRAKWA-BREMAN DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN FOSU MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN NORTH DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN SOUTH DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EFFUTU MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EKUMFI DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA CENTRAL DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA EAST DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA WEST DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "HEMANG LOWER DENKYIRA DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KOMENDA-EDINA-EGUAFO-ABRIM MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "MFANTSIMAN MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "TWIFU ATI MORKWA DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UPPER DENKYIRA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UPPER DENKYIRA WEST DISTRICT",
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Impact Evaluation On The Use Of Maternal & Child Health Record Book",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "TAM",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "THLD",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KEEA",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AAK",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AOB",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN SOUTH",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "MFANTSEMAN",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EKUMFI",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AOB",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN NORTH",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN SOUTH",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDE",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDW",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KEEA",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "THLD",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN FOSU MUNICIPAL",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA EAST",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Mass Drug Administration & School Deworming",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "MARIE STOPE",
+        "Activity Area": "Fp/Cac Activities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA EAST",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Newborn Care Activitie",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST METRO",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Newborn Care Activitie",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDE",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDW",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "THLD",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KEEA",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "MFANTSEMAN",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EKUMFI",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN SOUTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN NORTH",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AOB",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AEE",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOW",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOC",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWS",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA EAST",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA WEST",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AAK",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Adolescent Health Activities And Safetynet",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ABURA/ ASEBU/ KWAMANKESE DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA EAST DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA WEST MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AJUMAKO/ENYAN/ESIAM DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASIKUMA-ODOBEN-BRAKWA-BREMAN DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN FOSU MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN NORTH DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN SOUTH DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWUTU SENYA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EFFUTU MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "EKUMFI DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA CENTRAL DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA EAST DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA WEST DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "HEMANG LOWER DENKYIRA DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KOMENDA-EDINA-EGUAFO-ABRIM MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "MFANTSIMAN MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "TWIFU ATI MORKWA DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UPPER DENKYIRA EAST MUNICIPAL",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UPPER DENKYIRA WEST DISTRICT",
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASSIN FOSO",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "CAPE COAST",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDE",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AWS",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "KEEA",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA WEST",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "GOMOA EAST",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "ASEM",
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Adolescent Health & Development",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "TAM",
+        "Name of NGO/PARTNER": "FHI 360",
+        "Activity Area": "Oncho Eradication",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "THLD",
+        "Name of NGO/PARTNER": "FHI 361",
+        "Activity Area": "Oncho Eradication",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDE",
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Case Search & Case Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "UDW",
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Case Search & Case Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "THLD",
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Case Search & Case Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AOB",
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Case Search & Case Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "AGONA EAST",
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Case Search & Case Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "TAM",
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Case Search & Case Management",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "SELECTED",
+        "Name of NGO/PARTNER": "CLINTON HEALTH INITIATIVE(CHAI)",
+        "Activity Area": "Research Into Acceptability Of Multiple Micro Nutrient Supplement",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": "13 DISTRICTS",
+        "Name of NGO/PARTNER": "KOKOPLUS",
+        "Activity Area": "2. Community Management Of Severe Acute Malnutrition(Cmam)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "3. Cac/Fp",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "CENTRAL",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Support Food Demonstration In Facilities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WHO",
+        "Activity Area": "Epi And Surveillance And Emergency Preparedness And Response ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WHO/USAID",
+        "Activity Area": "Support In Family Planning Trainings And Supply Of Family Planning Commodities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Health Systems Innovation",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Oxygen Plant",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Baby Friendly Hospital Initiative, Nutrition Friendly Schools Initiative, Integrated Social Services, Community Based Management Of Acute Malnutrition,",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF, UNFPA",
+        "Activity Area": "Adolescent Health Programs And Cac Services ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "JHPIEGO",
+        "Activity Area": "Ncd- Breast Cancer End-To-End Care From Assessment To Treatment (Beat) Project ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "PATH",
+        "Activity Area": "Ncd (Chronic Kidney Disease And Community Sports Initiative Projects, Hpt, Dm)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Ntds",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CHAI",
+        "Activity Area": "Ncds ( Type 1 Diabetes Screening Project In Selected Districts)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "AURUM",
+        "Activity Area": "Tb Case Finding In Private Health Facilities ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Tb/Hiv/Malaria/Event Based Surveillance",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WAPCAS",
+        "Activity Area": "Hiv Intervention For Key Population",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WFP",
+        "Activity Area": "Livelihood Support For People Living With Hiv",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WFP& ALPHA COMMUNICATION",
+        "Activity Area": "Nutrition And Retail Project",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "AJINOMOTO",
+        "Activity Area": "Ghana Nutrition Improvement Project",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "JICA",
+        "Activity Area": "Mchrb Project",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WOMEN'S HEALTH TO WEALTH",
+        "Activity Area": "Support In Maternal Health Care Services (Hbb,Eceb).",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "RURAL WATCH",
+        "Activity Area": "Community Arv Refill For Clients On Arts",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "COLLATION OF NGOS IN HEALTH",
+        "Activity Area": "Community Systems Strengthening For Hiv Interventions Using Model Of Hope",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "HOPE FOR FUTURE GENERATIONS",
+        "Activity Area": "Targeted Interventions For Adolescents Living With Hiv",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " USAID/CHISU",
+        "Activity Area": "Supportive Supervision And Data Demand And Use",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "MARIE STOPES, DKT, TOTAL FAMILY HEALTH ORGANIZATION",
+        "Activity Area": "Support In Training Of Family Planning Providers Both Private And Public And Cac Services",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " \u2060SIGHTSAVERS/USAID/FHI360/AMERICAN LEPROSY MISSION/WVI/COUNTDOWN/DFID AND WHO SUPPORT NTDS ACTIVITIES ",
+        "Activity Area": " \u2060Ntds Activities ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "ASHANTI",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WOMEN\u2019S HOPE FOUNDATION",
+        "Activity Area": "Supports Ntds In Area Of Case Detection And Management.",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "ANESVAD",
+        "Activity Area": "Fit Pad-4-Pal Project",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "ENTERPRICE INSURANCE CO. LTD.",
+        "Activity Area": "Support Mid Year Nutrition Review Meeting",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "EXPERTICE FRANCE",
+        "Activity Area": "Scorecard Training",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "FHI360",
+        "Activity Area": "School Deworming, Community Deworming, Oncho Mda Activities, Disability Campaign On Leprosy & Other Skin Ntds",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GAVI",
+        "Activity Area": "Nacvads Campaign & Measles",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GHANA EDUCATION SERVICE (GES) SUPPORT",
+        "Activity Area": "School Screening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GLOBAL FUND",
+        "Activity Area": "Tb, Hiv & Malaria",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "PATH INTERNATIONAL ",
+        "Activity Area": "Intergrated Anc Project",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Polio Activities, Safty Net & Nutrtion Friendly Activites",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID",
+        "Activity Area": "Smc Round Activities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WEST AFRICAN HEALTH ORGANIZATION (WAHO)",
+        "Activity Area": "Orientation On Family Planning ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WDF",
+        "Activity Area": "Ncd Adol Trainig ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD HEALTH ORGANIZATION (WHO)",
+        "Activity Area": "Mental Health Activities, African Vaccination & Client Health Promotion Week , Risk Communication, Polio Immunization , Sentinel Survey",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD BANK ",
+        "Activity Area": "Holistic Assessment 2023, Baseline Assessment Nop, Primary Health Care Improvement Programme (Nop)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "BONO EAST",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SUSAN THOMPSON BUFFET FOUNDATION (STBF)",
+        "Activity Area": "Comprehensive Abortion Care  Logistic Support  & Activities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Training On Vaccine Delivey And Demand Generation",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Training On Climate Change",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Training On Emergency Preparednes Including Climate Change Related Mitigation Plans",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Training  Risk Communication And Community Engagement Committees And Support For Committee Meeting And Support For Social Mobilization For Nacvad 10 And 11",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Financial Support For Risk Communication In 2 Cholera Affected Districts",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Capacity Building On Nutrition Friendly Guidelines",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": " UNITED NATIONS CHILDRENS FUND (UNICEF)",
+        "Activity Area": "Financial Support For Annual Review Meeting With Emphasis On Routine Vaccination",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD HEALTH ORGANIZATION",
+        "Activity Area": "Financial Support For Routine Vaccination Mop Up In 2 Districts",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD HEALTH ORGANIZATION",
+        "Activity Area": "3 Container Clincs Provided For Routine Services",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNITED NATIONS POPULATION FUND (UNFPA)",
+        "Activity Area": "Capacity Building For The Provision Of Long Acting Contraceptives",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNITED NATIONS POPULATION FUND (UNFPA)",
+        "Activity Area": "Refresher Training For Adolescent Service Providers",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNITED NATIONS POPULATION FUND (UNFPA)",
+        "Activity Area": "Capacity Building For Midwives In The Nop Facilities On Bemonc",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "GREATER ACCRA",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "MARIE STOPES INTERNATIONAL",
+        "Activity Area": "Project For 3 Rural Districts To Improve Access To Long Acting Contraceptives",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD HEALTH ORGANIZATION",
+        "Activity Area": null,
+        "No. of Years in District": "One off "
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNITED NATIONS CHILDREN\u2019S FUND (UNICEF)",
+        "Activity Area": null,
+        "No. of Years in District": "Jun 23-May 25"
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "THE HUNGER PROJECT",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SIMPRINT TECHNOLOGIES",
+        "Activity Area": null,
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNITED NATIONS POPULATION FUND (UNFPA)",
+        "Activity Area": null,
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "JAPAN INTERNATIONAL COOPERATION AGENCY",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "KOREA INTERNATIONAL COOPERATION AGENCY",
+        "Activity Area": null,
+        "No. of Years in District": "2024 - date "
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "USAID GLOBAL HEALTH SUPPLY CHAIN",
+        "Activity Area": null,
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "JHPIEGO",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "PATH",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "MARIE STOPES GHANA",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "HOPE FOR FUTURE GENERATIONS",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "KYBELE",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "COALITION OF NGOS IN HEALTH",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "KABAKA FOUNDATION",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "PEOPLE AND DEVELOPMENT (PAD) ASSOCIATES",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "KIBI GOLDFIELDS",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD VISION",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "COMPASSION GHANA",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "ARK DEVELOPMENT ORGANIZATION",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "WORLD FOOD PROGRAMME",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "EASTERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "JAPANESE ORGANIZATION FOR INTERNATIONAL COOPERATION IN FAMILY PLANNING (JOICFP)",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "MION",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA NORTH",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA SOUTH",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAGNARIGU",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAVELUGU",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KUMBUNGU",
+        "Name of NGO/PARTNER": "QUALITY FOR HEALTH ACTIVITY",
+        "Activity Area": "Quality Of Care And System Strengthening + Comm. Scorecard",
+        "No. of Years in District": "2023 -Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Asbc (Demand Generation For Mch Activities) And Support For Chap Activities",
+        "No. of Years in District": "2023-Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Asbc (Demand Generation For Mch Activities) And Support For Chap Activities",
+        "No. of Years in District": "2023-Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANTON",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Asbc (Demand Generation For Mch Activities) And Support For Chap Activities",
+        "No. of Years in District": "2023-Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAGNARIGU",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Asbc (Demand Generation For Mch Activities) And Support For Chap Activities",
+        "No. of Years in District": "2023-Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "MION",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Asbc (Demand Generation For Mch Activities) And Support For Chap Activities",
+        "No. of Years in District": "2023-Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "NORSAAC",
+        "Activity Area": "Asbc (Demand Generation For Mch Activities) And Support For Chap Activities",
+        "No. of Years in District": "2023-Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KPANDAI",
+        "Name of NGO/PARTNER": "MARIE STOPE",
+        "Activity Area": "Family Planning And Cac Activities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TAMALE",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Newborn Care Activities And Epi And Mch, Adolescent Health Activities And Safetynet Programme",
+        "No. of Years in District": "2017- Date "
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAVELUGU",
+        "Name of NGO/PARTNER": "UNICEF",
+        "Activity Area": "Newborn Care Activities And Epi And Mch, Adolescent Health Activities And Safetynet Programme",
+        "No. of Years in District": "2017- Date "
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KPANDAI",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KUMBUNGU",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "MION",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANTON",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA NORTH",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA SOUTH",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SABOBA[12]",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAGNARIGU",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAVELUGU",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TAMALE METROPOLITAN",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TATALE SANGULE",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TOLON",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI MUNICIPAL DISTRICT",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "ZABZUGU",
+        "Name of NGO/PARTNER": "USAID CHEMONICS",
+        "Activity Area": "Supply Chain, Lmd Activities",
+        "No. of Years in District": "2024 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "FTF RING SYSTEMS STRENGTHENING ACTIVITIES",
+        "Activity Area": "Nutrition Related Inteverntions (Cmam/Iycf",
+        "No. of Years in District": "APR 2023-"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "FTF RING SYSTEMS STRENGTHENING ACTIVITIES",
+        "Activity Area": "Nutrition Related Inteverntions (Cmam/Iycf",
+        "No. of Years in District": "APR 2023-"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANTON",
+        "Name of NGO/PARTNER": "FTF RING SYSTEMS STRENGTHENING ACTIVITIES",
+        "Activity Area": "Nutrition Related Inteverntions (Cmam/Iycf",
+        "No. of Years in District": "APR 2023-"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAGNARIGU",
+        "Name of NGO/PARTNER": "FTF RING SYSTEMS STRENGTHENING ACTIVITIES",
+        "Activity Area": "Nutrition Related Inteverntions (Cmam/Iycf",
+        "No. of Years in District": "APR 2023-"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "MION",
+        "Name of NGO/PARTNER": "FTF RING SYSTEMS STRENGTHENING ACTIVITIES",
+        "Activity Area": "Nutrition Related Inteverntions (Cmam/Iycf",
+        "No. of Years in District": "APR 2023-"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "FTF RING SYSTEMS STRENGTHENING ACTIVITIES",
+        "Activity Area": "Nutrition Related Inteverntions (Cmam/Iycf",
+        "No. of Years in District": "APR 2023-"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "UNFPA",
+        "Activity Area": "Maternal Health Activities",
+        "No. of Years in District": "Jan 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "RHD",
+        "Name of NGO/PARTNER": "TOTAL FAMILY HEALTH ORGANIZATION",
+        "Activity Area": "Fp Activities. Training Of Staff Of Private Facilities On Family Planning",
+        "No. of Years in District": "2023 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TAMALE METRO",
+        "Name of NGO/PARTNER": "JICA- 5S KAIZEN PROJECT",
+        "Activity Area": "Expansion Of Maternity Block At Regional Hospital, Quality Of Care For Newborn",
+        "No. of Years in District": "\u00a02019 to 2027"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TOLON",
+        "Name of NGO/PARTNER": "JICA- 5S KAIZEN PROJECT",
+        "Activity Area": "Expansion Of Maternity Block At Regional Hospital, Quality Of Care For Newborn",
+        "No. of Years in District": "\u00a02019 to 2027"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TAMALE METRO",
+        "Name of NGO/PARTNER": "USAID GLOBAL COMMUNITIES PROJECT",
+        "Activity Area": "Covid-19 Vaccination And Health Promotion / Wash-Ipc",
+        "No. of Years in District": "2021 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "USAID GLOBAL COMMUNITIES PROJECT",
+        "Activity Area": "Covid-19 Vaccination And Health Promotion / Wash-Ipc",
+        "No. of Years in District": "2021 to date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "RHD",
+        "Name of NGO/PARTNER": "WORLD HEALTH ORGANIZATION",
+        "Activity Area": "Fp And Adolescent Health",
+        "No. of Years in District": "One off "
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "CRS HOPE-MCH PROJECT",
+        "Activity Area": "Access And Utilization Of Maternal And Newborn Services",
+        "No. of Years in District": "Jun 23-May 25"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "CRS HOPE-MCH PROJECT",
+        "Activity Area": "Access And Utilization Of Maternal And Newborn Services",
+        "No. of Years in District": "Jun 23-May 25"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA NORTH",
+        "Name of NGO/PARTNER": "CRS HOPE-MCH PROJECT",
+        "Activity Area": "Access And Utilization Of Maternal And Newborn Services",
+        "No. of Years in District": "Jun 23-May 25"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "WORLD FOOD PROGRAMME",
+        "Activity Area": "Nutrition ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAGNARIGU",
+        "Name of NGO/PARTNER": "WORLD FOOD PROGRAMME",
+        "Activity Area": "Nutrition ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "ASBC/FHI 360",
+        "Activity Area": "Demand Generation For Mch Activities",
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "ASBC/FHI 360",
+        "Activity Area": "Demand Generation For Mch Activities",
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANTON",
+        "Name of NGO/PARTNER": "ASBC/FHI 360",
+        "Activity Area": "Demand Generation For Mch Activities",
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAGNARIGU",
+        "Name of NGO/PARTNER": "ASBC/FHI 360",
+        "Activity Area": "Demand Generation For Mch Activities",
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "MION",
+        "Name of NGO/PARTNER": "ASBC/FHI 360",
+        "Activity Area": "Demand Generation For Mch Activities",
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "ASBC/FHI 360",
+        "Activity Area": "Demand Generation For Mch Activities",
+        "No. of Years in District": " 2023 - date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "YENDI",
+        "Name of NGO/PARTNER": "INTEGRATED HEALTH PROGRAMME -HOPE PROJECT",
+        "Activity Area": "Maternal, Newborn, Newborn And Child (Rmncah+N), Support Nop, ",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAVELUGU",
+        "Name of NGO/PARTNER": "INTEGRATED HEALTH PROGRAMME -HOPE PROJECT",
+        "Activity Area": "Maternal, Newborn, Newborn And Child (Rmncah+N), Support Nop, ",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA SOUTH",
+        "Name of NGO/PARTNER": "INTEGRATED HEALTH PROGRAMME -HOPE PROJECT",
+        "Activity Area": "Maternal, Newborn, Newborn And Child (Rmncah+N), Support Nop, ",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KUMBUNGU",
+        "Name of NGO/PARTNER": "INTEGRATED HEALTH PROGRAMME -HOPE PROJECT",
+        "Activity Area": "Maternal, Newborn, Newborn And Child (Rmncah+N), Support Nop, ",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANTON",
+        "Name of NGO/PARTNER": "INTEGRATED HEALTH PROGRAMME -HOPE PROJECT",
+        "Activity Area": "Maternal, Newborn, Newborn And Child (Rmncah+N), Support Nop, ",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "ABT ASSOCIATES ",
+        "Activity Area": "Malaria Elimination Programme",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TATALE",
+        "Name of NGO/PARTNER": "ABT ASSOCIATES ",
+        "Activity Area": "Malaria Elimination Programme",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KUMBUNGU",
+        "Name of NGO/PARTNER": "ABT ASSOCIATES ",
+        "Activity Area": "Malaria Elimination Programme",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "ABT ASSOCIATES ",
+        "Activity Area": "Malaria Elimination Programme",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "TOLON",
+        "Name of NGO/PARTNER": "CHILDREN BELIEVE -CHANGE PROJECT",
+        "Activity Area": "Nutrition, Mnch And Wash ",
+        "No. of Years in District": "2024 - date "
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KUMBUNGU",
+        "Name of NGO/PARTNER": "CHILDREN BELIEVE -CHANGE PROJECT",
+        "Activity Area": "Nutrition, Mnch And Wash ",
+        "No. of Years in District": "2024 - date "
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "NANUMBA SOUTH",
+        "Name of NGO/PARTNER": "CHILDREN BELIEVE -CHANGE PROJECT",
+        "Activity Area": "Nutrition, Mnch And Wash ",
+        "No. of Years in District": "2024 - date "
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SABOBA",
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "GUSHEGU",
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KARAGA",
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "SAVELUGU",
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "KUMBUNGU",
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": "MION",
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "NORTHERN",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CARE GHANA ",
+        "Activity Area": "Ifa And Nutritional Demonstration",
+        "No. of Years in District": "Aug 24 - Date"
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CONSTRUCTION OF A NICU FACILITY AT SEFWI WIAWSO GOVERNMENT HOSPITAL",
+        "Activity Area": "Unicef",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CONSTRUCTION OF WALK IN COLD ROOM",
+        "Activity Area": "Unicef",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CAPACITY BUILDING",
+        "Activity Area": "Unicef",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SUPPORTS CHILDHOOD IMMUNIZATION EXERCISES AND NEWBORN TRAINING PROGRAMS FOR STAFF",
+        "Activity Area": null,
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SUPPORTS SUPPLY CHAIN TECHNICAL WORKING GROUP MEETINGS QUARTERLY\nUNDERTAKE SUPPORTIVE SUPERVISION TO HELP MANAGE PROGRAMME COMMODITIES IN AREAS LIKE MALARIA, TB, HIV.\tSUPPORT THE REGION IN THE IMPLEMENTATION OF GHILMIS TO HELP MANAGE LOGISTICS",
+        "Activity Area": "Chemonics",
+        "No. of Years in District": "2019 till date "
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "IMPLEMENTATION OF COVID-19 VACCINATION CAMPAIGNS",
+        "Activity Area": "Who",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "DISEASE OUTBREAK INVESTIGATION/MANAGEMENT",
+        "Activity Area": "Who",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "GENDER EQUITY IN IMMUNIZATION PROGRAM",
+        "Activity Area": "Who",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "MALARIA DATA QUALITY IMPROVEMENT AND SUPPORTIVE SUPERVISION EXERCISES",
+        "Activity Area": "Chisu",
+        "No. of Years in District": "2022"
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SUPPORTS HIV ART SITES WITH ON-SITE TRAINING AND COACHING ON SERVICES AND DATA MANAGEMENT",
+        "Activity Area": "Equiphealth",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "SUPPORT IN HIV DATA QUALITY ASSESSMENT EXERCISES",
+        "Activity Area": "Equiphealth",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "CONDUCTS COMMUNITY ENGAGEMENT SESSIONS THROUGH NGOS",
+        "Activity Area": "Equiphealth",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "EPI \u2013 TRAINING IN GIS AND DIGITAL MICROPLANNING",
+        "Activity Area": "Path",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "WESTERN NORTH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "COMMUNITY MOBILIZATION FOR THE UPTAKE OF SP (IPTP)",
+        "Activity Area": "Osanko Child Poverty Relief (Ngo)",
+        "No. of Years in District": "2021"
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "MISSION LINK",
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Community-Based Case Search On Tb Clients, Community Engagement In Public Health Interventions, Including Hiv/Aids, Tb, Malaria And Mental Health Programmes.",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "ZAKAT FOUNDATION",
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Support With Health Equipment",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CHILDREN BELIEVE",
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Maternal And Child Health And Adolescent Health",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANA SIGNATURES",
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Community Health And Wellbeing",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "NORSAAC",
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Rmncah Reproductive Maternal, Neonatal, And Child Health",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "GLOBAL BRIDGATE/ PURE TRUST",
+        "Name of NGO/PARTNER": null,
+        "Activity Area": "Clinical Care Services",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CHILDREN BELIEVE",
+        "Name of NGO/PARTNER": "SAWLA-TUNA-KALBA",
+        "Activity Area": "Nutrition, Gender, Wash, Agric",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "MEDA",
+        "Name of NGO/PARTNER": "SAWLA-TUNA-KALBA",
+        "Activity Area": "Agriculture, Nutrition,",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANNAH SIGNATURES",
+        "Name of NGO/PARTNER": "SAWLA-TUNA-KALBA",
+        "Activity Area": "Community Engagement In Health",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "COMPASSION INTERNATIONAL",
+        "Name of NGO/PARTNER": "SAWLA-TUNA-KALBA",
+        "Activity Area": "Children'S Education, Children'S Heath",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "HI CHALE",
+        "Name of NGO/PARTNER": "SAWLA-TUNA-KALBA",
+        "Activity Area": "Social Support, Infrastructures, Health, Education",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CRS",
+        "Name of NGO/PARTNER": "CENTRAL GONJA",
+        "Activity Area": "Maternal And Child Health",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANA SIGNATURES",
+        "Name of NGO/PARTNER": "CENTRAL GONJA",
+        "Activity Area": "Accelerating And  Behavior Change Communication",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "HOLY CITY FOUNDATION",
+        "Name of NGO/PARTNER": "CENTRAL GONJA",
+        "Activity Area": "Malaria And Tb Prevention",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "KOKO PLUS",
+        "Name of NGO/PARTNER": "CENTRAL GONJA",
+        "Activity Area": "Improve Under 5 Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "MEDA",
+        "Name of NGO/PARTNER": "CENTRAL GONJA",
+        "Activity Area": "Women Empowerment",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANNA SIGNATURES",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Community Engagement For Health And Wellbeing On (Malaria, Rmnch, Teenage Pregnancy, Family Planning, Wash, Infectious Diseases, And Nutrition)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "GLOBAL COMMUNITIES",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Water, Sanitation, And Hygiene",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "DESSERT RESEARCH INSTITUTE",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Water, Sanitation, And Hygiene",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CIP (INTERNATIONAL POTATO CENTER)",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Nutrition, Agricultural And Women Empowerment Through Revenue-Generating Activities",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "PLAN PARENTHOOD ASSOCIATION OF GHANA (PPAG)",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Sexual And Reproductive Health",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "GIZ",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Internet Connectivity And Supply Of Ict Logistics",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "ZIPLINE",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Drones Services",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "COMMUNITY DEVELOPMENT ALLIANCE (CDA)",
+        "Name of NGO/PARTNER": "NORTH GONJA",
+        "Activity Area": "Innovative For Health Project",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CATHOLIC RELIEF SERVICES (CRS)",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Maternal Child Health And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "INTERNATIONAL POTATO CENTER (CIP)",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Maternal, Nutrition, And Women Empowerment",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "MEDA GROW 2",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Maternal, Nutrition, And Women Empowerment",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CARE INTERNATIONAL (LIFT PROJECT)",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Maternal, Child Health And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANNA SIGNATURES",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Community Engagement For Health And Well-Being",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "WORLD VISION",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Maternal Child Health And Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CHISU",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "E-Tracker",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "BASIC NEEDS",
+        "Name of NGO/PARTNER": "WEST GONJA",
+        "Activity Area": "Mental Health And Ntds",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "WORLD VISION-GHANA",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Wash, Mnch &Nutrition",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "CHILDREN BELIEVE \u2013GHANA",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Championing Nutrition And Gender Equality (Change)",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "NORSAC",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Nutrition, Social Protection, And Gender Equality",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SEND-GHANA",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Nutrition And Empowerment Of Rural Women",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANNAH SIGNATURES",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Community Engagement For Health And Well-Being ",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": null,
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Sexual Health Education And Family Planning",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "INTERNATIONAL DEVELOPMENT ENTERPRISE (IDE)",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Rural Empowerment On Nutrition Through Dry Season Gardening",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "BIDO",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Community Mobilization/Sensitization",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "PERODAS",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Community Mobilization For Routine  Immunization",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "DR. GEOFFREY A.RAZAK FOUNDATION",
+        "Name of NGO/PARTNER": "EAST GONJA MUNICIPAL",
+        "Activity Area": "Training Of Over--Counter -Drug Assistants",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "SAVANNAH",
+        "District of Operation": "SAVANNAH SIGNATURES",
+        "Name of NGO/PARTNER": "NORTH EAST GONJA",
+        "Activity Area": "Community Engagement For Health And Wellbeing",
+        "No. of Years in District": null
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO WEST",
+        "Name of NGO/PARTNER": "GLOBAL ACTION FOR WOMEN EMPOWERMENT (GLOWA)",
+        "Activity Area": "Community Mobilisation",
+        "No. of Years in District": "2"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "KOFIH",
+        "Activity Area": "Mnch",
+        "No. of Years in District": "10"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "VIOLA FOUNDATION",
+        "Activity Area": "Ncds",
+        "No. of Years in District": "3"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "PLAN INERBATIONAL GH.",
+        "Activity Area": "Adolescents Health",
+        "No. of Years in District": "3"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "INTERNATIONAL NEEDS GHANA",
+        "Activity Area": "Adolescents Health",
+        "No. of Years in District": "2"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "BIDO GHANA",
+        "Activity Area": "Adolescents Health",
+        "No. of Years in District": "2"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "SAVANA SIGNATURES",
+        "Activity Area": "Adolescents Health",
+        "No. of Years in District": "2"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AFADZATO SOUTH",
+        "Name of NGO/PARTNER": "NNEKA FOUNDATION",
+        "Activity Area": "Adolescents Health",
+        "No. of Years in District": "5"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AGORTIME ZIOPE",
+        "Name of NGO/PARTNER": "SEEK TO SAVE FOUNDATION",
+        "Activity Area": "Malaria ",
+        "No. of Years in District": "15"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AGORTIME ZIOPE",
+        "Name of NGO/PARTNER": "GLOWA",
+        "Activity Area": "Nutrition,Child Health,Adolescent Health,Wash",
+        "No. of Years in District": "3"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AGORTIME ZIOPE",
+        "Name of NGO/PARTNER": "COMPASSION GHANA",
+        "Activity Area": "Child Health & Protection",
+        "No. of Years in District": "9"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AGORTIME ZIOPE",
+        "Name of NGO/PARTNER": "GLOWA",
+        "Activity Area": "Women Empowerment",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AGORTIME ZIOPE",
+        "Name of NGO/PARTNER": "ILEAD INTERNATIONAL",
+        "Activity Area": "Physical Health,Poverty Alleviation",
+        "No. of Years in District": "8"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "NORTH DAYI",
+        "Name of NGO/PARTNER": "RURAL LIFE ASSOCIATION",
+        "Activity Area": "Tb",
+        "No. of Years in District": "8"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI SOUTH",
+        "Name of NGO/PARTNER": "HOME'S FOUNTAIN",
+        "Activity Area": "Tuberculosis",
+        "No. of Years in District": "5"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ANLOGA",
+        "Name of NGO/PARTNER": "SEEK TO SAVE",
+        "Activity Area": "Epi/Tb/Nutrition",
+        "No. of Years in District": "4"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ANLOGA",
+        "Name of NGO/PARTNER": "TOTAL FAMILY HEALTH ORGANISATION",
+        "Activity Area": "Reproductive Health ( Family Planning",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ADAKLU",
+        "Name of NGO/PARTNER": "GOSANET FOUNDATION",
+        "Activity Area": "Malaria",
+        "No. of Years in District": "9"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ADAKLU",
+        "Name of NGO/PARTNER": "GOSANET FOUNDATION",
+        "Activity Area": "Tuberculosis",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ADAKLU",
+        "Name of NGO/PARTNER": "GOSANET FOUNDATION",
+        "Activity Area": "Epi",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ADAKLU",
+        "Name of NGO/PARTNER": "SIKAMORE GLOBAL FOUNDATION",
+        "Activity Area": "Hiv/Aids",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ADAKLU",
+        "Name of NGO/PARTNER": "GLOBAL ACTION FOR WOMEN EMPOWERMENT (GLOWA)",
+        "Activity Area": "Usaid Performance Accountability Activity",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "ADAKLU",
+        "Name of NGO/PARTNER": "AGENCY FOR SUSTAINABLE DEVELOPMENT IN PARTNERSHIP WITH CDD GHANA",
+        "Activity Area": "Capacity Building For Chmc",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "NORTH TONGU DISTRICT",
+        "Name of NGO/PARTNER": "MANGEMENT SCIENCES FOR HEALTH (MSH)",
+        "Activity Area": "Primary Health Care Improvement And Leadership Development Plan Capacity Building",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "NORTH TONGU DISTRICT",
+        "Name of NGO/PARTNER": "UBORA INSTITUTE, GHANA",
+        "Activity Area": "Primary Health Care Data Utilisation For Decision Making",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "SOUTH TONGU",
+        "Name of NGO/PARTNER": "LEARNING HELPING LIVING",
+        "Activity Area": "Tb Case Detection ",
+        "No. of Years in District": "20"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETA",
+        "Name of NGO/PARTNER": "SEEK TO SAVE",
+        "Activity Area": "Tb Case Detection",
+        "No. of Years in District": "25"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETA",
+        "Name of NGO/PARTNER": "Q4H (USAID)",
+        "Activity Area": "Comprehensive Quality Health Care Delivery With Emphasis On Clinical Care,Maternal,Newborn Child, Nutrition And Malaria Care",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETA",
+        "Name of NGO/PARTNER": "TOTAL FAMILY HEALTH",
+        "Activity Area": "Family Planning ",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI NORTH ",
+        "Name of NGO/PARTNER": "KEKELI GROUP ",
+        "Activity Area": "Mch",
+        "No. of Years in District": "Since the beginning of the District till date"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI NORTH ",
+        "Name of NGO/PARTNER": "BIDO GHANA ",
+        "Activity Area": "Arhr And Empowerment ",
+        "No. of Years in District": "2021 to 2023"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI NORTH ",
+        "Name of NGO/PARTNER": "SAVANA SIGNATURES ",
+        "Activity Area": "Arhr And Gbv",
+        "No. of Years in District": "2022 to 2023"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI NORTH ",
+        "Name of NGO/PARTNER": "GOOD NEIGHBORS GHANA ",
+        "Activity Area": "Arhr And Empowerment, Logistics ",
+        "No. of Years in District": "3"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI NORTH ",
+        "Name of NGO/PARTNER": "HUMANITY AND NATURE TRUST ",
+        "Activity Area": "Epi And Logistics ",
+        "No. of Years in District": "2021 to 2024"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "AKATSI NORTH ",
+        "Name of NGO/PARTNER": "BLUE MED AFRICA ",
+        "Activity Area": "Community Medical Outreach And Screening ",
+        "No. of Years in District": "2"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETU SOUTH ",
+        "Name of NGO/PARTNER": "ALCO",
+        "Activity Area": "Hiv",
+        "No. of Years in District": "18"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETU SOUTH ",
+        "Name of NGO/PARTNER": "PRO-LINK",
+        "Activity Area": "Hiv  ",
+        "No. of Years in District": "6"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETU SOUTH ",
+        "Name of NGO/PARTNER": "RAIN HEALTHY HEALTH CARE",
+        "Activity Area": "Hiv, Tb, Epi,",
+        "No. of Years in District": "3"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETU SOUTH ",
+        "Name of NGO/PARTNER": "INTERNATIONAL NEEDS",
+        "Activity Area": "Hiv",
+        "No. of Years in District": "2"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETU SOUTH ",
+        "Name of NGO/PARTNER": "CENTRE FOR POPULAR EDUCATION AND HUMAN RIGHT, GHANA (CEPEHRG)",
+        "Activity Area": "Hiv, Human Rights, Nhis Registration, Hep. B Screening",
+        "No. of Years in District": "10"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "KETU SOUTH ",
+        "Name of NGO/PARTNER": "TOTAL FAMILY HEALTH ORGANISATION( FAMILY PLANNING ) ",
+        "Activity Area": "Fp",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "INTERNATIONAL NEEDS GHANA",
+        "Activity Area": "Adolescent Health/Girls Empowerment, School Health Services (Wash), Medical Outreach Services,\nSchool Based Deworming",
+        "No. of Years in District": "15"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "IN MY FATHER\u2019S HOUSE",
+        "Activity Area": "School Base Deworming, Medical Outreach Services",
+        "No. of Years in District": "8"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "PLANNED PARENTHOOD ASSOCIATION OF GHANA",
+        "Activity Area": "Adolescent Health/Girls & Women Empowerment",
+        "No. of Years in District": "15"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "GLOWDEP",
+        "Activity Area": "Adolescent Health/Girls Empowerment, Social Service And Women Empowerment",
+        "No. of Years in District": "5"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "COMMUNITY VULNERABLE CHILDREN ORGANIZATION",
+        "Activity Area": "Adolescent Health, Hiv, Community Development And Care, General Community Services ",
+        "No. of Years in District": "3"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "VOLTA RIVER AUTHORITY SCHISTOSOMIASIS CONTROL PROJECT",
+        "Activity Area": "Screening And Treatment Of Selected Communities",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "CENTRAL TONGU",
+        "Name of NGO/PARTNER": "BASIC NEEDS",
+        "Activity Area": "Supports Mental Health Clients With Some Basic Needs",
+        "No. of Years in District": "6months"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HOHOE",
+        "Name of NGO/PARTNER": "KOFIH",
+        "Activity Area": "Maternal And Child Health",
+        "No. of Years in District": "10"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HOHOE",
+        "Name of NGO/PARTNER": "PLAN INTERNATION GHANA",
+        "Activity Area": "Adolescent Health",
+        "No. of Years in District": "7"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HOHOE",
+        "Name of NGO/PARTNER": "HOPE FOR FUTURE GENERATIONHOH",
+        "Activity Area": "Tb And Adolescent",
+        "No. of Years in District": "10"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HOHOE",
+        "Name of NGO/PARTNER": "AFRINET GHANA",
+        "Activity Area": "Malaria,Tb And Hiv",
+        "No. of Years in District": "10"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO MHD",
+        "Name of NGO/PARTNER": "AFRICA RURAL INTEGRATED NETWORK, GHANA (AFRINET GHANA)",
+        "Activity Area": "Epi",
+        "No. of Years in District": "6"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO MHD",
+        "Name of NGO/PARTNER": "MARRIE STOPPES ",
+        "Activity Area": "Maternal & Child Health",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO MHD",
+        "Name of NGO/PARTNER": "PROLINK",
+        "Activity Area": "Hiv",
+        "No. of Years in District": "8"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO MHD",
+        "Name of NGO/PARTNER": "NODE 8",
+        "Activity Area": "Health Promotion / Adolescent Health",
+        "No. of Years in District": "1"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO MHD",
+        "Name of NGO/PARTNER": "ECLECTIVE LOVE",
+        "Activity Area": "Hiv, Mental Health, Drug Abuse. Malaria, Breast Cancer",
+        "No. of Years in District": "4"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "HO MHD",
+        "Name of NGO/PARTNER": "LOVE AIDE FOUNDATION",
+        "Activity Area": "Gender, Teenage Pregnancy, Sexual And Reproductive Health",
+        "No. of Years in District": "7"
+    },
+    {
+        "Region": "VOLTA",
+        "District of Operation": "SOUTH DAYI",
+        "Name of NGO/PARTNER": "GLOBAL ACTION FOR WOMEN EMPOWERMENT",
+        "Activity Area": "Tb",
+        "No. of Years in District": "4"
+    }
+]
