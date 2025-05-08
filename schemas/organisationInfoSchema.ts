@@ -5,14 +5,10 @@ export const organisationInfoSchema = z
     organisationName: z.string().min(1, { message: "Please enter your organization's name" }),
     region: z.string().min(1, { message: "Please select your head office region" }),
     hasRegionalOffice: z.boolean(),
-    regionalOfficeLocation: z.string()
-      .optional()
-      .refine((val) => {
-        return true;
-      }, { message: "Please enter the regional office location" }),
+    regionalOfficeLocation: z.string().optional(),
     gpsCoordinates: z.object({
-      latitude: z.string().default(""),
-      longitude: z.string().default(""),
+      latitude: z.string(),
+      longitude: z.string(),
     }),
     ghanaPostGPS: z.string().optional(),
     sector: z.string().min(1, { message: "Please select your organization's sector" }),
@@ -29,3 +25,12 @@ export const organisationInfoSchema = z
     contactPerson: z.string().optional(),
     phone: z.string().optional(),
   })
+  .superRefine((data, ctx) => {
+    if (data.hasRegionalOffice && (!data.regionalOfficeLocation || data.regionalOfficeLocation.trim() === "")) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Regional office location is required when 'Has Regional Office' is Yes.",
+        path: ["regionalOfficeLocation"],
+      });
+    }
+  });
