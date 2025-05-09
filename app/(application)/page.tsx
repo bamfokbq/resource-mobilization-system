@@ -12,10 +12,10 @@ export default function Home() {
     <main>
       <LandingHero />
       <Features />
-      <PartnersMap />
-      <Contributions />
-      <HealthStats />
       <Stakeholders />
+      <PartnersMap />
+      <HealthStats />
+      <Contributions />
       <ResourcesAction />
       <Assistance />
     </main>

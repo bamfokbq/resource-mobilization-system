@@ -71,7 +71,7 @@ export default function PartnersDisplayMap() {
             geoData={geoData as any}
             dataItems={partnerData}
             regionLabels={regionLabels}
-            title="Partners by Region"
+            title="Activities by Region"
             regionField="Region"
             regionNameField="name"
             dataItemTitleField="Name of NGO/PARTNER"
