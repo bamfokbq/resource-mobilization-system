@@ -53,24 +53,31 @@ export default function StakeholdersByRegionMap() {
     setSelectedRegionOnMap(region);
   };
 
-    return (
-      <section className="py-8 px-4 bg-slate-50 flex items-center">
-          <div className="w-full">
+  return (
+    <section className='py-8 px-4 bg-slate-50'>
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-navy-blue mb-2">Stakeholders by Region</h2>
+        <div className="w-20 h-1 bg-gradient-to-r from-navy-blue to-mode-blue rounded-full"></div>
+      </div>
+      <div className=" flex flex-row items-start gap-4">
+        <div className="w-1/3"> {/* Changed: Map container takes 1/3 width */}
               <GenericMapComponent
                   geoData={geoData as FeatureCollection}
-                  regionLabels={regionLabels}
-                  title="Stakeholders by Region"
+            regionLabels={regionLabels}
                   regionNameField="name" // Key in `geoData.features.properties` for region name
                   mapHeight="700px"
             onRegionSelect={handleRegionSelect} // Pass the handler to GenericMapComponent
                 //   dataItemFields={dataItemFields}
                   // Optional: customize colors if needed
-                  emptyRegionColor="#e03"
+            emptyRegionColor="#873647"
                   filledRegionColor="#81c784"
                   selectedRegionColor="#4caf50"
           />
         </div>
-        <PartnersTable selectedRegion={selectedRegionOnMap} />
+        <div className="w-2/3"> {/* Changed: Wrapper for PartnersTable, takes 2/3 width */}
+          <PartnersTable selectedRegion={selectedRegionOnMap} />
+        </div>
+      </div>
     </section>
   )
 }

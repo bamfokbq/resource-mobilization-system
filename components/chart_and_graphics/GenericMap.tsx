@@ -116,10 +116,6 @@ export default function GenericMap({
     >
       {/* <div className="absolute inset-0 bg-pattern opacity-5 z-0"></div> */}
       <div className="relative z-10">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-navy-blue mb-2">{title}</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-navy-blue to-mode-blue rounded-full"></div>
-        </div>
         <div style={{ height: mapHeight }}>
           {/* Map Panel */}
           <div

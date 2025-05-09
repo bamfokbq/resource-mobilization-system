@@ -154,15 +154,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
     }, [selectedPartnerNameForSheet, processedData]);
 
   return (
-    <div className="w-1/2 self-end p-4 bg-white rounded-lg shadow">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter partners..."
-          value={globalFilter ?? ''}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setGlobalFilter(String(event.target.value))}
-          className="max-w-sm"
-        />
-      </div>
+      <div className="w-full self-end p-4 bg-white rounded-lg shadow">
       <div className="rounded-md border">
         <Table>
           <TableHeader>
