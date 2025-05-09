@@ -66,7 +66,7 @@ export default function StakeholdersDisplayMap() {
             onRegionSelect={handleRegionSelect} // Callback for when a region is selected
             showDataPanel={false} // Whether to show the data panel
             mapHeight="600px" 
-            emptyRegionColor="#ECEFF1" // Color for regions with no data
+            emptyRegionColor="#637654" // Color for regions with no data
             filledRegionColor="#66BB6A" // Color for regions with data (e.g., a shade of green)
             selectedRegionColor="#FFCA28" // Color for selected regions (e.g., a shade of amber)
         />
