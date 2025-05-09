@@ -18,7 +18,7 @@ interface RegionLabels {
 
 interface GeneralMapProps {
   geoData: FeatureCollection;
-  dataItems: DataItem[];
+  dataItems?: DataItem[]; // Make dataItems optional
   regionLabels: RegionLabels;
   title?: string;
   regionField?: string;
@@ -40,7 +40,7 @@ interface GeneralMapProps {
 
 export default function GeneralMap({
   geoData,
-  dataItems,
+  dataItems = [], // Default to empty array
   regionLabels,
   title = "Map View",
   regionField = "Region",
@@ -139,6 +139,8 @@ export default function GeneralMap({
     [setSelectedRegion, setPopupPosition, selectedRegion, createOnEachFeature]
   );
 
+  const hasDataItems = dataItems && dataItems.length > 0;
+
   if (!mounted) {
     return (
       <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-4 md:p-8 relative">
@@ -182,6 +184,7 @@ export default function GeneralMap({
                 zoom={7}
                 style={{ height: '100%', width: '100%' }}
                 maxBounds={ghanaBounds}
+                attributionControl={false}
                 minZoom={6}
                 maxZoom={7}
                 boundsOptions={{ padding: [5, 5] }}
@@ -204,7 +207,7 @@ export default function GeneralMap({
                   onEachFeature={onEachFeature}
                   style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
                 />
-                {Object.entries(regionLabels).map(([region, position]) => {
+                {hasDataItems && Object.entries(regionLabels).map(([region, position]) => {
                   const total = getRegionItemCount(region);
                   return (
                     <Marker
