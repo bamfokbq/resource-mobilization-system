@@ -114,7 +114,7 @@ export default function StakeholdersTable() {
         <div className="h-full flex flex-col">
             <div className="mb-6">
                 <p className="mt-2 text-sm text-gray-600">
-                    A comprehensive list of stakeholders across different regions and categories in the NCD ecosystem.
+                    Stakeholders across different regions and categories in the NCD ecosystem.
                 </p>
             </div>
             <ScrollArea>

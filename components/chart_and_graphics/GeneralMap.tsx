@@ -18,7 +18,7 @@ interface RegionLabels {
 
 interface GeneralMapProps {
   geoData: FeatureCollection;
-  dataItems: DataItem[];
+  dataItems?: DataItem[]; // Make dataItems optional
   regionLabels: RegionLabels;
   title?: string;
   regionField?: string;
@@ -40,7 +40,7 @@ interface GeneralMapProps {
 
 export default function GeneralMap({
   geoData,
-  dataItems,
+  dataItems = [], // Default to empty array
   regionLabels,
   title = "Map View",
   regionField = "Region",
@@ -139,6 +139,8 @@ export default function GeneralMap({
     [setSelectedRegion, setPopupPosition, selectedRegion, createOnEachFeature]
   );
 
+  const hasDataItems = dataItems && dataItems.length > 0;
+
   if (!mounted) {
     return (
       <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-4 md:p-8 relative">
@@ -182,6 +184,7 @@ export default function GeneralMap({
                 zoom={7}
                 style={{ height: '100%', width: '100%' }}
                 maxBounds={ghanaBounds}
+                attributionControl={false}
                 minZoom={6}
                 maxZoom={7}
                 boundsOptions={{ padding: [5, 5] }}
@@ -204,7 +207,7 @@ export default function GeneralMap({
                   onEachFeature={onEachFeature}
                   style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
                 />
-                {Object.entries(regionLabels).map(([region, position]) => {
+                {hasDataItems && Object.entries(regionLabels).map(([region, position]) => {
                   const total = getRegionItemCount(region);
                   return (
                     <Marker
@@ -298,8 +301,8 @@ export default function GeneralMap({
                         </span>
                         Overview
                       </h3>
-                      <div className="text-sm bg-white bg-opacity-20 px-3 py-1.5 rounded-full">
-                        {dataItems.length} Total Items
+                        <div className="text-sm bg-white text-navy-blue bg-opacity-20 px-3 py-1.5 rounded-full">
+                          {dataItems.length} Total Activities
                       </div>
                     </div>
                   )}
@@ -318,7 +321,7 @@ export default function GeneralMap({
                           </div>
                           <span className="text-lg">
                             <span className="font-semibold text-navy-blue">{regionItems.length}</span>
-                            <span className="text-dark-gray ml-1">Items in this region</span>
+                            <span className="text-dark-gray ml-1">Activities in this region</span>
                           </span>
                         </div>
                       </div>
@@ -360,8 +363,8 @@ export default function GeneralMap({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <div className="text-center">
-                            <p className="text-lg font-semibold">No items found</p>
-                            <p className="text-sm mt-1">There are currently no registered items in this region.</p>
+                              <p className="text-lg font-semibold">No activities found</p>
+                              <p className="text-sm mt-1">There are currently no registered activities in this region.</p>
                           </div>
                         </div>
                       )}
@@ -392,7 +395,7 @@ export default function GeneralMap({
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
-                                    Items
+                                    {count <= 1 ? 'Activity' : 'Activities'}
                                   </div>
                                   <span className={`inline-flex items-center justify-center rounded-full w-6 h-6 text-xs font-semibold ${
                                     count > 0 
