@@ -4,6 +4,7 @@ import Navigation from './Navigation'
 import PrimaryButton from './PrimaryButton'
 import MobileNavigation from './MobileNavigation'
 import Avatar from './Avatar'
+import Image from 'next/image';
 
 export default async function Header() {
     const session = await auth();
@@ -11,9 +12,12 @@ export default async function Header() {
 
     return (
         <header className={`relative flex-shrink-0 bg-white shadow-md p-4 flex justify-between items-center`}>
-            <h1 className='text-navy-blue text-xl font-black'>
-                NCD NAVIGATOR
-            </h1>
+            <div className='flex items-center gap-4'>
+                <h1 className='text-navy-blue text-xl font-black'>
+                    NCD NAVIGATOR
+                </h1>
+                <Image src="/path.webp" alt='Logo' height={150} width={150} />
+            </div>
             <nav className='hidden lg:flex items-center gap-10'>
                 {!isAuthenticated ? (
                     <>
