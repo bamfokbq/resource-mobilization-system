@@ -62,16 +62,16 @@ export default function StakeholdersByRegionMap() {
       <div className=" flex flex-row items-start gap-4">
         <div className="w-1/3"> {/* Changed: Map container takes 1/3 width */}
               <GenericMapComponent
-                  geoData={geoData as FeatureCollection}
+            geoData={geoData as FeatureCollection}
             regionLabels={regionLabels}
-                  regionNameField="name" // Key in `geoData.features.properties` for region name
-                  mapHeight="700px"
+            regionNameField="name" // Key in `geoData.features.properties` for region name
+            mapHeight="700px"
             onRegionSelect={handleRegionSelect} // Pass the handler to GenericMapComponent
-                //   dataItemFields={dataItemFields}
-                  // Optional: customize colors if needed
-            emptyRegionColor="#873647"
-                  filledRegionColor="#81c784"
-                  selectedRegionColor="#4caf50"
+            //   dataItemFields={dataItemFields}
+            // Optional: customize colors if needed
+            emptyRegionColor="#c8e6c9"  // Light green
+            filledRegionColor="#81c784"  // Medium green
+            selectedRegionColor="#388e3c" // Darker green
           />
         </div>
         <div className="w-2/3"> {/* Changed: Wrapper for PartnersTable, takes 2/3 width */}

@@ -175,7 +175,10 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} style={{ textAlign: header.id === 'actions' ? 'center' : 'left' }}>
+                    <TableHead
+                        key={header.id}
+                        className={`px-4 py-3 ${header.id === 'actions' ? 'text-center' : 'text-left'}`}
+                    >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -195,10 +198,10 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} style={{ 
-                          paddingLeft: cell.column.id === 'actions' ? undefined : '0.5rem',
-                          textAlign: cell.column.id === 'actions' ? 'center' : 'left',
-                      }}>
+                      <TableCell
+                          key={cell.id}
+                          className={`px-4 py-2 ${cell.column.id === 'actions' ? 'text-center' : 'text-left'}`}
+                      >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -282,43 +285,43 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
                       setSelectedPartnerNameForSheet(null);
                   }
               }}>
-                  <SheetContent className="sm:max-w-2xl w-full">
+                  <SheetContent className="sm:max-w-2xl w-full bg-card">
             <SheetHeader>
-                          <SheetTitle>Activities for: {selectedPartnerNameForSheet}</SheetTitle>
-              <SheetDescription>
+                          <SheetTitle className="text-navy-blue">Activities for: {selectedPartnerNameForSheet}</SheetTitle>
+                          <SheetDescription className="text-muted-foreground">
                               Detailed information about projects and activities.
                               {selectedRegion && <span className="block mt-1 text-xs">Filtered by Region: {selectedRegion}</span>}
               </SheetDescription>
             </SheetHeader>
                       <div className="py-4 max-h-[80vh] overflow-y-auto pr-2">
                           {activitiesForSheet.map((activity, index) => (
-                              <div key={index} className="border p-3 rounded-md mb-4 shadow-sm bg-slate-50">
-                                  <h4 className="font-semibold mb-3 text-md text-blue-700">
+                              <div key={index} className="border border-border p-3 rounded-md mb-4 shadow-sm bg-ligher-gray">
+                                  <h4 className="font-semibold mb-3 text-md text-smit-green">
                                       {activity["Project name"] ? `Project: ${activity["Project name"]}` : `Activity ${index + 1}`}
                                   </h4>
                                   <div className="grid grid-cols-1 md:grid-cols-12 gap-x-4 gap-y-2 text-sm">
-                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Organization:</span>
-                                      <span className="md:col-span-9 break-words">{activity.Organization || 'N/A'}</span>
+                                      <span className="md:col-span-3 text-right font-medium text-muted-foreground">Organization:</span>
+                                      <span className="md:col-span-9 break-words text-foreground">{activity.Organization || 'N/A'}</span>
 
-                          <span className="md:col-span-3 text-right font-medium text-gray-600">Region:</span>
-                          <span className="md:col-span-9 break-words">{activity["Project region"] || 'N/A'}</span>
+                                      <span className="md:col-span-3 text-right font-medium text-muted-foreground">Region:</span>
+                                      <span className="md:col-span-9 break-words text-foreground">{activity["Project region"] || 'N/A'}</span>
 
-                          <span className="md:col-span-3 text-right font-medium text-gray-600">Year:</span>
-                          <span className="md:col-span-9 break-words">{activity.Year || 'N/A'}</span>
+                                      <span className="md:col-span-3 text-right font-medium text-muted-foreground">Year:</span>
+                                      <span className="md:col-span-9 break-words text-foreground">{activity.Year || 'N/A'}</span>
 
-                          <span className="md:col-span-3 text-right font-medium text-gray-600">Work Nature:</span>
-                          <span className="md:col-span-9 break-words">{activity["Work nature"] || 'N/A'}</span>
+                                      <span className="md:col-span-3 text-right font-medium text-muted-foreground">Work Nature:</span>
+                                      <span className="md:col-span-9 break-words text-foreground">{activity["Work nature"] || 'N/A'}</span>
 
-                          <span className="md:col-span-3 text-right font-medium text-gray-600">Disease Focus:</span>
-                          <span className="md:col-span-9 break-words">{activity.Disease || 'N/A'}</span>
+                                      <span className="md:col-span-3 text-right font-medium text-muted-foreground">Disease Focus:</span>
+                                      <span className="md:col-span-9 break-words text-foreground">{activity.Disease || 'N/A'}</span>
 
-                          <span className="md:col-span-3 text-right font-medium text-gray-600">Role/Activities:</span>
-                          <span className="md:col-span-9 break-words">{activity.Role || 'N/A'}</span>
+                                      <span className="md:col-span-3 text-right font-medium text-muted-foreground">Role/Activities:</span>
+                                      <span className="md:col-span-9 break-words text-foreground">{activity.Role || 'N/A'}</span>
 
                           {activity.District && (
                               <>
-                                  <span className="md:col-span-3 text-right font-medium text-gray-600">District:</span>
-                                  <span className="md:col-span-9 break-words">{activity.District}</span>
+                                              <span className="md:col-span-3 text-right font-medium text-muted-foreground">District:</span>
+                                              <span className="md:col-span-9 break-words text-foreground">{activity.District}</span>
                               </>
                           )}
                       </div>
@@ -327,7 +330,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
             </div>
             <SheetFooter>
               <SheetClose asChild>
-                              <Button type="button" onClick={() => {
+                              <Button className='bg-navy-blue text-primary-foreground hover:bg-navy-blue/90' type="button" onClick={() => {
                                   setIsSheetOpen(false);
                                   setSelectedPartnerNameForSheet(null);
                               }}>Close</Button>

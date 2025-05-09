@@ -6,14 +6,14 @@ import Features from '@/components/features/Features';
 import LandingHero from '@/components/features/LandingHero';
 import PartnersMap from '@/components/features/PartnersMap';
 import ResourcesAction from '@/components/features/ResourcesAction';
-import Stakeholders from '@/components/features/Stakeholders';
+// import Stakeholders from '@/components/features/Stakeholders';
 
 export default function Home() {
   return (
     <main>
       <LandingHero />
       <Features />
-      <Stakeholders />
+      {/* <Stakeholders /> */}
       <StakeholdersByRegionMap />
       <PartnersMap />
       <HealthStats />

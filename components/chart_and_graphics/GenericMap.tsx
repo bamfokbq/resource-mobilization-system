@@ -29,7 +29,7 @@ export default function GenericMap({
   regionLabels,
   title = "Map View",
   regionNameField = "name",
-  mapHeight = "600px",
+  mapHeight = "400px", // Changed from "600px"
   onRegionSelect,
   customStyles = {},
   emptyRegionColor = '#b2ebf2',
@@ -137,11 +137,11 @@ export default function GenericMap({
               minZoom={6}
               maxZoom={7}
               boundsOptions={{ padding: [5, 5] }}
-              zoomControl={false}
-              scrollWheelZoom={false}
-              doubleClickZoom={false}
+              zoomControl={true} // Changed from false
+              scrollWheelZoom={true} // Changed from false
+              doubleClickZoom={true} // Changed from false
               dragging={true}
-              touchZoom={false}
+              touchZoom={true} // Changed from false
               boxZoom={false}
               keyboard={false}
             >
