@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react'; // Added useState
 import dynamic from 'next/dynamic';
 import geoData from '@/constant/geo.json'; // Importing GeoJSON data
 import { FeatureCollection } from 'geojson';
@@ -14,7 +14,6 @@ interface StakeholderDataItem {
   type: string;
   contact?: string;
 }
-
 
 // Sample region labels (coordinates for map markers/labels)
 // These would typically be the centroids or prominent points of your regions
@@ -38,6 +37,8 @@ const regionLabels = {
 };
 
 export default function StakeholdersByRegionMap() {
+  const [selectedRegionOnMap, setSelectedRegionOnMap] = useState<string | null>(null); // Added state for selected region
+
     const GenericMapComponent = React.useMemo(() => {
         return dynamic(
             () => import('./GenericMap'), // Assuming GenericMap is in the same directory
@@ -48,6 +49,9 @@ export default function StakeholdersByRegionMap() {
         );
     }, []);
 
+  const handleRegionSelect = (region: string | null) => {
+    setSelectedRegionOnMap(region);
+  };
 
     return (
       <section className="py-8 px-4 bg-slate-50 flex items-center">
@@ -58,6 +62,7 @@ export default function StakeholdersByRegionMap() {
                   title="Stakeholders by Region"
                   regionNameField="name" // Key in `geoData.features.properties` for region name
                   mapHeight="700px"
+            onRegionSelect={handleRegionSelect} // Pass the handler to GenericMapComponent
                 //   dataItemFields={dataItemFields}
                   // Optional: customize colors if needed
                   emptyRegionColor="#e03"
@@ -65,7 +70,7 @@ export default function StakeholdersByRegionMap() {
                   selectedRegionColor="#4caf50"
           />
         </div>
-         <PartnersTable />
+        <PartnersTable selectedRegion={selectedRegionOnMap} />
     </section>
   )
 }

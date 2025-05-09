@@ -8,13 +8,9 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
-  getFilteredRowModel,
-  GroupingState,
-  ExpandedState,
-  getGroupedRowModel,
-  getExpandedRowModel,
+    getFilteredRowModel,
 } from "@tanstack/react-table";
-import { Eye, ChevronRight, ChevronDown } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 import {
   Table,
@@ -38,79 +34,90 @@ import {
 import partnersData from '@/data/Partners.json'; 
 import { PartnerEntry } from '@/types/partners'; 
 
-export default function PartnersTable() {
+// Define the expected props for PartnersTable
+interface PartnersTableProps {
+    selectedRegion: string | null;
+}
+
+// New interface for the data structure for the table rows
+interface UniquePartnerRow {
+    Partner: string;
+    Regions: string[];
+    allActivities: PartnerEntry[];
+}
+
+export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<Array<{ id: string; value: unknown }>>([]);
   const [globalFilter, setGlobalFilter] = useState('');
-  const [selectedPartner, setSelectedPartner] = useState<PartnerEntry | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [grouping, setGrouping] = useState<GroupingState>(['Project region']);
-  const [expanded, setExpanded] = useState<ExpandedState>({});
+    const [selectedPartnerNameForSheet, setSelectedPartnerNameForSheet] = useState<string | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  // Filter out entries where essential data for the table might be missing or null
-  const validPartnersData = useMemo(() => 
-    (partnersData as PartnerEntry[]).filter(partner => 
-      partner.Organization && partner.Partner && partner["Project region"]
-    )
-  , []);
-
-  const data = useMemo(() => validPartnersData, [validPartnersData]);
-
-  const columns: ColumnDef<PartnerEntry>[] = useMemo(() => [
-    {
-      accessorKey: "Project region",
-      header: "Project Region",
-      cell: ({ row, getValue }) => {
-        if (row.getIsGrouped()) {
-          return (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={row.getToggleExpandedHandler()}
-              className="flex items-center gap-1 p-1 h-auto text-left"
-            >
-              {row.getIsExpanded() ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-              <span className="font-semibold">{getValue() as string}</span> 
-              <span className="text-xs text-gray-500">({row.subRows.length})</span>
-            </Button>
-          );
+    const processedData = useMemo(() => {
+        let filteredByRegion = partnersData as PartnerEntry[];
+        if (selectedRegion) {
+            filteredByRegion = filteredByRegion.filter(
+                partner => partner["Project region"] && partner["Project region"].toLowerCase() === selectedRegion.toLowerCase()
+            );
         }
-        // For non-grouped rows, we don't want to render the region again here,
-        // as it's implicitly part of the group.
-        // However, if you decided to not group by default or allow ungrouping,
-        // you might want to display it:
-        // return getValue() as string; 
-        return null; 
-      },
-    },
+
+      const groupedByPartner = filteredByRegion.reduce((acc, activity) => {
+          const partnerName = activity.Partner;
+          if (typeof partnerName !== 'string' || !partnerName.trim()) {
+              return acc;
+          }
+
+        if (!acc[partnerName]) {
+            acc[partnerName] = {
+                Partner: partnerName,
+                Regions: new Set<string>(),
+                allActivities: [],
+            };
+        }
+        if (typeof activity["Project region"] === 'string' && activity["Project region"].trim()) {
+            acc[partnerName].Regions.add(activity["Project region"]);
+        }
+        acc[partnerName].allActivities.push(activity);
+        return acc;
+    }, {} as Record<string, { Partner: string; Regions: Set<string>; allActivities: PartnerEntry[] }>);
+
+      return Object.values(groupedByPartner).map(p => ({
+          ...p,
+          Regions: Array.from(p.Regions),
+      }));
+  }, [selectedRegion]);
+
+    const data = useMemo(() => processedData, [processedData]);
+
+    const columns: ColumnDef<UniquePartnerRow>[] = useMemo(() => [
     {
       accessorKey: "Partner",
       header: "Partner",
-      cell: ({ row, getValue }) => {
-        if (row.getIsGrouped()) return null; // Don't show for group header rows
-        return (
-          <div 
-            className="capitalize"
-            style={{ paddingLeft: `${row.depth * 1.5}rem` }} // Indent sub-rows
-          >
-            {getValue() as string || 'N/A'}
-          </div>
-        );
+          cell: ({ row }) => {
+              const partnerName = row.getValue("Partner") as string; // Corrected: Added accessorKey
+              return <div className="capitalize">{partnerName || 'N/A'}</div>;
+          }
+      },
+      {
+          accessorKey: "Regions",
+          header: "Region(s) of Operation",
+          cell: ({ row }) => {
+              const regions = row.getValue("Regions") as string[]; // Corrected: Added accessorKey
+              return regions && regions.length > 0 ? regions.join(', ') : 'N/A';
       },
     },
     {
       id: "actions",
       header: "View Activities",
       cell: ({ row }) => {
-        if (row.getIsGrouped() || !row.original) return null;
-        const partner = row.original;
+          const partnerRowData = row.original;
         return (
-          <div style={{ paddingLeft: `${row.depth * 1.5}rem` }}>
+            <div className="text-center">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => {
-                setSelectedPartner(partner);
+                  setSelectedPartnerNameForSheet(partnerRowData.Partner);
                 setIsSheetOpen(true);
               }}
               className="p-1 h-auto"
@@ -129,23 +136,22 @@ export default function PartnersTable() {
     state: {
       sorting,
       columnFilters,
-      globalFilter,
-      grouping,
-      expanded,
+        globalFilter,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    onGroupingChange: setGrouping,
-    onExpandedChange: setExpanded,
+      onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getGroupedRowModel: getGroupedRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    autoResetExpanded: false, // Keep expanded state on data/filter changes
+      getFilteredRowModel: getFilteredRowModel(),
   });
+
+    const activitiesForSheet = useMemo(() => {
+        if (!selectedPartnerNameForSheet) return [];
+        const partnerDetail = processedData.find(p => p.Partner === selectedPartnerNameForSheet);
+        return partnerDetail ? partnerDetail.allActivities : [];
+    }, [selectedPartnerNameForSheet, processedData]);
 
   return (
     <div className="w-1/2 self-end p-4 bg-white rounded-lg shadow">
@@ -184,7 +190,8 @@ export default function PartnersTable() {
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} style={{ 
-                        paddingLeft: cell.column.id !== 'Project region' && row.depth > 0 ? `${row.depth * 0.5}rem` : undefined,
+                          paddingLeft: cell.column.id === 'actions' ? undefined : '0.5rem',
+                          textAlign: cell.column.id === 'actions' ? 'center' : 'left',
                       }}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -226,54 +233,62 @@ export default function PartnersTable() {
         </Button>
       </div>
 
-      {selectedPartner && (
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetContent className="sm:max-w-[525px]">
+          {selectedPartnerNameForSheet && activitiesForSheet.length > 0 && (
+              <Sheet open={isSheetOpen} onOpenChange={(isOpen) => {
+                  setIsSheetOpen(isOpen);
+                  if (!isOpen) {
+                      setSelectedPartnerNameForSheet(null);
+                  }
+              }}>
+                  <SheetContent className="sm:max-w-2xl w-full">
             <SheetHeader>
-              <SheetTitle>Project Details: {selectedPartner["Project name"] || 'N/A'}</SheetTitle>
+                          <SheetTitle>Activities for: {selectedPartnerNameForSheet}</SheetTitle>
               <SheetDescription>
-                Detailed information about the project and activities.
+                              Detailed information about projects and activities.
+                              {selectedRegion && <span className="block mt-1 text-xs">Filtered by Region: {selectedRegion}</span>}
               </SheetDescription>
             </SheetHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Organization:</span>
-                <span className="col-span-3">{selectedPartner.Organization || 'N/A'}</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Partner:</span>
-                <span className="col-span-3">{selectedPartner.Partner || 'N/A'}</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Project Region:</span>
-                <span className="col-span-3">{selectedPartner["Project region"] || 'N/A'}</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Year:</span>
-                <span className="col-span-3">{selectedPartner.Year || 'N/A'}</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Work Nature:</span>
-                <span className="col-span-3">{selectedPartner["Work nature"] || 'N/A'}</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Disease Focus:</span>
-                <span className="col-span-3">{selectedPartner.Disease || 'N/A'}</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <span className="text-right font-semibold col-span-1">Role/Activities:</span>
-                <span className="col-span-3">{selectedPartner.Role || 'N/A'}</span>
-              </div>
-               {selectedPartner.District && (
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <span className="text-right font-semibold col-span-1">District:</span>
-                    <span className="col-span-3">{selectedPartner.District}</span>
+                      <div className="py-4 max-h-[80vh] overflow-y-auto pr-2">
+                          {activitiesForSheet.map((activity, index) => (
+                              <div key={index} className="border p-3 rounded-md mb-4 shadow-sm bg-slate-50">
+                                  <h4 className="font-semibold mb-3 text-md text-blue-700">
+                                      {activity["Project name"] ? `Project: ${activity["Project name"]}` : `Activity ${index + 1}`}
+                                  </h4>
+                                  <div className="grid grid-cols-1 md:grid-cols-12 gap-x-4 gap-y-2 text-sm">
+                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Organization:</span>
+                                      <span className="md:col-span-9 break-words">{activity.Organization || 'N/A'}</span>
+
+                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Region:</span>
+                                      <span className="md:col-span-9 break-words">{activity["Project region"] || 'N/A'}</span>
+
+                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Year:</span>
+                                      <span className="md:col-span-9 break-words">{activity.Year || 'N/A'}</span>
+
+                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Work Nature:</span>
+                                      <span className="md:col-span-9 break-words">{activity["Work nature"] || 'N/A'}</span>
+
+                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Disease Focus:</span>
+                                      <span className="md:col-span-9 break-words">{activity.Disease || 'N/A'}</span>
+
+                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Role/Activities:</span>
+                                      <span className="md:col-span-9 break-words">{activity.Role || 'N/A'}</span>
+
+                                      {activity.District && (
+                                          <>
+                                              <span className="md:col-span-3 text-right font-medium text-gray-600">District:</span>
+                                              <span className="md:col-span-9 break-words">{activity.District}</span>
+                                          </>
+                                      )}
+                                  </div>
                 </div>
-              )}
+              ))}
             </div>
             <SheetFooter>
               <SheetClose asChild>
-                <Button type="submit">Close</Button>
+                              <Button type="button" onClick={() => {
+                                  setIsSheetOpen(false);
+                                  setSelectedPartnerNameForSheet(null);
+                              }}>Close</Button>
               </SheetClose>
             </SheetFooter>
           </SheetContent>
