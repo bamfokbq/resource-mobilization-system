@@ -9,6 +9,7 @@ import {
   getSortedRowModel,
   SortingState,
     getFilteredRowModel,
+    PaginationState,
 } from "@tanstack/react-table";
 import { Eye } from 'lucide-react';
 
@@ -22,6 +23,13 @@ import {
 } from "@/components/ui/table"; 
 import { Button } from "@/components/ui/button"; 
 import { Input } from "@/components/ui/input"; 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
   Sheet,
   SheetContent,
@@ -52,6 +60,10 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
   const [globalFilter, setGlobalFilter] = useState('');
     const [selectedPartnerNameForSheet, setSelectedPartnerNameForSheet] = useState<string | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    });
 
     const processedData = useMemo(() => {
         let filteredByRegion = partnersData as PartnerEntry[];
@@ -94,7 +106,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
       accessorKey: "Partner",
       header: "Partner",
           cell: ({ row }) => {
-              const partnerName = row.getValue("Partner") as string; // Corrected: Added accessorKey
+              const partnerName = row.getValue("Partner") as string;
               return <div className="capitalize">{partnerName || 'N/A'}</div>;
           }
       },
@@ -102,8 +114,8 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
           accessorKey: "Regions",
           header: "Region(s) of Operation",
           cell: ({ row }) => {
-              const regions = row.getValue("Regions") as string[]; // Corrected: Added accessorKey
-              return regions && regions.length > 0 ? regions.join(', ') : 'N/A';
+          const regions = row.getValue("Regions") as string[];
+          return regions && regions.length > 0 ? regions.join(', ') : 'N/A';
       },
     },
     {
@@ -137,10 +149,12 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
       sorting,
       columnFilters,
         globalFilter,
+        pagination,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
       onGlobalFilterChange: setGlobalFilter,
+      onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -210,11 +224,22 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
         <Button
           variant="outline"
           size="sm"
+                  onClick={() => table.setPageIndex(0)}
+                  disabled={!table.getCanPreviousPage()}
+              >
+                  First
+              </Button>
+              <Button
+                  variant="outline"
+                  size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
           Previous
         </Button>
+              <span className="text-sm">
+                  Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+              </span>
         <Button
           variant="outline"
           size="sm"
@@ -223,6 +248,31 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
         >
           Next
         </Button>
+              <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  disabled={!table.getCanNextPage()}
+              >
+                  Last
+              </Button>
+              <Select
+                  value={`${table.getState().pagination.pageSize}`}
+                  onValueChange={(value) => {
+                      table.setPageSize(Number(value));
+                  }}
+              >
+                  <SelectTrigger className="h-8 w-[70px]">
+                      <SelectValue placeholder={table.getState().pagination.pageSize} />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                      {[10, 20, 30, 40, 50].map((pageSize) => (
+                          <SelectItem key={pageSize} value={`${pageSize}`}>
+                              {pageSize}
+                          </SelectItem>
+                      ))}
+                  </SelectContent>
+              </Select>
       </div>
 
           {selectedPartnerNameForSheet && activitiesForSheet.length > 0 && (
@@ -250,28 +300,28 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
                                       <span className="md:col-span-3 text-right font-medium text-gray-600">Organization:</span>
                                       <span className="md:col-span-9 break-words">{activity.Organization || 'N/A'}</span>
 
-                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Region:</span>
-                                      <span className="md:col-span-9 break-words">{activity["Project region"] || 'N/A'}</span>
+                          <span className="md:col-span-3 text-right font-medium text-gray-600">Region:</span>
+                          <span className="md:col-span-9 break-words">{activity["Project region"] || 'N/A'}</span>
 
-                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Year:</span>
-                                      <span className="md:col-span-9 break-words">{activity.Year || 'N/A'}</span>
+                          <span className="md:col-span-3 text-right font-medium text-gray-600">Year:</span>
+                          <span className="md:col-span-9 break-words">{activity.Year || 'N/A'}</span>
 
-                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Work Nature:</span>
-                                      <span className="md:col-span-9 break-words">{activity["Work nature"] || 'N/A'}</span>
+                          <span className="md:col-span-3 text-right font-medium text-gray-600">Work Nature:</span>
+                          <span className="md:col-span-9 break-words">{activity["Work nature"] || 'N/A'}</span>
 
-                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Disease Focus:</span>
-                                      <span className="md:col-span-9 break-words">{activity.Disease || 'N/A'}</span>
+                          <span className="md:col-span-3 text-right font-medium text-gray-600">Disease Focus:</span>
+                          <span className="md:col-span-9 break-words">{activity.Disease || 'N/A'}</span>
 
-                                      <span className="md:col-span-3 text-right font-medium text-gray-600">Role/Activities:</span>
-                                      <span className="md:col-span-9 break-words">{activity.Role || 'N/A'}</span>
+                          <span className="md:col-span-3 text-right font-medium text-gray-600">Role/Activities:</span>
+                          <span className="md:col-span-9 break-words">{activity.Role || 'N/A'}</span>
 
-                                      {activity.District && (
-                                          <>
-                                              <span className="md:col-span-3 text-right font-medium text-gray-600">District:</span>
-                                              <span className="md:col-span-9 break-words">{activity.District}</span>
-                                          </>
-                                      )}
-                                  </div>
+                          {activity.District && (
+                              <>
+                                  <span className="md:col-span-3 text-right font-medium text-gray-600">District:</span>
+                                  <span className="md:col-span-9 break-words">{activity.District}</span>
+                              </>
+                          )}
+                      </div>
                 </div>
               ))}
             </div>
