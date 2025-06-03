@@ -15,6 +15,16 @@ const formSchema = z.object({
     password: z.string().default(process.env.DEFAULT_PASSWORD || 'ncd@2025')
 })
 
+// Re-export survey actions for convenience
+export { 
+    submitSurveyData, 
+    saveSurveyDraft, 
+    getSurveyById, 
+    getAllSurveys, 
+    updateSurveyData, 
+    deleteSurvey 
+} from './surveyActions'
+
 export async function addNewUser(prevState: any, formData: FormData) {
     try {
         const rawData = {

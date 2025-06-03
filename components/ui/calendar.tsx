@@ -58,14 +58,11 @@ function Calendar({
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",
         ...classNames,
-      }}
-      components={{
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("size-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn("size-4", className)} {...props} />
-        ),
+      }}      components={{
+        Chevron: ({ orientation, ...props }) => {
+          const Icon = orientation === "left" ? ChevronLeft : ChevronRight
+          return <Icon className="size-4" {...props} />
+        },
       }}
       {...props}
     />
