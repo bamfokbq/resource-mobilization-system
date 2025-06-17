@@ -153,7 +153,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
           estimatedBudget,
           regions,
           targetedNCDs,
-            fundingSource: fundingSource || 'Ghana Government', // Default to Ghana Government if undefined
+          fundingSource: fundingSource || 'Ghana Government', // Default to Ghana Government if undefined
           ncdSpecificInfo: finalNcdSpecificInfo
         }
       });
@@ -504,7 +504,8 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                   <FormItem>
                     <FormLabel className="text-gray-700 font-medium">
                       B2.8. What is the main source of funding for this project?
-                    </FormLabel>                    <FormDescription className="text-sm text-gray-500 mt-1">
+                    </FormLabel>
+                    <FormDescription className="text-sm text-gray-500 mt-1">
                       Your main source of funding contributes at least 60% of funds for your project.
                     </FormDescription>
                     <Select
