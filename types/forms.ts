@@ -64,19 +64,25 @@ export interface NCDSpecificInfo {
   researchFocus?: string[];
 }
 
-export interface ProjectActivities {
-  districts: string[];
-  continuumOfCare: string[];
-  activityDescription: string;
-  primaryTargetPopulation: string;
+export interface NCDActivity {
+  projectDistrict?: string[];
+  continuumOfCare?: string;
+  activityDescription?: string;
+  targetPopulation?: string;
   secondaryTargetPopulation?: string;
-  ageRanges: string[];
-  gender: "male" | "female" | "both";
-  implementationLevel: string[];
-  implementationArea: "urban" | "rural" | "both";
-  whoGapTargets: string[];
-  ncdStrategyDomain: string;
-  preventionFocus?: string;
+  ageRange?: string;
+  gender?: string;
+  activityLevel?: string;
+  activityImplementedArea?: string;
+  nationalNCDStrategyWHOGapTarget?: string;
+  domainAreaOfStrategy?: string;
+  preventionStrategicArea?: string;
+  expectedOutcomes?: string;
+  challenges?: string;
+}
+
+export interface ProjectActivities {
+  ncdActivities: Record<string, NCDActivity>;
 }
 
 export interface Activity {

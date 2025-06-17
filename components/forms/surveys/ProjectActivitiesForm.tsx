@@ -62,13 +62,22 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
       form.reset(formData.projectActivities)
     }
   }, [formData, form])
-
   const onSubmit = async (values: z.infer<typeof projectActivitiesSchema>) => {
     try {
+      // Validate the form data
+      const validationResult = projectActivitiesSchema.safeParse(values)
+
+      if (!validationResult.success) {
+        console.error('Validation errors:', validationResult.error.errors)
+        toast.error("Please check all required fields")
+        return
+      }
+
       updateFormData({ projectActivities: values })
       toast.success("Project activities saved successfully")
       handleNext()
     } catch (error) {
+      console.error('Save error:', error)
       toast.error("Failed to save project activities")
     }
   }
