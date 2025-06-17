@@ -46,9 +46,9 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
           ageRange: "",
           gender: "",
           activityLevel: "",
-          activityImplementedArea: "",
-          nationalNCDStrategyWHOGapTarget: "",
+          activityImplementedArea: "",          nationalNCDStrategyWHOGapTarget: "",
           domainAreaOfStrategy: "",
+          preventionStrategicArea: "",
           expectedOutcomes: "",
           challenges: ""
         }
@@ -278,7 +278,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                     </FormLabel>
                                     <FormControl>
                                       <Textarea
-                                        placeholder="Describe the target population..."
+                                        placeholder="Describe the domain area of the strategy..."
                                         className="min-h-[100px] resize-none"
                                         {...field}
                                       />
@@ -288,9 +288,9 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                 )}
                               />
 
-                              <FormField
+                            <FormField
                                 control={form.control}
-                                name={`ncdActivities.${ncd}.domainAreaOfStrategy`}
+                                name={`ncdActivities.${ncd}.preventionStrategicArea`}
                                 render={({ field }) => (
                                   <FormItem>
                                     <FormLabel className="text-base text-gray-700 mb-3 block">
@@ -298,7 +298,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                     </FormLabel>
                                     <FormControl>
                                       <Textarea
-                                        placeholder="Describe the target population..."
+                                        placeholder="Describe the strategic area for secondary and tertiary prevention..."
                                         className="min-h-[100px] resize-none"
                                         {...field}
                                       />

@@ -1,8 +1,18 @@
 import * as z from "zod";
 
 export const ncdActivitySchema = z.object({
+  projectDistrict: z.array(z.string()).optional(),
+  continuumOfCare: z.string().optional(),
   activityDescription: z.string().min(1, "Activity description is required"),
   targetPopulation: z.string().min(1, "Target population is required"),
+  secondaryTargetPopulation: z.string().optional(),
+  ageRange: z.string().optional(),
+  gender: z.string().optional(),
+  activityLevel: z.string().optional(),
+  activityImplementedArea: z.string().optional(),
+  nationalNCDStrategyWHOGapTarget: z.string().optional(),
+  domainAreaOfStrategy: z.string().optional(),
+  preventionStrategicArea: z.string().optional(),
   expectedOutcomes: z.string().min(1, "Expected outcomes are required"),
   challenges: z.string().min(1, "Challenges description is required"),
 });
