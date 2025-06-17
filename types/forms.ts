@@ -104,10 +104,9 @@ export interface ProjectInfo {
   projectObjectives?: string;
   targetBeneficiaries?: string;
   projectLocation?: string;
-  estimatedBudget?: string;
-  regions: string[];
+  estimatedBudget?: string; regions: string[];
   targetedNCDs: NCDType[];
-  fundingSource: FundingSource;
+  fundingSource?: FundingSource;
   ncdSpecificInfo: { [K in NCDType]?: NCDSpecificInfo };
 }
 
