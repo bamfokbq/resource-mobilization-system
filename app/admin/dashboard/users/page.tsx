@@ -1,8 +1,7 @@
 import { auth } from '@/auth'
 import { AddNewUserModal } from '@/components/features/AddNewUserModal'
-import SearchTable from '@/components/shared/SearchTable'
-import SearchTableSkeletion from '@/components/skeletons/SearchTableSkeletion'
-import AdminUsersTable from '@/components/tables/AdminUsersTable'
+import RealAdminUsersTable from '@/components/tables/RealAdminUsersTable'
+import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
 import { Suspense } from 'react'
 import { RiUserLine, RiUserAddLine } from 'react-icons/ri'
 
@@ -28,18 +27,31 @@ export default async function AdminDashboardUserPage() {
                 )}
             </div>
 
-            {/* Search and Table Section */}
+            {/* Statistics Overview */}
+            <Suspense fallback={
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {[...Array(4)].map((_, i) => (
+                        <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <div className="animate-pulse">
+                                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                                <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
+                                <div className="h-3 bg-gray-200 rounded w-full"></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            }>
+                <UserStatsOverview />
+            </Suspense>
+
+            {/* Users Table Section */}
             <div className="bg-white rounded-xl p-6 shadow-lg space-y-6">
                 <div className="flex items-center gap-3 mb-6">
                     <RiUserLine className="text-purple-500 text-2xl" />
                     <h2 className="text-2xl font-bold text-gray-800">All Users</h2>
                 </div>
 
-                <Suspense fallback={<SearchTableSkeletion />}>
-                    <SearchTable />
-                </Suspense>
-
-                <AdminUsersTable />
+                <RealAdminUsersTable />
             </div>
         </div>
     )

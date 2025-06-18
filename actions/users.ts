@@ -137,3 +137,74 @@ export async function updateUserEditableProfile(userId: string, telephone: strin
   }
 }
 
+export async function getAllUsers() {
+  try {
+    const db = await getDb()
+    const users = await db.collection("users").find({}, {
+      projection: {
+        password: 0, // Exclude password field for security
+      }
+    }).toArray()    // Transform the data to match the expected format
+    return users.map(user => ({
+      name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      email: user.email,
+      region: user.region || '',
+      telephone: user.telephone || '',
+      organisation: user.organisation || '',
+      role: user.role || 'User',
+      isActive: user.isActive ?? true,
+      createdAt: user.createdAt,
+      bio: user.bio || ''
+    }))
+  } catch (error) {
+    console.error("Failed to fetch users:", error)
+    return []
+  }
+}
+
+export async function getUserStats() {
+  try {
+    const db = await getDb()
+
+    const totalUsers = await db.collection("users").countDocuments()
+    const activeUsers = await db.collection("users").countDocuments({ isActive: true })
+    const adminUsers = await db.collection("users").countDocuments({ role: "Admin" })
+    const regularUsers = await db.collection("users").countDocuments({ role: "User" })
+
+    // Get recent users (last 30 days)
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    const recentUsers = await db.collection("users").countDocuments({
+      createdAt: { $gte: thirtyDaysAgo }
+    })
+
+    // Get users by region
+    const usersByRegion = await db.collection("users").aggregate([
+      { $group: { _id: "$region", count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]).toArray()
+
+    return {
+      totalUsers,
+      activeUsers,
+      adminUsers,
+      regularUsers,
+      recentUsers,
+      usersByRegion: usersByRegion.map(item => ({
+        region: item._id || 'Unknown',
+        count: item.count
+      }))
+    }
+  } catch (error) {
+    console.error("Failed to fetch user stats:", error)
+    return {
+      totalUsers: 0,
+      activeUsers: 0,
+      adminUsers: 0,
+      regularUsers: 0,
+      recentUsers: 0,
+      usersByRegion: []
+    }
+  }
+}
+

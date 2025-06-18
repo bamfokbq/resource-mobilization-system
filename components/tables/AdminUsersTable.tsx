@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { USER_LISTS } from '@/constant';
 import {
     ColumnDef,
@@ -13,21 +13,21 @@ import {
     getSortedRowModel,
     SortingState,
     useReactTable,
+    VisibilityState,
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import {
     FaAngleDoubleLeft, FaAngleDoubleRight,
+    FaCheckCircle,
     FaChevronLeft, FaChevronRight,
+    FaCog,
+    FaEnvelope,
+    FaMapMarkerAlt,
     FaSort,
     FaSortDown,
     FaSortUp,
-    FaUser,
-    FaEnvelope,
-    FaMapMarkerAlt,
-    FaCheckCircle
+    FaUser
 } from 'react-icons/fa';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const userFormSchema = z.object({
@@ -45,6 +45,10 @@ export default function AdminUsersTable() {
     const [data, setData] = useState<typeof USER_LISTS>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+        telephone: false,
+        organisation: false,
+    });
     const [selectedUser, setSelectedUser] = useState<typeof USER_LISTS[0] | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [formData, setFormData] = useState({
@@ -90,34 +94,8 @@ export default function AdminUsersTable() {
     useEffect(() => {
         setData(USER_LISTS);
         setIsLoading(false);
-    }, []);
-
-    const columns = useMemo<ColumnDef<typeof USER_LISTS[0]>[]>(() => [{
-            accessorKey: "id",
-            header: ({ column }) => (
-                <div className="flex items-center gap-2 cursor-pointer group hover:text-emerald-600 transition-colors duration-200"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    <span className="font-semibold">ID</span>
-                    <div className="text-slate-400 group-hover:text-emerald-500 transition-colors duration-200">
-                        {column.getIsSorted() === "asc" ? (
-                            <FaSortUp className="h-4 w-4" />
-                        ) : column.getIsSorted() === "desc" ? (
-                            <FaSortDown className="h-4 w-4" />
-                        ) : (
-                            <FaSort className="h-4 w-4" />
-                        )}
-                    </div>
-                </div>
-            ),
-        cell: ({ row }) => (
-            <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
-                <span className="font-bold text-slate-900">#{row.original.id}</span>
-            </div>
-        )
-        },
-        {
-            accessorKey: "name",
+    }, []); const columns = useMemo<ColumnDef<typeof USER_LISTS[0]>[]>(() => [{
+        accessorKey: "name",
             header: ({ column }) => (
                 <div className="flex items-center gap-2 cursor-pointer group hover:text-emerald-600 transition-colors duration-200"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -133,17 +111,17 @@ export default function AdminUsersTable() {
                     </div>
                 </div>
             ),
-            cell: ({ row }) => (
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center">
-                        <FaUser className="h-4 w-4 text-emerald-600" />
-                    </div>
-                    <div>
-                        <p className="font-semibold text-slate-900">{row.original.name}</p>
-                        <p className="text-sm text-slate-500">User Account</p>
-                    </div>
+        cell: ({ row }) => (
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center">
+                    <FaUser className="h-4 w-4 text-emerald-600" />
                 </div>
-            )
+                <div>
+                    <p className="font-semibold text-slate-900">{row.original.name}</p>
+                    <p className="text-sm text-slate-500">User Account</p>
+                </div>
+            </div>
+        )
         },
         {
             accessorKey: "email",
@@ -170,6 +148,27 @@ export default function AdminUsersTable() {
             )
         },
         {
+            accessorKey: "telephone",
+            header: ({ column }) => (
+                <div className="flex items-center gap-2 cursor-pointer group hover:text-emerald-600 transition-colors duration-200"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                    <span className="font-semibold">Phone</span>
+                    <div className="text-slate-400 group-hover:text-emerald-500 transition-colors duration-200">
+                        {column.getIsSorted() === "asc" ? (
+                            <FaSortUp className="h-4 w-4" />
+                        ) : column.getIsSorted() === "desc" ? (
+                            <FaSortDown className="h-4 w-4" />
+                        ) : (
+                            <FaSort className="h-4 w-4" />
+                        )}
+                    </div>
+                </div>
+            ),
+            cell: ({ row }) => (
+                <span className="text-slate-700 font-medium">{row.original.telephone}</span>
+            )
+        },
+        {
             accessorKey: "region",
             header: ({ column }) => (
                 <div className="flex items-center gap-2 cursor-pointer group hover:text-emerald-600 transition-colors duration-200"
@@ -191,6 +190,27 @@ export default function AdminUsersTable() {
                     <FaMapMarkerAlt className="h-4 w-4 text-green-500" />
                     <span className="text-slate-700 font-medium">{row.original.region}</span>
                 </div>
+            )
+        },
+        {
+            accessorKey: "organisation",
+            header: ({ column }) => (
+                <div className="flex items-center gap-2 cursor-pointer group hover:text-emerald-600 transition-colors duration-200"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                    <span className="font-semibold">Organisation</span>
+                    <div className="text-slate-400 group-hover:text-emerald-500 transition-colors duration-200">
+                        {column.getIsSorted() === "asc" ? (
+                            <FaSortUp className="h-4 w-4" />
+                        ) : column.getIsSorted() === "desc" ? (
+                            <FaSortDown className="h-4 w-4" />
+                        ) : (
+                            <FaSort className="h-4 w-4" />
+                        )}
+                    </div>
+                </div>
+            ),
+            cell: ({ row }) => (
+                <span className="text-slate-700 font-medium">{row.original.organisation}</span>
             )
         },
         {
@@ -357,17 +377,17 @@ export default function AdminUsersTable() {
                 </Dialog>
             )
         }
-    ], [isDialogOpen, formData]);
-
-    const table = useReactTable({
+    ], [isDialogOpen, formData]); const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         onSortingChange: setSorting,
+        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
+            columnVisibility,
         },
         initialState: {
             pagination: {
@@ -392,22 +412,58 @@ export default function AdminUsersTable() {
                 </div>
             </div>
         );
-    }
-
-    return (
+    } return (
         <div className="space-y-6">
-            <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg">
-                    <FaUser className="h-5 w-5 text-white" />
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg">
+                        <FaUser className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                            User Management
+                        </h2>
+                        <p className="text-sm text-slate-500 mt-1">
+                            Manage and edit user accounts
+                        </p>
+                    </div>
                 </div>
-                <div>
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                        User Management
-                    </h2>
-                    <p className="text-sm text-slate-500 mt-1">
-                        Manage and edit user accounts
-                    </p>
-                </div>
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="ml-auto border-slate-300 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-600 transition-all duration-200"
+                        >
+                            <FaCog className="h-4 w-4 mr-2" />
+                            Columns
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        {table
+                            .getAllColumns()
+                            .filter((column) => column.getCanHide())
+                            .map((column) => {
+                                return (
+                                    <DropdownMenuCheckboxItem
+                                        key={column.id}
+                                        className="capitalize"
+                                        checked={column.getIsVisible()}
+                                        onCheckedChange={(value) =>
+                                            column.toggleVisibility(!!value)
+                                        }
+                                    >
+                                        {column.id === "organisation" ? "Organisation" :
+                                            column.id === "telephone" ? "Phone" :
+                                                column.id}
+                                    </DropdownMenuCheckboxItem>
+                                )
+                            })}
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
 
             <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 overflow-hidden">
