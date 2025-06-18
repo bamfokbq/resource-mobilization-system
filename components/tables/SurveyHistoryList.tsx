@@ -1,9 +1,8 @@
 'use client';
 
+import { getAllSurveys } from '@/actions/surveyActions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { getAllSurveys } from '@/actions/surveyActions';
 import {
     ColumnDef,
     flexRender,
@@ -13,20 +12,17 @@ import {
     SortingState,
     useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import {
     FaAngleDoubleLeft, FaAngleDoubleRight, FaBuilding,
-    FaCheckCircle,
+    FaCalendarAlt,
     FaChevronLeft, FaChevronRight,
-    FaEnvelope,
     FaInfoCircle,
     FaMapMarkerAlt, FaProjectDiagram, FaSort,
     FaSortDown,
-    FaSortUp,
-    FaCalendarAlt,
-    FaUser
+    FaSortUp
 } from 'react-icons/fa';
-import { useRouter } from "next/navigation";
 import SearchTable from '../shared/SearchTable';
 import SearchTableSkeletion from '../skeletons/SearchTableSkeletion';
 
@@ -115,11 +111,11 @@ export default function SurveyHistoryList() {
     };    // Define table columns
     const columns = useMemo<ColumnDef<SurveyData>[]>(() => [
         {
-            accessorKey: "organisationInfo.organisationName", 
+            accessorKey: "organisationInfo.organisationName",
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-indigo-600 transition-colors duration-200"
-                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
                         <span className="font-semibold">Organisation</span>
                         <div className="text-slate-400 group-hover:text-indigo-500 transition-colors duration-200">
                             {column.getIsSorted() === "asc" ? (
@@ -132,24 +128,18 @@ export default function SurveyHistoryList() {
                         </div>
                     </div>
                 )
-            },
-            cell: ({ row }) => (
+            }, cell: ({ row }) => (
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
                         <FaBuilding className="h-4 w-4 text-blue-600" />
                     </div>
-                    <div>
-                        <span className="font-medium text-slate-900">
-                            {row.original.organisationInfo?.organisationName || 'Unknown Organisation'}
-                        </span>
-                        <p className="text-xs text-slate-500">
-                            {row.original.organisationInfo?.sector || 'Unknown Sector'}
-                        </p>
-                    </div>
+                    <span className="font-medium text-slate-900">
+                        {row.original.organisationInfo?.organisationName || 'Unknown Organisation'}
+                    </span>
                 </div>
             )
         },
-        { 
+        {
             accessorKey: "organisationInfo.region", 
             header: ({ column }) => {
                 return (
