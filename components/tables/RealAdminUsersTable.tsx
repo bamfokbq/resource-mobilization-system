@@ -332,8 +332,8 @@ export default function RealAdminUsersTable() {
                         <DropdownMenuItem
                             onClick={() => setToggleStatusDialog({ open: true, user: row.original })}
                             className={`cursor-pointer px-2 py-2 rounded-md transition-colors duration-150 ${row.original.isActive
-                                    ? 'hover:bg-red-50'
-                                    : 'hover:bg-green-50'
+                                ? 'hover:bg-red-50'
+                                : 'hover:bg-green-50'
                                 }`}
                         >
                             {row.original.isActive ? (
@@ -675,7 +675,7 @@ export default function RealAdminUsersTable() {
 
                 {/* User Details Drawer */}
                 <Drawer open={userDetailsDrawer.open} onOpenChange={(open) => setUserDetailsDrawer({ open, user: open ? userDetailsDrawer.user : null })} direction="right">
-                    <DrawerContent className="max-h-[100vh] w-full max-w-md">
+                    <DrawerContent className="max-h-[100vh] w-full max-w-lg">
                         <DrawerHeader>
                             <DrawerTitle className="flex items-center gap-2">
                                 <FaUserCircle className="h-6 w-6 text-emerald-600" />
