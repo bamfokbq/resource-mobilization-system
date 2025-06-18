@@ -9,8 +9,11 @@ interface ActiveSurveyCardProps {
 }
 
 export default function ActiveSurveyCard({ title, progress, lastUpdated, id }: ActiveSurveyCardProps) {
+  // For drafts, link to the survey form, for completed surveys link to view page
+  const href = id === 'draft' ? '/dashboard/surveys/form' : `/surveys/${id}`;
+
   return (
-    <Link href={`/surveys/${id}`}>
+    <Link href={href}>
       <div className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
         <h3 className="font-medium mb-2">{title}</h3>
         <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
@@ -20,6 +23,9 @@ export default function ActiveSurveyCard({ title, progress, lastUpdated, id }: A
           ></div>
         </div>
         <p className="text-sm text-gray-500">Last updated: {lastUpdated}</p>
+        {id === 'draft' && (
+          <p className="text-xs text-blue-600 mt-2">Click to continue editing</p>
+        )}
       </div>
     </Link>
   );
