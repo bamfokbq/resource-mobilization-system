@@ -5,6 +5,7 @@ import client from '@/lib/db'
 import { FormData } from '@/types/forms'
 import { ObjectId } from 'mongodb'
 import { auth } from '@/auth'
+import { DraftInfo, SurveySubmissionResult } from '@/types/survey'
 
 // Comprehensive validation schema for the complete survey data
 const surveyDataSchema = z.object({
@@ -84,21 +85,6 @@ const surveyDataSchema = z.object({
   notes: z.string().optional(),
 })
 
-export interface SurveySubmissionResult {
-  success: boolean
-  surveyId?: string
-  message: string
-  errors?: Record<string, string> | null
-}
-
-export interface DraftInfo {
-  _id: string
-  userId: string
-  lastSaved: Date
-  formData: Partial<FormData>
-  currentStep: string
-  progress: number
-}
 
 function calculateFormProgress(formData: Partial<FormData>): number {
   let completedSections = 0
@@ -157,7 +143,7 @@ export async function submitSurveyData(formData: FormData): Promise<SurveySubmis
 
     // Connect to MongoDB
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const surveysCollection = db.collection('surveys')
     
     // Prepare the document for insertion
@@ -231,7 +217,7 @@ export async function saveSurveyDraft(formData: Partial<FormData>, currentStep?:
     
     // Connect to MongoDB
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const draftsCollection = db.collection('survey_drafts')
     
     // Calculate progress (simplified calculation)
@@ -288,7 +274,7 @@ export async function getUserDraft(): Promise<{ success: boolean; draft?: DraftI
     }
     
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const draftsCollection = db.collection('survey_drafts')
     
     const draft = await draftsCollection.findOne({ userId: session.user.id })
@@ -337,7 +323,7 @@ export async function deleteDraft(): Promise<SurveySubmissionResult> {
     }
     
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const draftsCollection = db.collection('survey_drafts')
     
     const result = await draftsCollection.deleteOne({ userId: session.user.id })
@@ -375,7 +361,7 @@ export async function getSurveyById(surveyId: string): Promise<{ success: boolea
     }
     
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const surveysCollection = db.collection('surveys')
     
     const survey = await surveysCollection.findOne({ _id: new ObjectId(surveyId) })
@@ -408,7 +394,7 @@ export async function getSurveyById(surveyId: string): Promise<{ success: boolea
 export async function getAllSurveys(): Promise<{ success: boolean; data?: any[]; message: string; count?: number }> {
   try {
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()  
     const surveysCollection = db.collection('surveys')
     
     const surveys = await surveysCollection.find({}).sort({ submissionDate: -1 }).toArray()
@@ -442,7 +428,7 @@ export async function updateSurveyData(surveyId: string, updateData: Partial<For
     }
     
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const surveysCollection = db.collection('surveys')
     
     const updateDocument = {
@@ -490,7 +476,7 @@ export async function deleteSurvey(surveyId: string): Promise<{ success: boolean
     }
     
     await client.connect()
-    const db = client.db('ncd_navigator')
+    const db = client.db()
     const surveysCollection = db.collection('surveys')
     
     const result = await surveysCollection.deleteOne({ _id: new ObjectId(surveyId) })

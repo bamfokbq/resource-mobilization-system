@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { FormStepId, formSteps } from '@/constant/formSteps';
-import type { FormData } from '@/types/forms';
+import type { FormData as CustomFormData } from '@/types/forms';
 import { persist } from 'zustand/middleware';
-import { saveSurveyDraft, getUserDraft, deleteDraft, DraftInfo } from '@/actions/surveyActions';
+import { saveSurveyDraft, getUserDraft, deleteDraft, } from '@/actions/surveyActions';
+import { DraftInfo } from '@/types/survey';
 
 interface FormStore {
   activeForm: FormStepId;
@@ -11,8 +12,8 @@ interface FormStore {
   handlePrevious: () => void;
   isFirstStep: boolean;
   isLastStep: boolean;
-  formData: FormData;
-  updateFormData: (data: Partial<FormData>) => void;
+  formData: Partial<CustomFormData>;
+  updateFormData: (data: Partial<CustomFormData>) => void;
   resetForm: () => void;
   isFormValid: (stepId: FormStepId) => boolean;
   getFormProgress: () => number;
