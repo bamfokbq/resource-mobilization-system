@@ -1,6 +1,6 @@
 "use server"
 
-import client from "@/lib/db"
+import { getDb } from "@/lib/db"
 import { ObjectId } from "mongodb"
 import { comparePassword, hashPassword } from "@/lib/password"
 
@@ -15,7 +15,7 @@ export async function updateUserProfile(userId: string, formData: FormData) {
   };
 
   try {
-    const db = client.db()
+    const db = await getDb()
     const result = await db.collection("users").updateOne(  // Changed from "user" to "users"
       { _id: new ObjectId(userId) },
       { $set: profileData }
@@ -59,7 +59,7 @@ export async function createNewUser(formData: FormData) {
     //   delete userData.organisation;
     // }
 
-    const db = client.db();
+    const db = await getDb();
 
     // Check if email already exists
     const existingUser = await db.collection("users").findOne({ email: userData.email });
@@ -86,7 +86,7 @@ export async function createNewUser(formData: FormData) {
 }
 
 export async function getUserbyEmailAndHashPassword(email: string, password: string) {
-  const db = client.db();
+  const db = await getDb();
   const user = await db.collection("users").findOne({ email });
 
   if (!user) {

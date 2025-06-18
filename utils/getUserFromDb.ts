@@ -1,8 +1,8 @@
-import client from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export async function getUserFromDb(email: string, passwordHash: string) {
     try {
-        const database = client.db();
+        const database = await getDb();
         const users = database.collection('user');
         
         const user = await users.findOne({ 

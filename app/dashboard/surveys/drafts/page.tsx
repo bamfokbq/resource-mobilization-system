@@ -17,15 +17,7 @@ import {
 import { getUserDraft, deleteDraft } from '@/actions/surveyActions';
 import { useFormStore } from '@/store/useFormStore';
 import { toast } from 'sonner';
-
-interface DraftInfo {
-  _id: string;
-  userId: string;
-  lastSaved: Date;
-  formData: any;
-  currentStep: string;
-  progress: number;
-}
+import { DraftInfo } from '@/types/survey';
 
 export default function DraftManagementPage() {
   const [draft, setDraft] = useState<DraftInfo | null>(null);

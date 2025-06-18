@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import client from '@/lib/db'
+import { getDb } from '@/lib/db'
 import { FormData } from '@/types/forms'
 import { ObjectId } from 'mongodb'
 import { auth } from '@/auth'
@@ -138,12 +138,10 @@ export async function submitSurveyData(formData: FormData): Promise<SurveySubmis
     
     // Validate the form data
     const validatedData = surveyDataSchema.parse(formData)
-    
     console.log('Survey data validated successfully')
 
     // Connect to MongoDB
-    await client.connect()
-    const db = client.db()
+    const db = await getDb()
     const surveysCollection = db.collection('surveys')
     // Prepare the document for insertion
     const surveyDocument = {
@@ -193,14 +191,10 @@ export async function submitSurveyData(formData: FormData): Promise<SurveySubmis
         errors: fieldErrors
       }
     }
-    
     return {
       success: false,
       message: error instanceof Error ? error.message : 'An unexpected error occurred while submitting the survey'
     }
-  } finally {
-    // Close the database connection
-    await client.close()
   }
 }
 
@@ -217,9 +211,7 @@ export async function saveSurveyDraft(formData: Partial<FormData>, currentStep?:
       }
     }
     
-    // Connect to MongoDB
-    await client.connect()
-    const db = client.db()
+    const db = await getDb()
     const draftsCollection = db.collection('survey_drafts')
     
     // Calculate progress (simplified calculation)
@@ -262,7 +254,7 @@ export async function saveSurveyDraft(formData: Partial<FormData>, currentStep?:
       message: error instanceof Error ? error.message : 'An unexpected error occurred while saving the draft'
     }
   } finally {
-    await client.close()
+
   }
 }
 
@@ -277,8 +269,7 @@ export async function getUserDraft(): Promise<{ success: boolean; draft?: DraftI
       }
     }
     
-    await client.connect()
-    const db = client.db()
+    const db = await getDb()
     const draftsCollection = db.collection('survey_drafts')
     
     const draft = await draftsCollection.findOne({ 'createdBy.userId': session.user.id })
@@ -309,8 +300,6 @@ export async function getUserDraft(): Promise<{ success: boolean; draft?: DraftI
       success: false,
       message: error instanceof Error ? error.message : 'An unexpected error occurred while retrieving the draft'
     }
-  } finally {
-    await client.close()
   }
 }
 
@@ -325,8 +314,8 @@ export async function deleteDraft(): Promise<SurveySubmissionResult> {
       }
     }
     
-    await client.connect()
-    const db = client.db()
+
+    const db = await getDb()
     const draftsCollection = db.collection('survey_drafts')
     
     const result = await draftsCollection.deleteOne({ 'createdBy.userId': session.user.id })
@@ -350,7 +339,7 @@ export async function deleteDraft(): Promise<SurveySubmissionResult> {
       success: false,
       message: error instanceof Error ? error.message : 'An unexpected error occurred while deleting the draft'
     }  } finally {
-    await client.close()
+
   }
 }
 
@@ -363,8 +352,8 @@ export async function getSurveyById(surveyId: string): Promise<{ success: boolea
       }
     }
     
-    await client.connect()
-    const db = client.db()
+
+    const db = await getDb()
     const surveysCollection = db.collection('surveys')
     
     const survey = await surveysCollection.findOne({ _id: new ObjectId(surveyId) })
@@ -390,14 +379,13 @@ export async function getSurveyById(surveyId: string): Promise<{ success: boolea
       message: error instanceof Error ? error.message : 'An unexpected error occurred while retrieving the survey'
     }
   } finally {
-    await client.close()
+
   }
 }
 
 export async function getAllSurveys(): Promise<{ success: boolean; data?: any[]; message: string; count?: number }> {
   try {
-    await client.connect()
-    const db = client.db()  
+    const db = await getDb()
     const surveysCollection = db.collection('surveys')
     
     const surveys = await surveysCollection.find({}).sort({ submissionDate: -1 }).toArray()
@@ -416,8 +404,6 @@ export async function getAllSurveys(): Promise<{ success: boolean; data?: any[];
       success: false,
       message: error instanceof Error ? error.message : 'An unexpected error occurred while retrieving surveys'
     }
-  } finally {
-    await client.close()
   }
 }
 
@@ -430,8 +416,8 @@ export async function updateSurveyData(surveyId: string, updateData: Partial<For
       }
     }
     
-    await client.connect()
-    const db = client.db()
+
+    const db = await getDb()
     const surveysCollection = db.collection('surveys')
     
     const updateDocument = {
@@ -465,7 +451,7 @@ export async function updateSurveyData(surveyId: string, updateData: Partial<For
       message: error instanceof Error ? error.message : 'An unexpected error occurred while updating the survey'
     }
   } finally {
-    await client.close()
+
   }
 }
 
@@ -478,8 +464,8 @@ export async function deleteSurvey(surveyId: string): Promise<{ success: boolean
       }
     }
     
-    await client.connect()
-    const db = client.db()
+
+    const db = await getDb()
     const surveysCollection = db.collection('surveys')
     
     const result = await surveysCollection.deleteOne({ _id: new ObjectId(surveyId) })
@@ -504,7 +490,7 @@ export async function deleteSurvey(surveyId: string): Promise<{ success: boolean
       message: error instanceof Error ? error.message : 'An unexpected error occurred while deleting the survey'
     }
   } finally {
-    await client.close()
+
   }
 }
 
@@ -530,8 +516,7 @@ export async function getSurveyAnalytics(): Promise<{
   message: string;
 }> {
   try {
-    await client.connect();
-    const db = client.db();
+    const db = await getDb();
     const surveysCollection = db.collection('surveys');
     const draftsCollection = db.collection('survey_drafts');
 
@@ -546,7 +531,7 @@ export async function getSurveyAnalytics(): Promise<{
 
     // Calculate status distribution
     const statusData = [
-      { name: 'Completed', value: allSurveys.filter(s => s.status === 'submitted').length, color: '#10B981' },
+      { name: 'Completed', value: allSurveys.filter((s: any) => s.status === 'submitted').length, color: '#10B981' },
       { name: 'In Progress', value: allDrafts.length, color: '#F59E0B' },
       { name: 'Draft', value: allDrafts.length, color: '#6B7280' }
     ];
@@ -575,15 +560,12 @@ export async function getSurveyAnalytics(): Promise<{
       },
       message: 'Analytics data generated successfully'
     };
-
   } catch (error) {
     console.error('Error generating analytics:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Failed to generate analytics data'
     };
-  } finally {
-    await client.close();
   }
 }
 
@@ -771,8 +753,7 @@ export async function getUserSurveyStatistics(userId: string): Promise<{
   message: string;
 }> {
   try {
-    await client.connect();
-    const db = client.db();
+    const db = await getDb();
     const surveysCollection = db.collection('surveys');
     const draftsCollection = db.collection('survey_drafts');
 
@@ -784,12 +765,12 @@ export async function getUserSurveyStatistics(userId: string): Promise<{
     ]);
 
     const totalSurveys = userSurveys.length;
-    const completedSurveys = userSurveys.filter(s => s.status === 'submitted').length;
+    const completedSurveys = userSurveys.filter((s: any) => s.status === 'submitted').length;
     const completionRate = totalSurveys > 0 ? (completedSurveys / totalSurveys) * 100 : 0;
 
     // Calculate average completion across all users
     const totalUsersSet = new Set();
-    allSurveys.forEach(survey => {
+    allSurveys.forEach((survey: any) => {
       if (survey.createdBy?.userId) {
         totalUsersSet.add(survey.createdBy.userId);
       }
@@ -809,15 +790,12 @@ export async function getUserSurveyStatistics(userId: string): Promise<{
       },
       message: 'User statistics calculated successfully'
     };
-
   } catch (error) {
     console.error('Error calculating user statistics:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Failed to calculate user statistics'
     };
-  } finally {
-    await client.close();
   }
 }
 
@@ -840,8 +818,7 @@ export async function getPredictiveAnalytics(): Promise<{
   message: string;
 }> {
   try {
-    await client.connect();
-    const db = client.db();
+    const db = await getDb();
     const surveysCollection = db.collection('surveys');
     const draftsCollection = db.collection('survey_drafts');
 
@@ -853,11 +830,11 @@ export async function getPredictiveAnalytics(): Promise<{
 
     // Calculate basic predictive metrics
     const totalUsers = new Set([
-      ...surveys.map(s => s.createdBy?.userId),
-      ...drafts.map(d => d.createdBy?.userId)
+      ...surveys.map((s: any) => s.createdBy?.userId),
+      ...drafts.map((d: any) => d.createdBy?.userId)
     ]).size;
 
-    const completedSurveys = surveys.filter(s => s.status === 'submitted').length;
+    const completedSurveys = surveys.filter((s: any) => s.status === 'submitted').length;
     const avgCompletionRate = surveys.length > 0 ? (completedSurveys / surveys.length) * 100 : 0;
 
     // Generate timeline predictions based on actual data trends
@@ -882,15 +859,12 @@ export async function getPredictiveAnalytics(): Promise<{
       },
       message: 'Predictive analytics generated successfully'
     };
-
   } catch (error) {
     console.error('Error generating predictive analytics:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Failed to generate predictive analytics'
     };
-  } finally {
-    await client.close();
   }
 }
 
