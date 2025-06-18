@@ -54,17 +54,31 @@ interface SurveyData {
     version: string;
 }
 
-export default function SurveyHistoryList() {
+interface SurveyHistoryListProps {
+    initialData?: {
+        success: boolean;
+        data?: SurveyData[];
+        message: string;
+        count?: number;
+    };
+}
+
+export default function SurveyHistoryList({ initialData }: SurveyHistoryListProps) {
     const router = useRouter();
-    const [data, setData] = useState<SurveyData[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState<SurveyData[]>(initialData?.data || []);
+    const [isLoading, setIsLoading] = useState(!initialData);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(
+        initialData && !initialData.success ? initialData.message : null
+    );
 
-    console.log(selectedProject);
+    console.log(selectedProject); useEffect(() => {
+        // Only fetch data if we don't have initial data from server
+        if (initialData) {
+            return; // Data is already set in state initialization
+        }
 
-    useEffect(() => {
         const fetchSurveys = async () => {
             try {
                 setIsLoading(true);
@@ -87,7 +101,7 @@ export default function SurveyHistoryList() {
         };
 
         fetchSurveys();
-    }, []); const getStatusBadge = (status: string) => {
+    }, [initialData]); const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
             'submitted': 'bg-green-100 text-green-800',
             'draft': 'bg-yellow-100 text-yellow-800',

@@ -1,10 +1,19 @@
 import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
+import RefreshButton from '@/components/shared/RefreshButton'
 import SurveyHistoryList from '@/components/tables/SurveyHistoryList'
+import SurveyTableSkeleton from '@/components/skeletons/SurveyTableSkeleton'
+import { getAllSurveys } from '@/actions/surveyActions'
 import Link from 'next/link'
-import React, { Suspense } from 'react'
-import { RiSurveyLine, RiHistoryLine, RiAddLine } from 'react-icons/ri'
+import { Suspense } from 'react'
+import { RiAddLine, RiHistoryLine } from 'react-icons/ri'
 
-export default function SurveysPage() {
+export default async function SurveysPage() {
+  // Fetch surveys data on the server
+  const surveysResult = await getAllSurveys()
+
+// If there's an error fetching data, we still render the page
+// The component will handle the error state
+
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       {/* Header */}
@@ -33,18 +42,18 @@ export default function SurveysPage() {
               <h2 className="text-xl font-semibold text-gray-800">Survey History</h2>
               <p className="text-gray-500 text-sm">View and manage your survey submissions</p>
             </div>
-          </div>
-
-          <div className="flex items-center gap-4">
+          </div>          <div className="flex items-center gap-4">
             <Suspense fallback={
               <div className="bg-gray-100 animate-pulse rounded-lg h-10 w-48"></div>
             }>
               <DateRangeSelector />
             </Suspense>
-          </div>
-        </div>
+            <RefreshButton />
+          </div></div>
       </div> 
-      <SurveyHistoryList />
+      <Suspense fallback={<SurveyTableSkeleton />}>
+        <SurveyHistoryList initialData={surveysResult} />
+      </Suspense>
     </div>
   )
 }
