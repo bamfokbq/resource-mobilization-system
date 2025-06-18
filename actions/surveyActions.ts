@@ -280,12 +280,15 @@ export async function getUserDraft(): Promise<{ success: boolean; draft?: DraftI
         message: 'No draft found for this user'
       }
     }
-    
     return {
-      success: true, draft: {
+        success: true,
+        draft: {
         _id: draft._id.toString(),
-        createdBy: draft.createdBy,
-        lastSaved: draft.lastSaved,
+        createdBy: {
+          ...draft.createdBy,
+          timestamp: draft.createdBy?.timestamp?.toISOString() || new Date().toISOString()
+        },
+        lastSaved: draft.lastSaved?.toISOString() || new Date().toISOString(),
         formData: draft.formData,
         currentStep: draft.currentStep,
         progress: draft.progress
@@ -364,10 +367,22 @@ export async function getSurveyById(surveyId: string): Promise<{ success: boolea
         message: 'Survey not found'
       }
     }
-    
+
+    // Serialize the survey data to remove ObjectId and Date serialization issues
+    const serializedSurvey = {
+      ...survey,
+      _id: survey._id.toString(), // Convert ObjectId to string
+      submissionDate: survey.submissionDate?.toISOString() || new Date().toISOString(),
+      lastUpdated: survey.lastUpdated?.toISOString() || new Date().toISOString(),
+      createdBy: {
+        ...survey.createdBy,
+        timestamp: survey.createdBy?.timestamp?.toISOString() || new Date().toISOString()
+      }
+    }
+
     return {
       success: true,
-      data: survey,
+      data: serializedSurvey,
       message: 'Survey retrieved successfully'
     }
     
@@ -390,10 +405,22 @@ export async function getAllSurveys(): Promise<{ success: boolean; data?: any[];
     
     const surveys = await surveysCollection.find({}).sort({ submissionDate: -1 }).toArray()
     
+    // Serialize the data to remove ObjectId and Date serialization issues
+    const serializedSurveys = surveys.map(survey => ({
+      ...survey,
+      _id: survey._id.toString(), // Convert ObjectId to string
+      submissionDate: survey.submissionDate?.toISOString() || new Date().toISOString(),
+      lastUpdated: survey.lastUpdated?.toISOString() || new Date().toISOString(),
+      createdBy: {
+        ...survey.createdBy,
+        timestamp: survey.createdBy?.timestamp?.toISOString() || new Date().toISOString()
+      }
+    }))
+
     return {
       success: true,
-      data: surveys,
-      count: surveys.length,
+      data: serializedSurveys,
+      count: serializedSurveys.length,
       message: 'Surveys retrieved successfully'
     }
     
