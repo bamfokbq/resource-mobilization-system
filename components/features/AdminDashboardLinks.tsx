@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
-import { MdSettings, MdChevronLeft, MdChevronRight, MdLogout } from 'react-icons/md'
+import { MdAssignment, MdSettings, MdChevronLeft, MdChevronRight, MdLogout } from 'react-icons/md'
 import { Button } from '../ui/button'
 import { Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -73,14 +73,21 @@ export default function AdminDashboardLinks() {
                 >
                     <FaHome className="text-2xl" />
                     {isOpen && <span>Dashboard</span>}
-                </Link>
-                <Link
+                </Link>                <Link
                     className={linkClass('/admin/dashboard/users')}
                     href={'/admin/dashboard/users'}
                     title={!isOpen ? 'Users' : ''}
                 >
                     <FaUser className="text-2xl" />
                     {isOpen && <span>Users</span>}
+                </Link>
+                <Link
+                    className={linkClass('/admin/dashboard/surveys')}
+                    href={'/admin/dashboard/surveys'}
+                    title={!isOpen ? 'Surveys' : ''}
+                >
+                    <MdAssignment className="text-2xl" />
+                    {isOpen && <span>Surveys</span>}
                 </Link>
                 <Link
                     className={linkClass('/admin/dashboard/profile')}
