@@ -281,55 +281,6 @@ export default function RealAdminUsersTable() {
             )
         },
         {
-            accessorKey: "isActive",
-            header: "Status",
-            cell: ({ row }) => (
-                <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                        {row.original.isActive ? (
-                            <>
-                                <FaCheckCircle className="h-4 w-4 text-green-500" />
-                                <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
-                                    Active
-                                </Badge>
-                            </>
-                        ) : (
-                            <>
-                                <FaTimesCircle className="h-4 w-4 text-red-500" />
-                                <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">
-                                    Inactive
-                                </Badge>
-                            </>
-                        )}
-                    </div>
-                    {row.original.statusUpdatedAt && (
-                        <div className="flex items-center gap-1 text-xs text-slate-500">
-                            <FaCalendarAlt className="h-3 w-3" />
-                            <span>{new Date(row.original.statusUpdatedAt).toLocaleDateString()}</span>
-                        </div>
-                    )}
-                </div>
-            )
-        },
-        {
-            accessorKey: "createdAt",
-            header: "Joined",
-            cell: ({ row }) => (
-                <div className="space-y-1">
-                    <span className="text-slate-700 font-medium text-sm">
-                        {row.original.createdAt ? new Date(row.original.createdAt).toLocaleDateString() : 'N/A'}
-                    </span>
-                    {row.original.createdAt && (
-                        <div className="text-xs text-slate-500">
-                            {new Date(row.original.createdAt).toLocaleDateString() === new Date().toLocaleDateString()
-                                ? 'Today'
-                                : `${Math.floor((Date.now() - new Date(row.original.createdAt).getTime()) / (1000 * 60 * 60 * 24))} days ago`}
-                        </div>
-                    )}
-                </div>
-            )
-        },
-        {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (

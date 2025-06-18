@@ -142,9 +142,9 @@ export async function getAllUsers() {
     const db = await getDb()
     const users = await db.collection("users").find({}, {
       projection: {
-        password: 0, // Exclude password field for security
+        password: 0, 
       }
-    }).toArray()    // Transform the data to match the expected format
+    }).toArray()  
     return users.map(user => ({
       id: user._id.toString(),
       name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),

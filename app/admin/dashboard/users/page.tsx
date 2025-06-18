@@ -41,7 +41,7 @@ export default async function AdminDashboardUserPage() {
                     ))}
                 </div>
             }>
-                <UserStatsOverview />
+                {/* <UserStatsOverview /> */}
             </Suspense>
 
             {/* Users Table Section */}
