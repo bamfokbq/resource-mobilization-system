@@ -1,9 +1,9 @@
 import { auth } from '@/auth'
+import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
 import { AddNewUserModal } from '@/components/features/AddNewUserModal'
 import RealAdminUsersTable from '@/components/tables/RealAdminUsersTable'
-import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
 import { Suspense } from 'react'
-import { RiUserLine, RiUserAddLine } from 'react-icons/ri'
+import { RiUserLine } from 'react-icons/ri'
 
 export default async function AdminDashboardUserPage() {
     const session = await auth();

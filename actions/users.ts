@@ -146,7 +146,10 @@ export async function getAllUsers() {
       }
     }).toArray()    // Transform the data to match the expected format
     return users.map(user => ({
+      id: user._id.toString(),
       name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
       email: user.email,
       region: user.region || '',
       telephone: user.telephone || '',
@@ -154,7 +157,9 @@ export async function getAllUsers() {
       role: user.role || 'User',
       isActive: user.isActive ?? true,
       createdAt: user.createdAt,
-      bio: user.bio || ''
+      bio: user.bio || '',
+      passwordResetAt: user.passwordResetAt,
+      statusUpdatedAt: user.statusUpdatedAt
     }))
   } catch (error) {
     console.error("Failed to fetch users:", error)
@@ -205,6 +210,72 @@ export async function getUserStats() {
       recentUsers: 0,
       usersByRegion: []
     }
+  }
+}
+
+export async function resetUserPassword(userId: string, newPassword?: string) {
+  try {
+    const db = await getDb()
+
+    // Use provided password or default to 'ncd@2025'
+    const passwordToHash = newPassword || 'ncd@2025'
+    const hashedPassword = await hashPassword(passwordToHash)
+
+    const result = await db.collection("users").updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          password: hashedPassword,
+          passwordResetAt: new Date()
+        }
+      }
+    )
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: "User not found" }
+    }
+
+    return { success: true, message: "Password reset successfully" }
+  } catch (error) {
+    console.error("Failed to reset user password:", error)
+    return { success: false, error: "Failed to reset password" }
+  }
+}
+
+export async function toggleUserStatus(userId: string) {
+  try {
+    const db = await getDb()
+
+    // First get the current status
+    const user = await db.collection("users").findOne({ _id: new ObjectId(userId) })
+    if (!user) {
+      return { success: false, error: "User not found" }
+    }
+
+    const newStatus = !user.isActive
+
+    const result = await db.collection("users").updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          isActive: newStatus,
+          statusUpdatedAt: new Date()
+        }
+      }
+    )
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: "User not found" }
+    }
+
+    return {
+      success: true,
+      message: `User ${newStatus ? 'activated' : 'deactivated'} successfully`,
+      newStatus
+    }
+  } catch (error) {
+    console.error("Failed to toggle user status:", error)
+    return { success: false, error: "Failed to update user status" }
   }
 }
 
