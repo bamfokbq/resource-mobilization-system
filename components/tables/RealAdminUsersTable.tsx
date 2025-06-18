@@ -299,52 +299,67 @@ export default function RealAdminUsersTable() {
             cell: ({ row }) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-gray-100">
+                        <Button
+                            variant="ghost"
+                            className="h-9 w-9 p-0 rounded-full hover:bg-emerald-50 hover:border-emerald-200 border border-transparent transition-all duration-200 group"
+                        >
                             <span className="sr-only">Open menu</span>
-                            <FaEllipsisV className="h-4 w-4" />
+                            <FaEllipsisV className="h-4 w-4 text-gray-500 group-hover:text-emerald-600 transition-colors duration-200" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48">
-                        <DropdownMenuLabel>User Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
+                    <DropdownMenuContent
+                        align="end"
+                        className="w-48 p-1 border border-gray-200 shadow-lg rounded-lg bg-white"
+                        sideOffset={8}
+                        alignOffset={-8}
+                    >
                         <DropdownMenuItem
                             onClick={() => setUserDetailsDrawer({ open: true, user: row.original })}
-                            className="cursor-pointer"
+                            className="cursor-pointer px-2 py-2 rounded-md hover:bg-blue-50 transition-colors duration-150"
                         >
-                            <FaInfoCircle className="mr-2 h-4 w-4" />
-                            View Details
+                            <FaInfoCircle className="mr-2 h-4 w-4 text-blue-600" />
+                            <span className="font-medium">View Details</span>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+
                         <DropdownMenuItem
                             onClick={() => setResetPasswordDialog({ open: true, user: row.original })}
-                            className="cursor-pointer"
+                            className="cursor-pointer px-2 py-2 rounded-md hover:bg-orange-50 transition-colors duration-150"
                         >
-                            <FaKey className="mr-2 h-4 w-4" />
-                            Reset Password
+                            <FaKey className="mr-2 h-4 w-4 text-orange-600" />
+                            <span className="font-medium">Reset Password</span>
                         </DropdownMenuItem>
+
                         <DropdownMenuItem
                             onClick={() => setToggleStatusDialog({ open: true, user: row.original })}
-                            className="cursor-pointer"
+                            className={`cursor-pointer px-2 py-2 rounded-md transition-colors duration-150 ${row.original.isActive
+                                    ? 'hover:bg-red-50'
+                                    : 'hover:bg-green-50'
+                                }`}
                         >
                             {row.original.isActive ? (
                                 <>
-                                    <FaToggleOff className="mr-2 h-4 w-4" />
-                                    Deactivate User
+                                    <FaToggleOff className="mr-2 h-4 w-4 text-red-600" />
+                                    <span className="font-medium">Deactivate</span>
                                 </>
                             ) : (
                                 <>
-                                    <FaToggleOn className="mr-2 h-4 w-4" />
-                                    Activate User
+                                        <FaToggleOn className="mr-2 h-4 w-4 text-green-600" />
+                                        <span className="font-medium">Activate</span>
                                 </>
                             )}
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+
+                        <DropdownMenuSeparator className="my-1" />
+
                         <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(row.original.email)}
-                            className="cursor-pointer"
+                            onClick={() => {
+                                navigator.clipboard.writeText(row.original.email);
+                                toast.success('Email copied to clipboard!');
+                            }}
+                            className="cursor-pointer px-2 py-2 rounded-md hover:bg-gray-50 transition-colors duration-150"
                         >
-                            <FaEnvelope className="mr-2 h-4 w-4" />
-                            Copy Email
+                            <FaEnvelope className="mr-2 h-4 w-4 text-gray-600" />
+                            <span className="font-medium">Copy Email</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
