@@ -8,65 +8,10 @@ import RegionalInsights from '@/components/dashboard/RegionalInsights';
 import SurveyPredictiveAnalytics from '@/components/dashboard/SurveyPredictiveAnalytics';
 import Link from 'next/link';
 import { RiSurveyLine, RiCheckboxCircleLine, RiTimeLine, RiBarChartLine } from 'react-icons/ri';
-import { getAllSurveys, getUserDraft } from '@/actions/surveyActions';
+import { getAllSurveys, getUserDraft, getSurveyAnalytics, getUserSurveyStatistics, getPredictiveAnalytics } from '@/actions/surveyActions';
 import { auth } from '@/auth';
 
-// Mock data generators for the enhanced dashboard
-const generateMockSurveyMetrics = (totalSurveys: number, completedSurveys: number) => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  return months.map((month, index) => ({
-    month,
-    submitted: Math.floor(completedSurveys * (index + 1) / 6),
-    draft: Math.floor((totalSurveys - completedSurveys) * Math.random()),
-    total: Math.floor(totalSurveys * (index + 1) / 6)
-  }));
-};
-
-const generateMockStatusData = (completedSurveys: number, inProgressSurveys: number) => [
-  { name: 'Completed', value: completedSurveys, color: '#10B981' },
-  { name: 'In Progress', value: inProgressSurveys, color: '#F59E0B' },
-  { name: 'Draft', value: Math.max(1, inProgressSurveys), color: '#6B7280' }
-];
-
-const generateMockProgressData = () => [
-  { step: 'Organization Info', completion: 95, users: 18 },
-  { step: 'Project Info', completion: 87, users: 15 },
-  { step: 'Activities', completion: 73, users: 12 },
-  { step: 'Background', completion: 68, users: 10 },
-  { step: 'Review', completion: 45, users: 8 }
-];
-
-const generateMockTimelineData = () => {
-  const dates = [];
-  const today = new Date();
-  for (let i = 30; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    dates.push({
-      date: date.toISOString().split('T')[0],
-      progress: Math.min(100, 20 + i * 2.5 + Math.random() * 10),
-      target: 20 + i * 2.8
-    });
-  }
-  return dates;
-};
-
-const generateMockRegionalData = () => [
-  { region: 'Greater Accra', surveys: 45, completion: 85, engagement: 92, satisfaction: 88, efficiency: 90, impact: 87 },
-  { region: 'Ashanti', surveys: 38, completion: 78, engagement: 85, satisfaction: 82, efficiency: 83, impact: 80 },
-  { region: 'Northern', surveys: 25, completion: 72, engagement: 78, satisfaction: 75, efficiency: 77, impact: 74 },
-  { region: 'Western', surveys: 32, completion: 80, engagement: 83, satisfaction: 79, efficiency: 85, impact: 82 },
-  { region: 'Eastern', surveys: 28, completion: 75, engagement: 80, satisfaction: 77, efficiency: 79, impact: 76 }
-];
-
-const generateMockEffortData = () => [
-  { complexity: 3.2, completion: 85, region: 'Greater Accra', surveys: 45 },
-  { complexity: 2.8, completion: 78, region: 'Ashanti', surveys: 38 },
-  { complexity: 4.1, completion: 72, region: 'Northern', surveys: 25 },
-  { complexity: 3.5, completion: 80, region: 'Western', surveys: 32 },
-  { complexity: 3.8, completion: 75, region: 'Eastern', surveys: 28 }
-];
-
+// Generate predictive analytics and milestones (these can remain mock for now as they require ML models)
 const generateMockPredictionData = () => {
   const data = [];
   const today = new Date();
@@ -187,22 +132,54 @@ export default async function UserDashboardPage() {
   // Calculate statistics
   const totalSurveys = userSurveys.length;
   const completedSurveys = userSurveys.filter(survey => survey.status === 'submitted').length;
-  const inProgressSurveys = draftResult.success ? 1 : 0; // User can only have one draft at a time
+  const inProgressSurveys = draftResult.success ? 1 : 0; // User can only have one draft at a time  // Fetch analytics data from database
+  const [analyticsResult, userStatsResult, predictiveResult] = await Promise.all([
+    getSurveyAnalytics(),
+    getUserSurveyStatistics(session.user.id),
+    getPredictiveAnalytics()
+  ]);
 
-  // Generate enhanced analytics data
-  const surveyMetricsData = generateMockSurveyMetrics(totalSurveys, completedSurveys);
-  const statusData = generateMockStatusData(completedSurveys, inProgressSurveys);
-  const progressData = generateMockProgressData();
-  const timelineData = generateMockTimelineData();
-  const regionalData = generateMockRegionalData();
-  const effortData = generateMockEffortData();
-  const predictionData = generateMockPredictionData();
-  const milestones = generateMockMilestones();
+  // Use real data if available, fallback to basic calculations
+  const analyticsData = analyticsResult.success ? analyticsResult.data : null;
+  const userStats = userStatsResult.success ? userStatsResult.data : null;
+  const predictiveData = predictiveResult.success ? predictiveResult.data : null;
 
-  // Enhanced statistics
-  const avgCompletion = Math.floor(75 + Math.random() * 20); // Mock data
-  const totalUsers = Math.max(1, Math.floor(totalSurveys * 1.3));
-  const completionRate = totalSurveys > 0 ? Math.floor((completedSurveys / totalSurveys) * 100) : 0;
+  // Survey metrics and status data
+  const surveyMetricsData = analyticsData?.surveyMetrics || [
+    { month: 'Current', submitted: completedSurveys, draft: inProgressSurveys, total: totalSurveys }
+  ];
+  const statusData = analyticsData?.statusData || [
+    { name: 'Completed', value: completedSurveys, color: '#10B981' },
+    { name: 'In Progress', value: inProgressSurveys, color: '#F59E0B' },
+    { name: 'Draft', value: inProgressSurveys, color: '#6B7280' }
+  ];
+
+  // Progress and timeline data
+  const progressData = analyticsData?.progressData || [
+    { step: 'Organization Info', completion: totalSurveys > 0 ? 100 : 0, users: totalSurveys },
+    { step: 'Project Info', completion: totalSurveys > 0 ? 100 : 0, users: totalSurveys },
+    { step: 'Activities', completion: completedSurveys > 0 ? 100 : 0, users: completedSurveys },
+    { step: 'Background', completion: completedSurveys > 0 ? 100 : 0, users: completedSurveys },
+    { step: 'Review', completion: completedSurveys > 0 ? 100 : 0, users: completedSurveys }
+  ];
+  const timelineData = analyticsData?.timelineData || [
+    { date: new Date().toISOString().split('T')[0], progress: userStats?.completionRate || 0, target: 100 }
+  ];
+
+  // Regional insights
+  const regionalData = analyticsData?.regionalData || [];
+  const effortData = analyticsData?.effortData || [];
+  // Predictive data (now using real analysis when available)
+  const predictionData = predictiveData?.predictionData || generateMockPredictionData();
+  const milestones = predictiveData?.milestones || generateMockMilestones();
+  const projectedCompletion = predictiveData?.projectedCompletion || 85;
+  const timeToTarget = predictiveData?.timeToTarget || 15;
+  const confidenceLevel = predictiveData?.confidenceLevel || 75;
+
+  // Enhanced statistics from real data
+  const avgCompletion = userStats?.averageCompletion || (completedSurveys > 0 ? 100 : 0);
+  const totalUsers = userStats?.totalUsers || 1;
+  const completionRate = userStats?.completionRate || (totalSurveys > 0 ? Math.floor((completedSurveys / totalSurveys) * 100) : 0);
   // Prepare active surveys (drafts)
   const activeSurveys = [];
   if (draftResult.success && draftResult.draft) {
@@ -288,15 +265,13 @@ export default async function UserDashboardPage() {
       <RegionalInsights
         regionMetrics={regionalData}
         effortData={effortData}
-      />
-
-      {/* Predictive Analytics */}
+      />      {/* Predictive Analytics */}
       <SurveyPredictiveAnalytics
         predictionData={predictionData}
         milestones={milestones}
-        projectedCompletion={95}
-        timeToTarget={23}
-        confidenceLevel={87}
+        projectedCompletion={projectedCompletion}
+        timeToTarget={timeToTarget}
+        confidenceLevel={confidenceLevel}
       />
 
       {/* Active Surveys Section */}

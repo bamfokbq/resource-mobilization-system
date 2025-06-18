@@ -80,11 +80,15 @@ const getColorByCompletion = (completion: number) => {
 };
 
 export default function RegionalInsights({ regionMetrics, effortData }: RegionalInsightsProps) {
-  const topPerformingRegion = regionMetrics.reduce((prev, current) => 
-    (prev.completion > current.completion) ? prev : current
-  );
+    const topPerformingRegion = regionMetrics.length > 0
+        ? regionMetrics.reduce((prev, current) =>
+            (prev.completion > current.completion) ? prev : current
+      )
+      : { region: 'No Data', completion: 0 };
 
-  const avgCompletion = regionMetrics.reduce((sum, region) => sum + region.completion, 0) / regionMetrics.length;
+    const avgCompletion = regionMetrics.length > 0
+        ? regionMetrics.reduce((sum, region) => sum + region.completion, 0) / regionMetrics.length
+        : 0;
 
   return (
     <div className="space-y-6">
@@ -121,7 +125,24 @@ export default function RegionalInsights({ regionMetrics, effortData }: Regional
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {regionMetrics.length === 0 ? (
+              // Empty State
+              <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+                  <CardContent className="p-12">
+                      <div className="text-center">
+                          <div className="text-gray-400 mb-4">
+                              <svg className="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7" />
+                              </svg>
+                          </div>
+                          <h3 className="text-xl font-semibold text-gray-700 mb-3">No Regional Data Available</h3>
+                          <p className="text-gray-500 mb-6">Regional insights will appear here once surveys are submitted from different regions.</p>
+                          <p className="text-sm text-gray-400">Submit surveys from various regions to see comprehensive analytics.</p>
+                      </div>
+                  </CardContent>
+              </Card>
+          ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Regional Performance Radar */}
         <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
           <CardHeader className="pb-4">
@@ -229,6 +250,7 @@ export default function RegionalInsights({ regionMetrics, effortData }: Regional
           </CardContent>
         </Card>
       </div>
+          )}
     </div>
   );
 }
