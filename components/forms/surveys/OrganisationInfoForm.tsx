@@ -110,6 +110,13 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
     }
   }
 
+  useEffect(() => {
+    console.log('Form data from store:', formData?.organisationInfo);
+    console.log('Current form values:', form.getValues());
+    console.log('Region value:', form.getValues('region'));
+    console.log('Sector value:', form.getValues('sector'));
+  }, [formData, form]);
+
   const onError = (errors: any) => {
     toast.error("Please check your inputs", {
       description: "There are some required fields that need to be filled correctly.",
@@ -163,10 +170,12 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                         <FormLabel className='!text-current'>
                           A2. Head Office Region <span className="text-destructive">*</span>
                         </FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value || ""}>
+                        <Select
+                          key={`region-${field.value}`}
+                          onValueChange={field.onChange} value={field.value || ""}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue defaultValue={field.value} placeholder="Select region" />
+                              <SelectValue placeholder="Select region" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -383,10 +392,12 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   <FormLabel className="text-lg font-semibold !text-current">
                     A4. Organization Sector <span className="text-destructive">*</span>
                   </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value || ""}>
+                  <Select
+                    key={`sector-${field.value}`}
+                    onValueChange={field.onChange} value={field.value || ""}>
                     <FormControl>
                       <SelectTrigger className="mt-2">
-                        <SelectValue defaultValue={field.value} placeholder="Select your organization's sector" />
+                        <SelectValue placeholder="Select your organization's sector" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

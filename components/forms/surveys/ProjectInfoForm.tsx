@@ -56,19 +56,17 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
       projectGoal: "",
       projectObjectives: "",
       targetBeneficiaries: "",
-      projectLocation: "",
-      estimatedBudget: "",
+      projectLocation: "", estimatedBudget: "",
       regions: [],
       targetedNCDs: [],
-      fundingSource: "Ghana Government",
+      fundingSource: undefined,
       ncdSpecificInfo: {} as Record<string, {
         districts: string[];
         continuumOfCare: string[];
         activityDescription: string;
         primaryTargetPopulation: string;
         ageRanges: string[];
-        gender: string;
-        activityLevel: string[];
+        gender: string; activityLevel: string[];
         implementationArea: string;
         whoGapTargets: string[];
         strategyDomain: string[];
@@ -83,7 +81,11 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
       const projectInfoForReset = {
         ...formData.projectInfo,
         ncdSpecificInfo: formData.projectInfo.ncdSpecificInfo || {},
+        // Ensure fundingSource is properly set for the Select component
+        fundingSource: formData.projectInfo.fundingSource || undefined,
       };
+      console.log('Resetting form with data:', projectInfoForReset);
+      console.log('FundingSource value:', projectInfoForReset.fundingSource);
       form.reset(projectInfoForReset);
     }
   }, [formData, form])
@@ -137,9 +139,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
       const finalNcdSpecificInfo = tempProcessedNcdSpecificInfo as Record<
         keyof typeof rawNcdSpecificInfo,
         StrictNCDSpecificInfoItem
-      >;
-
-      updateFormData({
+        >; updateFormData({
         projectInfo: {
           totalProjects,
           projectName,
@@ -153,7 +153,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
           estimatedBudget,
           regions,
           targetedNCDs,
-          fundingSource,
+          fundingSource: fundingSource || 'Ghana Government', // Default to Ghana Government if undefined
           ncdSpecificInfo: finalNcdSpecificInfo
         }
       });
@@ -496,9 +496,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                     </FormControl>
                   </FormItem>
                 )}
-              />
-
-              {/* B2.8 Funding Source */}
+              />              {/* B2.8 Funding Source */}
               <FormField
                 control={form.control}
                 name="fundingSource"
@@ -511,8 +509,12 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                       Your main source of funding contributes at least 60% of funds for your project.
                     </FormDescription>
                     <Select
+                      key={field.value}
                       value={field.value}
-                      onValueChange={(value) => field.onChange(value)}
+                      onValueChange={(value) => {
+                        console.log('FundingSource value changed to:', value);
+                        field.onChange(value);
+                      }}
                     >
                       <FormControl>
                         <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 max-w-md">
@@ -527,6 +529,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                         ))}
                       </SelectContent>
                     </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

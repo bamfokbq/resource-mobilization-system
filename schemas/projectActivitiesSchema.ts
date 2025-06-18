@@ -1,24 +1,22 @@
 import * as z from "zod";
 
 export const ncdActivitySchema = z.object({
-  activityDescription: z.string().min(1, "Activity description is required"),
-  targetPopulation: z.string().min(1, "Target population is required"),
-  expectedOutcomes: z.string().min(1, "Expected outcomes are required"),
-  challenges: z.string().min(1, "Challenges description is required"),
+  projectDistrict: z.array(z.string()).optional(),
+  continuumOfCare: z.string().optional(),
+  activityDescription: z.string().optional(),
+  targetPopulation: z.string().optional(),
+  secondaryTargetPopulation: z.string().optional(),
+  ageRange: z.string().optional(),
+  gender: z.string().optional(),
+  activityLevel: z.string().optional(),
+  activityImplementedArea: z.string().optional(),
+  nationalNCDStrategyWHOGapTarget: z.string().optional(),
+  domainAreaOfStrategy: z.string().optional(),
+  preventionStrategicArea: z.string().optional(),
+  expectedOutcomes: z.string().optional(),
+  challenges: z.string().optional(),
 });
 
 export const projectActivitiesSchema = z.object({
-  districts: z.array(z.string()).min(1, "Select at least one district"),
-  continuumOfCare: z.array(z.string()).min(1, "Select at least one continuum of care"),
-  activityDescription: z.string().min(10, "Please provide a detailed description"),
-  primaryTargetPopulation: z.string().min(5, "Please describe the primary target population"),
-  secondaryTargetPopulation: z.string().optional(),
-  ageRanges: z.array(z.string()).min(1, "Select at least one age range"),
-  gender: z.enum(["male", "female", "both"]),
-  implementationLevel: z.array(z.string()).min(1, "Select at least one implementation level"),
-  implementationArea: z.enum(["urban", "rural", "both"]),
-  whoGapTargets: z.array(z.string()).min(1, "Select at least one WHO GAP target"),
-  ncdStrategyDomain: z.string().min(1, "Select a strategy domain"),
-  preventionFocus: z.string().optional(),
   ncdActivities: z.record(z.string(), ncdActivitySchema),
 });

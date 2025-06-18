@@ -1,9 +1,8 @@
-import client from './db'
+import { getDb } from './db'
 
 export async function getUserFromDb(email: string, hashedPassword: string) {
     try {
-        await client.connect();
-        const database = client.db("ncd_navigator");
+        const database = await getDb();
         const users = database.collection("users");
 
         const user = await users.findOne({
@@ -15,8 +14,5 @@ export async function getUserFromDb(email: string, hashedPassword: string) {
     } catch (error) {
         console.error("Error finding user:", error);
         return null;
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
     }
 }

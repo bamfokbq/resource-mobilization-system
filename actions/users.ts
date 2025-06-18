@@ -1,22 +1,29 @@
 "use server"
 
-import client from "@/lib/db"
+import { getDb } from "@/lib/db"
 import { ObjectId } from "mongodb"
 import { comparePassword, hashPassword } from "@/lib/password"
 
 export async function updateUserProfile(userId: string, formData: FormData) {
   console.log(formData);
-  const profileData = {
-    firstName: formData.get('firstName') as string,
-    lastName: formData.get('lastName') as string,
-    email: formData.get('email') as string,
-    telephone: formData.get('telephone') as string,
-    bio: formData.get('bio') as string,
-  };
+  const profileData: any = {};
+
+  // Only include fields that are provided
+  const telephone = formData.get('telephone') as string;
+  const bio = formData.get('bio') as string;
+  const firstName = formData.get('firstName') as string;
+  const lastName = formData.get('lastName') as string;
+  const email = formData.get('email') as string;
+
+  if (telephone !== null) profileData.telephone = telephone;
+  if (bio !== null) profileData.bio = bio;
+  if (firstName) profileData.firstName = firstName;
+  if (lastName) profileData.lastName = lastName;
+  if (email) profileData.email = email;
 
   try {
-    const db = client.db()
-    const result = await db.collection("users").updateOne(  // Changed from "user" to "users"
+    const db = await getDb()
+    const result = await db.collection("users").updateOne(
       { _id: new ObjectId(userId) },
       { $set: profileData }
     )
@@ -59,7 +66,7 @@ export async function createNewUser(formData: FormData) {
     //   delete userData.organisation;
     // }
 
-    const db = client.db();
+    const db = await getDb();
 
     // Check if email already exists
     const existingUser = await db.collection("users").findOne({ email: userData.email });
@@ -86,7 +93,7 @@ export async function createNewUser(formData: FormData) {
 }
 
 export async function getUserbyEmailAndHashPassword(email: string, password: string) {
-  const db = client.db();
+  const db = await getDb();
   const user = await db.collection("users").findOne({ email });
 
   if (!user) {
@@ -99,5 +106,34 @@ export async function getUserbyEmailAndHashPassword(email: string, password: str
     return null;
   }
   return user;
+}
+
+export async function updateUserEditableProfile(userId: string, telephone: string, bio: string) {
+  try {
+    const db = await getDb()
+    const updateData: any = {};
+
+    // Only update non-empty values
+    if (telephone !== undefined && telephone !== null) {
+      updateData.telephone = telephone;
+    }
+    if (bio !== undefined && bio !== null) {
+      updateData.bio = bio;
+    }
+
+    const result = await db.collection("users").updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: updateData }
+    )
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: "User not found" }
+    }
+
+    return { success: true, data: updateData }
+  } catch (error) {
+    console.error("Failed to update user profile:", error)
+    return { success: false, error: "Failed to update user profile" }
+  }
 }
 
