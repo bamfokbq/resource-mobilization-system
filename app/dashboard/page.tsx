@@ -250,9 +250,8 @@ export default async function UserDashboardPage() {
       <SurveyMetricsChart
         data={surveyMetricsData}
         statusData={statusData}
-      />
-
-      {/* Progress Analytics */}
+      />      {/* Progress Analytics - Contains Survey Step Completion and Progress Over Time */}
+      {/*
       <SurveyProgressAnalytics
         progressData={progressData}
         timelineData={timelineData}
@@ -260,12 +259,14 @@ export default async function UserDashboardPage() {
         avgCompletion={avgCompletion}
         completionRate={completionRate}
       />
+      */}
 
       {/* Regional Insights */}
       <RegionalInsights
         regionMetrics={regionalData}
         effortData={effortData}
-      />      {/* Predictive Analytics */}
+      />      {/* Predictive Analytics - Contains Survey Completion Forecast and Upcoming Milestones */}
+      {/*
       <SurveyPredictiveAnalytics
         predictionData={predictionData}
         milestones={milestones}
@@ -273,6 +274,7 @@ export default async function UserDashboardPage() {
         timeToTarget={timeToTarget}
         confidenceLevel={confidenceLevel}
       />
+      */}
 
       {/* Active Surveys Section */}
       <div className="bg-white rounded-xl p-6 shadow-lg">
