@@ -78,12 +78,9 @@ export async function createNewUser(formData: FormData) {
     const result = await db.collection("users").insertOne(userData);
     if (!result.insertedId) {
       return { success: false, error: "Failed to create user" };
-    }
-
-    return {
+    } return {
       success: true,
-      userId: result.insertedId,
-      user: { ...userData, _id: result.insertedId }
+      message: "User created successfully"
     };
 
   } catch (error) {
@@ -134,6 +131,148 @@ export async function updateUserEditableProfile(userId: string, telephone: strin
   } catch (error) {
     console.error("Failed to update user profile:", error)
     return { success: false, error: "Failed to update user profile" }
+  }
+}
+
+export async function getAllUsers() {
+  try {
+    const db = await getDb()
+    const users = await db.collection("users").find({}, {
+      projection: {
+        password: 0, 
+      }
+    }).toArray()  
+    return users.map(user => ({
+      id: user._id.toString(),
+      name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      email: user.email,
+      region: user.region || '',
+      telephone: user.telephone || '',
+      organisation: user.organisation || '',
+      role: user.role || 'User',
+      isActive: user.isActive ?? true,
+      createdAt: user.createdAt,
+      bio: user.bio || '',
+      passwordResetAt: user.passwordResetAt,
+      statusUpdatedAt: user.statusUpdatedAt
+    }))
+  } catch (error) {
+    console.error("Failed to fetch users:", error)
+    return []
+  }
+}
+
+export async function getUserStats() {
+  try {
+    const db = await getDb()
+
+    const totalUsers = await db.collection("users").countDocuments()
+    const activeUsers = await db.collection("users").countDocuments({ isActive: true })
+    const adminUsers = await db.collection("users").countDocuments({ role: "Admin" })
+    const regularUsers = await db.collection("users").countDocuments({ role: "User" })
+
+    // Get recent users (last 30 days)
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    const recentUsers = await db.collection("users").countDocuments({
+      createdAt: { $gte: thirtyDaysAgo }
+    })
+
+    // Get users by region
+    const usersByRegion = await db.collection("users").aggregate([
+      { $group: { _id: "$region", count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]).toArray()
+
+    return {
+      totalUsers,
+      activeUsers,
+      adminUsers,
+      regularUsers,
+      recentUsers,
+      usersByRegion: usersByRegion.map(item => ({
+        region: item._id || 'Unknown',
+        count: item.count
+      }))
+    }
+  } catch (error) {
+    console.error("Failed to fetch user stats:", error)
+    return {
+      totalUsers: 0,
+      activeUsers: 0,
+      adminUsers: 0,
+      regularUsers: 0,
+      recentUsers: 0,
+      usersByRegion: []
+    }
+  }
+}
+
+export async function resetUserPassword(userId: string, newPassword?: string) {
+  try {
+    const db = await getDb()
+
+    // Use provided password or default to 'ncd@2025'
+    const passwordToHash = newPassword || 'ncd@2025'
+    const hashedPassword = await hashPassword(passwordToHash)
+
+    const result = await db.collection("users").updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          password: hashedPassword,
+          passwordResetAt: new Date()
+        }
+      }
+    )
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: "User not found" }
+    }
+
+    return { success: true, message: "Password reset successfully" }
+  } catch (error) {
+    console.error("Failed to reset user password:", error)
+    return { success: false, error: "Failed to reset password" }
+  }
+}
+
+export async function toggleUserStatus(userId: string) {
+  try {
+    const db = await getDb()
+
+    // First get the current status
+    const user = await db.collection("users").findOne({ _id: new ObjectId(userId) })
+    if (!user) {
+      return { success: false, error: "User not found" }
+    }
+
+    const newStatus = !user.isActive
+
+    const result = await db.collection("users").updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          isActive: newStatus,
+          statusUpdatedAt: new Date()
+        }
+      }
+    )
+
+    if (result.matchedCount === 0) {
+      return { success: false, error: "User not found" }
+    }
+
+    return {
+      success: true,
+      message: `User ${newStatus ? 'activated' : 'deactivated'} successfully`,
+      newStatus
+    }
+  } catch (error) {
+    console.error("Failed to toggle user status:", error)
+    return { success: false, error: "Failed to update user status" }
   }
 }
 

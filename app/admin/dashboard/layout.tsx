@@ -11,21 +11,18 @@ export default async function AdminDashboardLayout({
 }>) {
     const session = await auth();
     if (!session) {
-        return redirect('/');
+        return redirect('/admin');
     }
     const role = session?.user?.role;
 
     if (role && role !== 'Admin') {
         return redirect('/dashboard');
-    }
-
-
-    return (
+    } return (
         <div className="flex flex-col h-screen">
             <Header />
             <div className="flex flex-1 overflow-hidden">
                 <AdminDashboardLinks />
-                <ScrollArea className="flex-1 p-2 md:p-4 bg-gray-100">
+                <ScrollArea className="flex-1 bg-gray-100">
                     <div className="w-full h-full bg-gray-100">
                         <div className="p-4">
                             {children}
