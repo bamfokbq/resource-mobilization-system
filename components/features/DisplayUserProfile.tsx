@@ -40,11 +40,22 @@ export default function DisplayUserProfile() {
     console.log('Form submitted:', data);
     setIsEditing(false);
   };
-
   console.log('userInfo:', userInfo);
 
   if (!userInfo) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full px-4 sm:px-0">
+        <div className="bg-card rounded-lg shadow-lg overflow-hidden p-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-pulse">
+              <div className="h-16 w-16 bg-gray-300 rounded-full mb-4"></div>
+              <div className="h-4 w-32 bg-gray-300 rounded mb-2"></div>
+              <div className="h-3 w-24 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const { firstName, lastName, email, telephone, bio } = userInfo;
