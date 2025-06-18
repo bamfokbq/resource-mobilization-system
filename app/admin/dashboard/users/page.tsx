@@ -25,9 +25,7 @@ export default async function AdminDashboardUserPage() {
                         <AddNewUserModal />
                     </div>
                 )}
-            </div>
-
-            {/* Statistics Overview */}
+            </div> 
             <Suspense fallback={
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {[...Array(4)].map((_, i) => (
@@ -41,7 +39,7 @@ export default async function AdminDashboardUserPage() {
                     ))}
                 </div>
             }>
-                {/* <UserStatsOverview /> */}
+                <UserStatsOverview />
             </Suspense>
 
             {/* Users Table Section */}
