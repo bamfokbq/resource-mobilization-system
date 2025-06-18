@@ -78,12 +78,9 @@ export async function createNewUser(formData: FormData) {
     const result = await db.collection("users").insertOne(userData);
     if (!result.insertedId) {
       return { success: false, error: "Failed to create user" };
-    }
-
-    return {
+    } return {
       success: true,
-      userId: result.insertedId,
-      user: { ...userData, _id: result.insertedId }
+      message: "User created successfully"
     };
 
   } catch (error) {
