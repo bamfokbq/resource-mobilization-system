@@ -145,12 +145,15 @@ export async function submitSurveyData(formData: FormData): Promise<SurveySubmis
     await client.connect()
     const db = client.db()
     const surveysCollection = db.collection('surveys')
-    
     // Prepare the document for insertion
     const surveyDocument = {
       ...validatedData,
-      userId: session.user.id,
-      userEmail: session.user.email,
+      createdBy: {
+        userId: session.user.id,
+        email: session.user.email,
+        name: session.user.name || '',
+        timestamp: new Date()
+      },
       submissionDate: new Date(),
       lastUpdated: new Date(),
       status: 'submitted',
@@ -161,10 +164,9 @@ export async function submitSurveyData(formData: FormData): Promise<SurveySubmis
     
     // Insert the survey data
     const result = await surveysCollection.insertOne(surveyDocument)
-    
     // Delete any existing drafts for this user after successful submission
     const draftsCollection = db.collection('survey_drafts')
-    await draftsCollection.deleteMany({ userId: session.user.id })
+    await draftsCollection.deleteMany({ 'createdBy.userId': session.user.id })
     
     console.log('Survey submitted successfully with ID:', result.insertedId)
     
@@ -222,11 +224,14 @@ export async function saveSurveyDraft(formData: Partial<FormData>, currentStep?:
     
     // Calculate progress (simplified calculation)
     const progress = calculateFormProgress(formData)
-    
     // Prepare the draft document
     const draftDocument = {
-      userId: session.user.id,
-      userEmail: session.user.email,
+      createdBy: {
+        userId: session.user.id,
+        email: session.user.email,
+        name: session.user.name || '',
+        timestamp: new Date()
+      },
       formData,
       currentStep: currentStep || 'organisation',
       progress,
@@ -234,10 +239,9 @@ export async function saveSurveyDraft(formData: Partial<FormData>, currentStep?:
       status: 'draft',
       version: '1.0'
     }
-    
     // Try to update existing draft or create new one
     const result = await draftsCollection.replaceOne(
-      { userId: session.user.id },
+      { 'createdBy.userId': session.user.id },
       draftDocument,
       { upsert: true }
     )
@@ -277,7 +281,7 @@ export async function getUserDraft(): Promise<{ success: boolean; draft?: DraftI
     const db = client.db()
     const draftsCollection = db.collection('survey_drafts')
     
-    const draft = await draftsCollection.findOne({ userId: session.user.id })
+    const draft = await draftsCollection.findOne({ 'createdBy.userId': session.user.id })
     
     if (!draft) {
       return {
@@ -287,10 +291,9 @@ export async function getUserDraft(): Promise<{ success: boolean; draft?: DraftI
     }
     
     return {
-      success: true,
-      draft: {
+      success: true, draft: {
         _id: draft._id.toString(),
-        userId: draft.userId,
+        createdBy: draft.createdBy,
         lastSaved: draft.lastSaved,
         formData: draft.formData,
         currentStep: draft.currentStep,
@@ -326,7 +329,7 @@ export async function deleteDraft(): Promise<SurveySubmissionResult> {
     const db = client.db()
     const draftsCollection = db.collection('survey_drafts')
     
-    const result = await draftsCollection.deleteOne({ userId: session.user.id })
+    const result = await draftsCollection.deleteOne({ 'createdBy.userId': session.user.id })
     
     if (result.deletedCount === 0) {
       return {

@@ -10,7 +10,12 @@ export interface SurveySubmissionResult {
 
 export interface DraftInfo {
   _id: string
-  userId: string
+  createdBy: {
+    userId: string
+    email: string
+    name: string
+    timestamp: Date
+  }
   lastSaved: Date
   formData: Partial<CustomFormData>
   currentStep: string
