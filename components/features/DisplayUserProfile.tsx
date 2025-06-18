@@ -5,6 +5,8 @@ import { useState, useCallback } from 'react';
 import { BsPersonVcard } from 'react-icons/bs';
 import { FiEdit3, FiMail, FiPhone, FiUser, FiSave, FiX } from 'react-icons/fi';
 import { MdOutlineBiotech } from 'react-icons/md';
+import { updateUserEditableProfile } from '@/actions/users';
+import { toast } from 'sonner';
 
 interface FormInputs {
   telephone: string;
@@ -13,6 +15,7 @@ interface FormInputs {
 
 export default function DisplayUserProfile() {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Separate selectors to avoid object creation on every render
   const userInfo = useUserStore((state) => state.userInfo);
@@ -24,19 +27,37 @@ export default function DisplayUserProfile() {
     formState: { errors },
     reset,
   } = useForm<FormInputs>();
-  const onSubmit = useCallback((data: FormInputs) => {
-    console.log('Form submitted:', data);
-
-    // Update the user store with new data (only editable fields)
-    if (userInfo) {
-      setUserInfo({
-        ...userInfo,
-        telephone: data.telephone,
-        bio: data.bio,
-      });
+  const onSubmit = useCallback(async (data: FormInputs) => {
+    if (!userInfo || !userInfo._id) {
+      toast.error('User information not available');
+      return;
     }
 
-    setIsEditing(false);
+    setIsSubmitting(true);
+
+    try {
+      // Call the server action to update user profile with just the editable fields
+      const result = await updateUserEditableProfile(userInfo._id, data.telephone, data.bio);
+
+      if (result.success) {
+        // Update the user store with new data
+        setUserInfo({
+          ...userInfo,
+          telephone: data.telephone,
+          bio: data.bio,
+        });
+
+        setIsEditing(false);
+        toast.success('Profile updated successfully!');
+      } else {
+        toast.error(result.error || 'Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast.error('An unexpected error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [userInfo, setUserInfo]);
 
   const handleCancel = useCallback(() => {
@@ -85,18 +106,23 @@ export default function DisplayUserProfile() {
                   className="p-3 rounded-xl bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all duration-300 border border-white/30"
                 >
                   <FiEdit3 size={20} />
-                </button>
-              ) : (
+                </button>) : (
                 <>
                   <button
                     onClick={handleSubmit(onSubmit)}
-                    className="p-3 rounded-xl bg-green-500/80 backdrop-blur-sm hover:bg-green-500 transition-all duration-300 border border-white/30"
+                      disabled={isSubmitting}
+                      className="p-3 rounded-xl bg-green-500/80 backdrop-blur-sm hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-white/30"
                   >
-                    <FiSave size={20} />
+                      {isSubmitting ? (
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      ) : (
+                          <FiSave size={20} />
+                      )}
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="p-3 rounded-xl bg-red-500/80 backdrop-blur-sm hover:bg-red-500 transition-all duration-300 border border-white/30"
+                      disabled={isSubmitting}
+                      className="p-3 rounded-xl bg-red-500/80 backdrop-blur-sm hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 border border-white/30"
                   >
                     <FiX size={20} />
                   </button>
@@ -209,22 +235,29 @@ export default function DisplayUserProfile() {
                     rows={4}
                     placeholder="Tell us about yourself..."
                   />
-                </div>
-
-                {/* Action Buttons */}
+                </div>                {/* Action Buttons */}
                 <div className="flex gap-4 justify-end pt-4">
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium"
+                    disabled={isSubmitting}
+                    className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-medium"
                   >
                     Cancel Changes
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 font-medium"
+                    disabled={isSubmitting}
+                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-medium flex items-center gap-2"
                   >
-                    Save Changes
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Saving...
+                      </>
+                    ) : (
+                      'Save Changes'
+                    )}
                   </button>
                 </div>
               </form>
