@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react'
 import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
 import AdminCharts from '@/components/dashboard/AdminCharts'
-import UserEngagementCharts from '@/components/dashboard/UserEngagementCharts'
 import AdminKPICards from '@/components/dashboard/AdminKPICards'
 import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
 import Link from 'next/link'
 import { ArrowLeft, Download, Filter, TrendingUp, BarChart3, Users, Activity } from 'lucide-react'
+import { UserEngagementCharts } from '@/components/dashboard/UserEngagementCharts'
 
 export default async function AdminAnalyticsPage() {
     // Fetch analytics data

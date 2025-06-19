@@ -1,28 +1,21 @@
-import React, { Suspense } from 'react'
-import Link from 'next/link'
-import AdminStatsCard from '@/components/dashboard/AdminStatsCard'
-import AdminKPICards from '@/components/dashboard/AdminKPICards'
-import AdminCharts from '@/components/dashboard/AdminCharts'
-import UserEngagementCharts from '@/components/dashboard/UserEngagementCharts'
-import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
-import DashboardSkeleton from '@/components/skeletons/DashboardSkeleton'
-import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
-import SurveyListTable from '@/components/tables/SurveyListTable'
-import { ADMIN_STATS } from '@/constant'
 import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
 import { getUserStats } from '@/actions/users'
-import { RiDashboardLine, RiUserAddLine, RiBarChartLine, RiSettings2Line } from 'react-icons/ri'
+import AdminCharts from '@/components/dashboard/AdminCharts'
+import AdminKPICards from '@/components/dashboard/AdminKPICards'
+import AdminStatsCard from '@/components/dashboard/AdminStatsCard'
+import { UserEngagementCharts } from '@/components/dashboard/UserEngagementCharts'
+import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
+import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
+import SurveyListTable from '@/components/tables/SurveyListTable'
+import { Activity, AlertCircle, Database, TrendingUp, Users, Zap } from 'lucide-react'
+import Link from 'next/link'
+import { Suspense } from 'react'
+import { BsCalendar3 } from 'react-icons/bs'
+import { FiUsers } from 'react-icons/fi'
 import { MdOutlinePoll } from 'react-icons/md'
-import { Database, Zap, Activity, AlertCircle, Users, TrendingUp } from 'lucide-react'
+import { RiBarChartLine, RiSettings2Line, RiUserAddLine } from 'react-icons/ri'
 
 const adminStatColors = ['blue', 'green', 'purple', 'orange'] as const;
-
-const adminStatTrends = [
-    { value: 12, isPositive: true },
-    { value: 8, isPositive: true },
-    { value: 3, isPositive: false },
-    { value: 15, isPositive: true }
-];
 
 export default async function AdminDashboardPage() {
     // Fetch all analytics data
@@ -133,23 +126,66 @@ export default async function AdminDashboardPage() {
                     <AdminKPICards kpis={analyticsData.kpis} />
                 </div>
             )}
-
-            {/* Enhanced Stats Cards */}
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {ADMIN_STATS.map((stat, index) => (
-                    <AdminStatsCard
-                        key={stat.id}
-                        title={stat.name}
-                        value={stat.amount}
-                        icon={<stat.icon size={24} />}
-                        color={adminStatColors[index]}
-                        trend={adminStatTrends[index]}
-                    />
-                ))}
-            </div> */}
+            {analyticsData?.kpis && userStats && (
+                <div>
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <Users className="text-blue-600" size={24} />
+                            System Statistics
+                        </h2>
+                        <p className="text-gray-600">Key metrics and statistics for system overview</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <AdminStatsCard
+                            key="surveys"
+                            title="Total Surveys"
+                            value={analyticsData.kpis.totalSurveys}
+                            icon={<MdOutlinePoll size={24} />}
+                            color={adminStatColors[0]}
+                            trend={{
+                                value: analyticsData.kpis.surveyGrowthRate,
+                                isPositive: analyticsData.kpis.surveyGrowthRate >= 0
+                            }}
+                        />
+                        <AdminStatsCard
+                            key="users"
+                            title="Total Users"
+                            value={analyticsData.kpis.totalUsers}
+                            icon={<FiUsers size={24} />}
+                            color={adminStatColors[1]}
+                            trend={{
+                                value: analyticsData.kpis.userGrowthRate,
+                                isPositive: analyticsData.kpis.userGrowthRate >= 0
+                            }}
+                        />
+                        <AdminStatsCard
+                            key="active-users"
+                            title="Active Users"
+                            value={analyticsData.kpis.activeUsers}
+                            icon={<Activity size={24} />}
+                            color={adminStatColors[2]}
+                            trend={{
+                                value: Math.round((analyticsData.kpis.activeUsers / analyticsData.kpis.totalUsers) * 100),
+                                isPositive: true
+                            }}
+                        />
+                        <AdminStatsCard
+                            key="completion-rate"
+                            title="Completion Rate"
+                            value={`${analyticsData.kpis.completionRate}%`}
+                            icon={<BsCalendar3 size={24} />}
+                            color={adminStatColors[3]}
+                            trend={{
+                                value: analyticsData.kpis.completionRate,
+                                isPositive: analyticsData.kpis.completionRate >= 50
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
 
             {/* System Analytics Charts */}
-            {/* {analyticsData?.systemMetrics && (
+            {analyticsData?.systemMetrics && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -160,10 +196,10 @@ export default async function AdminDashboardPage() {
                     </div>
                     <AdminCharts systemMetrics={analyticsData.systemMetrics} />
                 </div>
-            )} */}
+            )}
 
             {/* User Engagement Analytics */}
-            {/* {analyticsData?.userEngagement && (
+            {analyticsData?.userEngagement && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -174,10 +210,10 @@ export default async function AdminDashboardPage() {
                     </div>
                     <UserEngagementCharts userEngagement={analyticsData.userEngagement} />
                 </div>
-            )} */}
+            )}
 
             {/* User Statistics Overview */}
-            {/* {userStats && (
+            {userStats && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -200,10 +236,10 @@ export default async function AdminDashboardPage() {
                         <UserStatsOverview />
                     </Suspense>
                 </div>
-            )} */}
+            )}
 
             {/* Quick Actions */}
-            {/* <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="bg-white rounded-xl p-6 shadow-lg">
                 <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                         <RiSettings2Line className="text-orange-600" size={24} />
@@ -253,10 +289,10 @@ export default async function AdminDashboardPage() {
                         </div>
                     </Link>
                 </div>
-            </div> */}
+            </div>
 
             {/* Survey Management Table */}
-            {/* <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="bg-white rounded-xl p-6 shadow-lg">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                         <MdOutlinePoll className="text-purple-500 text-2xl" />
@@ -286,10 +322,10 @@ export default async function AdminDashboardPage() {
                 }>
                     <SurveyListTable />
                 </Suspense>
-            </div> */}
+            </div>
 
             {/* Error States */}
-            {/* {!analyticsResult.success && (
+            {!analyticsResult.success && (
                 <div className="bg-white rounded-xl p-6 shadow-lg border border-red-200">
                     <div className="flex items-center gap-3 mb-4">
                         <AlertCircle className="text-red-500" size={24} />
@@ -298,9 +334,9 @@ export default async function AdminDashboardPage() {
                     <p className="text-red-600">{analyticsResult.message}</p>
                     <p className="text-sm text-gray-600 mt-2">Please check your database connection and try again.</p>
                 </div>
-            )} */}
+            )}
 
-            {/* {!performanceResult.success && (
+            {!performanceResult.success && (
                 <div className="bg-white rounded-xl p-6 shadow-lg border border-yellow-200">
                     <div className="flex items-center gap-3 mb-4">
                         <AlertCircle className="text-yellow-600" size={24} />
@@ -309,7 +345,7 @@ export default async function AdminDashboardPage() {
                     <p className="text-yellow-700">{performanceResult.message}</p>
                     <p className="text-sm text-gray-600 mt-2">System performance data is temporarily unavailable.</p>
                 </div>
-            )} */}
+            )}
         </div>
     )
 }

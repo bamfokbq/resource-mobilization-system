@@ -1,15 +1,12 @@
-import React from 'react';
-import UserStatsCard from '@/components/dashboard/UserStatsCard';
-import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
-import SubmittedSurveysTable from '@/components/tables/SubmittedSurveysTable';
-import SurveyMetricsChart from '@/components/dashboard/SurveyMetricsChart';
-import SurveyProgressAnalytics from '@/components/dashboard/SurveyProgressAnalytics';
-import RegionalInsights from '@/components/dashboard/RegionalInsights';
-import SurveyPredictiveAnalytics from '@/components/dashboard/SurveyPredictiveAnalytics';
-import Link from 'next/link';
-import { RiSurveyLine, RiCheckboxCircleLine, RiTimeLine, RiBarChartLine } from 'react-icons/ri';
-import { getAllSurveys, getUserDraft, getSurveyAnalytics, getUserSurveyStatistics, getPredictiveAnalytics } from '@/actions/surveyActions';
+import { getAllSurveys, getPredictiveAnalytics, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
 import { auth } from '@/auth';
+import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
+import RegionalInsights from '@/components/dashboard/RegionalInsights';
+import SurveyMetricsChart from '@/components/dashboard/SurveyMetricsChart';
+import UserStatsCard from '@/components/dashboard/UserStatsCard';
+import SubmittedSurveysTable from '@/components/tables/SubmittedSurveysTable';
+import Link from 'next/link';
+import { RiBarChartLine, RiCheckboxCircleLine, RiSurveyLine, RiTimeLine } from 'react-icons/ri';
 
 // Generate predictive analytics and milestones (these can remain mock for now as they require ML models)
 const generateMockPredictionData = () => {

@@ -1002,3 +1002,60 @@ function generateMilestonesFromData(surveys: any[], drafts: any[]): Array<{ date
 
   return milestones;
 }
+
+// Get comprehensive survey statistics
+export async function getSurveyStats() {
+  try {
+    const db = await getDb()
+
+    // Get total submitted surveys
+    const totalSubmittedSurveys = await db.collection('surveys').countDocuments({
+      status: 'submitted'
+    })
+
+    // Get total draft surveys  
+    const totalDraftSurveys = await db.collection('survey_drafts').countDocuments()
+
+    // Get recent surveys (last 30 days)
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    const recentSubmissions = await db.collection('surveys').countDocuments({
+      submissionDate: { $gte: thirtyDaysAgo },
+      status: 'submitted'
+    })
+
+    // Get surveys by region
+    const surveysByRegion = await db.collection('surveys').aggregate([
+      { $match: { status: 'submitted' } },
+      { $group: { _id: '$organisationInfo.region', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]).toArray()
+
+    // Get completion rate
+    const totalAttempts = totalSubmittedSurveys + totalDraftSurveys
+    const completionRate = totalAttempts > 0 ? Math.round((totalSubmittedSurveys / totalAttempts) * 100) : 0
+
+    return {
+      totalSubmittedSurveys,
+      totalDraftSurveys,
+      recentSubmissions,
+      completionRate,
+      totalAttempts,
+      surveysByRegion: surveysByRegion.map(item => ({
+        region: item._id || 'Unknown',
+        count: item.count
+      }))
+    }
+  } catch (error) {
+    console.error("Failed to fetch survey stats:", error)
+    return {
+      totalSubmittedSurveys: 0,
+      totalDraftSurveys: 0,
+      recentSubmissions: 0,
+      completionRate: 0,
+      totalAttempts: 0,
+      surveysByRegion: []
+    }
+  }
+}

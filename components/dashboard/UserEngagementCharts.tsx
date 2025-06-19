@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import {
   BarChart,
@@ -14,8 +16,8 @@ import {
   Pie,
   Cell
 } from 'recharts'
-import { UserEngagementMetrics } from '@/actions/adminAnalytics'
 import { Clock, TrendingUp, Users, Activity } from 'lucide-react'
+import { UserEngagementMetrics } from '@/actions/adminAnalytics'
 
 interface UserEngagementChartsProps {
   userEngagement: UserEngagementMetrics
@@ -73,7 +75,7 @@ const MetricCard: React.FC<{
   </div>
 )
 
-const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ userEngagement }) => {
+export const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ userEngagement }) => {
   return (
     <div className="space-y-8">
       {/* Engagement Overview Cards */}
@@ -114,7 +116,6 @@ const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ userEngagem
 
       {/* Detailed Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Survey Step Completion Analysis */}
         <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-900">Survey Step Analysis</h3>
@@ -139,7 +140,6 @@ const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ userEngagem
           </ResponsiveContainer>
         </div>
 
-        {/* User Retention Over Time */}
         <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-900">User Retention Analysis</h3>
@@ -232,7 +232,16 @@ const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ userEngagem
       <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-900">Key Engagement Insights</h3>
-          <p className="text-sm text-gray-600">Important findings from user behavior analysis</p>
+          <p className="text-sm text-gray-600">Important findings from user behavi
+
+
+
+
+
+
+
+
+            or analysis</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -263,5 +272,3 @@ const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ userEngagem
     </div>
   )
 }
-
-export default UserEngagementCharts
