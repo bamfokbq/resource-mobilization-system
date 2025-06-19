@@ -1,8 +1,10 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import AdminDashboardLinks from '@/components/features/AdminDashboardLinks'
 import Header from '@/components/shared/Header'
+import AdminLoadingScreen from '@/components/shared/AdminLoadingScreen'
+import RedirectLoadingScreen from '@/components/shared/RedirectLoadingScreen'
 import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
+import { redirect } from 'next/navigation'
 
 export default async function AdminDashboardLayout({
     children,
@@ -11,13 +13,30 @@ export default async function AdminDashboardLayout({
 }>) {
     const session = await auth();
     if (!session) {
-        return redirect('/admin');
+        return (
+            <>
+                <RedirectLoadingScreen type="login" />
+                {redirect('/admin')}
+            </>
+        );
     }
     const role = session?.user?.role;
 
     if (role && role !== 'Admin') {
-        return redirect('/dashboard');
-    } return (
+        return (
+            <>
+                <RedirectLoadingScreen type="dashboard" />
+                {redirect('/dashboard')}
+            </>
+        );
+    }
+
+    // Show loading screen while role is being verified
+    if (!role) {
+        return <AdminLoadingScreen />;
+    }
+
+    return (
         <div className="flex flex-col h-screen">
             <Header />
             <div className="flex flex-1 overflow-hidden">
