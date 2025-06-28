@@ -1,28 +1,24 @@
 import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
 import { getUserStats } from '@/actions/users'
 import AdminCharts from '@/components/dashboard/AdminCharts'
-import AdminKPICards from '@/components/dashboard/AdminKPICards'
-import AdminStatsCard from '@/components/dashboard/AdminStatsCard'
-import { UserEngagementCharts } from '@/components/dashboard/UserEngagementCharts'
-import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
+import BusinessIntelligence from '@/components/dashboard/BusinessIntelligence'
+import ManagementSummary from '@/components/dashboard/ManagementSummary'
+import OperationalDashboard from '@/components/dashboard/OperationalDashboard'
 import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
 import SurveyListTable from '@/components/tables/SurveyListTable'
-import { Activity, AlertCircle, Database, TrendingUp, Users, Zap } from 'lucide-react'
+import { Activity, AlertCircle, Database, TrendingUp, Users, Zap, BarChart3, Briefcase, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { BsCalendar3 } from 'react-icons/bs'
-import { FiUsers } from 'react-icons/fi'
 import { MdOutlinePoll } from 'react-icons/md'
 import { RiBarChartLine, RiSettings2Line, RiUserAddLine } from 'react-icons/ri'
-
-const adminStatColors = ['blue', 'green', 'purple', 'orange'] as const;
 
 export default async function AdminDashboardPage() {
     // Fetch all analytics data
     const [analyticsResult, performanceResult, userStatsResult] = await Promise.all([
         getAdminAnalytics(),
         getSystemPerformanceMetrics(),
-        getUserStats()])
+        getUserStats()
+    ])
 
     const analyticsData = analyticsResult.success ? analyticsResult.data : null
     const performanceData = performanceResult.success ? performanceResult.data : null
@@ -34,16 +30,23 @@ export default async function AdminDashboardPage() {
             <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center bg-white rounded-xl p-6 shadow-lg gap-4">
                 <div>
                     <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        Admin Dashboard
+                        Management Dashboard
                     </h1>
-                    <p className="text-gray-600 mt-2">Comprehensive system analytics and management overview</p>
+                    <p className="text-gray-600 mt-2">Executive insights and comprehensive system analytics</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Suspense fallback={<div className="animate-pulse bg-gray-200 rounded-lg h-10 w-48"></div>}>
                         <DateRangeSelector />
                     </Suspense>
                     <Link
-                        href="/admin/dashboard/users"
+                        href="/admin/dashboard/analytics"
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 justify-center"
+                    >
+                        <BarChart3 size={20} />
+                        Detailed Analytics
+                    </Link>
+                    <Link
+                        href="/admin/users"
                         className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 justify-center"
                     >
                         <RiUserAddLine size={20} />
@@ -52,189 +55,133 @@ export default async function AdminDashboardPage() {
                 </div>
             </div>
 
+            {/* Management Executive Summary */}
+            {analyticsData?.kpis && analyticsData?.systemMetrics && (
+                <div>
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <Briefcase className="text-blue-600" size={24} />
+                            Executive Summary
+                        </h2>
+                        <p className="text-gray-600">High-level business performance and strategic insights</p>
+                    </div>
+                    <ManagementSummary kpis={analyticsData.kpis} systemMetrics={analyticsData.systemMetrics} />
+                </div>
+            )}
+
+            {/* Business Intelligence */}
+            {analyticsData?.systemMetrics && (
+                <div>
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <TrendingUp className="text-green-600" size={24} />
+                            Business Intelligence
+                        </h2>
+                        <p className="text-gray-600">Financial metrics, ROI analysis, and market insights</p>
+                    </div>
+                    <BusinessIntelligence systemMetrics={analyticsData.systemMetrics} />
+                </div>
+            )}
+
+            {/* Operational Dashboard */}
+            {analyticsData?.kpis && analyticsData?.systemMetrics && (
+                <div>
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                            <Settings className="text-purple-600" size={24} />
+                            Operational Insights
+                        </h2>
+                        <p className="text-gray-600">System performance, resource utilization, and operational metrics</p>
+                    </div>
+                    <OperationalDashboard
+                        kpis={analyticsData.kpis}
+                        systemMetrics={analyticsData.systemMetrics}
+                        performanceData={performanceData || undefined}
+                    />
+                </div>
+            )}
+
             {/* System Performance Cards */}
             {performanceData && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-3 rounded-lg bg-blue-100">
-                                <Database size={20} className="text-blue-600" />
-                            </div>
-                            <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                                System
-                            </span>
-                        </div>
-                        <h3 className="text-sm font-medium text-gray-600">Database Size</h3>
-                        <p className="text-2xl font-bold text-gray-900">{performanceData.databaseSize}</p>
-                        <p className="text-xs text-gray-500 mt-2">Total storage used</p>
-                    </div>
-
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-3 rounded-lg bg-green-100">
-                                <Zap size={20} className="text-green-600" />
-                            </div>
-                            <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                                Performance
-                            </span>
-                        </div>
-                        <h3 className="text-sm font-medium text-gray-600">Response Time</h3>
-                        <p className="text-2xl font-bold text-gray-900">{performanceData.responseTime}ms</p>
-                        <p className="text-xs text-gray-500 mt-2">Average API response</p>
-                    </div>
-
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-3 rounded-lg bg-purple-100">
-                                <Activity size={20} className="text-purple-600" />
-                            </div>
-                            <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
-                                Uptime
-                            </span>
-                        </div>
-                        <h3 className="text-sm font-medium text-gray-600">System Uptime</h3>
-                        <p className="text-2xl font-bold text-gray-900">{performanceData.uptime}%</p>
-                        <p className="text-xs text-gray-500 mt-2">Last 30 days</p>
-                    </div>
-
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="p-3 rounded-lg bg-orange-100">
-                                <AlertCircle size={20} className="text-orange-600" />
-                            </div>
-                            <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
-                                Errors
-                            </span>
-                        </div>
-                        <h3 className="text-sm font-medium text-gray-600">Error Rate</h3>
-                        <p className="text-2xl font-bold text-gray-900">{performanceData.errorRate}%</p>
-                        <p className="text-xs text-gray-500 mt-2">24h average</p>
-                    </div>
-                </div>
-            )}
-
-            {/* Key Performance Indicators */}
-            {analyticsData?.kpis && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <TrendingUp className="text-blue-600" size={24} />
-                            Key Performance Indicators
+                            <Database className="text-blue-600" size={24} />
+                            System Performance
                         </h2>
-                        <p className="text-gray-600">Essential metrics for system management and decision making</p>
-                    </div>
-                    <AdminKPICards kpis={analyticsData.kpis} />
-                </div>
-            )}
-            {analyticsData?.kpis && userStats && (
-                <div>
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <Users className="text-blue-600" size={24} />
-                            System Statistics
-                        </h2>
-                        <p className="text-gray-600">Key metrics and statistics for system overview</p>
+                        <p className="text-gray-600">Real-time system health and performance indicators</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <AdminStatsCard
-                            key="surveys"
-                            title="Total Surveys"
-                            value={analyticsData.kpis.totalSurveys}
-                            icon={<MdOutlinePoll size={24} />}
-                            color={adminStatColors[0]}
-                            trend={{
-                                value: analyticsData.kpis.surveyGrowthRate,
-                                isPositive: analyticsData.kpis.surveyGrowthRate >= 0
-                            }}
-                        />
-                        <AdminStatsCard
-                            key="users"
-                            title="Total Users"
-                            value={analyticsData.kpis.totalUsers}
-                            icon={<FiUsers size={24} />}
-                            color={adminStatColors[1]}
-                            trend={{
-                                value: analyticsData.kpis.userGrowthRate,
-                                isPositive: analyticsData.kpis.userGrowthRate >= 0
-                            }}
-                        />
-                        <AdminStatsCard
-                            key="active-users"
-                            title="Active Users"
-                            value={analyticsData.kpis.activeUsers}
-                            icon={<Activity size={24} />}
-                            color={adminStatColors[2]}
-                            trend={{
-                                value: Math.round((analyticsData.kpis.activeUsers / analyticsData.kpis.totalUsers) * 100),
-                                isPositive: true
-                            }}
-                        />
-                        <AdminStatsCard
-                            key="completion-rate"
-                            title="Completion Rate"
-                            value={`${analyticsData.kpis.completionRate}%`}
-                            icon={<BsCalendar3 size={24} />}
-                            color={adminStatColors[3]}
-                            trend={{
-                                value: analyticsData.kpis.completionRate,
-                                isPositive: analyticsData.kpis.completionRate >= 50
-                            }}
-                        />
+                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="p-3 rounded-lg bg-blue-100">
+                                    <Database size={20} className="text-blue-600" />
+                                </div>
+                                <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                                    System
+                                </span>
+                            </div>
+                            <h3 className="text-sm font-medium text-gray-600">Database Size</h3>
+                            <p className="text-2xl font-bold text-gray-900">{performanceData.databaseSize}</p>
+                            <p className="text-xs text-gray-500 mt-2">Total storage used</p>
+                        </div>
+
+                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="p-3 rounded-lg bg-green-100">
+                                    <Zap size={20} className="text-green-600" />
+                                </div>
+                                <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                                    Performance
+                                </span>
+                            </div>
+                            <h3 className="text-sm font-medium text-gray-600">Response Time</h3>
+                            <p className="text-2xl font-bold text-gray-900">{performanceData.responseTime}ms</p>
+                            <p className="text-xs text-gray-500 mt-2">Average API response</p>
+                        </div>
+
+                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="p-3 rounded-lg bg-purple-100">
+                                    <Activity size={20} className="text-purple-600" />
+                                </div>
+                                <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
+                                    Uptime
+                                </span>
+                            </div>
+                            <h3 className="text-sm font-medium text-gray-600">System Uptime</h3>
+                            <p className="text-2xl font-bold text-gray-900">{performanceData.uptime}%</p>
+                            <p className="text-xs text-gray-500 mt-2">Last 30 days</p>
+                        </div>
+
+                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="p-3 rounded-lg bg-orange-100">
+                                    <AlertCircle size={20} className="text-orange-600" />
+                                </div>
+                                <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
+                                    Errors
+                                </span>
+                            </div>
+                            <h3 className="text-sm font-medium text-gray-600">Error Rate</h3>
+                            <p className="text-2xl font-bold text-gray-900">{performanceData.errorRate}%</p>
+                            <p className="text-xs text-gray-500 mt-2">24h average</p>
+                        </div>
                     </div>
                 </div>
             )}
 
-            {/* System Analytics Charts */}
+            {/* Technical Analytics */}
             {analyticsData?.systemMetrics && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                             <RiBarChartLine className="text-purple-600" size={24} />
-                            System Analytics
+                            Technical Analytics
                         </h2>
-                        <p className="text-gray-600">Comprehensive analysis of user activity, surveys, and system performance</p>
+                        <p className="text-gray-600">Detailed system performance and usage trends</p>
                     </div>
                     <AdminCharts systemMetrics={analyticsData.systemMetrics} />
-                </div>
-            )}
-
-            {/* User Engagement Analytics */}
-            {analyticsData?.userEngagement && (
-                <div>
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <Users className="text-green-600" size={24} />
-                            User Engagement Analytics
-                        </h2>
-                        <p className="text-gray-600">Deep insights into user behavior, retention, and feature adoption</p>
-                    </div>
-                    <UserEngagementCharts userEngagement={analyticsData.userEngagement} />
-                </div>
-            )}
-
-            {/* User Statistics Overview */}
-            {userStats && (
-                <div>
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <Users className="text-green-600" size={24} />
-                            User Statistics Overview
-                        </h2>
-                        <p className="text-gray-600">Key metrics on user registrations, activity, and growth</p>
-                    </div>
-                    <Suspense fallback={
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {[...Array(4)].map((_, i) => (
-                                <div key={i} className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 animate-pulse">
-                                    <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
-                                    <div className="h-8 bg-gray-200 rounded w-16 mb-2"></div>
-                                    <div className="h-3 bg-gray-200 rounded w-32"></div>
-                                </div>
-                            ))}
-                        </div>
-                    }>
-                        <UserStatsOverview />
-                    </Suspense>
                 </div>
             )}
 
@@ -243,9 +190,9 @@ export default async function AdminDashboardPage() {
                 <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                         <RiSettings2Line className="text-orange-600" size={24} />
-                        Quick Actions
+                        Management Tools
                     </h2>
-                    <p className="text-gray-600">Common administrative tasks and management tools</p>
+                    <p className="text-gray-600">Administrative functions and management utilities</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Link
@@ -255,7 +202,7 @@ export default async function AdminDashboardPage() {
                         <Users className="text-blue-600" size={20} />
                         <div>
                             <h3 className="font-medium text-gray-900">User Management</h3>
-                            <p className="text-sm text-gray-600">View and manage users</p>
+                            <p className="text-sm text-gray-600">Manage system users</p>
                         </div>
                     </Link>
                     <Link
@@ -264,17 +211,17 @@ export default async function AdminDashboardPage() {
                     >
                         <MdOutlinePoll className="text-green-600" size={20} />
                         <div>
-                            <h3 className="font-medium text-gray-900">Survey Control</h3>
-                            <p className="text-sm text-gray-600">Manage survey settings</p>
+                            <h3 className="font-medium text-gray-900">Project Control</h3>
+                            <p className="text-sm text-gray-600">Manage projects</p>
                         </div>
                     </Link>
                     <Link
-                        href="/admin/analytics"
+                        href="/admin/dashboard/analytics"
                         className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200"
                     >
                         <RiBarChartLine className="text-purple-600" size={20} />
                         <div>
-                            <h3 className="font-medium text-gray-900">Analytics</h3>
+                            <h3 className="font-medium text-gray-900">Advanced Analytics</h3>
                             <p className="text-sm text-gray-600">Detailed reports</p>
                         </div>
                     </Link>
@@ -285,7 +232,7 @@ export default async function AdminDashboardPage() {
                         <RiSettings2Line className="text-orange-600" size={20} />
                         <div>
                             <h3 className="font-medium text-gray-900">System Settings</h3>
-                            <p className="text-sm text-gray-600">Configure system</p>
+                            <p className="text-sm text-gray-600">Configure platform</p>
                         </div>
                     </Link>
                 </div>
@@ -297,8 +244,8 @@ export default async function AdminDashboardPage() {
                     <div className="flex items-center gap-3">
                         <MdOutlinePoll className="text-purple-500 text-2xl" />
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-800">Survey Management</h2>
-                            <p className="text-gray-600">Monitor and manage survey submissions</p>
+                            <h2 className="text-2xl font-bold text-gray-800">Project Management</h2>
+                            <p className="text-gray-600">Monitor and manage project submissions</p>
                         </div>
                     </div>
                     <Link
