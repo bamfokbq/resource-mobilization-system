@@ -85,7 +85,6 @@ const surveyDataSchema = z.object({
   notes: z.string().optional(),
 })
 
-
 function calculateFormProgress(formData: Partial<FormData>): number {
   let completedSections = 0
   const totalSections = 6
@@ -345,7 +344,6 @@ export async function deleteDraft(): Promise<SurveySubmissionResult> {
 
   }
 }
-
 export async function getSurveyById(surveyId: string): Promise<{ success: boolean; data?: any; message: string }> {
   try {
     if (!ObjectId.isValid(surveyId)) {

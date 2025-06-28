@@ -38,13 +38,13 @@ export default async function AdminDashboardPage() {
                     <Suspense fallback={<div className="animate-pulse bg-gray-200 rounded-lg h-10 w-48"></div>}>
                         <DateRangeSelector />
                     </Suspense>
-                    <Link
+                    {/* <Link
                         href="/admin/dashboard/analytics"
                         className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 justify-center"
                     >
                         <BarChart3 size={20} />
                         Detailed Analytics
-                    </Link>
+                    </Link> */}
                     <Link
                         href="/admin/users"
                         className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 justify-center"

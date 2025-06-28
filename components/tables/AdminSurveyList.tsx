@@ -4,6 +4,14 @@ import { getAllSurveys } from '@/actions/surveyActions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
+import {
     ColumnDef,
     flexRender,
     getCoreRowModel,
@@ -71,6 +79,7 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
     const [isLoading, setIsLoading] = useState(!initialData);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [error, setError] = useState<string | null>(
         initialData && !initialData.success ? initialData.message : null
     );
@@ -104,6 +113,11 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
 
         fetchSurveys();
     }, [initialData]);
+
+    const handleViewSurvey = (survey: SurveyData) => {
+        setSelectedProject(survey);
+        setIsSheetOpen(true);
+    };
 
     const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
@@ -286,7 +300,7 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => router.push(`/survey-data/overview?id=${row.original._id}`)}
+                        onClick={() => handleViewSurvey(row.original)}
                         className="hover:bg-blue-50 hover:text-blue-600 border-blue-200"
                     >
                         <FaEye className="h-4 w-4 mr-1" />
@@ -454,6 +468,218 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                     </>
                 )}
             </div>
+
+            {/* Survey Details Sheet */}
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                <SheetContent className="w-[600px] sm:max-w-[600px] overflow-y-auto">
+                    <SheetHeader>
+                        <SheetTitle className="text-xl font-bold text-gray-900">
+                            Survey Details
+                        </SheetTitle>
+                        <SheetDescription>
+                            View comprehensive information about this survey submission
+                        </SheetDescription>
+                    </SheetHeader>
+
+                    {selectedProject && (
+                        <div className="mt-6 space-y-6">
+                            {/* Organisation Information */}
+                            <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <FaBuilding className="h-5 w-5 text-blue-600" />
+                                    <h3 className="text-lg font-semibold text-blue-900">Organisation Information</h3>
+                                </div>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <div>
+                                        <label className="text-sm font-medium text-blue-700">Organisation Name</label>
+                                        <p className="text-gray-800 font-medium">
+                                            {selectedProject.organisationInfo?.organisationName || 'N/A'}
+                                        </p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-sm font-medium text-blue-700">Region</label>
+                                            <p className="text-gray-800">
+                                                {selectedProject.organisationInfo?.region || 'N/A'}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-blue-700">Sector</label>
+                                            <p className="text-gray-800">
+                                                {selectedProject.organisationInfo?.sector || 'N/A'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-blue-700">Email</label>
+                                        <p className="text-gray-800">
+                                            {selectedProject.organisationInfo?.email || 'N/A'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Project Information */}
+                            <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <FaProjectDiagram className="h-5 w-5 text-purple-600" />
+                                    <h3 className="text-lg font-semibold text-purple-900">Project Information</h3>
+                                </div>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <div>
+                                        <label className="text-sm font-medium text-purple-700">Project Name</label>
+                                        <p className="text-gray-800 font-medium">
+                                            {selectedProject.projectInfo?.projectName || 'Unnamed Project'}
+                                        </p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-sm font-medium text-purple-700">Start Date</label>
+                                            <p className="text-gray-800">
+                                                {selectedProject.projectInfo?.startDate ?
+                                                    formatDate(selectedProject.projectInfo.startDate) : 'N/A'}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-purple-700">End Date</label>
+                                            <p className="text-gray-800">
+                                                {selectedProject.projectInfo?.endDate ?
+                                                    formatDate(selectedProject.projectInfo.endDate) : 'N/A'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-purple-700">Regions</label>
+                                        <div className="flex flex-wrap gap-1 mt-1">
+                                            {selectedProject.projectInfo?.regions?.length ?
+                                                selectedProject.projectInfo.regions.map((region, index) => (
+                                                    <Badge key={index} className="bg-purple-100 text-purple-800 text-xs">
+                                                        {region}
+                                                    </Badge>
+                                                )) :
+                                                <span className="text-gray-800">N/A</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-purple-700">Targeted NCDs</label>
+                                        <div className="flex flex-wrap gap-1 mt-1">
+                                            {selectedProject.projectInfo?.targetedNCDs?.length ?
+                                                selectedProject.projectInfo.targetedNCDs.map((ncd, index) => (
+                                                    <Badge key={index} className="bg-purple-100 text-purple-800 text-xs">
+                                                        {ncd}
+                                                    </Badge>
+                                                )) :
+                                                <span className="text-gray-800">N/A</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Creator Information */}
+                            <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <FaUser className="h-5 w-5 text-green-600" />
+                                    <h3 className="text-lg font-semibold text-green-900">Created By</h3>
+                                </div>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <div>
+                                        <label className="text-sm font-medium text-green-700">Name</label>
+                                        <p className="text-gray-800 font-medium">
+                                            {selectedProject.createdBy?.name || 'Unknown User'}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-green-700">Email</label>
+                                        <p className="text-gray-800">
+                                            {selectedProject.createdBy?.email || 'No email'}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-green-700">User ID</label>
+                                        <p className="text-gray-800 text-sm font-mono bg-white px-2 py-1 rounded">
+                                            {selectedProject.createdBy?.userId || 'N/A'}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-green-700">Created On</label>
+                                        <p className="text-gray-800">
+                                            {selectedProject.createdBy?.timestamp ?
+                                                formatDate(selectedProject.createdBy.timestamp) : 'N/A'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Submission Details */}
+                            <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg p-4">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <FaCalendarAlt className="h-5 w-5 text-indigo-600" />
+                                    <h3 className="text-lg font-semibold text-indigo-900">Submission Details</h3>
+                                </div>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-sm font-medium text-indigo-700">Survey ID</label>
+                                            <p className="text-gray-800 text-sm font-mono bg-white px-2 py-1 rounded">
+                                                {selectedProject._id}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-indigo-700">Version</label>
+                                            <p className="text-gray-800">
+                                                {selectedProject.version || 'N/A'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-sm font-medium text-indigo-700">Submitted</label>
+                                            <p className="text-gray-800">
+                                                {formatDate(selectedProject.submissionDate)}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-indigo-700">Last Updated</label>
+                                            <p className="text-gray-800">
+                                                {formatDate(selectedProject.lastUpdated)}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-medium text-indigo-700">Status</label>
+                                        <div className="mt-1">
+                                            <Badge className={`${getStatusBadge(selectedProject.status || 'inactive')} font-medium`}>
+                                                {(selectedProject.status || 'inactive').charAt(0).toUpperCase() +
+                                                    (selectedProject.status || 'inactive').slice(1)}
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-3 pt-4 border-t">
+                                <Button
+                                    onClick={() => router.push(`/survey-data/overview?id=${selectedProject._id}`)}
+                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                >
+                                    <FaEye className="h-4 w-4 mr-2" />
+                                    View Full Details
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setIsSheetOpen(false)}
+                                    className="border-gray-300 hover:bg-gray-50"
+                                >
+                                    Close
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </SheetContent>
+            </Sheet>
         </div>
     );
 }
