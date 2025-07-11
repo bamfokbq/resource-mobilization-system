@@ -1,4 +1,4 @@
-import { getAllSurveys, getPredictiveAnalytics, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
+import { getUserSurveys, getPredictiveAnalytics, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
 import { auth } from '@/auth';
 import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
 import RegionalInsights from '@/components/dashboard/RegionalInsights';
@@ -85,19 +85,18 @@ export default async function UserDashboardPage() {
     );
   }
 
-  // Fetch all surveys and user draft
-  const surveysResult = await getAllSurveys();
+  // Fetch user's surveys and user draft
+  const surveysResult = await getUserSurveys(session.user.id);
   const draftResult = await getUserDraft();
 
   // Handle errors gracefully
   if (!surveysResult.success) {
     console.error('Failed to fetch surveys:', surveysResult.message);
   }
-  // Filter surveys for the current user and serialize for client components
+  
+  // Use the user's surveys directly (already filtered by userId in the database)
   const userSurveys = surveysResult.success && surveysResult.data
-    ? surveysResult.data
-      .filter(survey => survey.createdBy?.userId === session?.user?.id)
-      .map(survey => ({
+    ? surveysResult.data.map(survey => ({
         _id: survey._id?.toString(),
         projectInfo: survey.projectInfo ? {
           projectName: survey.projectInfo.projectName,
@@ -128,12 +127,12 @@ export default async function UserDashboardPage() {
     : [];
   // Calculate statistics
   const totalSurveys = userSurveys.length;
-  const completedSurveys = userSurveys.filter(survey => survey.status === 'submitted').length;
+  const completedSurveys = userSurveys.filter((survey: any) => survey.status === 'submitted').length;
   const inProgressSurveys = draftResult.success ? 1 : 0; // User can only have one draft at a time  // Fetch analytics data from database
   const [analyticsResult, userStatsResult, predictiveResult] = await Promise.all([
-    getSurveyAnalytics(),
+    getSurveyAnalytics(session.user.id),
     getUserSurveyStatistics(session.user.id),
-    getPredictiveAnalytics()
+    getPredictiveAnalytics(session.user.id)
   ]);
 
   // Use real data if available, fallback to basic calculations

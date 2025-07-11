@@ -1,6 +1,5 @@
 'use client';
 
-import { getAllSurveys } from '@/actions/surveyActions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -66,41 +65,26 @@ interface SurveyHistoryListProps {
 export default function SurveyHistoryList({ initialData }: SurveyHistoryListProps) {
     const router = useRouter();
     const [data, setData] = useState<SurveyData[]>(initialData?.data || []);
-    const [isLoading, setIsLoading] = useState(!initialData);
+    const [isLoading, setIsLoading] = useState(false); // Set to false since we rely on server data
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
     const [error, setError] = useState<string | null>(
         initialData && !initialData.success ? initialData.message : null
     );
 
-    console.log(selectedProject); useEffect(() => {
-        // Only fetch data if we don't have initial data from server
+    console.log(selectedProject);
+
+    // Update data when initialData changes
+    useEffect(() => {
         if (initialData) {
-            return; // Data is already set in state initialization
-        }
-
-        const fetchSurveys = async () => {
-            try {
-                setIsLoading(true);
-                const result = await getAllSurveys();
-
-                if (result.success && result.data) {
-                    setData(result.data);
-                    setError(null);
-                } else {
-                    setError(result.message || 'Failed to load surveys');
-                    setData([]);
-                }
-            } catch (err) {
-                console.error('Error fetching surveys:', err);
-                setError('An unexpected error occurred while loading surveys');
+            if (initialData.success && initialData.data) {
+                setData(initialData.data);
+                setError(null);
+            } else {
+                setError(initialData.message || 'Failed to load surveys');
                 setData([]);
-            } finally {
-                setIsLoading(false);
             }
-        };
-
-        fetchSurveys();
+        }
     }, [initialData]); const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
             'submitted': 'bg-green-100 text-green-800',

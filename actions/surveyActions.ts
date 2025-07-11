@@ -432,6 +432,42 @@ export async function getAllSurveys(): Promise<{ success: boolean; data?: any[];
   }
 }
 
+export async function getUserSurveys(userId: string): Promise<{ success: boolean; data?: any[]; message: string; count?: number }> {
+  try {
+    const db = await getDb()
+    const surveysCollection = db.collection('surveys')
+    
+    const surveys = await surveysCollection.find({ 'createdBy.userId': userId }).sort({ submissionDate: -1 }).toArray()
+    
+    // Serialize the data to remove ObjectId and Date serialization issues
+    const serializedSurveys = surveys.map(survey => ({
+      ...survey,
+      _id: survey._id.toString(), // Convert ObjectId to string
+      submissionDate: survey.submissionDate?.toISOString() || new Date().toISOString(),
+      lastUpdated: survey.lastUpdated?.toISOString() || new Date().toISOString(),
+      createdBy: {
+        ...survey.createdBy,
+        timestamp: survey.createdBy?.timestamp?.toISOString() || new Date().toISOString()
+      }
+    }))
+
+    return {
+      success: true,
+      data: serializedSurveys,
+      count: serializedSurveys.length,
+      message: 'User surveys retrieved successfully'
+    }
+    
+  } catch (error) {
+    console.error('Error retrieving user surveys:', error)
+    
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'An unexpected error occurred while retrieving user surveys'
+    }
+  }
+}
+
 export async function updateSurveyData(surveyId: string, updateData: Partial<FormData>): Promise<SurveySubmissionResult> {
   try {
     if (!ObjectId.isValid(surveyId)) {
@@ -520,7 +556,7 @@ export async function deleteSurvey(surveyId: string): Promise<{ success: boolean
 }
 
 // Analytics functions for dashboard
-export async function getSurveyAnalytics(): Promise<{
+export async function getSurveyAnalytics(userId?: string): Promise<{
   success: boolean;
   data?: {
     surveyMetrics: Array<{ month: string; submitted: number; draft: number; total: number }>;
@@ -545,10 +581,14 @@ export async function getSurveyAnalytics(): Promise<{
     const surveysCollection = db.collection('surveys');
     const draftsCollection = db.collection('survey_drafts');
 
-    // Get all surveys and drafts
+    // Build filter based on userId if provided
+    const surveyFilter = userId ? { 'createdBy.userId': userId } : {};
+    const draftFilter = userId ? { 'createdBy.userId': userId } : {};
+
+    // Get surveys and drafts filtered by user if userId is provided
     const [allSurveys, allDrafts] = await Promise.all([
-      surveysCollection.find({}).toArray(),
-      draftsCollection.find({}).toArray()
+      surveysCollection.find(surveyFilter).toArray(),
+      draftsCollection.find(draftFilter).toArray()
     ]);
 
     // Calculate survey metrics by month
@@ -825,7 +865,7 @@ export async function getUserSurveyStatistics(userId: string): Promise<{
 }
 
 // Predictive analytics function
-export async function getPredictiveAnalytics(): Promise<{
+export async function getPredictiveAnalytics(userId?: string): Promise<{
   success: boolean;
   data?: {
     predictionData: Array<{
@@ -847,10 +887,14 @@ export async function getPredictiveAnalytics(): Promise<{
     const surveysCollection = db.collection('surveys');
     const draftsCollection = db.collection('survey_drafts');
 
-    // Get recent survey data for predictions
+    // Build filter based on userId if provided
+    const surveyFilter = userId ? { 'createdBy.userId': userId } : {};
+    const draftFilter = userId ? { 'createdBy.userId': userId } : {};
+
+    // Get recent survey data for predictions filtered by user if userId is provided
     const [surveys, drafts] = await Promise.all([
-      surveysCollection.find({}).sort({ submissionDate: -1 }).limit(100).toArray(),
-      draftsCollection.find({}).toArray()
+      surveysCollection.find(surveyFilter).sort({ submissionDate: -1 }).limit(100).toArray(),
+      draftsCollection.find(draftFilter).toArray()
     ]);
 
     // Calculate basic predictive metrics
