@@ -63,7 +63,8 @@ export default async function SurveysPage() {
               <DateRangeSelector />
             </Suspense>
             <RefreshButton />
-          </div></div>
+          </div>
+        </div>
       </div> 
       <Suspense fallback={<SurveyTableSkeleton />}>
         <SurveyHistoryList initialData={surveysResult} />

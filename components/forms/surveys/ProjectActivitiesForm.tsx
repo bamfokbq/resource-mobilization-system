@@ -339,7 +339,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
             </Button>
             <Button
               type="submit"
-              className="flex items-center gap-2"
+              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
             >
               Next
               <ChevronRight className="h-4 w-4" />
