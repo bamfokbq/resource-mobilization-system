@@ -1,11 +1,10 @@
 'use client'
 
-import * as React from "react"
-import { addDays, subDays, subMonths, subYears, format } from "date-fns"
-import { DateRange } from "react-day-picker"
+import { format, subDays, subMonths, subYears } from "date-fns"
 import { useRouter, useSearchParams } from "next/navigation"
+import * as React from "react"
+import { DateRange } from "react-day-picker"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -20,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 import { FaCalendar } from 'react-icons/fa6'
 
 export function DateRangeSelector({
@@ -45,8 +45,8 @@ export function DateRangeSelector({
   }
 
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: subDays(new Date(), 30), // Last 30 days
+    to: new Date(), // Today
   })
 
   // Handle date selection and update route
