@@ -407,7 +407,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-lg border-l-4 border-emerald-400">
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-lg border border-emerald-300">
                 <p className="text-gray-700 leading-relaxed">{formData.projectInfo.projectGoal}</p>
               </div>
             </CardContent>
@@ -432,7 +432,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               <ScrollArea className="max-h-96">
                 <div className="space-y-4">
                   {formData.activities.map((activity, index) => (
-                    <div key={index} className="relative p-4 bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg border-l-4 border-orange-400 hover:shadow-md transition-all duration-200">
+                    <div key={index} className="relative p-4 bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg border border-orange-300 hover:shadow-md transition-all duration-200">
                       <div className="absolute top-3 right-3">
                         <Badge variant="secondary" className="bg-orange-100 text-orange-700">
                           Activity {index + 1}
@@ -476,7 +476,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               <ScrollArea className="max-h-96">
                 <div className="space-y-4">
                   {formData.partners.map((partner, index) => (
-                    <div key={index} className="p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg border-l-4 border-cyan-400 hover:shadow-md transition-all duration-200">
+                    <div key={index} className="p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg border border-cyan-300 hover:shadow-md transition-all duration-200">
                       <div className="flex items-start justify-between mb-3">
                         <h4 className="font-semibold text-gray-800">{partner.organisationName}</h4>
                         <Badge variant="outline" className="bg-cyan-100 text-cyan-700 border-cyan-200">
@@ -518,7 +518,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
           <CardContent className="p-6">
             <div className="space-y-6">
               {formData.risks && (
-                <div className="p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border-l-4 border-red-400">
+                <div className="p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border border-red-300">
                   <div className="flex items-center space-x-2 mb-3">
                     <Shield className="h-5 w-5 text-red-600" />
                     <h4 className="font-semibold text-gray-800">Risks & Mitigation</h4>
@@ -528,7 +528,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               )}
 
               {formData.sustainability && (
-                <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-l-4 border-green-400">
+                <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-300">
                   <div className="flex items-center space-x-2 mb-3">
                     <Target className="h-5 w-5 text-green-600" />
                     <h4 className="font-semibold text-gray-800">Sustainability Plan</h4>
@@ -538,7 +538,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               )}
 
               {formData.evaluation && (
-                <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border-l-4 border-blue-400">
+                <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-300">
                   <div className="flex items-center space-x-2 mb-3">
                     <BarChart3 className="h-5 w-5 text-blue-600" />
                     <h4 className="font-semibold text-gray-800">Monitoring & Evaluation</h4>
@@ -548,7 +548,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
               )}
 
               {formData.notes && (
-                <div className="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg border-l-4 border-amber-400">
+                <div className="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg border border-amber-300">
                   <div className="flex items-center space-x-2 mb-3">
                     <FileText className="h-5 w-5 text-amber-600" />
                     <h4 className="font-semibold text-gray-800">Additional Notes</h4>
