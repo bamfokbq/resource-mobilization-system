@@ -35,48 +35,48 @@ export default async function AdminDashboardPage() {
     const recentActivity = recentActivityResult.success ? recentActivityResult.data : []
 
     return (
-        <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
+        <div className="p-4 md:p-6 space-y-6 md:space-y-8 bg-gray-50 min-h-screen overflow-x-hidden">
             {/* Enhanced Header with Real-time Status */}
-            <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="bg-white rounded-xl p-4 md:p-6 shadow-lg">
                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
-                    <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             Management Dashboard
                         </h1>
-                        <p className="text-gray-600 mt-2">Executive insights and comprehensive system analytics</p>
+                        <p className="text-gray-600 mt-2 text-sm md:text-base">Executive insights and comprehensive system analytics</p>
                         {dashboardStats && (
-                            <div className="flex items-center gap-4 mt-3">
+                            <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-3">
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap">
                                         {dashboardStats.totalSurveys} Total Surveys
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap">
                                         {dashboardStats.totalUsers} Active Users
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                                    <span className="text-sm text-gray-600">
+                                    <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap">
                                         {dashboardStats.completionRate}% Success Rate
                                     </span>
                                 </div>
                             </div>
                         )}
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <Suspense fallback={<div className="animate-pulse bg-gray-200 rounded-lg h-10 w-48"></div>}>
+                    <div className="flex flex-col sm:flex-row gap-2 md:gap-4 flex-shrink-0">
+                        <Suspense fallback={<div className="animate-pulse bg-gray-200 rounded-lg h-10 w-32 md:w-48"></div>}>
                             <DateRangeSelector />
                         </Suspense>
                         <Link
                             href="/admin/users"
-                            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 justify-center"
+                            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 justify-center text-sm md:text-base"
                         >
-                            <RiUserAddLine size={20} />
-                            Manage Users
+                            <RiUserAddLine size={16} className="md:w-5 md:h-5" />
+                            <span className="whitespace-nowrap">Manage Users</span>
                         </Link>
                     </div>
                 </div>
@@ -143,23 +143,23 @@ export default async function AdminDashboardPage() {
 
             {/* Regional & Sector Insights */}
             {dashboardStats && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="bg-white rounded-xl p-6 shadow-lg">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div className="bg-white rounded-xl p-6 shadow-lg overflow-hidden">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Regions</h3>
                         <div className="space-y-3">
                             {dashboardStats.topRegions.map((region, index) => (
-                                <div key={region.region} className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <div key={region.region} className="flex items-center justify-between min-w-0">
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                             <span className="text-sm font-bold text-blue-600">#{index + 1}</span>
                                         </div>
-                                        <span className="font-medium text-gray-900">{region.region}</span>
+                                        <span className="font-medium text-gray-900 truncate">{region.region}</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 flex-shrink-0">
                                         <div className="w-16 bg-gray-200 rounded-full h-2">
                                             <div
                                                 className="bg-blue-600 h-2 rounded-full"
-                                                style={{ width: `${(region.count / dashboardStats.totalSurveys) * 100}%` }}
+                                                style={{ width: `${Math.min((region.count / dashboardStats.totalSurveys) * 100, 100)}%` }}
                                             ></div>
                                         </div>
                                         <span className="text-sm font-semibold text-gray-600">{region.count}</span>
@@ -169,22 +169,22 @@ export default async function AdminDashboardPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="bg-white rounded-xl p-6 shadow-lg overflow-hidden">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Sectors</h3>
                         <div className="space-y-3">
                             {dashboardStats.topSectors.map((sector, index) => (
-                                <div key={sector.sector} className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                <div key={sector.sector} className="flex items-center justify-between min-w-0">
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                             <span className="text-sm font-bold text-green-600">#{index + 1}</span>
                                         </div>
-                                        <span className="font-medium text-gray-900">{sector.sector}</span>
+                                        <span className="font-medium text-gray-900 truncate">{sector.sector}</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 flex-shrink-0">
                                         <div className="w-16 bg-gray-200 rounded-full h-2">
                                             <div
                                                 className="bg-green-600 h-2 rounded-full"
-                                                style={{ width: `${(sector.count / dashboardStats.totalSurveys) * 100}%` }}
+                                                style={{ width: `${Math.min((sector.count / dashboardStats.totalSurveys) * 100, 100)}%` }}
                                             ></div>
                                         </div>
                                         <span className="text-sm font-semibold text-gray-600">{sector.count}</span>
@@ -196,15 +196,18 @@ export default async function AdminDashboardPage() {
                 </div>
             )}
 
+            {/* Recent Survey Activity */}
+            <RecentSurveyActivity activities={recentActivity || []} />
+
             {/* Monthly Trends Chart */}
             {dashboardStats?.monthlyTrends && (
-                <div className="bg-white rounded-xl p-6 shadow-lg">
+                <div className="bg-white rounded-xl p-6 shadow-lg overflow-x-auto">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">6-Month Trends</h3>
-                    <div className="grid grid-cols-6 gap-4">
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-4 min-w-[300px]">
                         {dashboardStats.monthlyTrends.map((month, index) => (
-                            <div key={index} className="text-center">
+                            <div key={index} className="text-center min-w-0">
                                 <div className="mb-2">
-                                    <div className="w-full bg-gray-200 rounded-full h-24 flex flex-col justify-end relative">
+                                    <div className="w-full bg-gray-200 rounded-full h-16 sm:h-24 flex flex-col justify-end relative">
                                         <div
                                             className="bg-blue-600 rounded-b-full"
                                             style={{
@@ -219,7 +222,7 @@ export default async function AdminDashboardPage() {
                                         ></div>
                                     </div>
                                 </div>
-                                <div className="text-xs text-gray-600 font-medium">{month.month}</div>
+                                <div className="text-xs text-gray-600 font-medium truncate">{month.month}</div>
                                 <div className="text-xs text-blue-600">{month.surveys} surveys</div>
                                 <div className="text-xs text-yellow-600">{month.drafts} drafts</div>
                             </div>
@@ -357,10 +360,6 @@ export default async function AdminDashboardPage() {
                     <AdminCharts systemMetrics={analyticsData.systemMetrics} />
                 </div>
             )}
-
-
-            {/* Recent Survey Activity */}
-            <RecentSurveyActivity activities={recentActivity || []} />
 
             {/* Survey Management Table */}
             <div className="bg-white rounded-xl p-6 shadow-lg">

@@ -5,8 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaUser } from 'react-icons/fa'
 
 interface RecentActivityProps {
-  activities: Array<{
-    _id: string;
+    activities: Array<{
     organisationName: string;
     projectName: string;
     region: string;
@@ -66,14 +65,14 @@ const RecentSurveyActivity: React.FC<RecentActivityProps> = ({ activities }) => 
           </div>
         </div>
         <Badge variant="outline" className="text-xs">
-          Last {activities.length} activities
+                  Last {activities.length} activities
         </Badge>
       </div>
       
       <div className="space-y-4">
-        {activities.map((activity, index) => (
+              {activities.map((activity, index) => (
           <div 
-            key={activity._id} 
+                      key={index} 
             className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
           >
             <div className="flex-1">
