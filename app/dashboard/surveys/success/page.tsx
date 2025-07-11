@@ -3,7 +3,8 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { toast } from 'sonner';
+import { useFormStore } from '@/store/useFormStore';
+import { Document, Page, StyleSheet, Text, View, pdf } from '@react-pdf/renderer';
 import {
   ArrowRight,
   Award,
@@ -17,10 +18,442 @@ import {
   Share2
 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
+import { toast } from 'sonner';
+
+// PDF Styles
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'column',
+    backgroundColor: '#ffffff',
+    padding: 40,
+    fontSize: 12,
+    lineHeight: 1.6,
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: 30,
+    paddingBottom: 20,
+    borderBottom: 2,
+    borderBottomColor: '#2563eb',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: 5,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#6b7280',
+    marginBottom: 10,
+  },
+  section: {
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#f8fafc',
+    borderRadius: 8,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: 10,
+    paddingBottom: 5,
+    borderBottom: 1,
+    borderBottomColor: '#e5e7eb',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  label: {
+    fontSize: 12,
+    color: '#6b7280',
+    fontWeight: 'bold',
+  },
+  value: {
+    fontSize: 12,
+    color: '#1f2937',
+  },
+  statusBadge: {
+    backgroundColor: '#dcfce7',
+    color: '#166534',
+    padding: 4,
+    borderRadius: 4,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  bulletPoint: {
+    marginBottom: 6,
+    paddingLeft: 10,
+  },
+  stepContainer: {
+    flexDirection: 'row',
+    marginBottom: 8,
+  },
+  stepNumber: {
+    width: 20,
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#2563eb',
+  },
+  stepText: {
+    flex: 1,
+    fontSize: 12,
+    color: '#4b5563',
+  },
+  footer: {
+    marginTop: 30,
+    paddingTop: 20,
+    borderTop: 1,
+    borderTopColor: '#e5e7eb',
+    textAlign: 'center',
+  },
+  footerText: {
+    fontSize: 10,
+    color: '#6b7280',
+    marginBottom: 5,
+  },
+  successIcon: {
+    fontSize: 20,
+    color: '#10b981',
+    marginBottom: 10,
+  }
+});
+
+// PDF Receipt Component
+const ReceiptPDF = ({ receiptData, formData }: { receiptData: any; formData: any }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.successIcon}>✓</Text>
+        <Text style={styles.title}>NCD NAVIGATOR PLATFORM</Text>
+        <Text style={styles.subtitle}>Survey Submission Receipt</Text>
+      </View>
+
+      {/* Submission Details */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Submission Details</Text>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Survey ID:</Text>
+          <Text style={styles.value}>{receiptData.surveyId}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Confirmation Number:</Text>
+          <Text style={styles.value}>{receiptData.confirmationNumber}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Submission Date:</Text>
+          <Text style={styles.value}>{receiptData.submissionDate}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Status:</Text>
+          <Text style={styles.statusBadge}>{receiptData.status}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Platform:</Text>
+          <Text style={styles.value}>{receiptData.platform}</Text>
+        </View>
+      </View>
+
+      {/* Organization Information */}
+      {formData.organisationInfo && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Organization Information</Text>
+
+          {formData.organisationInfo.organisationName && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Organization Name:</Text>
+              <Text style={styles.value}>{formData.organisationInfo.organisationName}</Text>
+            </View>
+          )}
+
+          {formData.organisationInfo.region && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Region:</Text>
+              <Text style={styles.value}>{formData.organisationInfo.region}</Text>
+            </View>
+          )}
+
+          {formData.organisationInfo.sector && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Sector:</Text>
+              <Text style={styles.value}>{formData.organisationInfo.sector}</Text>
+            </View>
+          )}
+
+          {formData.organisationInfo.hqPhoneNumber && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Phone (HQ):</Text>
+              <Text style={styles.value}>{formData.organisationInfo.hqPhoneNumber}</Text>
+            </View>
+          )}
+
+          {formData.organisationInfo.email && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Email:</Text>
+              <Text style={styles.value}>{formData.organisationInfo.email}</Text>
+            </View>
+          )}
+
+          {formData.organisationInfo.website && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Website:</Text>
+              <Text style={styles.value}>{formData.organisationInfo.website}</Text>
+            </View>
+          )}
+
+          {formData.organisationInfo.ghanaPostGPS && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Ghana Post GPS:</Text>
+              <Text style={styles.value}>{formData.organisationInfo.ghanaPostGPS}</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Project Information */}
+      {formData.projectInfo && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Project Information</Text>
+
+          {formData.projectInfo.projectName && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Project Name:</Text>
+              <Text style={styles.value}>{formData.projectInfo.projectName}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.totalProjects && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Total Projects:</Text>
+              <Text style={styles.value}>{formData.projectInfo.totalProjects}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.startDate && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Start Date:</Text>
+              <Text style={styles.value}>{formData.projectInfo.startDate}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.endDate && (
+            <View style={styles.row}>
+              <Text style={styles.label}>End Date:</Text>
+              <Text style={styles.value}>{formData.projectInfo.endDate}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.fundingSource && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Funding Source:</Text>
+              <Text style={styles.value}>{formData.projectInfo.fundingSource}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.estimatedBudget && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Budget:</Text>
+              <Text style={styles.value}>GHS {formData.projectInfo.estimatedBudget}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.regions && formData.projectInfo.regions.length > 0 && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Regions:</Text>
+              <Text style={styles.value}>{formData.projectInfo.regions.join(', ')}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.targetedNCDs && formData.projectInfo.targetedNCDs.length > 0 && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Targeted NCDs:</Text>
+              <Text style={styles.value}>{formData.projectInfo.targetedNCDs.join(', ')}</Text>
+            </View>
+          )}
+
+          {formData.projectInfo.projectGoal && (
+            <View style={{ marginTop: 10 }}>
+              <Text style={styles.label}>Project Goal:</Text>
+              <Text style={[styles.value, { marginTop: 5, lineHeight: 1.4 }]}>{formData.projectInfo.projectGoal}</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Project Activities */}
+      {formData.activities && formData.activities.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Project Activities ({formData.activities.length})</Text>
+          {formData.activities.map((activity: any, index: number) => (
+            <View key={index} style={{ marginBottom: 15, paddingLeft: 10, borderLeft: 2, borderLeftColor: '#f97316' }}>
+              <Text style={[styles.value, { fontWeight: 'bold', marginBottom: 3 }]}>
+                {index + 1}. {activity.name}
+              </Text>
+              <Text style={[styles.stepText, { marginBottom: 3 }]}>{activity.description}</Text>
+              <View style={styles.row}>
+                <Text style={styles.label}>Timeline:</Text>
+                <Text style={styles.value}>{activity.timeline}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Budget:</Text>
+                <Text style={styles.value}>${activity.budget}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {/* Project Partners */}
+      {formData.partners && formData.partners.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Project Partners ({formData.partners.length})</Text>
+          {formData.partners.map((partner: any, index: number) => (
+            <View key={index} style={{ marginBottom: 15, paddingLeft: 10, borderLeft: 2, borderLeftColor: '#06b6d4' }}>
+              <Text style={[styles.value, { fontWeight: 'bold', marginBottom: 3 }]}>
+                {index + 1}. {partner.organisationName}
+              </Text>
+              <View style={styles.row}>
+                <Text style={styles.label}>Role:</Text>
+                <Text style={styles.value}>{partner.role}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Contact Person:</Text>
+                <Text style={styles.value}>{partner.contactPerson}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.label}>Email:</Text>
+                <Text style={styles.value}>{partner.email}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {/* Additional Information */}
+      {(formData.risks || formData.sustainability || formData.evaluation || formData.notes) && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Additional Information</Text>
+
+          {formData.risks && (
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.label, { marginBottom: 3 }]}>Risks & Mitigation:</Text>
+              <Text style={[styles.value, { lineHeight: 1.4 }]}>{formData.risks}</Text>
+            </View>
+          )}
+
+          {formData.sustainability && (
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.label, { marginBottom: 3 }]}>Sustainability Plan:</Text>
+              <Text style={[styles.value, { lineHeight: 1.4 }]}>{formData.sustainability}</Text>
+            </View>
+          )}
+
+          {formData.evaluation && (
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.label, { marginBottom: 3 }]}>Monitoring & Evaluation:</Text>
+              <Text style={[styles.value, { lineHeight: 1.4 }]}>{formData.evaluation}</Text>
+            </View>
+          )}
+
+          {formData.notes && (
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.label, { marginBottom: 3 }]}>Additional Notes:</Text>
+              <Text style={[styles.value, { lineHeight: 1.4 }]}>{formData.notes}</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Submission Summary */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Submission Summary</Text>
+        <View style={styles.bulletPoint}>
+          <Text style={styles.value}>• Your survey has been successfully submitted</Text>
+        </View>
+        <View style={styles.bulletPoint}>
+          <Text style={styles.value}>• Data will be reviewed within 2-3 business days</Text>
+        </View>
+        <View style={styles.bulletPoint}>
+          <Text style={styles.value}>• Approved data will be integrated into our database</Text>
+        </View>
+        <View style={styles.bulletPoint}>
+          <Text style={styles.value}>• Your contribution will help improve healthcare initiatives</Text>
+        </View>
+      </View>
+
+      {/* Next Steps */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>What Happens Next?</Text>
+
+        <View style={styles.stepContainer}>
+          <Text style={styles.stepNumber}>1.</Text>
+          <View>
+            <Text style={styles.value}>Review Process</Text>
+            <Text style={styles.stepText}>Expert team validation for completeness and accuracy</Text>
+          </View>
+        </View>
+
+        <View style={styles.stepContainer}>
+          <Text style={styles.stepNumber}>2.</Text>
+          <View>
+            <Text style={styles.value}>Data Integration</Text>
+            <Text style={styles.stepText}>Database incorporation and analytics enhancement</Text>
+          </View>
+        </View>
+
+        <View style={styles.stepContainer}>
+          <Text style={styles.stepNumber}>3.</Text>
+          <View>
+            <Text style={styles.value}>Public Availability</Text>
+            <Text style={styles.stepText}>Dataset publication and policy impact</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Support Information */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Support Information</Text>
+        <View style={styles.row}>
+          <Text style={styles.label}>Website:</Text>
+          <Text style={styles.value}>{receiptData.websiteUrl}/contact-us</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.value}>support@ncdnavigator.com</Text>
+        </View>
+      </View>
+
+      {/* Footer */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          Thank you for contributing to healthcare improvement in Ghana!
+        </Text>
+        <Text style={styles.footerText}>
+          Generated on: {receiptData.generatedDate}
+        </Text>
+        <Text style={styles.footerText}>
+          This is an automatically generated receipt. Please save it for your records.
+        </Text>
+      </View>
+    </Page>
+  </Document>
+);
 
 export default function SurveySuccessPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { formData } = useFormStore();
+  const [isDownloadingReceipt, setIsDownloadingReceipt] = React.useState(false);
   
   const surveyId = searchParams.get('surveyId');
   const submissionDate = new Date().toLocaleDateString('en-US', {
@@ -87,7 +520,9 @@ export default function SurveySuccessPage() {
     }
   };
 
-  const handleDownloadReceipt = () => {
+  const handleDownloadReceipt = async () => {
+    setIsDownloadingReceipt(true);
+
     const receiptData = {
       surveyId: surveyId || 'SRV-' + Date.now().toString().slice(-6),
       submissionDate: submissionDate,
@@ -95,64 +530,34 @@ export default function SurveySuccessPage() {
       platform: 'NCD Navigator',
       submittedBy: 'Survey Contributor',
       confirmationNumber: 'CONF-' + Date.now().toString().slice(-8),
-      timestamp: new Date().toISOString()
-    };
+      timestamp: new Date().toISOString(),
+      websiteUrl: window.location.origin,
+      generatedDate: new Date().toLocaleString()
+    }; try {
+      // Generate PDF blob
+      const blob = await pdf(<ReceiptPDF receiptData={receiptData} formData={formData} />).toBlob();
 
-    // Create receipt content
-    const receiptContent = `
-===========================================
-        NCD NAVIGATOR PLATFORM
-      SURVEY SUBMISSION RECEIPT
-===========================================
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `NCD-Navigator-Receipt-${receiptData.surveyId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
 
-Survey ID: ${receiptData.surveyId}
-Confirmation Number: ${receiptData.confirmationNumber}
-Submission Date: ${receiptData.submissionDate}
-Status: ${receiptData.status}
-Platform: ${receiptData.platform}
-
--------------------------------------------
-SUBMISSION DETAILS
--------------------------------------------
-• Your survey has been successfully submitted
-• Data will be reviewed within 2-3 business days
-• Approved data will be integrated into our database
-• Your contribution will help improve healthcare initiatives
-
--------------------------------------------
-NEXT STEPS
--------------------------------------------
-1. Review Process: Expert team validation
-2. Data Integration: Database incorporation
-3. Public Availability: Dataset publication
-
--------------------------------------------
-SUPPORT INFORMATION
--------------------------------------------
-For questions about your submission:
-Website: ${window.location.origin}/contact-us
-Email: support@ncdnavigator.com
-
-Thank you for contributing to healthcare improvement!
-
-Generated on: ${new Date().toLocaleString()}
-===========================================
-    `;
-
-    // Create and download the file
-    const blob = new Blob([receiptContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `NCD-Navigator-Receipt-${receiptData.surveyId}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    toast.success('Receipt downloaded successfully!', {
-      description: `File saved as: NCD-Navigator-Receipt-${receiptData.surveyId}.txt`
-    });
+      toast.success('PDF Receipt downloaded successfully!', {
+        description: `File saved as: NCD-Navigator-Receipt-${receiptData.surveyId}.pdf`
+      });
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error('Failed to generate PDF receipt', {
+        description: 'Please try again or contact support'
+      });
+    } finally {
+      setIsDownloadingReceipt(false);
+    }
   };
 
   return (
@@ -348,12 +753,25 @@ Generated on: ${new Date().toLocaleString()}
               </Button>
               <Button
                 onClick={handleDownloadReceipt}
+                disabled={isDownloadingReceipt}
                 variant="outline"
                 size="sm"
-                className="bg-white/80 hover:bg-green-50 border border-green-200 hover:border-green-300 text-green-600 transition-all duration-200"
+                className="bg-white/80 hover:bg-green-50 border border-green-200 hover:border-green-300 text-green-600 transition-all duration-200 disabled:opacity-50"
               >
-                <Download className="w-4 h-4 mr-2" />
-                Download Receipt
+                {isDownloadingReceipt ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating PDF...
+                  </>
+                ) : (
+                  <>
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Receipt
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
