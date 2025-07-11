@@ -2,14 +2,28 @@ import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
 import RefreshButton from '@/components/shared/RefreshButton'
 import SurveyHistoryList from '@/components/tables/SurveyHistoryList'
 import SurveyTableSkeleton from '@/components/skeletons/SurveyTableSkeleton'
-import { getAllSurveys } from '@/actions/surveyActions'
+import { getUserSurveys } from '@/actions/surveyActions'
+import { auth } from '@/auth'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { RiAddLine, RiHistoryLine } from 'react-icons/ri'
 
 export default async function SurveysPage() {
-  // Fetch surveys data on the server
-  const surveysResult = await getAllSurveys()
+  // Get authenticated user session
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-700">You need to be logged in to view your surveys.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Fetch user's surveys data on the server
+  const surveysResult = await getUserSurveys(session.user.id)
 
 // If there's an error fetching data, we still render the page
 // The component will handle the error state

@@ -14,9 +14,9 @@ export interface DraftInfo {
     userId: string
     email: string
     name: string
-    timestamp: Date
+    timestamp: string // ISO string
   }
-  lastSaved: Date
+  lastSaved: string // ISO string
   formData: Partial<CustomFormData>
   currentStep: string
   progress: number

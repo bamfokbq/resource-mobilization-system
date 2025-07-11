@@ -1,15 +1,12 @@
-import React from 'react';
-import UserStatsCard from '@/components/dashboard/UserStatsCard';
-import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
-import SubmittedSurveysTable from '@/components/tables/SubmittedSurveysTable';
-import SurveyMetricsChart from '@/components/dashboard/SurveyMetricsChart';
-import SurveyProgressAnalytics from '@/components/dashboard/SurveyProgressAnalytics';
-import RegionalInsights from '@/components/dashboard/RegionalInsights';
-import SurveyPredictiveAnalytics from '@/components/dashboard/SurveyPredictiveAnalytics';
-import Link from 'next/link';
-import { RiSurveyLine, RiCheckboxCircleLine, RiTimeLine, RiBarChartLine } from 'react-icons/ri';
-import { getAllSurveys, getUserDraft, getSurveyAnalytics, getUserSurveyStatistics, getPredictiveAnalytics } from '@/actions/surveyActions';
+import { getUserSurveys, getPredictiveAnalytics, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
 import { auth } from '@/auth';
+import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
+import RegionalInsights from '@/components/dashboard/RegionalInsights';
+import SurveyMetricsChart from '@/components/dashboard/SurveyMetricsChart';
+import UserStatsCard from '@/components/dashboard/UserStatsCard';
+import SubmittedSurveysTable from '@/components/tables/SubmittedSurveysTable';
+import Link from 'next/link';
+import { RiBarChartLine, RiCheckboxCircleLine, RiSurveyLine, RiTimeLine } from 'react-icons/ri';
 
 // Generate predictive analytics and milestones (these can remain mock for now as they require ML models)
 const generateMockPredictionData = () => {
@@ -88,19 +85,18 @@ export default async function UserDashboardPage() {
     );
   }
 
-  // Fetch all surveys and user draft
-  const surveysResult = await getAllSurveys();
+  // Fetch user's surveys and user draft
+  const surveysResult = await getUserSurveys(session.user.id);
   const draftResult = await getUserDraft();
 
   // Handle errors gracefully
   if (!surveysResult.success) {
     console.error('Failed to fetch surveys:', surveysResult.message);
   }
-  // Filter surveys for the current user and serialize for client components
+  
+  // Use the user's surveys directly (already filtered by userId in the database)
   const userSurveys = surveysResult.success && surveysResult.data
-    ? surveysResult.data
-      .filter(survey => survey.createdBy?.userId === session?.user?.id)
-      .map(survey => ({
+    ? surveysResult.data.map(survey => ({
         _id: survey._id?.toString(),
         projectInfo: survey.projectInfo ? {
           projectName: survey.projectInfo.projectName,
@@ -131,12 +127,12 @@ export default async function UserDashboardPage() {
     : [];
   // Calculate statistics
   const totalSurveys = userSurveys.length;
-  const completedSurveys = userSurveys.filter(survey => survey.status === 'submitted').length;
+  const completedSurveys = userSurveys.filter((survey: any) => survey.status === 'submitted').length;
   const inProgressSurveys = draftResult.success ? 1 : 0; // User can only have one draft at a time  // Fetch analytics data from database
   const [analyticsResult, userStatsResult, predictiveResult] = await Promise.all([
-    getSurveyAnalytics(),
+    getSurveyAnalytics(session.user.id),
     getUserSurveyStatistics(session.user.id),
-    getPredictiveAnalytics()
+    getPredictiveAnalytics(session.user.id)
   ]);
 
   // Use real data if available, fallback to basic calculations

@@ -4,8 +4,7 @@ export const menuVariants = {
         opacity: 0,
         transition: {
             duration: 0.6,
-            ease: 'easeInOut',
-            when: 'afterChildren' // add to ensure list exits before background
+            ease: [0.42, 0, 0.58, 1] as const
         }
     },
     open: {
@@ -13,8 +12,7 @@ export const menuVariants = {
         opacity: 1,
         transition: {
             duration: 0.5,
-            ease: 'easeInOut',
-            when: 'beforeChildren',
+            ease: [0.42, 0, 0.58, 1] as const,
             staggerChildren: 0.1
         }
     }

@@ -41,7 +41,7 @@ export default function Assistance() {
                             <motion.div
                                 key={index}
                                 whileHover={{ scale: item.href ? 1.02 : 1 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                transition={{ type: "spring" as const, stiffness: 400, damping: 10 }}
                             >
                                 <ContactWrapper
                                     href={item.href || '#'}

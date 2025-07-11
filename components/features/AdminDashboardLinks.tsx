@@ -1,14 +1,13 @@
 'use client'
 
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
-import { MdSettings, MdChevronLeft, MdChevronRight, MdLogout } from 'react-icons/md'
-import { Button } from '../ui/button'
-import { Loader2, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { MdAssignment, MdChevronLeft, MdChevronRight, MdLogout, MdSettings, MdAnalytics } from 'react-icons/md'
 import { toast } from 'sonner'
 
 export default function AdminDashboardLinks() {
@@ -73,14 +72,28 @@ export default function AdminDashboardLinks() {
                 >
                     <FaHome className="text-2xl" />
                     {isOpen && <span>Dashboard</span>}
-                </Link>
-                <Link
+                </Link>                <Link
                     className={linkClass('/admin/dashboard/users')}
                     href={'/admin/dashboard/users'}
                     title={!isOpen ? 'Users' : ''}
                 >
                     <FaUser className="text-2xl" />
                     {isOpen && <span>Users</span>}
+                </Link>                <Link
+                    className={linkClass('/admin/dashboard/surveys')}
+                    href={'/admin/dashboard/surveys'}
+                    title={!isOpen ? 'Surveys' : ''}
+                >
+                    <MdAssignment className="text-2xl" />
+                    {isOpen && <span>Surveys</span>}
+                </Link>
+                <Link
+                    className={linkClass('/admin/dashboard/analytics')}
+                    href={'/admin/dashboard/analytics'}
+                    title={!isOpen ? 'Analytics' : ''}
+                >
+                    <MdAnalytics className="text-2xl" />
+                    {isOpen && <span>Analytics</span>}
                 </Link>
                 <Link
                     className={linkClass('/admin/dashboard/profile')}
