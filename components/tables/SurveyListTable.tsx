@@ -1,9 +1,9 @@
 'use client';
 
+import { getAllSurveys } from '@/actions/surveyActions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { SURVEY_LISTS } from '@/constant';
 import {
     ColumnDef,
     flexRender,
@@ -27,32 +27,100 @@ import {
 import SearchTable from '../shared/SearchTable';
 import SearchTableSkeletion from '../skeletons/SearchTableSkeletion';
 
+// Interface for survey data from database
+interface SurveyData {
+    _id: string;
+    organisationInfo?: {
+        organisationName: string;
+        region: string;
+        sector: string;
+        email: string;
+    };
+    projectInfo?: {
+        projectName: string;
+        startDate: string;
+        endDate?: string;
+        regions: string[];
+        targetedNCDs: string[];
+    };
+    createdBy: {
+        userId: string;
+        email: string;
+        name: string;
+        timestamp: string;
+    };
+    submissionDate: string;
+    lastUpdated: string;
+    status: string;
+    version: string;
+}
+
 export default function SurveyListTable() {
-    const [data, setData] = useState<typeof SURVEY_LISTS>([]);
+    const [data, setData] = useState<SurveyData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sorting, setSorting] = useState<SortingState>([]);
-    const [selectedProject, setSelectedProject] = useState<typeof SURVEY_LISTS[0] | null>(null);
+    const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     console.log(selectedProject);
 
-
     useEffect(() => {
-        setData(SURVEY_LISTS);
-        setIsLoading(false);
+        const fetchSurveys = async () => {
+            try {
+                setIsLoading(true);
+                const result = await getAllSurveys();
+
+                if (result.success && result.data) {
+                    // Limit to recent 10 surveys for dashboard display
+                    const recentSurveys = result.data.slice(0, 10);
+                    setData(recentSurveys);
+                    setError(null);
+                } else {
+                    setError(result.message || 'Failed to load surveys');
+                    setData([]);
+                }
+            } catch (err) {
+                console.error('Error fetching surveys:', err);
+                setError('An unexpected error occurred while loading surveys');
+                setData([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchSurveys();
     }, []);
+
+    const formatDate = (dateString: string | Date) => {
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return 'Invalid Date';
+            }
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        } catch {
+            return 'Invalid Date';
+        }
+    };
 
     const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
-            'active': 'bg-green-100 text-green-800',
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'completed': 'bg-blue-100 text-blue-800',
+            'submitted': 'bg-green-100 text-green-800',
+            'draft': 'bg-yellow-100 text-yellow-800',
+            'pending': 'bg-blue-100 text-blue-800',
             'inactive': 'bg-gray-100 text-gray-800'
         };
         return statusColors[status.toLowerCase()] || 'bg-gray-100 text-gray-800';
-    };    // Define table columns
-    const columns = useMemo<ColumnDef<typeof SURVEY_LISTS[0]>[]>(() => [
+    };
+
+    // Define table columns
+    const columns = useMemo<ColumnDef<SurveyData>[]>(() => [
         { 
-            accessorKey: "id", 
+            accessorKey: "_id", 
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
@@ -73,12 +141,12 @@ export default function SurveyListTable() {
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-red-400 rounded-full"></div>
-                    <span className="font-bold text-slate-900">#{row.original.id}</span>
+                    <span className="font-bold text-slate-900 text-xs">#{row.original._id.slice(-6)}</span>
                 </div>
             )
         },
         { 
-            accessorKey: "organisation", 
+            accessorKey: "organisationInfo.organisationName", 
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
@@ -101,12 +169,14 @@ export default function SurveyListTable() {
                     <div className="w-8 h-8 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg flex items-center justify-center">
                         <FaBuilding className="h-4 w-4 text-orange-600" />
                     </div>
-                    <span className="font-medium text-slate-900">{row.original.organisation}</span>
+                    <span className="font-medium text-slate-900">
+                        {row.original.organisationInfo?.organisationName || 'Unknown Organisation'}
+                    </span>
                 </div>
             )
         },
         { 
-            accessorKey: "region", 
+            accessorKey: "organisationInfo.region", 
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
@@ -127,12 +197,14 @@ export default function SurveyListTable() {
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
                     <FaMapMarkerAlt className="h-4 w-4 text-green-500" />
-                    <span className="text-slate-700 font-medium">{row.original.region}</span>
+                    <span className="text-slate-700 font-medium">
+                        {row.original.organisationInfo?.region || 'Unknown Region'}
+                    </span>
                 </div>
             )
         },
         { 
-            accessorKey: "project_name", 
+            accessorKey: "projectInfo.projectName", 
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
@@ -152,8 +224,22 @@ export default function SurveyListTable() {
             },
             cell: ({ row }) => (
                 <div className="max-w-xs">
-                    <p className="font-semibold text-slate-900 truncate">{row.original.project_name}</p>
-                    <p className="text-sm text-slate-500">Active Survey</p>
+                    <p className="font-semibold text-slate-900 truncate">
+                        {row.original.projectInfo?.projectName || 'Untitled Project'}
+                    </p>
+                    <p className="text-sm text-slate-500">Project Status</p>
+                </div>
+            )
+        },
+        {
+            accessorKey: "status",
+            header: () => <span className="font-semibold">Status</span>,
+            cell: ({ row }) => (
+                <div className="flex items-center gap-2">
+                    <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none px-3 py-1 text-sm font-medium`}>
+                        {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
+                    </Badge>
+                    <p className="text-sm text-slate-500">Current Status</p>
                 </div>
             )
         },
@@ -178,10 +264,12 @@ export default function SurveyListTable() {
                                 <div className="p-2 rounded-full bg-navy-blue/10">
                                     <FaProjectDiagram className="text-navy-blue h-6 w-6" />
                                 </div>
-                                <span className="flex-1 text-foreground">{row.original.project_name}</span>
-                                {/* <Badge className={`${getStatusBadge(row.original.status)} hover:bg-none ml-2 px-4 py-1 text-sm`}>
-                                    {row.original.status}
-                                </Badge> */}
+                                <span className="flex-1 text-foreground">
+                                    {row.original.projectInfo?.projectName || 'Untitled Project'}
+                                </span>
+                                <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none ml-2 px-4 py-1 text-sm`}>
+                                    {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
+                                </Badge>
                             </DialogTitle>
                         </DialogHeader>
                         
@@ -193,7 +281,9 @@ export default function SurveyListTable() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-muted-foreground mb-1">Organisation</p>
-                                        <p className="text-base font-semibold text-foreground">{row.original.organisation}</p>
+                                        <p className="text-base font-semibold text-foreground">
+                                            {row.original.organisationInfo?.organisationName || 'Unknown Organisation'}
+                                        </p>
                                     </div>
                                 </div>
                                 
@@ -203,7 +293,21 @@ export default function SurveyListTable() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-muted-foreground mb-1">Region</p>
-                                        <p className="text-base font-semibold text-foreground">{row.original.region}</p>
+                                        <p className="text-base font-semibold text-foreground">
+                                            {row.original.organisationInfo?.region || 'Unknown Region'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 rounded-lg bg-navy-blue/10">
+                                        <FaEnvelope className="text-navy-blue h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-muted-foreground mb-1">Contact Email</p>
+                                        <p className="text-base font-semibold text-foreground">
+                                            {row.original.organisationInfo?.email || 'No email provided'}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -214,20 +318,45 @@ export default function SurveyListTable() {
                                         <FaInfoCircle className="text-navy-blue h-5 w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">Description</p>
-                                        <p className="text-base text-foreground/90 leading-relaxed">
-                                            {row.original.description}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-navy-blue/10">
-                                        <FaEnvelope className="text-navy-blue h-5 w-5" />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">Contact</p>
-                                        <p className="text-base font-semibold text-foreground">{row.original.contact}</p>
+                                        <p className="text-sm font-medium text-muted-foreground mb-2">Project Details</p>
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-medium text-muted-foreground">Submission Date:</span>
+                                                <span className="text-sm text-foreground">
+                                                    {formatDate(row.original.submissionDate)}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-medium text-muted-foreground">Created By:</span>
+                                                <span className="text-sm text-foreground">
+                                                    {row.original.createdBy?.name || 'Unknown User'}
+                                                </span>
+                                            </div>
+                                            {row.original.projectInfo?.regions && (
+                                                <div className="flex items-start gap-2">
+                                                    <span className="text-sm font-medium text-muted-foreground">Target Regions:</span>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {row.original.projectInfo.regions.map((region, index) => (
+                                                            <Badge key={index} variant="outline" className="text-xs">
+                                                                {region}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {row.original.projectInfo?.targetedNCDs && (
+                                                <div className="flex items-start gap-2">
+                                                    <span className="text-sm font-medium text-muted-foreground">Target NCDs:</span>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {row.original.projectInfo.targetedNCDs.map((ncd, index) => (
+                                                            <Badge key={index} variant="outline" className="text-xs">
+                                                                {ncd}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -237,8 +366,8 @@ export default function SurveyListTable() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-muted-foreground mb-1">Status</p>
-                                        <Badge className={`${getStatusBadge(row.original.status)} px-4 py-1`}>
-                                            {row.original.status}
+                                        <Badge className={`${getStatusBadge(row.original.status || 'inactive')} px-4 py-1`}>
+                                            {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
                                         </Badge>
                                     </div>
                                 </div>
@@ -311,7 +440,21 @@ export default function SurveyListTable() {
                 </Suspense>
             </div>
 
-            {data.length === 0 ? (
+            {error ? (
+                <div className="bg-white rounded-xl border border-red-200 shadow-lg p-12 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                        <FaInfoCircle className="h-8 w-8 text-red-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Surveys</h3>
+                    <p className="text-red-600 mb-6">{error}</p>
+                    <Button
+                        onClick={() => window.location.reload()}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                        Try Again
+                    </Button>
+                </div>
+            ) : data.length === 0 ? (
                 <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 p-12 text-center">
                     <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center">
                         <FaProjectDiagram className="h-8 w-8 text-orange-500" />
