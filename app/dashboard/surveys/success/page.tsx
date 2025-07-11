@@ -3,6 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { toast } from 'sonner';
 import {
   ArrowRight,
   Award,
@@ -42,6 +43,116 @@ export default function SurveySuccessPage() {
 
   const handleCreateNewSurvey = () => {
     router.push('/dashboard/surveys/form');
+  };
+
+  const handleShareAchievement = async () => {
+    const shareData = {
+      title: 'NCD Navigator Survey Contribution',
+      text: `I just contributed to the NCD Navigator platform by submitting a survey! Join me in helping improve healthcare initiatives across Ghana. Survey ID: ${surveyId || 'SRV-' + Date.now().toString().slice(-6)}`,
+      url: window.location.origin + '/survey-data'
+    };
+
+    try {
+      // Check if Web Share API is supported
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast.success('Shared successfully!', {
+          description: 'Thank you for spreading awareness about NCD initiatives'
+        });
+      } else {
+        // Fallback: Copy to clipboard
+        await navigator.clipboard.writeText(
+          `${shareData.text}\n\nLearn more: ${shareData.url}`
+        );
+        toast.success('Share text copied to clipboard!', {
+          description: 'You can now paste it anywhere to share your achievement'
+        });
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      // Fallback: Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(
+          `${shareData.text}\n\nLearn more: ${shareData.url}`
+        );
+        toast.success('Share text copied to clipboard!', {
+          description: 'You can now paste it anywhere to share your achievement'
+        });
+      } catch (clipboardError) {
+        console.error('Clipboard error:', clipboardError);
+        toast.error('Unable to share', {
+          description: 'Please copy the URL manually from your browser'
+        });
+      }
+    }
+  };
+
+  const handleDownloadReceipt = () => {
+    const receiptData = {
+      surveyId: surveyId || 'SRV-' + Date.now().toString().slice(-6),
+      submissionDate: submissionDate,
+      status: 'Successfully Submitted',
+      platform: 'NCD Navigator',
+      submittedBy: 'Survey Contributor',
+      confirmationNumber: 'CONF-' + Date.now().toString().slice(-8),
+      timestamp: new Date().toISOString()
+    };
+
+    // Create receipt content
+    const receiptContent = `
+===========================================
+        NCD NAVIGATOR PLATFORM
+      SURVEY SUBMISSION RECEIPT
+===========================================
+
+Survey ID: ${receiptData.surveyId}
+Confirmation Number: ${receiptData.confirmationNumber}
+Submission Date: ${receiptData.submissionDate}
+Status: ${receiptData.status}
+Platform: ${receiptData.platform}
+
+-------------------------------------------
+SUBMISSION DETAILS
+-------------------------------------------
+• Your survey has been successfully submitted
+• Data will be reviewed within 2-3 business days
+• Approved data will be integrated into our database
+• Your contribution will help improve healthcare initiatives
+
+-------------------------------------------
+NEXT STEPS
+-------------------------------------------
+1. Review Process: Expert team validation
+2. Data Integration: Database incorporation
+3. Public Availability: Dataset publication
+
+-------------------------------------------
+SUPPORT INFORMATION
+-------------------------------------------
+For questions about your submission:
+Website: ${window.location.origin}/contact-us
+Email: support@ncdnavigator.com
+
+Thank you for contributing to healthcare improvement!
+
+Generated on: ${new Date().toLocaleString()}
+===========================================
+    `;
+
+    // Create and download the file
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `NCD-Navigator-Receipt-${receiptData.surveyId}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast.success('Receipt downloaded successfully!', {
+      description: `File saved as: NCD-Navigator-Receipt-${receiptData.surveyId}.txt`
+    });
   };
 
   return (
@@ -227,6 +338,7 @@ export default function SurveySuccessPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Button
+                onClick={handleShareAchievement}
                 variant="outline"
                 size="sm"
                 className="bg-white/80 hover:bg-blue-50 border border-blue-200 hover:border-blue-300 text-blue-600 transition-all duration-200"
@@ -235,6 +347,7 @@ export default function SurveySuccessPage() {
                 Share Achievement
               </Button>
               <Button
+                onClick={handleDownloadReceipt}
                 variant="outline"
                 size="sm"
                 className="bg-white/80 hover:bg-green-50 border border-green-200 hover:border-green-300 text-green-600 transition-all duration-200"
