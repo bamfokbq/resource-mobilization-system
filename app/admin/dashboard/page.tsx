@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { MdOutlinePoll } from 'react-icons/md'
 import { RiBarChartLine, RiSettings2Line, RiUserAddLine } from 'react-icons/ri'
+import { FaProjectDiagram } from 'react-icons/fa'
 
 export default async function AdminDashboardPage() {
     // Fetch all analytics data
@@ -228,7 +229,7 @@ export default async function AdminDashboardPage() {
             )}
 
             {/* Management Executive Summary */}
-            {analyticsData?.kpis && analyticsData?.systemMetrics && (
+            {/* {analyticsData?.kpis && analyticsData?.systemMetrics && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -239,10 +240,10 @@ export default async function AdminDashboardPage() {
                     </div>
                     <ManagementSummary kpis={analyticsData.kpis} systemMetrics={analyticsData.systemMetrics} />
                 </div>
-            )}
+            )} */}
 
             {/* Business Intelligence */}
-            {analyticsData?.systemMetrics && (
+            {/* {analyticsData?.systemMetrics && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -253,10 +254,10 @@ export default async function AdminDashboardPage() {
                     </div>
                     <BusinessIntelligence systemMetrics={analyticsData.systemMetrics} />
                 </div>
-            )}
+            )} */}
 
             {/* Operational Dashboard */}
-            {analyticsData?.kpis && analyticsData?.systemMetrics && (
+            {/* {analyticsData?.kpis && analyticsData?.systemMetrics && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -271,10 +272,10 @@ export default async function AdminDashboardPage() {
                         performanceData={performanceData || undefined}
                     />
                 </div>
-            )}
+            )} */}
 
             {/* System Performance Cards */}
-            {performanceData && (
+            {/* {performanceData && (
                 <div>
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -341,7 +342,7 @@ export default async function AdminDashboardPage() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
 
             {/* Technical Analytics */}
             {analyticsData?.systemMetrics && (
@@ -357,58 +358,6 @@ export default async function AdminDashboardPage() {
                 </div>
             )}
 
-            {/* Quick Actions */}
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-                <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                        <RiSettings2Line className="text-orange-600" size={24} />
-                        Management Tools
-                    </h2>
-                    <p className="text-gray-600">Administrative functions and management utilities</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Link
-                        href="/admin/users"
-                        className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200"
-                    >
-                        <Users className="text-blue-600" size={20} />
-                        <div>
-                            <h3 className="font-medium text-gray-900">User Management</h3>
-                            <p className="text-sm text-gray-600">Manage system users</p>
-                        </div>
-                    </Link>
-                    <Link
-                        href="/admin/surveys"
-                        className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all duration-200"
-                    >
-                        <MdOutlinePoll className="text-green-600" size={20} />
-                        <div>
-                            <h3 className="font-medium text-gray-900">Project Control</h3>
-                            <p className="text-sm text-gray-600">Manage projects</p>
-                        </div>
-                    </Link>
-                    <Link
-                        href="/admin/dashboard/analytics"
-                        className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200"
-                    >
-                        <RiBarChartLine className="text-purple-600" size={20} />
-                        <div>
-                            <h3 className="font-medium text-gray-900">Advanced Analytics</h3>
-                            <p className="text-sm text-gray-600">Detailed reports</p>
-                        </div>
-                    </Link>
-                    <Link
-                        href="/admin/settings"
-                        className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-all duration-200"
-                    >
-                        <RiSettings2Line className="text-orange-600" size={20} />
-                        <div>
-                            <h3 className="font-medium text-gray-900">System Settings</h3>
-                            <p className="text-sm text-gray-600">Configure platform</p>
-                        </div>
-                    </Link>
-                </div>
-            </div>
 
             {/* Recent Survey Activity */}
             <RecentSurveyActivity activities={recentActivity || []} />
@@ -417,10 +366,16 @@ export default async function AdminDashboardPage() {
             <div className="bg-white rounded-xl p-6 shadow-lg">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                        <MdOutlinePoll className="text-purple-500 text-2xl" />
+                        <div className="p-2 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg">
+                            <FaProjectDiagram className="h-5 w-5 text-white" />
+                        </div>
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-800">Project Management</h2>
-                            <p className="text-gray-600">Monitor and manage project submissions</p>
+                            <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                                Survey List
+                            </h2>
+                            <p className="text-sm text-slate-500 mt-1">
+                                Browse and manage available surveys
+                            </p>
                         </div>
                     </div>
                     <Link

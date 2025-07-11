@@ -422,19 +422,6 @@ export default function SurveyListTable() {
     return (
         <div className="space-y-6">
             <div className='flex items-center justify-between'>
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl shadow-lg">
-                        <FaProjectDiagram className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                        <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                            Survey List
-                        </h2>
-                        <p className="text-sm text-slate-500 mt-1">
-                            Browse and manage available surveys
-                        </p>
-                    </div>
-                </div>
                 <Suspense fallback={<SearchTableSkeletion />}>
                     <SearchTable />
                 </Suspense>
