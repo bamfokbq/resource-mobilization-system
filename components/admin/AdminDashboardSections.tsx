@@ -8,19 +8,12 @@ import SurveyManagementSection from '@/components/dashboard/SurveyManagementSect
 import TechnicalAnalyticsSection from '@/components/dashboard/TechnicalAnalyticsSection'
 import TopRegionsAndSectors from '@/components/dashboard/TopRegionsAndSectors'
 
-// Simulate network delay for demonstration purposes
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export async function AdminHeaderSection() {
-    await delay(100) // Highest priority - loads first
-    const dashboardStatsResult = await getDashboardStats()
-    const dashboardStats = dashboardStatsResult.success ? dashboardStatsResult.data : null
-    
-    return <AdminDashboardHeader dashboardStats={dashboardStats} />
+    return <AdminDashboardHeader />
 }
 
 export async function AdminKPISection() {
-    await delay(200) // High priority
     const dashboardStatsResult = await getDashboardStats()
     const dashboardStats = dashboardStatsResult.success ? dashboardStatsResult.data : null
     
@@ -28,7 +21,6 @@ export async function AdminKPISection() {
 }
 
 export async function AdminRegionsSection() {
-    await delay(400) // Medium priority
     const dashboardStatsResult = await getDashboardStats()
     const dashboardStats = dashboardStatsResult.success ? dashboardStatsResult.data : null
     
@@ -38,7 +30,6 @@ export async function AdminRegionsSection() {
 }
 
 export async function AdminActivitySection() {
-    await delay(300) // Medium-high priority
     const recentActivityResult = await getRecentSurveyActivity(5)
     const recentActivity = recentActivityResult.success ? recentActivityResult.data : []
     
@@ -46,7 +37,6 @@ export async function AdminActivitySection() {
 }
 
 export async function AdminTrendsSection() {
-    await delay(500) // Medium priority
     const dashboardStatsResult = await getDashboardStats()
     const dashboardStats = dashboardStatsResult.success ? dashboardStatsResult.data : null
     
@@ -56,7 +46,6 @@ export async function AdminTrendsSection() {
 }
 
 export async function AdminTechnicalSection() {
-    await delay(600) // Lower priority
     const analyticsResult = await getAdminAnalytics()
     const analyticsData = analyticsResult.success ? analyticsResult.data : null
     
@@ -64,6 +53,5 @@ export async function AdminTechnicalSection() {
 }
 
 export async function AdminSurveyManagementSection() {
-    await delay(700) // Lower priority
     return <SurveyManagementSection />
 }
