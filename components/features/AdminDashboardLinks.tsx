@@ -72,14 +72,16 @@ export default function AdminDashboardLinks() {
                 >
                     <FaHome className="text-2xl" />
                     {isOpen && <span>Dashboard</span>}
-                </Link>                <Link
+                </Link>
+                <Link
                     className={linkClass('/admin/dashboard/users')}
                     href={'/admin/dashboard/users'}
                     title={!isOpen ? 'Users' : ''}
                 >
                     <FaUser className="text-2xl" />
                     {isOpen && <span>Users</span>}
-                </Link>                <Link
+                </Link>
+                <Link
                     className={linkClass('/admin/dashboard/surveys')}
                     href={'/admin/dashboard/surveys'}
                     title={!isOpen ? 'Surveys' : ''}
