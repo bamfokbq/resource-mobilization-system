@@ -40,7 +40,7 @@ export default async function AdminDashboardLayout({
         <div className="flex flex-col h-screen">
             <Header />
             <div className="flex flex-1 overflow-hidden">
-                <AdminDashboardLinks session={session} />
+                <AdminDashboardLinks />
                 <ScrollArea className="flex-1 bg-gray-100">
                     <div className="w-full h-full bg-gray-100">
                         <div className="p-4">

@@ -29,8 +29,8 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
     // Navigation items configuration
     const navigationItems: NavigationItem[] = [
         { path: '/admin/dashboard', label: 'Dashboard', icon: Home },
-        { path: '/admin/dashboard/users', label: 'Users', icon: Users, badge: 12 },
-        { path: '/admin/dashboard/surveys', label: 'Surveys', icon: FileText, badge: 3 },
+        { path: '/admin/dashboard/users', label: 'Users', icon: Users },
+        { path: '/admin/dashboard/surveys', label: 'Surveys', icon: FileText },
         { path: '/admin/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
         { path: '/admin/dashboard/profile', label: 'Profile', icon: Settings },
     ]
@@ -168,11 +168,6 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                                 >
                                     <div className="relative flex items-center">
                                         <Icon className="text-xl flex-shrink-0" />
-                                        {item.badge && (
-                                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                                {item.badge}
-                                            </span>
-                                        )}
                                     </div>
                                     {isOpen && (
                                         <div className="flex items-center justify-between flex-1 min-w-0">
