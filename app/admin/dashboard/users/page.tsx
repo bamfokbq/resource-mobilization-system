@@ -1,5 +1,4 @@
 import { auth } from '@/auth'
-import UserStatsOverview from '@/components/dashboard/UserStatsOverview'
 import { AddNewUserModal } from '@/components/features/AddNewUserModal'
 import RealAdminUsersTable from '@/components/tables/RealAdminUsersTable'
 import { Suspense } from 'react'
@@ -39,7 +38,6 @@ export default async function AdminDashboardUserPage() {
                     ))}
                 </div>
             }>
-                <UserStatsOverview />
             </Suspense>
 
             {/* Users Table Section */}
