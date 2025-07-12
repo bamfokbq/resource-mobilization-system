@@ -78,7 +78,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
 
     return (
         <aside
-            className="bg-navy-blue flex-shrink-0 w-[80px] flex flex-col py-6 relative transition-all duration-300 
+            className="bg-navy-blue flex-shrink-0 w-[90px] flex flex-col relative transition-all duration-300 
                        shadow-xl border-r border-light-blue/10 h-screen overflow-hidden"
             role="navigation"
             aria-label="Admin Dashboard Navigation"
@@ -103,7 +103,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
             </div>
 
             {/* Navigation menu */}
-            <nav className="flex-1 px-4 mt-6 flex flex-col">
+            <nav className="flex-1 mt-4 flex flex-col">
                 <ul className='flex flex-col gap-2 w-full' role="menubar">
                     {navigationItems.map((item) => {
                         const isActive = pathname === item.path
