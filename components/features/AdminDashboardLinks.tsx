@@ -67,13 +67,12 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
     }, [isOpen])
 
     const linkClass = (path: string, isActive: boolean) => `
-        relative flex items-center gap-3 text-base p-3 rounded-lg
+        relative flex flex-col items-center justify-center gap-1 text-base p-3 rounded-lg min-h-[60px]
         ${isActive
             ? 'text-mint-green bg-mint-green/10 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-mint-green before:rounded-r-lg'
             : 'text-light-blue hover:text-mint-green/80 hover:bg-white/5'
         } 
         transition-all duration-300 hover:scale-[1.02] group focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:ring-offset-2 focus:ring-offset-navy-blue
-        ${!isOpen ? 'justify-center' : ''}
     `
 
     const handleSignOut = async () => {
@@ -162,22 +161,20 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                                 <Link
                                     className={linkClass(item.path, isActive)}
                                     href={item.path}
-                                    title={!isOpen ? item.label : ''}
+                                    title={item.label}
                                     role="menuitem"
                                     aria-current={isActive ? 'page' : undefined}
                                 >
-                                    <div className="relative flex items-center">
-                                        <Icon className="text-xl flex-shrink-0" />
-                                    </div>
+                                    <Icon className="text-xl flex-shrink-0" />
                                     {isOpen && (
-                                        <div className="flex items-center justify-between flex-1 min-w-0">
-                                            <span className="truncate">{item.label}</span>
-                                            {item.badge && !isActive && (
-                                                <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full ml-2">
-                                                    {item.badge}
-                                                </span>
-                                            )}
-                                        </div>
+                                        <span className="text-xs text-center truncate w-full leading-tight">
+                                            {item.label}
+                                        </span>
+                                    )}
+                                    {isOpen && item.badge && !isActive && (
+                                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                                            {item.badge}
+                                        </span>
                                     )}
                                 </Link>
                             </li>
@@ -189,10 +186,10 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                 <div className="mt-8 pt-4 border-t border-light-blue/20">
                     <button
                         onClick={handleSignOut}
-                        className={`w-full flex items-center gap-3 p-3 rounded-lg text-white hover:bg-red-500/10 
+                        className={`w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
                                   hover:text-red-400 transition-all duration-300 group focus:outline-none 
                                   focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
-                                  ${!isOpen ? 'justify-center' : ''}`}
+                                  min-h-[60px]`}
                         title={!isOpen ? 'Logout' : ''}
                         disabled={loading}
                         aria-label="Sign out"
@@ -202,7 +199,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                         ) : (
                             <>
                                 <LogOut className="text-xl flex-shrink-0" />
-                                {isOpen && <span>Logout</span>}
+                                    {isOpen && <span className="text-xs text-center">Logout</span>}
                             </>
                         )}
                     </button>
