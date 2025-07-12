@@ -41,7 +41,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
     }, [])
 
     const linkClass = (path: string, isActive: boolean) => `
-        relative flex flex-col items-center justify-center gap-1 text-base p-3 rounded-lg min-h-[60px] group
+        relative flex flex-col items-center justify-center gap-1 text-base p-3 rounded-lg min-h-[60px]
         ${isActive
             ? 'text-mint-green bg-mint-green/10 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-mint-green before:rounded-r-lg'
             : 'text-light-blue hover:text-mint-green/80 hover:bg-white/5'
@@ -89,13 +89,8 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                 {session?.user && (
                     <div className="px-4 pb-6 border-b border-light-blue/20">
                         <div className="flex justify-center">
-                            <div className="w-10 h-10 rounded-full bg-mint-green/20 flex items-center justify-center group relative">
+                            <div className="w-10 h-10 rounded-full bg-mint-green/20 flex items-center justify-center">
                                 <User className="text-mint-green" size={20} />
-                                {/* Tooltip on hover */}
-                                <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-                                    {session.user.name || session.user.email}
-                                    <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800"></div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -122,11 +117,6 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                                     <span className="text-xs text-center truncate w-full leading-tight">
                                         {item.label}
                                     </span>
-                                    {/* Tooltip on hover */}
-                                    <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-                                        {item.label}
-                                        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800"></div>
-                                    </div>
                                     {item.badge && !isActive && (
                                         <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                                             {item.badge}
@@ -143,7 +133,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                     <button
                         onClick={handleSignOut}
                         className="w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
-                                  hover:text-red-400 transition-all duration-300 group focus:outline-none 
+                                  hover:text-red-400 transition-all duration-300 focus:outline-none 
                                   focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
                                   min-h-[60px] relative"
                         title="Logout"
@@ -156,11 +146,6 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                             <>
                                 <LogOut className="text-xl flex-shrink-0" />
                                     <span className="text-xs text-center">Logout</span>
-                                    {/* Tooltip on hover */}
-                                    <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-                                        Logout
-                                        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800"></div>
-                                    </div>
                             </>
                         )}
                     </button>
