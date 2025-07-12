@@ -437,15 +437,15 @@ export default function SurveyListTable() {
                 </div>
             ) : (
                 <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 overflow-hidden">
-                    <div className="overflow-x-auto">
-                                <table className="w-full">
+                            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
+                                <table className="w-full min-w-[600px] table-auto">
                                     <thead className="bg-gradient-to-r from-slate-50 to-slate-100/80 border-b border-slate-200/60">
                                         {table.getHeaderGroups().map((headerGroup) => (
                                             <tr key={headerGroup.id}>
                                                 {headerGroup.headers.map((header) => (
                                                     <th
                                                         key={header.id}
-                                                        className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-600"
+                                                className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-600 whitespace-nowrap"
                                             >
                                                 {flexRender(header.column.columnDef.header, header.getContext())}
                                             </th>
@@ -459,7 +459,7 @@ export default function SurveyListTable() {
                                         {row.getVisibleCells().map((cell) => (
                                             <td
                                                 key={cell.id}
-                                                className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-700 font-medium"
+                                                className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-700 font-medium align-top"
                                             >
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </td>
