@@ -171,16 +171,9 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-6">
-        {/* Personal Information Section */}
+        {/* Simplified Single Section */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-              <FiUser className="h-4 w-4" />
-            </div>
-            Personal Information
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {/* First Name */}
             <div className="space-y-2">
               <Label htmlFor="firstName" className="text-sm font-medium text-gray-700 flex items-center gap-1">
@@ -191,7 +184,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 id="firstName"
                 placeholder="Enter first name"
                 className={`
-                  border-2 transition-all duration-200 rounded-lg
+                  w-full border-2 transition-all duration-200 rounded-lg
                   ${errors.firstName
                     ? "border-red-300 focus:border-red-500 bg-red-50"
                     : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -217,7 +210,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 id="lastName"
                 placeholder="Enter last name"
                 className={`
-                  border-2 transition-all duration-200 rounded-lg
+                  w-full border-2 transition-all duration-200 rounded-lg
                   ${errors.lastName
                     ? "border-red-300 focus:border-red-500 bg-red-50"
                     : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -232,19 +225,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 </p>
               )}
             </div>
-          </div>
-        </div>
 
-        {/* Contact Information Section */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-gradient-to-r from-green-500 to-teal-500 text-white">
-              <FiMail className="h-4 w-4" />
-            </div>
-            Contact Information
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700 flex items-center gap-1">
@@ -256,7 +237,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 type="email"
                 placeholder="Enter email address"
                 className={`
-                  border-2 transition-all duration-200 rounded-lg
+                  w-full border-2 transition-all duration-200 rounded-lg
                   ${errors.email
                     ? "border-red-300 focus:border-red-500 bg-red-50"
                     : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -283,7 +264,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 type="tel"
                 placeholder="Enter phone number"
                 className={`
-                  border-2 transition-all duration-200 rounded-lg
+                  w-full border-2 transition-all duration-200 rounded-lg
                   ${errors.telephone
                     ? "border-red-300 focus:border-red-500 bg-red-50"
                     : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -298,19 +279,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 </p>
               )}
             </div>
-          </div>
-        </div>
 
-        {/* Account Configuration Section */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-              <CheckCircle2 className="h-4 w-4" />
-            </div>
-            Account Configuration
-          </h3>
-
-          <div className="space-y-6">
             {/* Role Selection */}
             <div className="space-y-2">
               <Label htmlFor="role" className="text-sm font-medium text-gray-700 flex items-center gap-1">
@@ -321,7 +290,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 defaultValue="User"
               >
                 <SelectTrigger className={`
-                  border-2 transition-all duration-200 rounded-lg
+                  w-full border-2 transition-all duration-200 rounded-lg
                   ${errors.role
                     ? "border-red-300 focus:border-red-500"
                     : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -345,7 +314,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
 
             {/* Conditional Fields for User Role */}
             {roleValue !== "Admin" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg border">
+              <>
                 <div className="space-y-2">
                   <Label htmlFor="region" className="text-sm font-medium text-gray-700">
                     Region
@@ -361,7 +330,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                     }}
                   >
                     <SelectTrigger className={`
-                      border-2 transition-all duration-200 rounded-lg
+                      w-full border-2 transition-all duration-200 rounded-lg
                       ${errors.region
                         ? "border-red-300 focus:border-red-500"
                         : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -401,7 +370,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                     }}
                   >
                     <SelectTrigger className={`
-                      border-2 transition-all duration-200 rounded-lg
+                      w-full border-2 transition-all duration-200 rounded-lg
                       ${errors.organisation
                         ? "border-red-300 focus:border-red-500"
                         : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
@@ -425,7 +394,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                     </p>
                   )}
                 </div>
-              </div>
+              </>
             )}
           </div>
         </div>
