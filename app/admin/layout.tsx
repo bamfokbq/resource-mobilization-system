@@ -24,11 +24,6 @@ export default async function AdminRootLayout({
         return redirect('/dashboard');
     }
 
-    // If not authenticated and trying to access protected admin routes, redirect to admin login
-    if (!session) {
-        return redirect('/admin');
-    }
-
     return (
         <section>
             {children}
