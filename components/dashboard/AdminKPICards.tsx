@@ -3,7 +3,7 @@ import { TrendingUp, TrendingDown, Users, FileText, Clock, Activity } from 'luci
 import { AdminKPIs } from '@/actions/adminAnalytics'
 
 interface AdminKPICardsProps {
-  kpis: AdminKPIs
+  kpis?: AdminKPIs
 }
 
 interface KPICardProps {
@@ -48,24 +48,47 @@ const KPICard: React.FC<KPICardProps> = ({ title, value, change, icon, color, su
 }
 
 const AdminKPICards: React.FC<AdminKPICardsProps> = ({ kpis }) => {
+  // Handle undefined or loading state
+  if (!kpis) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 animate-pulse">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+              <div className="w-16 h-6 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="space-y-2">
+              <div className="w-24 h-4 bg-gray-200 rounded"></div>
+              <div className="w-16 h-8 bg-gray-200 rounded"></div>
+            </div>
+            <div className="mt-4">
+              <div className="w-20 h-3 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   const kpiData = [
     {
       title: 'Total Users',
-      value: kpis.totalUsers,
-      change: kpis.userGrowthRate,
+      value: kpis.totalUsers || 0,
+      change: kpis.userGrowthRate || 0,
       icon: <Users size={20} className="text-blue-600" />,
       color: 'bg-blue-100'
     },
     {
       title: 'Completed Surveys',
-      value: kpis.totalSurveys,
-      change: kpis.surveyGrowthRate,
+      value: kpis.totalSurveys || 0,
+      change: kpis.surveyGrowthRate || 0,
       icon: <FileText size={20} className="text-green-600" />,
       color: 'bg-green-100'
     },
     {
       title: 'Completion Rate',
-      value: kpis.completionRate,
+      value: kpis.completionRate || 0,
       change: 5.2, // This could be calculated from historical data
       icon: <Activity size={20} className="text-purple-600" />,
       color: 'bg-purple-100',
@@ -73,14 +96,14 @@ const AdminKPICards: React.FC<AdminKPICardsProps> = ({ kpis }) => {
     },
     {
       title: 'Active Users',
-      value: kpis.activeUsers,
+      value: kpis.activeUsers || 0,
       change: 8.1, // This could be calculated from historical data
       icon: <Activity size={20} className="text-orange-600" />,
       color: 'bg-orange-100'
     },
     {
       title: 'Avg. Completion Time',
-      value: kpis.avgTimeToComplete,
+      value: kpis.avgTimeToComplete || 0,
       change: -3.5, // Negative is good for time metrics
       icon: <Clock size={20} className="text-indigo-600" />,
       color: 'bg-indigo-100',
@@ -88,7 +111,7 @@ const AdminKPICards: React.FC<AdminKPICardsProps> = ({ kpis }) => {
     },
     {
       title: 'Drafts in Progress',
-      value: kpis.totalDrafts,
+      value: kpis.totalDrafts || 0,
       change: 12.3,
       icon: <FileText size={20} className="text-yellow-600" />,
       color: 'bg-yellow-100'

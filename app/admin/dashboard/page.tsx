@@ -1,50 +1,170 @@
+import { Suspense } from 'react'
 import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
-import { getDashboardStats, getRecentSurveyActivity } from '@/actions/dashboardStats'
-import { getUserStats } from '@/actions/users'
 import { getAllSurveys } from '@/actions/surveyActions'
-import AdminDashboardHeader from '@/components/dashboard/AdminDashboardHeader'
-import AdminDashboardKPICards from '@/components/dashboard/AdminDashboardKPICards'
-import TopRegionsAndSectors from '@/components/dashboard/TopRegionsAndSectors'
-import MonthlyTrendsChart from '@/components/dashboard/MonthlyTrendsChart'
-import SurveyManagementSection from '@/components/dashboard/SurveyManagementSection'
 import ErrorStatesSection from '@/components/dashboard/ErrorStatesSection'
-import TechnicalAnalyticsSection from '@/components/dashboard/TechnicalAnalyticsSection'
-import RecentSurveyActivity from '@/components/dashboard/RecentSurveyActivity'
+import {
+    AdminHeaderSection,
+    AdminKPISection,
+    AdminRegionsSection,
+    AdminActivitySection,
+    AdminTrendsSection,
+    AdminTechnicalSection,
+    AdminSurveyManagementSection
+} from '@/components/admin/AdminDashboardSections'
+
+// Import skeleton components
+import {
+    AdminDashboardSkeleton
+} from '@/components/skeletons/AdminSkeletons'
+
+// Individual section skeletons
+function HeaderSkeleton() {
+    return (
+        <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="animate-pulse">
+                <div className="h-8 bg-gray-200 rounded w-64 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-48"></div>
+            </div>
+        </div>
+    )
+}
+
+function KPISkeleton() {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="animate-pulse">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="h-6 w-6 bg-gray-200 rounded"></div>
+                            <div className="h-5 bg-gray-200 rounded w-24"></div>
+                        </div>
+                        <div className="h-8 bg-gray-200 rounded w-16 mb-2"></div>
+                        <div className="h-4 bg-gray-200 rounded w-12"></div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+function RegionsSkeleton() {
+    return (
+        <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="h-64 bg-gray-200 rounded"></div>
+                    <div className="h-64 bg-gray-200 rounded"></div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function ActivitySkeleton() {
+    return (
+        <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-1/4 mb-6"></div>
+                <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                        <div key={i} className="flex items-center space-x-4 p-4 border rounded">
+                            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function TrendsSkeleton() {
+    return (
+        <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
+                <div className="h-64 bg-gray-200 rounded"></div>
+            </div>
+        </div>
+    )
+}
+
+function TechnicalSkeleton() {
+    return (
+        <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="h-32 bg-gray-200 rounded"></div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function SurveyManagementSkeleton() {
+    return (
+        <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="animate-pulse">
+                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="h-40 bg-gray-200 rounded"></div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    )
+}
 
 export default async function AdminDashboardPage() {
-    const [analyticsResult, performanceResult, userStatsResult, dashboardStatsResult, surveysResult, recentActivityResult] = await Promise.all([
+    // Fetch data for error states section only (non-streaming parts)
+    const [analyticsResult, performanceResult, surveysResult] = await Promise.all([
         getAdminAnalytics(),
         getSystemPerformanceMetrics(),
-        getUserStats(),
-        getDashboardStats(),
         getAllSurveys(),
-        getRecentSurveyActivity(5)
     ])
-
-    const analyticsData = analyticsResult.success ? analyticsResult.data : null
-    const performanceData = performanceResult.success ? performanceResult.data : null
-    const userStats = userStatsResult
-    const dashboardStats = dashboardStatsResult.success ? dashboardStatsResult.data : null
-    const surveysData = surveysResult.success ? surveysResult.data : []
-    const recentActivity = recentActivityResult.success ? recentActivityResult.data : []
 
     return (
         <div className="p-4 md:p-6 space-y-6 md:space-y-8 bg-gray-50 min-h-screen overflow-x-hidden">
-            <AdminDashboardHeader dashboardStats={dashboardStats} />
-            <AdminDashboardKPICards dashboardStats={dashboardStats} />
-            {dashboardStats && (
-                <TopRegionsAndSectors dashboardStats={dashboardStats} />
-            )}
-            <RecentSurveyActivity activities={recentActivity || []} />
-            {dashboardStats?.monthlyTrends && (
-                <MonthlyTrendsChart monthlyTrends={dashboardStats.monthlyTrends} />
-            )}
-            <TechnicalAnalyticsSection systemMetrics={analyticsData?.systemMetrics || null} />
-            <SurveyManagementSection />
+            <Suspense fallback={<HeaderSkeleton />}>
+                <AdminHeaderSection />
+            </Suspense>
+
+            <Suspense fallback={<KPISkeleton />}>
+                <AdminKPISection />
+            </Suspense>
+
+            <Suspense fallback={<RegionsSkeleton />}>
+                <AdminRegionsSection />
+            </Suspense>
+
+            <Suspense fallback={<ActivitySkeleton />}>
+                <AdminActivitySection />
+            </Suspense>
+
+            <Suspense fallback={<TrendsSkeleton />}>
+                <AdminTrendsSection />
+            </Suspense>
+
+            <Suspense fallback={<TechnicalSkeleton />}>
+                <AdminTechnicalSection />
+            </Suspense>
+
+            <Suspense fallback={<SurveyManagementSkeleton />}>
+                <AdminSurveyManagementSection />
+            </Suspense>
+
             <ErrorStatesSection
                 analyticsResult={analyticsResult}
                 performanceResult={performanceResult}
-                dashboardStatsResult={dashboardStatsResult}
+                dashboardStatsResult={{ success: true }}
                 surveysResult={surveysResult}
             />
         </div>
