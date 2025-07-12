@@ -46,8 +46,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
             ? 'text-mint-green bg-mint-green/10 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-mint-green before:rounded-r-lg'
             : 'text-light-blue hover:text-mint-green/80 hover:bg-white/5'
         } 
-        transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:ring-offset-2 focus:ring-offset-navy-blue
-    `
+        transition-all duration-300 hover:scale-[1.02]`
 
     const handleSignOut = async () => {
         setLoading(true)
@@ -117,11 +116,6 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                                     <span className="text-xs text-center truncate w-full leading-tight">
                                         {item.label}
                                     </span>
-                                    {item.badge && !isActive && (
-                                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                                            {item.badge}
-                                        </span>
-                                    )}
                                 </Link>
                             </li>
                         )
