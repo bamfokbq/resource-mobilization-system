@@ -1,10 +1,10 @@
 'use client'
 
-import { AlertCircle, CheckCircle2, Loader2, Users, BarChart3, FileText, Settings, Home, ChevronLeft, ChevronRight, LogOut, User } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Loader2, Users, BarChart3, FileText, Settings, Home, LogOut, User } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import type { Session } from 'next-auth'
 
@@ -23,7 +23,6 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
     const pathname = usePathname()
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [isOpen, setIsOpen] = useState(true)
     const [currentTime, setCurrentTime] = useState(new Date())
 
     // Navigation items configuration
@@ -41,38 +40,13 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
         return () => clearInterval(timer)
     }, [])
 
-    // Keyboard navigation
-    const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        if (event.ctrlKey && event.key === 'b') {
-            event.preventDefault()
-            setIsOpen(!isOpen)
-        }
-    }, [isOpen])
-
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown)
-        return () => document.removeEventListener('keydown', handleKeyDown)
-    }, [handleKeyDown])
-
-    // Save sidebar state to localStorage
-    useEffect(() => {
-        const savedState = localStorage.getItem('admin-sidebar-open')
-        if (savedState !== null) {
-            setIsOpen(JSON.parse(savedState))
-        }
-    }, [])
-
-    useEffect(() => {
-        localStorage.setItem('admin-sidebar-open', JSON.stringify(isOpen))
-    }, [isOpen])
-
     const linkClass = (path: string, isActive: boolean) => `
-        relative flex flex-col items-center justify-center gap-1 text-base p-3 rounded-lg min-h-[60px]
+        relative flex flex-col items-center justify-center gap-1 text-base p-3 rounded-lg min-h-[60px] group
         ${isActive
             ? 'text-mint-green bg-mint-green/10 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-mint-green before:rounded-r-lg'
             : 'text-light-blue hover:text-mint-green/80 hover:bg-white/5'
         } 
-        transition-all duration-300 hover:scale-[1.02] group focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:ring-offset-2 focus:ring-offset-navy-blue
+        transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-mint-green/50 focus:ring-offset-2 focus:ring-offset-navy-blue
     `
 
     const handleSignOut = async () => {
@@ -102,48 +76,27 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
         }
     }
 
-    const toggleSidebar = () => setIsOpen(!isOpen)
-
     return (
         <aside
-            className={`bg-navy-blue flex-shrink-0 ${isOpen ? 'w-[280px]' : 'w-[80px]'} 
-                       flex flex-col py-6 relative transition-all duration-300 
-                       shadow-xl border-r border-light-blue/10 h-screen overflow-hidden`}
+            className="bg-navy-blue flex-shrink-0 w-[80px] flex flex-col py-6 relative transition-all duration-300 
+                       shadow-xl border-r border-light-blue/10 h-screen overflow-hidden"
             role="navigation"
             aria-label="Admin Dashboard Navigation"
         >
-            {/* Header with toggle button */}
+            {/* Header */}
             <div className="relative">
-                <button
-                    onClick={toggleSidebar}
-                    className="absolute -right-4 top-2 bg-white rounded-full p-2 z-10 text-navy-blue hover:text-mint-green 
-                              transition-all duration-300 border-2 border-light-blue/20 hover:border-mint-green
-                              hover:scale-110 focus:outline-none focus:ring-2 focus:ring-mint-green/50
-                              shadow-lg"
-                    title={`${isOpen ? 'Collapse' : 'Expand'} sidebar (Ctrl+B)`}
-                    aria-label={`${isOpen ? 'Collapse' : 'Expand'} sidebar`}
-                >
-                    {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-                </button>
-
-                {/* User info section */}
-                {isOpen && session?.user && (
+                {/* User info section - only show avatar in collapsed state */}
+                {session?.user && (
                     <div className="px-4 pb-6 border-b border-light-blue/20">
-                        <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                            <div className="w-10 h-10 rounded-full bg-mint-green/20 flex items-center justify-center">
+                        <div className="flex justify-center">
+                            <div className="w-10 h-10 rounded-full bg-mint-green/20 flex items-center justify-center group relative">
                                 <User className="text-mint-green" size={20} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-white font-medium text-sm truncate">
+                                {/* Tooltip on hover */}
+                                <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
                                     {session.user.name || session.user.email}
-                                </p>
-                                <p className="text-light-blue text-xs">Administrator</p>
+                                    <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="mt-3 text-center">
-                            <p className="text-light-blue text-xs">
-                                {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </p>
                         </div>
                     </div>
                 )}
@@ -166,12 +119,15 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                                     aria-current={isActive ? 'page' : undefined}
                                 >
                                     <Icon className="text-xl flex-shrink-0" />
-                                    {isOpen && (
-                                        <span className="text-xs text-center truncate w-full leading-tight">
-                                            {item.label}
-                                        </span>
-                                    )}
-                                    {isOpen && item.badge && !isActive && (
+                                    <span className="text-xs text-center truncate w-full leading-tight">
+                                        {item.label}
+                                    </span>
+                                    {/* Tooltip on hover */}
+                                    <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                                        {item.label}
+                                        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800"></div>
+                                    </div>
+                                    {item.badge && !isActive && (
                                         <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
                                             {item.badge}
                                         </span>
@@ -186,11 +142,11 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                 <div className="mt-8 pt-4 border-t border-light-blue/20">
                     <button
                         onClick={handleSignOut}
-                        className={`w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
+                        className="w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
                                   hover:text-red-400 transition-all duration-300 group focus:outline-none 
                                   focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
-                                  min-h-[60px]`}
-                        title={!isOpen ? 'Logout' : ''}
+                                  min-h-[60px] relative"
+                        title="Logout"
                         disabled={loading}
                         aria-label="Sign out"
                     >
@@ -199,7 +155,12 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                         ) : (
                             <>
                                 <LogOut className="text-xl flex-shrink-0" />
-                                    {isOpen && <span className="text-xs text-center">Logout</span>}
+                                    <span className="text-xs text-center">Logout</span>
+                                    {/* Tooltip on hover */}
+                                    <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                                        Logout
+                                        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-gray-800"></div>
+                                    </div>
                             </>
                         )}
                     </button>
