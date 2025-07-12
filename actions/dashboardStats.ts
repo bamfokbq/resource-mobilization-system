@@ -153,7 +153,6 @@ export async function getDashboardStats(): Promise<{
 export async function getRecentSurveyActivity(limit: number = 10): Promise<{
   success: boolean;
   data?: Array<{
-    _id: string;
     organisationName: string;
     projectName: string;
     region: string;
@@ -173,7 +172,7 @@ export async function getRecentSurveyActivity(limit: number = 10): Promise<{
       { $limit: limit },
       {
         $project: {
-          _id: 1,
+          _id: 0,
           organisationName: '$organisationInfo.organisationName',
           projectName: '$projectInfo.projectName',
           region: '$organisationInfo.region',
@@ -184,17 +183,21 @@ export async function getRecentSurveyActivity(limit: number = 10): Promise<{
       }
     ]).toArray()
 
+    // Convert submissionDate to ISO string for serialization
+    const serializedActivity = recentActivity.map(activity => ({
+      organisationName: activity.organisationName,
+      projectName: activity.projectName,
+      region: activity.region,
+      submissionDate: activity.submissionDate instanceof Date
+        ? activity.submissionDate.toISOString()
+        : String(activity.submissionDate),
+      status: activity.status,
+      createdBy: activity.createdBy,
+    }))
+
     return {
       success: true,
-      data: recentActivity as Array<{
-        _id: string;
-        organisationName: string;
-        projectName: string;
-        region: string;
-        submissionDate: string;
-        status: string;
-        createdBy: string;
-      }>,
+      data: serializedActivity,
       message: 'Recent survey activity retrieved successfully'
     }
   } catch (error) {
