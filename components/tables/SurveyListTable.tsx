@@ -119,68 +119,42 @@ export default function SurveyListTable() {
 
     // Define table columns
     const columns = useMemo<ColumnDef<SurveyData>[]>(() => [
-        { 
-            accessorKey: "_id", 
+        {
+            accessorKey: "organisationInfo.organisationName",
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
-                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                        <span className="font-semibold">ID</span>
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                        <span className="font-semibold text-xs sm:text-sm">Organisation</span>
                         <div className="text-slate-400 group-hover:text-orange-500 transition-colors duration-200">
                             {column.getIsSorted() === "asc" ? (
-                                <FaSortUp className="h-4 w-4" />
+                                <FaSortUp className="h-3 w-3 sm:h-4 sm:w-4" />
                             ) : column.getIsSorted() === "desc" ? (
-                                <FaSortDown className="h-4 w-4" />
+                                    <FaSortDown className="h-3 w-3 sm:h-4 sm:w-4" />
                             ) : (
-                                <FaSort className="h-4 w-4" />
+                                        <FaSort className="h-3 w-3 sm:h-4 sm:w-4" />
                             )}
                         </div>
                     </div>
                 )
             },
             cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-red-400 rounded-full"></div>
-                    <span className="font-bold text-slate-900 text-xs">#{row.original._id.slice(-6)}</span>
-                </div>
-            )
-        },
-        { 
-            accessorKey: "organisationInfo.organisationName", 
-            header: ({ column }) => {
-                return (
-                    <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
-                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                        <span className="font-semibold">Organisation</span>
-                        <div className="text-slate-400 group-hover:text-orange-500 transition-colors duration-200">
-                            {column.getIsSorted() === "asc" ? (
-                                <FaSortUp className="h-4 w-4" />
-                            ) : column.getIsSorted() === "desc" ? (
-                                <FaSortDown className="h-4 w-4" />
-                            ) : (
-                                <FaSort className="h-4 w-4" />
-                            )}
-                        </div>
+                <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <FaBuilding className="h-3 w-3 sm:h-4 sm:w-4 text-orange-600" />
                     </div>
-                )
-            },
-            cell: ({ row }) => (
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg flex items-center justify-center">
-                        <FaBuilding className="h-4 w-4 text-orange-600" />
-                    </div>
-                    <span className="font-medium text-slate-900">
+                    <span className="font-medium text-slate-900 text-xs sm:text-sm truncate">
                         {row.original.organisationInfo?.organisationName || 'Unknown Organisation'}
                     </span>
                 </div>
             )
         },
-        { 
-            accessorKey: "organisationInfo.region", 
+        {
+            accessorKey: "organisationInfo.region",
             header: ({ column }) => {
                 return (
-                    <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
-                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                    <div className="hidden sm:flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
                         <span className="font-semibold">Region</span>
                         <div className="text-slate-400 group-hover:text-orange-500 transition-colors duration-200">
                             {column.getIsSorted() === "asc" ? (
@@ -195,146 +169,155 @@ export default function SurveyListTable() {
                 )
             },
             cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <FaMapMarkerAlt className="h-4 w-4 text-green-500" />
-                    <span className="text-slate-700 font-medium">
+                <div className="hidden sm:flex items-center gap-2">
+                    <FaMapMarkerAlt className="h-4 w-4 text-green-500 flex-shrink-0" />
+                    <span className="text-slate-700 font-medium text-sm">
                         {row.original.organisationInfo?.region || 'Unknown Region'}
                     </span>
                 </div>
             )
         },
-        { 
-            accessorKey: "projectInfo.projectName", 
+        {
+            accessorKey: "projectInfo.projectName",
             header: ({ column }) => {
                 return (
                     <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
-                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                        <span className="font-semibold">Project Name</span>
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                        <span className="font-semibold text-xs sm:text-sm">Project</span>
                         <div className="text-slate-400 group-hover:text-orange-500 transition-colors duration-200">
                             {column.getIsSorted() === "asc" ? (
-                                <FaSortUp className="h-4 w-4" />
+                                <FaSortUp className="h-3 w-3 sm:h-4 sm:w-4" />
                             ) : column.getIsSorted() === "desc" ? (
-                                <FaSortDown className="h-4 w-4" />
+                                    <FaSortDown className="h-3 w-3 sm:h-4 sm:w-4" />
                             ) : (
-                                <FaSort className="h-4 w-4" />
+                                        <FaSort className="h-3 w-3 sm:h-4 sm:w-4" />
                             )}
                         </div>
                     </div>
                 )
             },
             cell: ({ row }) => (
-                <div className="max-w-xs">
-                    <p className="font-semibold text-slate-900 truncate">
+                <div className="max-w-[120px] sm:max-w-xs">
+                    <p className="font-semibold text-slate-900 truncate text-xs sm:text-sm">
                         {row.original.projectInfo?.projectName || 'Untitled Project'}
                     </p>
-                    <p className="text-sm text-slate-500">Project Status</p>
+                    <p className="text-xs text-slate-500 hidden sm:block">Project Status</p>
+                    <p className="text-xs text-slate-500 sm:hidden">
+                        {row.original.organisationInfo?.region || 'Unknown Region'}
+                    </p>
                 </div>
             )
         },
         {
             accessorKey: "status",
-            header: () => <span className="font-semibold">Status</span>,
+            header: () => <span className="font-semibold text-xs sm:text-sm">Status</span>,
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
-                    <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none px-3 py-1 text-sm font-medium`}>
-                        {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
+                    <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none px-2 sm:px-3 py-1 text-xs font-medium`}>
+                        <span className="hidden sm:inline">
+                            {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
+                        </span>
+                        <span className="sm:hidden">
+                            {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1, 3)}
+                        </span>
                     </Badge>
-                    <p className="text-sm text-slate-500">Current Status</p>
                 </div>
             )
         },
         {
             id: "actions",
-            header: () => <span className="font-semibold">Actions</span>,
+            header: () => <span className="font-semibold text-xs sm:text-sm">Actions</span>,
             cell: ({ row }) => (
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button
                             size="sm"
-                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 font-medium"
+                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 font-medium text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2"
                             onClick={() => setSelectedProject(row.original)}
                         >
-                            <FaInfoCircle className="h-4 w-4 mr-2" />
-                            View Details
+                            <FaInfoCircle className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                            <span className="hidden sm:inline">View Details</span>
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[600px] animate-in slide-in-from-top duration-300 ease-in-out bg-background">
+                    <DialogContent className="w-[95vw] max-w-[600px] max-h-[90vh] overflow-y-auto animate-in slide-in-from-top duration-300 ease-in-out bg-background">
                         <DialogHeader>
-                            <DialogTitle className="flex items-center gap-2 text-2xl pb-4 border-b border-border">
-                                <div className="p-2 rounded-full bg-navy-blue/10">
-                                    <FaProjectDiagram className="text-navy-blue h-6 w-6" />
+                            <DialogTitle className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-lg sm:text-2xl pb-4 border-b border-border">
+                                <div className="flex items-center gap-2 flex-1">
+                                    <div className="p-2 rounded-full bg-navy-blue/10 flex-shrink-0">
+                                        <FaProjectDiagram className="text-navy-blue h-5 w-5 sm:h-6 sm:w-6" />
+                                    </div>
+                                    <span className="flex-1 text-foreground text-sm sm:text-lg break-words">
+                                        {row.original.projectInfo?.projectName || 'Untitled Project'}
+                                    </span>
                                 </div>
-                                <span className="flex-1 text-foreground">
-                                    {row.original.projectInfo?.projectName || 'Untitled Project'}
-                                </span>
-                                <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none ml-2 px-4 py-1 text-sm`}>
+                                <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none px-3 sm:px-4 py-1 text-xs sm:text-sm flex-shrink-0`}>
                                     {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
                                 </Badge>
                             </DialogTitle>
                         </DialogHeader>
-                        
-                        <div className="grid gap-8 py-6">
-                            <div className="bg-muted/50 p-6 rounded-xl space-y-6 border border-border shadow-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-navy-blue/10">
-                                        <FaBuilding className="text-navy-blue h-5 w-5" />
+
+                        <div className="grid gap-6 sm:gap-8 py-4 sm:py-6">
+                            <div className="bg-muted/50 p-4 sm:p-6 rounded-xl space-y-4 sm:space-y-6 border border-border shadow-sm">
+                                <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                                    <div className="p-2 sm:p-3 rounded-lg bg-navy-blue/10 flex-shrink-0">
+                                        <FaBuilding className="text-navy-blue h-4 w-4 sm:h-5 sm:w-5" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">Organisation</p>
-                                        <p className="text-base font-semibold text-foreground">
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Organisation</p>
+                                        <p className="text-sm sm:text-base font-semibold text-foreground break-words">
                                             {row.original.organisationInfo?.organisationName || 'Unknown Organisation'}
                                         </p>
                                     </div>
                                 </div>
-                                
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-navy-blue/10">
-                                        <FaMapMarkerAlt className="text-navy-blue h-5 w-5" />
+
+                                <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                                    <div className="p-2 sm:p-3 rounded-lg bg-navy-blue/10 flex-shrink-0">
+                                        <FaMapMarkerAlt className="text-navy-blue h-4 w-4 sm:h-5 sm:w-5" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">Region</p>
-                                        <p className="text-base font-semibold text-foreground">
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Region</p>
+                                        <p className="text-sm sm:text-base font-semibold text-foreground">
                                             {row.original.organisationInfo?.region || 'Unknown Region'}
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-navy-blue/10">
-                                        <FaEnvelope className="text-navy-blue h-5 w-5" />
+                                <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                                    <div className="p-2 sm:p-3 rounded-lg bg-navy-blue/10 flex-shrink-0">
+                                        <FaEnvelope className="text-navy-blue h-4 w-4 sm:h-5 sm:w-5" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">Contact Email</p>
-                                        <p className="text-base font-semibold text-foreground">
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Contact Email</p>
+                                        <p className="text-sm sm:text-base font-semibold text-foreground break-all">
                                             {row.original.organisationInfo?.email || 'No email provided'}
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="space-y-6">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 rounded-lg bg-navy-blue/10">
-                                        <FaInfoCircle className="text-navy-blue h-5 w-5" />
+                            <div className="space-y-4 sm:space-y-6">
+                                <div className="flex items-start gap-3 sm:gap-4">
+                                    <div className="p-2 sm:p-3 rounded-lg bg-navy-blue/10 flex-shrink-0">
+                                        <FaInfoCircle className="text-navy-blue h-4 w-4 sm:h-5 sm:w-5" />
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-2">Project Details</p>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-2">Project Details</p>
                                         <div className="space-y-2">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-medium text-muted-foreground">Submission Date:</span>
-                                                <span className="text-sm text-foreground">
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                                                <span className="text-xs sm:text-sm font-medium text-muted-foreground">Submission Date:</span>
+                                                <span className="text-xs sm:text-sm text-foreground">
                                                     {formatDate(row.original.submissionDate)}
                                                 </span>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-medium text-muted-foreground">Created By:</span>
-                                                <span className="text-sm text-foreground">
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                                                <span className="text-xs sm:text-sm font-medium text-muted-foreground">Created By:</span>
+                                                <span className="text-xs sm:text-sm text-foreground break-words">
                                                     {row.original.createdBy?.name || 'Unknown User'}
                                                 </span>
                                             </div>
                                             {row.original.projectInfo?.regions && (
-                                                <div className="flex items-start gap-2">
-                                                    <span className="text-sm font-medium text-muted-foreground">Target Regions:</span>
+                                                <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                                                    <span className="text-xs sm:text-sm font-medium text-muted-foreground flex-shrink-0">Target Regions:</span>
                                                     <div className="flex flex-wrap gap-1">
                                                         {row.original.projectInfo.regions.map((region, index) => (
                                                             <Badge key={index} variant="outline" className="text-xs">
@@ -345,8 +328,8 @@ export default function SurveyListTable() {
                                                 </div>
                                             )}
                                             {row.original.projectInfo?.targetedNCDs && (
-                                                <div className="flex items-start gap-2">
-                                                    <span className="text-sm font-medium text-muted-foreground">Target NCDs:</span>
+                                                <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                                                    <span className="text-xs sm:text-sm font-medium text-muted-foreground flex-shrink-0">Target NCDs:</span>
                                                     <div className="flex flex-wrap gap-1">
                                                         {row.original.projectInfo.targetedNCDs.map((ncd, index) => (
                                                             <Badge key={index} variant="outline" className="text-xs">
@@ -359,14 +342,14 @@ export default function SurveyListTable() {
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 rounded-lg bg-navy-blue/10">
-                                        <FaCheckCircle className="text-navy-blue h-5 w-5" />
+
+                                <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                                    <div className="p-2 sm:p-3 rounded-lg bg-navy-blue/10 flex-shrink-0">
+                                        <FaCheckCircle className="text-navy-blue h-4 w-4 sm:h-5 sm:w-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-muted-foreground mb-1">Status</p>
-                                        <Badge className={`${getStatusBadge(row.original.status || 'inactive')} px-4 py-1`}>
+                                        <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Status</p>
+                                        <Badge className={`${getStatusBadge(row.original.status || 'inactive')} px-3 sm:px-4 py-1`}>
                                             {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
                                         </Badge>
                                     </div>
@@ -397,20 +380,20 @@ export default function SurveyListTable() {
         },
     }); if (isLoading) {
         return (
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div className="h-8 w-32 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg animate-pulse"></div>
-                    <div className="h-10 w-64 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg animate-pulse"></div>
+            <div className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="h-6 sm:h-8 w-24 sm:w-32 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg animate-pulse"></div>
+                    <div className="h-8 sm:h-10 w-full sm:w-64 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg animate-pulse"></div>
                 </div>
                 <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 overflow-hidden">
-                    <div className="p-6 space-y-4">
+                    <div className="p-4 sm:p-6 space-y-4">
                         {[...Array(5)].map((_, i) => (
-                            <div key={i} className="flex items-center space-x-4">
-                                <div className="h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-16 animate-pulse"></div>
-                                <div className="h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-32 animate-pulse"></div>
-                                <div className="h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-24 animate-pulse"></div>
-                                <div className="h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-40 animate-pulse"></div>
-                                <div className="h-8 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-20 animate-pulse"></div>
+                            <div key={i} className="flex items-center space-x-2 sm:space-x-4">
+                                <div className="h-3 sm:h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-12 sm:w-16 animate-pulse"></div>
+                                <div className="h-3 sm:h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-20 sm:w-32 animate-pulse"></div>
+                                <div className="hidden sm:block h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-24 animate-pulse"></div>
+                                <div className="h-3 sm:h-4 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-24 sm:w-40 animate-pulse"></div>
+                                <div className="h-6 sm:h-8 bg-gradient-to-r from-slate-200 to-slate-300 rounded w-16 sm:w-20 animate-pulse"></div>
                             </div>
                         ))}
                     </div>
@@ -420,141 +403,141 @@ export default function SurveyListTable() {
     }
 
     return (
-        <div className="space-y-6">
-            <div className='flex items-center justify-between'>
+        <div className="space-y-4 sm:space-y-6">
+            <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
                 <Suspense fallback={<SearchTableSkeletion />}>
                     <SearchTable />
                 </Suspense>
             </div>
 
             {error ? (
-                <div className="bg-white rounded-xl border border-red-200 shadow-lg p-12 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
-                        <FaInfoCircle className="h-8 w-8 text-red-500" />
+                <div className="bg-white rounded-xl border border-red-200 shadow-lg p-6 sm:p-12 text-center">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                        <FaInfoCircle className="h-6 w-6 sm:h-8 sm:w-8 text-red-500" />
                     </div>
-                    <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Surveys</h3>
-                    <p className="text-red-600 mb-6">{error}</p>
+                    <h3 className="text-base sm:text-lg font-semibold text-red-900 mb-2">Error Loading Surveys</h3>
+                    <p className="text-sm sm:text-base text-red-600 mb-4 sm:mb-6">{error}</p>
                     <Button
                         onClick={() => window.location.reload()}
-                        className="bg-red-600 hover:bg-red-700 text-white"
+                        className="bg-red-600 hover:bg-red-700 text-white text-sm sm:text-base px-4 py-2"
                     >
                         Try Again
                     </Button>
                 </div>
             ) : data.length === 0 ? (
-                <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 p-12 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center">
-                        <FaProjectDiagram className="h-8 w-8 text-orange-500" />
+                    <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 p-6 sm:p-12 text-center">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center">
+                            <FaProjectDiagram className="h-6 w-6 sm:h-8 sm:w-8 text-orange-500" />
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">No surveys available</h3>
-                    <p className="text-slate-500 mb-6">Available surveys will appear here when created.</p>
-                    <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2">No surveys available</h3>
+                        <p className="text-sm sm:text-base text-slate-500 mb-4 sm:mb-6">Available surveys will appear here when created.</p>
+                        <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base px-4 py-2">
                         Create New Survey
                     </Button>
                 </div>
             ) : (
                 <div className="bg-white rounded-xl border border-slate-200/60 shadow-lg shadow-slate-900/5 overflow-hidden">
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full">
-                                <thead className="bg-gradient-to-r from-slate-50 to-slate-100/80 border-b border-slate-200/60">
-                                    {table.getHeaderGroups().map((headerGroup) => (
-                                        <tr key={headerGroup.id}>
-                                            {headerGroup.headers.map((header) => (
-                                                <th
-                                                    key={header.id}
-                                                className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-600"
+                            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
+                                <table className="w-full min-w-[600px] table-auto">
+                                    <thead className="bg-gradient-to-r from-slate-50 to-slate-100/80 border-b border-slate-200/60">
+                                        {table.getHeaderGroups().map((headerGroup) => (
+                                            <tr key={headerGroup.id}>
+                                                {headerGroup.headers.map((header) => (
+                                                    <th
+                                                        key={header.id}
+                                                className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-600 whitespace-nowrap"
                                             >
                                                 {flexRender(header.column.columnDef.header, header.getContext())}
                                             </th>
                                         ))}
                                     </tr>
                                 ))}
-                                </thead>
-                                <tbody className="divide-y divide-slate-100 bg-white">
-                                    {table.getRowModel().rows.map((row) => (
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100 bg-white">
+                                        {table.getRowModel().rows.map((row) => (
                                     <tr key={row.id} className="group hover:bg-gradient-to-r hover:from-orange-50/30 hover:to-red-50/30 transition-all duration-200">
                                         {row.getVisibleCells().map((cell) => (
                                             <td
                                                 key={cell.id}
-                                                className="px-6 py-4 text-sm text-slate-700 font-medium"
+                                                className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-700 font-medium align-top"
                                             >
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </td>
                                         ))}
                                     </tr>
                                 ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Enhanced Pagination Controls */}
-                        <div className="flex flex-col sm:flex-row items-center justify-between border-t border-slate-200/60 bg-gradient-to-r from-slate-50/50 to-slate-100/30 px-6 py-4 gap-4">
-                            <div className="flex items-center gap-2">
-                                <span className="text-sm text-slate-600 font-medium">
-                                    Showing{" "}
-                                    <span className="font-bold text-slate-900">
-                                        {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
-                                    </span>{" "}
-                                    to{" "}
-                                    <span className="font-bold text-slate-900">
-                                        {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length)}
-                                    </span>{" "}
-                                    of{" "}
-                                    <span className="font-bold text-slate-900">
-                                        {data.length}
-                                    </span>{" "}
-                                    surveys
-                                </span>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-9 w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
-                                    onClick={() => table.setPageIndex(0)}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <FaAngleDoubleLeft className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-9 w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
-                                    onClick={() => table.previousPage()}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <FaChevronLeft className="h-4 w-4" />
-                                </Button>
-                                <div className="flex items-center gap-1 mx-2">
-                                    <span className="text-sm font-medium text-slate-700">
-                                        {table.getState().pagination.pageIndex + 1}
-                                    </span>
-                                    <span className="text-sm text-slate-500">of</span>
-                                    <span className="text-sm font-medium text-slate-700">
-                                        {table.getPageCount()}
+
+                            {/* Enhanced Pagination Controls */}
+                            <div className="flex flex-col sm:flex-row items-center justify-between border-t border-slate-200/60 bg-gradient-to-r from-slate-50/50 to-slate-100/30 px-3 sm:px-6 py-3 sm:py-4 gap-3 sm:gap-4">
+                                <div className="flex items-center gap-2 order-2 sm:order-1">
+                                    <span className="text-xs sm:text-sm text-slate-600 font-medium text-center">
+                                        Showing{" "}
+                                        <span className="font-bold text-slate-900">
+                                            {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
+                                        </span>{" "}
+                                        to{" "}
+                                        <span className="font-bold text-slate-900">
+                                            {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, data.length)}
+                                        </span>{" "}
+                                        of{" "}
+                                        <span className="font-bold text-slate-900">
+                                            {data.length}
+                                        </span>{" "}
+                                        surveys
                                     </span>
                                 </div>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-9 w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <FaChevronRight className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-9 w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
-                                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <FaAngleDoubleRight className="h-4 w-4" />
-                                </Button>
+                                <div className="flex items-center gap-1 sm:gap-2 order-1 sm:order-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
+                                        onClick={() => table.setPageIndex(0)}
+                                        disabled={!table.getCanPreviousPage()}
+                                    >
+                                        <FaAngleDoubleLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
+                                        onClick={() => table.previousPage()}
+                                        disabled={!table.getCanPreviousPage()}
+                                    >
+                                        <FaChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                                    </Button>
+                                    <div className="flex items-center gap-1 mx-1 sm:mx-2">
+                                        <span className="text-xs sm:text-sm font-medium text-slate-700">
+                                            {table.getState().pagination.pageIndex + 1}
+                                        </span>
+                                        <span className="text-xs sm:text-sm text-slate-500">of</span>
+                                        <span className="text-xs sm:text-sm font-medium text-slate-700">
+                                            {table.getPageCount()}
+                                        </span>
+                                    </div>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
+                                        onClick={() => table.nextPage()}
+                                        disabled={!table.getCanNextPage()}
+                                    >
+                                        <FaChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 border-slate-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 transition-all duration-200"
+                                        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                                        disabled={!table.getCanNextPage()}
+                                    >
+                                        <FaAngleDoubleRight className="h-3 w-3 sm:h-4 sm:w-4" />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
             )}
         </div>
     );

@@ -27,7 +27,7 @@ export function useDashboardData(
   options: UseDashboardDataOptions = {}
 ) {
   const { refreshInterval = 300000, includeActivity = true } = options // 5 minutes default
-  
+
   const [data, setData] = useState<DashboardData>(initialData)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -37,18 +37,18 @@ export function useDashboardData(
     try {
       setIsLoading(true)
       setError(null)
-      
+
       const response = await fetch(`/api/dashboard?includeActivity=${includeActivity}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-      
+
       const newData = await response.json()
       setData(newData)
       setLastUpdated(new Date())
@@ -64,7 +64,7 @@ export function useDashboardData(
     try {
       setIsLoading(true)
       setError(null)
-      
+
       const response = await fetch('/api/dashboard', {
         method: 'POST',
         headers: {
@@ -72,11 +72,11 @@ export function useDashboardData(
         },
         body: JSON.stringify({ action: 'refresh' })
       })
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-      
+
       const newData = await response.json()
       setData(newData)
       setLastUpdated(new Date())

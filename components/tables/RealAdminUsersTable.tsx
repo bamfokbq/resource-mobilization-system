@@ -391,15 +391,10 @@ export default function RealAdminUsersTable() {
 
     if (isLoading) {
         return (
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <div className="h-8 w-64 bg-gray-200 animate-pulse rounded"></div>
-                    <div className="h-8 w-32 bg-gray-200 animate-pulse rounded"></div>
-                </div>
-                <div className="space-y-3">
-                    {[...Array(5)].map((_, i) => (
-                        <div key={i} className="h-16 bg-gray-100 animate-pulse rounded-lg"></div>
-                    ))}
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading users...</p>
                 </div>
             </div>
         );
@@ -533,7 +528,7 @@ export default function RealAdminUsersTable() {
                     </div>
 
                     {/* Empty State */}
-                    {table.getRowModel().rows.length === 0 && (
+                    {table.getRowModel().rows.length === 0 && !isLoading && (
                         <div className="text-center py-12">
                             <FaUser className="mx-auto h-12 w-12 text-gray-300 mb-4" />
                             <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
@@ -605,12 +600,11 @@ export default function RealAdminUsersTable() {
                 <Dialog open={resetPasswordDialog.open} onOpenChange={(open) => setResetPasswordDialog({ open, user: null })}>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Reset Password</DialogTitle>
-                            <DialogDescription>
+                            <DialogTitle>Reset Password</DialogTitle>                                <DialogDescription>
                                 Are you sure you want to reset the password for <strong>{resetPasswordDialog.user?.name}</strong>?
                                 <br />
                                 <span className="text-sm text-muted-foreground mt-2 block">
-                                    The password will be reset to the default: <code className="bg-gray-100 px-1 rounded">ncd@2025</code>
+                                    A new temporary password will be generated and the user will need to change it on their next login.
                                 </span>
                             </DialogDescription>
                         </DialogHeader>

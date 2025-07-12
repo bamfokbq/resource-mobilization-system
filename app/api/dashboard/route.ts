@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const includeActivity = searchParams.get('includeActivity') === 'true'
-    
+
     // Fetch dashboard stats
     const statsResult = await getDashboardStats()
     

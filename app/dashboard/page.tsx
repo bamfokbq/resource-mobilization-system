@@ -5,7 +5,15 @@ import RegionalInsights from '@/components/dashboard/RegionalInsights';
 import SurveyMetricsChart from '@/components/dashboard/SurveyMetricsChart';
 import UserStatsCard from '@/components/dashboard/UserStatsCard';
 import SubmittedSurveysTable from '@/components/tables/SubmittedSurveysTable';
+import {
+  StatsCardsSkeleton,
+  ChartSkeleton,
+  RegionalInsightsSkeleton,
+  ActiveSurveysSkeleton,
+  SubmittedSurveysTableSkeleton
+} from '@/components/ui/loading-skeleton';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { RiBarChartLine, RiCheckboxCircleLine, RiSurveyLine, RiTimeLine } from 'react-icons/ri';
 
 // Generate predictive analytics and milestones (these can remain mock for now as they require ML models)
@@ -71,76 +79,74 @@ const generateMockMilestones = () => {
   ];
 };
 
-export default async function UserDashboardPage() {
-  // Get authenticated user session
-  const session = await auth();
+// Async component for Stats Cards - Fastest loading
+async function StatsCardsSection({ userId }: { userId: string }) {
+  // Small delay to demonstrate streaming (remove in production)
+  await new Promise(resolve => setTimeout(resolve, 100));
 
-  if (!session?.user?.id) {
-    return (
-      <div className="p-6 max-w-7xl mx-auto">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-700">You need to be logged in to view your dashboard.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Fetch user's surveys and user draft
-  const surveysResult = await getUserSurveys(session.user.id);
+  const userStatsResult = await getUserSurveyStatistics(userId);
+  const surveysResult = await getUserSurveys(userId);
   const draftResult = await getUserDraft();
 
-  // Handle errors gracefully
-  if (!surveysResult.success) {
-    console.error('Failed to fetch surveys:', surveysResult.message);
-  }
-  
-  // Use the user's surveys directly (already filtered by userId in the database)
-  const userSurveys = surveysResult.success && surveysResult.data
-    ? surveysResult.data.map(survey => ({
-        _id: survey._id?.toString(),
-        projectInfo: survey.projectInfo ? {
-          projectName: survey.projectInfo.projectName,
-          totalProjects: survey.projectInfo.totalProjects,
-          projectDescription: survey.projectInfo.projectDescription,
-          startDate: survey.projectInfo.startDate,
-          endDate: survey.projectInfo.endDate,
-          projectGoal: survey.projectInfo.projectGoal,
-          regions: survey.projectInfo.regions,
-          targetedNCDs: survey.projectInfo.targetedNCDs,
-          fundingSource: survey.projectInfo.fundingSource
-        } : null,
-        organisationInfo: survey.organisationInfo ? {
-          organisationName: survey.organisationInfo.organisationName,
-          region: survey.organisationInfo.region,
-          sector: survey.organisationInfo.sector,
-          email: survey.organisationInfo.email,
-          phone: survey.organisationInfo.hqPhoneNumber
-        } : null,
-        status: survey.status,
-        submissionDate: survey.submissionDate?.toISOString?.() || survey.submissionDate || null,
-        lastUpdated: survey.lastUpdated?.toISOString?.() || survey.lastUpdated || null,
-        createdBy: survey.createdBy ? {
-          userId: survey.createdBy.userId,
-          userName: survey.createdBy.userName
-        } : null
-      }))
-    : [];
-  // Calculate statistics
-  const totalSurveys = userSurveys.length;
-  const completedSurveys = userSurveys.filter((survey: any) => survey.status === 'submitted').length;
-  const inProgressSurveys = draftResult.success ? 1 : 0; // User can only have one draft at a time  // Fetch analytics data from database
-  const [analyticsResult, userStatsResult, predictiveResult] = await Promise.all([
-    getSurveyAnalytics(session.user.id),
-    getUserSurveyStatistics(session.user.id),
-    getPredictiveAnalytics(session.user.id)
+  const userStats = userStatsResult.success ? userStatsResult.data : null;
+  const totalSurveys = surveysResult.success ? surveysResult.data?.length || 0 : 0;
+  const completedSurveys = surveysResult.success
+    ? surveysResult.data?.filter((survey: any) => survey.status === 'submitted').length || 0
+    : 0;
+  const inProgressSurveys = draftResult.success ? 1 : 0;
+  const avgCompletion = userStats?.averageCompletion || (completedSurveys > 0 ? 100 : 0);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <UserStatsCard
+        title="Total Surveys"
+        value={totalSurveys}
+        icon={<RiSurveyLine size={24} />}
+        color="blue"
+        trend={{ value: 12, isPositive: true }}
+      />
+      <UserStatsCard
+        title="Completed"
+        value={completedSurveys}
+        icon={<RiCheckboxCircleLine size={24} />}
+        color="green"
+        trend={{ value: 8, isPositive: true }}
+      />
+      <UserStatsCard
+        title="In Progress"
+        value={inProgressSurveys}
+        icon={<RiTimeLine size={24} />}
+        color="orange"
+      />
+      <UserStatsCard
+        title="Analytics Score"
+        value={`${avgCompletion}%`}
+        icon={<RiBarChartLine size={24} />}
+        color="purple"
+        trend={{ value: 5, isPositive: true }}
+      />
+    </div>
+  );
+}
+
+// Async component for Survey Metrics Chart
+async function SurveyMetricsSection({ userId }: { userId: string }) {
+  // Small delay to demonstrate streaming (remove in production)
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  const [analyticsResult, surveysResult, draftResult] = await Promise.all([
+    getSurveyAnalytics(userId),
+    getUserSurveys(userId),
+    getUserDraft()
   ]);
 
-  // Use real data if available, fallback to basic calculations
   const analyticsData = analyticsResult.success ? analyticsResult.data : null;
-  const userStats = userStatsResult.success ? userStatsResult.data : null;
-  const predictiveData = predictiveResult.success ? predictiveResult.data : null;
+  const totalSurveys = surveysResult.success ? surveysResult.data?.length || 0 : 0;
+  const completedSurveys = surveysResult.success
+    ? surveysResult.data?.filter((survey: any) => survey.status === 'submitted').length || 0
+    : 0;
+  const inProgressSurveys = draftResult.success ? 1 : 0;
 
-  // Survey metrics and status data
   const surveyMetricsData = analyticsData?.surveyMetrics || [
     { month: 'Current', submitted: completedSurveys, draft: inProgressSurveys, total: totalSurveys }
   ];
@@ -150,33 +156,40 @@ export default async function UserDashboardPage() {
     { name: 'Draft', value: inProgressSurveys, color: '#6B7280' }
   ];
 
-  // Progress and timeline data
-  const progressData = analyticsData?.progressData || [
-    { step: 'Organization Info', completion: totalSurveys > 0 ? 100 : 0, users: totalSurveys },
-    { step: 'Project Info', completion: totalSurveys > 0 ? 100 : 0, users: totalSurveys },
-    { step: 'Activities', completion: completedSurveys > 0 ? 100 : 0, users: completedSurveys },
-    { step: 'Background', completion: completedSurveys > 0 ? 100 : 0, users: completedSurveys },
-    { step: 'Review', completion: completedSurveys > 0 ? 100 : 0, users: completedSurveys }
-  ];
-  const timelineData = analyticsData?.timelineData || [
-    { date: new Date().toISOString().split('T')[0], progress: userStats?.completionRate || 0, target: 100 }
-  ];
+  return (
+    <SurveyMetricsChart
+      data={surveyMetricsData}
+      statusData={statusData}
+    />
+  );
+}
 
-  // Regional insights
+// Async component for Regional Insights
+async function RegionalInsightsSection({ userId }: { userId: string }) {
+  // Small delay to demonstrate streaming (remove in production)
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  const analyticsResult = await getSurveyAnalytics(userId);
+  const analyticsData = analyticsResult.success ? analyticsResult.data : null;
+
   const regionalData = analyticsData?.regionalData || [];
   const effortData = analyticsData?.effortData || [];
-  // Predictive data (now using real analysis when available)
-  const predictionData = predictiveData?.predictionData || generateMockPredictionData();
-  const milestones = predictiveData?.milestones || generateMockMilestones();
-  const projectedCompletion = predictiveData?.projectedCompletion || 85;
-  const timeToTarget = predictiveData?.timeToTarget || 15;
-  const confidenceLevel = predictiveData?.confidenceLevel || 75;
 
-  // Enhanced statistics from real data
-  const avgCompletion = userStats?.averageCompletion || (completedSurveys > 0 ? 100 : 0);
-  const totalUsers = userStats?.totalUsers || 1;
-  const completionRate = userStats?.completionRate || (totalSurveys > 0 ? Math.floor((completedSurveys / totalSurveys) * 100) : 0);
-  // Prepare active surveys (drafts)
+  return (
+    <RegionalInsights
+      regionMetrics={regionalData}
+      effortData={effortData}
+    />
+  );
+}
+
+// Async component for Active Surveys
+async function ActiveSurveysSection() {
+  // Small delay to demonstrate streaming (remove in production)
+  await new Promise(resolve => setTimeout(resolve, 400));
+
+  const draftResult = await getUserDraft();
+
   const activeSurveys = [];
   if (draftResult.success && draftResult.draft) {
     const draft = draftResult.draft;
@@ -192,9 +205,105 @@ export default async function UserDashboardPage() {
       lastUpdated: lastUpdated
     });
   }
+
+  return (
+    <div className="bg-white rounded-xl p-6 shadow-lg">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+        <RiSurveyLine className="text-blue-500" />
+        Active Surveys
+      </h2>
+      {activeSurveys.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {activeSurveys.map((survey) => (
+            <ActiveSurveyCard
+              key={survey.id}
+              id={survey.id}
+              title={survey.title}
+              progress={survey.progress}
+              lastUpdated={survey.lastUpdated}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="bg-gradient-to-r from-gray-50 to-blue-50 border-2 border-dashed border-blue-300 rounded-xl p-12 text-center">
+          <RiSurveyLine size={64} className="mx-auto text-blue-400 mb-6" />
+          <h3 className="text-xl font-semibold text-gray-700 mb-3">No active surveys found</h3>
+          <p className="text-gray-500 mb-6">Start your first survey to see detailed analytics and insights</p>
+          <Link
+            href="/dashboard/surveys/form"
+            className="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300"
+          >
+            <RiSurveyLine className="mr-2" />
+            Start Your First Survey
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Async component for Submitted Surveys Table
+async function SubmittedSurveysSection({ userId }: { userId: string }) {
+  // Small delay to demonstrate streaming (remove in production)
+  await new Promise(resolve => setTimeout(resolve, 700));
+
+  const surveysResult = await getUserSurveys(userId);
+
+  const userSurveys = surveysResult.success && surveysResult.data
+    ? surveysResult.data.map(survey => ({
+      _id: survey._id?.toString(),
+      projectInfo: survey.projectInfo ? {
+        projectName: survey.projectInfo.projectName,
+        totalProjects: survey.projectInfo.totalProjects,
+        projectDescription: survey.projectInfo.projectDescription,
+        startDate: survey.projectInfo.startDate,
+        endDate: survey.projectInfo.endDate,
+        projectGoal: survey.projectInfo.projectGoal,
+        regions: survey.projectInfo.regions,
+        targetedNCDs: survey.projectInfo.targetedNCDs,
+        fundingSource: survey.projectInfo.fundingSource
+      } : null,
+      organisationInfo: survey.organisationInfo ? {
+        organisationName: survey.organisationInfo.organisationName,
+        region: survey.organisationInfo.region,
+        sector: survey.organisationInfo.sector,
+        email: survey.organisationInfo.email,
+        phone: survey.organisationInfo.hqPhoneNumber
+      } : null,
+      status: survey.status,
+      submissionDate: survey.submissionDate?.toISOString?.() || survey.submissionDate || null,
+      lastUpdated: survey.lastUpdated?.toISOString?.() || survey.lastUpdated || null,
+      createdBy: survey.createdBy ? {
+        userId: survey.createdBy.userId,
+        userName: survey.createdBy.userName
+      } : null
+    }))
+    : [];
+
+  return (
+    <div className="bg-white rounded-xl p-6 shadow-lg">
+      <SubmittedSurveysTable surveys={userSurveys} />
+    </div>
+  );
+}
+
+export default async function UserDashboardPage() {
+  // Get authenticated user session
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-red-700">You need to be logged in to view your dashboard.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
-      {/* Header */}
+      {/* Header - Loads immediately */}
       <div className="flex justify-between items-center bg-white rounded-xl p-6 shadow-lg">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -211,105 +320,30 @@ export default async function UserDashboardPage() {
         </Link>
       </div>
 
-      {/* Enhanced Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <UserStatsCard
-          title="Total Surveys"
-          value={totalSurveys}
-          icon={<RiSurveyLine size={24} />}
-          color="blue"
-          trend={{ value: 12, isPositive: true }}
-        />
-        <UserStatsCard
-          title="Completed"
-          value={completedSurveys}
-          icon={<RiCheckboxCircleLine size={24} />}
-          color="green"
-          trend={{ value: 8, isPositive: true }}
-        />
-        <UserStatsCard
-          title="In Progress"
-          value={inProgressSurveys}
-          icon={<RiTimeLine size={24} />}
-          color="orange"
-        />
-        <UserStatsCard
-          title="Analytics Score"
-          value={`${avgCompletion}%`}
-          icon={<RiBarChartLine size={24} />}
-          color="purple"
-          trend={{ value: 5, isPositive: true }}
-        />
-      </div>
+      {/* Enhanced Stats Cards - Stream in first (fastest) */}
+      <Suspense fallback={<StatsCardsSkeleton />}>
+        <StatsCardsSection userId={session.user.id} />
+      </Suspense>
 
-      {/* Survey Metrics Charts */}
-      <SurveyMetricsChart
-        data={surveyMetricsData}
-        statusData={statusData}
-      />      {/* Progress Analytics - Contains Survey Step Completion and Progress Over Time */}
-      {/*
-      <SurveyProgressAnalytics
-        progressData={progressData}
-        timelineData={timelineData}
-        totalUsers={totalUsers}
-        avgCompletion={avgCompletion}
-        completionRate={completionRate}
-      />
-      */}
+      {/* Survey Metrics Charts - Stream in second */}
+      <Suspense fallback={<ChartSkeleton />}>
+        <SurveyMetricsSection userId={session.user.id} />
+      </Suspense>
 
-      {/* Regional Insights */}
-      <RegionalInsights
-        regionMetrics={regionalData}
-        effortData={effortData}
-      />      {/* Predictive Analytics - Contains Survey Completion Forecast and Upcoming Milestones */}
-      {/*
-      <SurveyPredictiveAnalytics
-        predictionData={predictionData}
-        milestones={milestones}
-        projectedCompletion={projectedCompletion}
-        timeToTarget={timeToTarget}
-        confidenceLevel={confidenceLevel}
-      />
-      */}
+      {/* Regional Insights - Stream in third */}
+      <Suspense fallback={<RegionalInsightsSkeleton />}>
+        <RegionalInsightsSection userId={session.user.id} />
+      </Suspense>
 
-      {/* Active Surveys Section */}
-      <div className="bg-white rounded-xl p-6 shadow-lg">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-          <RiSurveyLine className="text-blue-500" />
-          Active Surveys
-        </h2>
-        {activeSurveys.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeSurveys.map((survey) => (
-              <ActiveSurveyCard
-                key={survey.id}
-                id={survey.id}
-                title={survey.title}
-                progress={survey.progress}
-                lastUpdated={survey.lastUpdated}
-              />
-            ))}
-          </div>
-        ) : (
-            <div className="bg-gradient-to-r from-gray-50 to-blue-50 border-2 border-dashed border-blue-300 rounded-xl p-12 text-center">
-              <RiSurveyLine size={64} className="mx-auto text-blue-400 mb-6" />
-              <h3 className="text-xl font-semibold text-gray-700 mb-3">No active surveys found</h3>
-              <p className="text-gray-500 mb-6">Start your first survey to see detailed analytics and insights</p>
-            <Link
-              href="/dashboard/surveys/form"
-                className="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300"
-            >
-                <RiSurveyLine className="mr-2" />
-              Start Your First Survey
-            </Link>
-            </div>
-        )}
-      </div>
+      {/* Active Surveys Section - Stream in fourth */}
+      <Suspense fallback={<ActiveSurveysSkeleton />}>
+        <ActiveSurveysSection />
+      </Suspense>
 
-      {/* Submitted Surveys Table */}
-      <div className="bg-white rounded-xl p-6 shadow-lg">
-        <SubmittedSurveysTable surveys={userSurveys} />
-      </div>
+      {/* Submitted Surveys Table - Stream in last (potentially slowest) */}
+      <Suspense fallback={<SubmittedSurveysTableSkeleton />}>
+        <SubmittedSurveysSection userId={session.user.id} />
+      </Suspense>
     </div>
   );
 }
