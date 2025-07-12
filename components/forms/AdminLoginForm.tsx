@@ -12,6 +12,7 @@ import { Eye, EyeOff } from 'lucide-react'
 export default function AdminLoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [isRedirecting, setIsRedirecting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -68,17 +69,23 @@ export default function AdminLoginForm() {
         return
       }
 
+      // Show success message and start redirect process
+      setIsRedirecting(true)
       toast.success("Welcome back!", {
         position: "top-center",
-        duration: 2000,
+        duration: 1500,
         style: {
           backgroundColor: '#ECFDF5',
           border: '1px solid #6EE7B7',
           color: '#065F46',
         },
       })
-      router.push("/admin/dashboard")
-      router.refresh()
+
+      // Use Next.js redirect for proper navigation
+      setTimeout(() => {
+        router.push("/admin/dashboard")
+        router.refresh()
+      }, 800)
     } catch (error) {
       toast.error("Connection error. Please try again.", {
         position: "top-center",
@@ -148,10 +155,10 @@ export default function AdminLoginForm() {
 
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || isRedirecting}
             className="w-full bg-[hsl(var(--navy-blue))] hover:bg-[hsl(var(--navy-blue))]/90 text-white"
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isRedirecting ? "Redirecting..." : isLoading ? "Signing in..." : "Sign In"}
           </Button>
         </div>
       </form>
