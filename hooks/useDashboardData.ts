@@ -1,53 +1,72 @@
-"use client"
+'use client';
 
-import { useState, useEffect, useCallback } from 'react'
-import { DashboardStats } from '@/actions/dashboardStats'
+import { useQuery, UseQueryResult, useQueryClient } from '@tanstack/react-query';
+import { DashboardData } from '@/lib/dashboard/types';
 
-interface DashboardData {
-  stats: DashboardStats | null
-  recentActivity: Array<{
-    _id: string;
-    organisationName: string;
-    projectName: string;
-    region: string;
-    submissionDate: string;
-    status: string;
-    createdBy: string;
-  }>
-  timestamp: string
+// This would be the client-side version that calls an API endpoint
+async function fetchDashboardDataClient(userId: string): Promise<DashboardData> {
+  const response = await fetch(`/api/dashboard?userId=${userId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch dashboard data');
+  }
+  return response.json();
 }
 
 interface UseDashboardDataOptions {
-  refreshInterval?: number
-  includeActivity?: boolean
+  enabled?: boolean;
+  staleTime?: number;
+  cacheTime?: number;
+  refetchOnWindowFocus?: boolean;
 }
 
 export function useDashboardData(
-  initialData: DashboardData,
+  userId: string, 
   options: UseDashboardDataOptions = {}
-) {
-  const { refreshInterval = 300000, includeActivity = true } = options // 5 minutes default
-  
-  const [data, setData] = useState<DashboardData>(initialData)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+): UseQueryResult<DashboardData, Error> {
+  const {
+    enabled = true,
+    staleTime = 5 * 60 * 1000, // 5 minutes
+    cacheTime = 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus = false
+  } = options;
 
-  const refreshData = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-      
-      const response = await fetch(`/api/dashboard?includeActivity=${includeActivity}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
+  return useQuery({
+    queryKey: ['dashboard', userId],
+    queryFn: () => fetchDashboardDataClient(userId),
+    enabled: enabled && !!userId,
+    staleTime,
+    cacheTime,
+    refetchOnWindowFocus,
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+}
+
+// Hook for invalidating dashboard data (useful after survey submission)
+export function useInvalidateDashboard() {
+  const queryClient = useQueryClient();
+
+  return (userId?: string) => {
+    if (userId) {
+      queryClient.invalidateQueries(['dashboard', userId]);
+    } else {
+      queryClient.invalidateQueries(['dashboard']);
+    }
+  };
+}
+
+// Hook for prefetching dashboard data
+export function usePrefetchDashboard() {
+  const queryClient = useQueryClient();
+
+  return (userId: string) => {
+    queryClient.prefetchQuery({
+      queryKey: ['dashboard', userId],
+      queryFn: () => fetchDashboardDataClient(userId),
+      staleTime: 5 * 60 * 1000,
+    });
+  };
+}
       
       const newData = await response.json()
       setData(newData)
