@@ -1,24 +1,116 @@
+'use client';
+
 import { Suspense } from 'react';
 import { fetchDashboardData } from '@/lib/dashboard/dashboardService';
+import { useDashboardData, useInvalidateDashboard } from '@/hooks/useDashboardData';
 import DashboardContent from '@/components/dashboard/DashboardContent';
 import DashboardStats from '@/components/dashboard/DashboardStats';
+import DashboardErrorFallback from '@/components/dashboard/DashboardErrorFallback';
 
 interface DashboardDataProps {
   userId: string;
+  enableReactQuery?: boolean;
 }
 
-export default async function DashboardData({ userId }: DashboardDataProps) {
+// Server-side version (original)
+async function ServerDashboardData({ userId }: { userId: string }) {
   const dashboardData = await fetchDashboardData(userId);
   
   return (
     <>
+      <DashboardStats metrics={dashboardData.metrics} />
+      <DashboardContent data={dashboardData} />
+    </>
+  );
+}
+
+// Client-side version with React Query
+function ClientDashboardData({ userId }: { userId: string }) {
+  const {
+    data: dashboardData,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch
+  } = useDashboardData(userId, {
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
+  });
+
+  const invalidateDashboard = useInvalidateDashboard();
+
+  // Handle error state
+  if (isError) {
+    return (
+      <DashboardErrorFallback 
+        error={error || new Error('Unknown error')}
+        resetErrorBoundary={() => {
+          invalidateDashboard(userId);
+          refetch();
+        }}
+      />
+    );
+  }
+
+  // Handle loading state
+  if (isLoading) {
+    return <DashboardLoading />;
+  }
+
+  // Handle no data state
+  if (!dashboardData) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p className="text-yellow-700">No dashboard data available.</p>
+      </div>
+    );
+  }
+
+  // Render dashboard with data
+  return (
+    <div className="space-y-8">
+      {/* Real-time indicator */}
+      {isFetching && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            <span className="text-blue-700 text-sm">Updating dashboard data...</span>
+          </div>
+          <button
+            onClick={() => {
+              invalidateDashboard(userId);
+              refetch();
+            }}
+            className="text-blue-600 hover:text-blue-800 text-sm underline"
+          >
+            Force Refresh
+          </button>
+        </div>
+      )}
+
       {/* Enhanced Stats Cards */}
       <DashboardStats metrics={dashboardData.metrics} />
       
       {/* Dashboard Content */}
       <DashboardContent data={dashboardData} />
-    </>
+    </div>
   );
+}
+
+// Main component that decides which version to use
+export default function DashboardData({ userId, enableReactQuery = false }: DashboardDataProps) {
+  if (enableReactQuery) {
+    return <ClientDashboardData userId={userId} />;
+  } else {
+    return (
+      <Suspense fallback={<DashboardLoading />}>
+        <ServerDashboardData userId={userId} />
+      </Suspense>
+    );
+  }
 }
 
 export function DashboardLoading() {
