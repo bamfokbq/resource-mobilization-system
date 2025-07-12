@@ -118,30 +118,31 @@ export default function DashboardSidebar({
                             </li>
                         )
                     })}
-                </ul>
 
-                {/* Logout button */}
-                <div className="mt-8 pt-4 border-t border-light-blue/20">
-                    <button
-                        onClick={handleSignOut}
-                        className="w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
-                                  hover:text-red-400 transition-all duration-300 focus:outline-none 
-                                  focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
-                                  min-h-[60px] relative"
-                        title="Logout"
-                        disabled={loading}
-                        aria-label="Sign out"
-                    >
-                        {loading ? (
-                            <Loader2 className="animate-spin text-xl" />
-                        ) : (
-                            <>
-                                <LogOut className="text-xl flex-shrink-0" />
-                                <span className="text-xs text-center">Logout</span>
-                            </>
-                        )}
-                    </button>
-                </div>
+                    {/* Logout button as list item - directly below navigation */}
+                    <li role="none" className="mt-4 pt-4 border-t border-light-blue/20">
+                        <button
+                            onClick={handleSignOut}
+                            className="w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
+                                      hover:text-red-400 transition-all duration-300 focus:outline-none 
+                                      focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
+                                      min-h-[60px] relative"
+                            title="Logout"
+                            disabled={loading}
+                            aria-label="Sign out"
+                            role="menuitem"
+                        >
+                            {loading ? (
+                                <Loader2 className="animate-spin text-xl" />
+                            ) : (
+                                <>
+                                    <LogOut className="text-xl flex-shrink-0" />
+                                    <span className="text-xs text-center">Logout</span>
+                                </>
+                            )}
+                        </button>
+                    </li>
+                </ul>
             </nav>
         </aside>
     )
