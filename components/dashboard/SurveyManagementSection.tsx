@@ -22,7 +22,7 @@ export default function SurveyManagementSection() {
                     </div>
                 </div>
                 <Link
-                    href="/admin/surveys"
+                    href="/admin/dashboard/surveys"
                     className="text-purple-600 hover:text-purple-800 font-medium flex items-center gap-2"
                 >
                     View All <TrendingUp size={16} />
