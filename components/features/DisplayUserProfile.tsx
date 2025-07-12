@@ -1,7 +1,7 @@
 "use client";
 import { useUserStore } from '@/store/userStore';
 import { useForm } from 'react-hook-form';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { BsPersonVcard } from 'react-icons/bs';
 import { FiEdit3, FiMail, FiPhone, FiUser, FiSave, FiX } from 'react-icons/fi';
 import { MdOutlineBiotech } from 'react-icons/md';
@@ -13,13 +13,51 @@ interface FormInputs {
   bio: string;
 }
 
-export default function DisplayUserProfile() {
+interface UserData {
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  telephone: string;
+  bio: string;
+  role: string;
+  region?: string;
+  organisation?: string;
+  isActive?: boolean;
+  createdAt?: Date;
+  passwordResetAt?: Date;
+  statusUpdatedAt?: Date;
+}
+
+interface DisplayUserProfileProps {
+  initialUserData?: UserData;
+}
+
+export default function DisplayUserProfile({ initialUserData }: DisplayUserProfileProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Separate selectors to avoid object creation on every render
   const userInfo = useUserStore((state) => state.userInfo);
   const setUserInfo = useUserStore((state) => state.setUserInfo);
+
+  // Initialize user store with database data if provided
+  useEffect(() => {
+    if (initialUserData) {
+      setUserInfo({
+        firstName: initialUserData.firstName,
+        lastName: initialUserData.lastName,
+        name: initialUserData.name,
+        email: initialUserData.email,
+        telephone: initialUserData.telephone,
+        bio: initialUserData.bio,
+        role: initialUserData.role,
+        id: initialUserData.id,
+        _id: initialUserData.id,
+      });
+    }
+  }, [initialUserData, setUserInfo]);
 
   const {
     register,

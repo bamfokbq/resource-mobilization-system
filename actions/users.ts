@@ -276,3 +276,44 @@ export async function toggleUserStatus(userId: string) {
   }
 }
 
+export async function getUserProfile(userId: string) {
+  try {
+    const db = await getDb()
+    const user = await db.collection("users").findOne(
+      { _id: new ObjectId(userId) },
+      {
+        projection: {
+          password: 0, // Exclude password for security
+        }
+      }
+    )
+
+    if (!user) {
+      return { success: false, error: "User not found" }
+    }
+
+    return {
+      success: true,
+      data: {
+        id: user._id.toString(),
+        name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email,
+        telephone: user.telephone || '',
+        bio: user.bio || '',
+        role: user.role || 'User',
+        region: user.region || '',
+        organisation: user.organisation || '',
+        isActive: user.isActive ?? true,
+        createdAt: user.createdAt,
+        passwordResetAt: user.passwordResetAt,
+        statusUpdatedAt: user.statusUpdatedAt
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch user profile:", error)
+    return { success: false, error: "Failed to fetch user profile" }
+  }
+}
+
