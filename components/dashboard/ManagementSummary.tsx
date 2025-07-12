@@ -215,7 +215,7 @@ const ManagementSummary: React.FC<ManagementSummaryProps> = ({ kpis, systemMetri
       </div>
 
       {/* Growth Metrics */}
-      <Card className="border-0 shadow-lg">
+      {/* <Card className="border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900 flex items-center gap-2">
             <TrendingUp className="text-blue-600" size={20} />
@@ -246,7 +246,7 @@ const ManagementSummary: React.FC<ManagementSummaryProps> = ({ kpis, systemMetri
             </div>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   )
 }

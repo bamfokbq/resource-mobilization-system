@@ -132,9 +132,9 @@ const AdminCharts: React.FC<AdminChartsProps> = ({ systemMetrics }) => {
       </div>
 
       {/* Regional Distribution and Sector Analysis */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1">
         {/* Regional Distribution */}
-        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+        {/* <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-900">Regional Distribution</h3>
             <p className="text-sm text-gray-600">Users and surveys by region</p>
@@ -150,7 +150,7 @@ const AdminCharts: React.FC<AdminChartsProps> = ({ systemMetrics }) => {
               <Bar dataKey="surveys" fill={COLORS.secondary} name="Surveys" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
 
         {/* Sector Analysis */}
         <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
