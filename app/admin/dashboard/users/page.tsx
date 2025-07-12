@@ -1,12 +1,10 @@
 import { auth } from '@/auth'
+import {
+    AdminUsersTableSection
+} from '@/components/admin/AdminUsersSections'
 import { AddNewUserModal } from '@/components/features/AddNewUserModal'
 import { Suspense } from 'react'
 import { RiUserLine } from 'react-icons/ri'
-import {
-    AdminUserStatsSection,
-    AdminUsersTableSection
-} from '@/components/admin/AdminUsersSections'
-import { AdminUsersSkeleton } from '@/components/skeletons/AdminSkeletons'
 
 // Individual section skeletons
 function UserStatsSkeleton() {
@@ -70,13 +68,6 @@ export default async function AdminDashboardUserPage() {
                     </div>
                 )}
             </div> 
-
-            {/* User Stats with Streaming */}
-            <Suspense fallback={<UserStatsSkeleton />}>
-                <AdminUserStatsSection />
-            </Suspense>
-
-            {/* Users Table Section with Streaming */}
             <Suspense fallback={<UsersTableSkeleton />}>
                 <AdminUsersTableSection />
             </Suspense>
