@@ -108,7 +108,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
     return (
         <aside
             className={`bg-navy-blue flex-shrink-0 ${isOpen ? 'w-[280px]' : 'w-[80px]'} 
-                       flex flex-col justify-between py-6 relative transition-all duration-300 
+                       flex flex-col py-6 relative transition-all duration-300 
                        shadow-xl border-r border-light-blue/10 h-screen overflow-hidden`}
             role="navigation"
             aria-label="Admin Dashboard Navigation"
@@ -151,7 +151,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
             </div>
 
             {/* Navigation menu */}
-            <nav className="flex-1 px-4 mt-6">
+            <nav className="flex-1 px-4 mt-6 flex flex-col">
                 <ul className='flex flex-col gap-2 w-full' role="menubar">
                     {navigationItems.map((item) => {
                         const isActive = pathname === item.path
@@ -184,30 +184,30 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
                         )
                     })}
                 </ul>
-            </nav>
 
-            {/* Footer with logout */}
-            <div className="px-4 pt-6 border-t border-light-blue/20">
-                <button
-                    onClick={handleSignOut}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg text-white hover:bg-red-500/10 
-                              hover:text-red-400 transition-all duration-300 group focus:outline-none 
-                              focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
-                              ${!isOpen ? 'justify-center' : ''}`}
-                    title={!isOpen ? 'Logout' : ''}
-                    disabled={loading}
-                    aria-label="Sign out"
-                >
-                    {loading ? (
-                        <Loader2 className="animate-spin text-xl" />
-                    ) : (
-                        <>
+                {/* Logout button moved up */}
+                <div className="mt-8 pt-4 border-t border-light-blue/20">
+                    <button
+                        onClick={handleSignOut}
+                        className={`w-full flex items-center gap-3 p-3 rounded-lg text-white hover:bg-red-500/10 
+                                  hover:text-red-400 transition-all duration-300 group focus:outline-none 
+                                  focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
+                                  ${!isOpen ? 'justify-center' : ''}`}
+                        title={!isOpen ? 'Logout' : ''}
+                        disabled={loading}
+                        aria-label="Sign out"
+                    >
+                        {loading ? (
+                            <Loader2 className="animate-spin text-xl" />
+                        ) : (
+                            <>
                                 <LogOut className="text-xl flex-shrink-0" />
                                 {isOpen && <span>Logout</span>}
-                        </>
-                    )}
-                </button>
-            </div>
+                            </>
+                        )}
+                    </button>
+                </div>
+            </nav>
         </aside>
     )
 }
