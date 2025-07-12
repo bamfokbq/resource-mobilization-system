@@ -1,104 +1,107 @@
-'use client';
+"use client"
 
-import { useQuery, UseQueryResult, useQueryClient } from '@tanstack/react-query';
-import { DashboardData } from '@/lib/dashboard/types';
+import { useState, useEffect, useCallback } from 'react'
+import { DashboardStats } from '@/actions/dashboardStats'
 
-// Client-side API call for dashboard data
-async function fetchDashboardDataClient(userId: string): Promise<DashboardData> {
-  const response = await fetch(`/api/dashboard?userId=${userId}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch dashboard data');
-  }
-  return response.json();
+interface DashboardData {
+  stats: DashboardStats | null
+  recentActivity: Array<{
+    _id: string;
+    organisationName: string;
+    projectName: string;
+    region: string;
+    submissionDate: string;
+    status: string;
+    createdBy: string;
+  }>
+  timestamp: string
 }
 
 interface UseDashboardDataOptions {
-  enabled?: boolean;
-  staleTime?: number;
-  gcTime?: number; // Updated from cacheTime in v5
-  refetchOnWindowFocus?: boolean;
-  refetchInterval?: number;
+  refreshInterval?: number
+  includeActivity?: boolean
 }
 
-/**
- * React Query hook for dashboard data with caching and automatic refetching
- */
 export function useDashboardData(
-  userId: string, 
+  initialData: DashboardData,
   options: UseDashboardDataOptions = {}
-): UseQueryResult<DashboardData, Error> {
-  const {
-    enabled = true,
-    staleTime = 5 * 60 * 1000, // 5 minutes
-    gcTime = 10 * 60 * 1000, // 10 minutes (renamed from cacheTime)
-    refetchOnWindowFocus = false,
-    refetchInterval = undefined
-  } = options;
+) {
+  const { refreshInterval = 300000, includeActivity = true } = options // 5 minutes default
 
-  return useQuery({
-    queryKey: ['dashboard', userId],
-    queryFn: () => fetchDashboardDataClient(userId),
-    enabled: enabled && !!userId,
-    staleTime,
-    gcTime,
-    refetchOnWindowFocus,
-    refetchInterval,
-    retry: 2,
-    retryDelay: (attemptIndex: number) => Math.min(1000 * 2 ** attemptIndex, 30000),
-  });
-}
+  const [data, setData] = useState<DashboardData>(initialData)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
-/**
- * Hook for invalidating dashboard data (useful after survey submission)
- */
-export function useInvalidateDashboard() {
-  const queryClient = useQueryClient();
+  const refreshData = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
 
-  return (userId?: string) => {
-    if (userId) {
-      queryClient.invalidateQueries({ queryKey: ['dashboard', userId] });
-    } else {
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      const response = await fetch(`/api/dashboard?includeActivity=${includeActivity}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+
+      const newData = await response.json()
+      setData(newData)
+      setLastUpdated(new Date())
+    } catch (err) {
+      console.error('Failed to refresh dashboard data:', err)
+      setError(err instanceof Error ? err.message : 'Failed to refresh data')
+    } finally {
+      setIsLoading(false)
     }
-  };
-}
+  }, [includeActivity])
 
-/**
- * Hook for prefetching dashboard data (useful for performance optimization)
- */
-export function usePrefetchDashboard() {
-  const queryClient = useQueryClient();
+  const forceRefresh = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
 
-  return (userId: string) => {
-    queryClient.prefetchQuery({
-      queryKey: ['dashboard', userId],
-      queryFn: () => fetchDashboardDataClient(userId),
-      staleTime: 5 * 60 * 1000,
-    });
-  };
-}
+      const response = await fetch('/api/dashboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'refresh' })
+      })
 
-/**
- * Hook for manually refetching dashboard data
- */
-export function useRefreshDashboard() {
-  const queryClient = useQueryClient();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
 
-  return (userId: string) => {
-    return queryClient.refetchQueries({
-      queryKey: ['dashboard', userId],
-      type: 'active'
-    });
-  };
-}
+      const newData = await response.json()
+      setData(newData)
+      setLastUpdated(new Date())
+    } catch (err) {
+      console.error('Failed to force refresh dashboard data:', err)
+      setError(err instanceof Error ? err.message : 'Failed to refresh data')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
-/**
- * Hook for optimistic updates (useful for immediate UI updates)
- */
-export function useOptimisticDashboardUpdate() {
-  const queryClient = useQueryClient();
+  // Set up automatic refresh
+  useEffect(() => {
+    if (refreshInterval > 0) {
+      const interval = setInterval(refreshData, refreshInterval)
+      return () => clearInterval(interval)
+    }
+  }, [refreshData, refreshInterval])
 
-  return (userId: string, updater: (oldData: DashboardData | undefined) => DashboardData) => {
-    queryClient.setQueryData(['dashboard', userId], updater);
-  };
+  return {
+    data,
+    isLoading,
+    error,
+    lastUpdated,
+    refresh: refreshData,
+    forceRefresh
+  }
 }
