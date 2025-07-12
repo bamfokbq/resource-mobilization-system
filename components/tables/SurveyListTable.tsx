@@ -120,32 +120,6 @@ export default function SurveyListTable() {
     // Define table columns
     const columns = useMemo<ColumnDef<SurveyData>[]>(() => [
         { 
-            accessorKey: "_id", 
-            header: ({ column }) => {
-                return (
-                    <div className="flex items-center gap-2 cursor-pointer group hover:text-orange-600 transition-colors duration-200"
-                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                        <span className="font-semibold">ID</span>
-                        <div className="text-slate-400 group-hover:text-orange-500 transition-colors duration-200">
-                            {column.getIsSorted() === "asc" ? (
-                                <FaSortUp className="h-4 w-4" />
-                            ) : column.getIsSorted() === "desc" ? (
-                                <FaSortDown className="h-4 w-4" />
-                            ) : (
-                                <FaSort className="h-4 w-4" />
-                            )}
-                        </div>
-                    </div>
-                )
-            },
-            cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-gradient-to-r from-orange-400 to-red-400 rounded-full"></div>
-                    <span className="font-bold text-slate-900 text-xs">#{row.original._id.slice(-6)}</span>
-                </div>
-            )
-        },
-        { 
             accessorKey: "organisationInfo.organisationName", 
             header: ({ column }) => {
                 return (
@@ -239,7 +213,6 @@ export default function SurveyListTable() {
                     <Badge className={`${getStatusBadge(row.original.status || 'inactive')} hover:bg-none px-3 py-1 text-sm font-medium`}>
                         {(row.original.status || 'inactive').charAt(0).toUpperCase() + (row.original.status || 'inactive').slice(1)}
                     </Badge>
-                    <p className="text-sm text-slate-500">Current Status</p>
                 </div>
             )
         },

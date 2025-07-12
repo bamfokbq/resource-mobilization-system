@@ -43,7 +43,6 @@ export default async function AdminDashboardPage() {
                         <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             Management Dashboard
                         </h1>
-                        <p className="text-gray-600 mt-2 text-sm md:text-base">Executive insights and comprehensive system analytics</p>
                         {dashboardStats && (
                             <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-3">
                                 <div className="flex items-center gap-2">
@@ -242,108 +241,6 @@ export default async function AdminDashboardPage() {
                         <p className="text-gray-600">High-level business performance and strategic insights</p>
                     </div>
                     <ManagementSummary kpis={analyticsData.kpis} systemMetrics={analyticsData.systemMetrics} />
-                </div>
-            )} */}
-
-            {/* Business Intelligence */}
-            {/* {analyticsData?.systemMetrics && (
-                <div>
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <TrendingUp className="text-green-600" size={24} />
-                            Business Intelligence
-                        </h2>
-                        <p className="text-gray-600">Financial metrics, ROI analysis, and market insights</p>
-                    </div>
-                    <BusinessIntelligence systemMetrics={analyticsData.systemMetrics} />
-                </div>
-            )} */}
-
-            {/* Operational Dashboard */}
-            {/* {analyticsData?.kpis && analyticsData?.systemMetrics && (
-                <div>
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <Settings className="text-purple-600" size={24} />
-                            Operational Insights
-                        </h2>
-                        <p className="text-gray-600">System performance, resource utilization, and operational metrics</p>
-                    </div>
-                    <OperationalDashboard
-                        kpis={analyticsData.kpis}
-                        systemMetrics={analyticsData.systemMetrics}
-                        performanceData={performanceData || undefined}
-                    />
-                </div>
-            )} */}
-
-            {/* System Performance Cards */}
-            {/* {performanceData && (
-                <div>
-                    <div className="mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                            <Database className="text-blue-600" size={24} />
-                            System Performance
-                        </h2>
-                        <p className="text-gray-600">Real-time system health and performance indicators</p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 rounded-lg bg-blue-100">
-                                    <Database size={20} className="text-blue-600" />
-                                </div>
-                                <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
-                                    System
-                                </span>
-                            </div>
-                            <h3 className="text-sm font-medium text-gray-600">Database Size</h3>
-                            <p className="text-2xl font-bold text-gray-900">{performanceData.databaseSize}</p>
-                            <p className="text-xs text-gray-500 mt-2">Total storage used</p>
-                        </div>
-
-                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 rounded-lg bg-green-100">
-                                    <Zap size={20} className="text-green-600" />
-                                </div>
-                                <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                                    Performance
-                                </span>
-                            </div>
-                            <h3 className="text-sm font-medium text-gray-600">Response Time</h3>
-                            <p className="text-2xl font-bold text-gray-900">{performanceData.responseTime}ms</p>
-                            <p className="text-xs text-gray-500 mt-2">Average API response</p>
-                        </div>
-
-                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 rounded-lg bg-purple-100">
-                                    <Activity size={20} className="text-purple-600" />
-                                </div>
-                                <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
-                                    Uptime
-                                </span>
-                            </div>
-                            <h3 className="text-sm font-medium text-gray-600">System Uptime</h3>
-                            <p className="text-2xl font-bold text-gray-900">{performanceData.uptime}%</p>
-                            <p className="text-xs text-gray-500 mt-2">Last 30 days</p>
-                        </div>
-
-                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 rounded-lg bg-orange-100">
-                                    <AlertCircle size={20} className="text-orange-600" />
-                                </div>
-                                <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
-                                    Errors
-                                </span>
-                            </div>
-                            <h3 className="text-sm font-medium text-gray-600">Error Rate</h3>
-                            <p className="text-2xl font-bold text-gray-900">{performanceData.errorRate}%</p>
-                            <p className="text-xs text-gray-500 mt-2">24h average</p>
-                        </div>
-                    </div>
                 </div>
             )} */}
 
