@@ -11,6 +11,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import {
     Sheet,
     SheetContent,
     SheetDescription,
@@ -28,7 +36,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import {
     FaAngleDoubleLeft, FaAngleDoubleRight, FaBuilding,
     FaCalendarAlt,
@@ -92,6 +100,9 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [surveyToDelete, setSurveyToDelete] = useState<SurveyData | null>(null);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(
         initialData && !initialData.success ? initialData.message : null
     );
@@ -126,45 +137,49 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
         fetchSurveys();
     }, [initialData]);
 
-    const handleViewSurvey = (survey: SurveyData) => {
+    const handleViewSurvey = useCallback((survey: SurveyData) => {
         setSelectedProject(survey);
         setIsSheetOpen(true);
-    };
+    }, []);
 
-    const handleUpdateSurvey = (survey: SurveyData) => {
+    const handleUpdateSurvey = useCallback((survey: SurveyData) => {
         // Navigate to edit survey page
         router.push(`/survey?id=${survey._id}&mode=edit`);
-    };
+    }, [router]);
 
-    const handleDeleteSurvey = async (survey: SurveyData) => {
-        const orgName = survey.organisationInfo?.organisationName || 'Unknown Organisation';
-        const projectName = survey.projectInfo?.projectName || 'Unnamed Project';
+    const handleDeleteSurvey = useCallback(async (survey: SurveyData) => {
+        setSurveyToDelete(survey);
+        setDeleteConfirmOpen(true);
+        setDeleteError(null);
+    }, []);
 
-        if (window.confirm(`Are you sure you want to delete the survey?\n\nOrganisation: ${orgName}\nProject: ${projectName}\n\nThis action cannot be undone.`)) {
-            setDeletingId(survey._id);
+    const confirmDeleteSurvey = useCallback(async () => {
+        if (!surveyToDelete) return;
 
-            try {
-                const result = await deleteSurvey(survey._id);
+        setDeletingId(surveyToDelete._id);
+        try {
+            const result = await deleteSurvey(surveyToDelete._id);
 
-                if (result.success) {
-                    // Remove the survey from the local state
-                    setData(prev => prev.filter(item => item._id !== survey._id));
-
-                    // You could add a success toast notification here
-                    console.log('Survey deleted successfully:', survey._id);
-                } else {
-                    throw new Error(result.message || 'Failed to delete survey');
-                }
-
-            } catch (error) {
-                console.error('Error deleting survey:', error);
-                const errorMessage = error instanceof Error ? error.message : 'Failed to delete survey. Please try again.';
-                alert(errorMessage);
-            } finally {
-                setDeletingId(null);
+            if (result.success) {
+                // Remove the deleted survey from local state
+                setData(prevData => prevData.filter(survey => survey._id !== surveyToDelete._id));
+                setDeleteConfirmOpen(false);
+                setSurveyToDelete(null);
+            } else {
+                setDeleteError(result.message || 'Failed to delete survey');
             }
+        } catch (err) {
+            setDeleteError('An error occurred while deleting the survey');
+        } finally {
+            setDeletingId(null);
         }
-    };
+    }, [surveyToDelete]);
+
+    const cancelDeleteSurvey = useCallback(() => {
+        setDeleteConfirmOpen(false);
+        setSurveyToDelete(null);
+        setDeleteError(null);
+    }, []);
 
     const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
@@ -379,7 +394,7 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                 </DropdownMenu>
             ),
         },
-    ], [router]);
+    ], [deletingId, handleViewSurvey, handleUpdateSurvey, handleDeleteSurvey]);
 
     const table = useReactTable({
         data,
@@ -757,6 +772,76 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                     )}
                 </SheetContent>
             </Sheet>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle className="text-red-600">Delete Survey</DialogTitle>
+                        <DialogDescription>
+                            Are you sure you want to delete this survey? This action cannot be undone.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    {surveyToDelete && (
+                        <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                            <div>
+                                <span className="font-medium text-gray-700">Organisation:</span>
+                                <span className="ml-2 text-gray-900">
+                                    {surveyToDelete.organisationInfo?.organisationName || 'Unknown Organisation'}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="font-medium text-gray-700">Project:</span>
+                                <span className="ml-2 text-gray-900">
+                                    {surveyToDelete.projectInfo?.projectName || 'Unnamed Project'}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="font-medium text-gray-700">Created By:</span>
+                                <span className="ml-2 text-gray-900">
+                                    {surveyToDelete.createdBy?.name || 'Unknown User'}
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {deleteError && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p className="text-red-800 text-sm">{deleteError}</p>
+                        </div>
+                    )}
+
+                    <DialogFooter className="flex gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={cancelDeleteSurvey}
+                            disabled={deletingId !== null}
+                            className="flex-1"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={confirmDeleteSurvey}
+                            disabled={deletingId !== null}
+                            className="flex-1"
+                        >
+                            {deletingId === surveyToDelete?._id ? (
+                                <>
+                                    <FaSpinner className="animate-spin h-4 w-4 mr-2" />
+                                    Deleting...
+                                </>
+                            ) : (
+                                <>
+                                    <FaTrash className="h-4 w-4 mr-2" />
+                                    Delete Survey
+                                </>
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
