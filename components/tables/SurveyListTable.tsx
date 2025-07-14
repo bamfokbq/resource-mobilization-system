@@ -62,8 +62,6 @@ export default function SurveyListTable() {
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    console.log(selectedProject);
-
     useEffect(() => {
         const fetchSurveys = async () => {
             try {
