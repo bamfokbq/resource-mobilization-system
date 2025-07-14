@@ -168,14 +168,14 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
             },
             cell: ({ row }) => (
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center flex-shrink-0">
                         <FaBuilding className="h-4 w-4 text-blue-600" />
                     </div>
-                    <div>
-                        <div className="font-medium text-gray-900">
+                    <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 truncate" title={row.original?.organisationInfo?.organisationName || 'N/A'}>
                             {row.original?.organisationInfo?.organisationName || 'N/A'}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-500 truncate" title={row.original?.organisationInfo?.sector || 'Unknown sector'}>
                             {row.original?.organisationInfo?.sector || 'Unknown sector'}
                         </div>
                     </div>
@@ -203,14 +203,14 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
             },
             cell: ({ row }) => (
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center flex-shrink-0">
                         <FaUser className="h-4 w-4 text-green-600" />
                     </div>
-                    <div>
-                        <div className="font-medium text-gray-900">
+                    <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 truncate" title={row.original?.createdBy?.name || 'Unknown User'}>
                             {row.original?.createdBy?.name || 'Unknown User'}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-500 truncate" title={row.original?.createdBy?.email || 'No email'}>
                             {row.original?.createdBy?.email || 'No email'}
                         </div>
                     </div>
@@ -238,14 +238,14 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
             },
             cell: ({ row }) => (
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center flex-shrink-0">
                         <FaProjectDiagram className="h-4 w-4 text-purple-600" />
                     </div>
-                    <div>
-                        <div className="font-medium text-gray-900">
+                    <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 truncate" title={row.original?.projectInfo?.projectName || 'Unnamed Project'}>
                             {row.original?.projectInfo?.projectName || 'Unnamed Project'}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-500 truncate" title={row.original?.organisationInfo?.region || 'Unknown region'}>
                             {row.original?.organisationInfo?.region || 'Unknown region'}
                         </div>
                     </div>
@@ -279,18 +279,6 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                     </span>
                 </div>
             ),
-        },
-        {
-            accessorKey: "status",
-            header: "Status",
-            cell: ({ row }) => {
-                const status = row.original.status || 'inactive';
-                return (
-                    <Badge className={`${getStatusBadge(status)} font-medium`}>
-                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                    </Badge>
-                );
-            },
         },
         {
             id: "actions",
@@ -384,12 +372,19 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                 ) : (
                     <>
                         <div className="overflow-x-auto">
-                            <table className="w-full">
+                                    <table className="w-full min-w-full table-fixed">
+                                        <colgroup>
+                                            <col className="w-[30%]" />
+                                            <col className="w-[25%]" />
+                                            <col className="w-[25%]" />
+                                            <col className="w-[10%]" />
+                                            <col className="w-[10%]" />
+                                        </colgroup>
                                 <thead className="bg-gray-50">
                                     {table.getHeaderGroups().map((headerGroup) => (
                                         <tr key={headerGroup.id}>
                                             {headerGroup.headers.map((header) => (
-                                                <th key={header.id} className="px-6 py-4 text-left">
+                                                <th key={header.id} className="px-4 py-4 text-left">
                                                     {header.isPlaceholder
                                                         ? null
                                                         : flexRender(
@@ -405,7 +400,7 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                                     {table.getRowModel().rows.map((row) => (
                                         <tr key={row.id} className="hover:bg-gray-50 transition-colors">
                                             {row.getVisibleCells().map((cell) => (
-                                                <td key={cell.id} className="px-6 py-4">
+                                                <td key={cell.id} className="px-4 py-4 truncate">
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </td>
                                             ))}
