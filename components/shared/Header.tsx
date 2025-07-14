@@ -16,7 +16,12 @@ export default async function Header() {
                 <h1 className='text-navy-blue text-xl font-black'>
                     NCD NAVIGATOR
                 </h1>
-                <Image src="/path.webp" alt='Logo' height={150} width={150} />
+                <Image
+                    src="/path.webp"
+                    priority
+                    alt='Logo'
+                    height={150}
+                    width={150} />
             </div>
             <nav className='hidden lg:flex items-center gap-10'>
                 {!isAuthenticated ? (
