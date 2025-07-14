@@ -72,7 +72,6 @@ export default function SurveyHistoryList({ initialData }: SurveyHistoryListProp
         initialData && !initialData.success ? initialData.message : null
     );
 
-    console.log(selectedProject);
 
     // Update data when initialData changes
     useEffect(() => {

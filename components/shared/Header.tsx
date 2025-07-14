@@ -21,7 +21,9 @@ export default async function Header() {
                     priority
                     alt='Logo'
                     height={150}
-                    width={150} />
+                    width={150}
+                    className='w-auto'
+                />
             </div>
             <nav className='hidden lg:flex items-center gap-10'>
                 {!isAuthenticated ? (
