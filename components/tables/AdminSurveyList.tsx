@@ -1,8 +1,15 @@
 'use client';
 
 import { getAllSurveys } from '@/actions/surveyActions';
+import { deleteSurvey } from '@/actions/surveyActions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
     Sheet,
     SheetContent,
@@ -31,7 +38,11 @@ import {
     FaSortDown,
     FaSortUp,
     FaUser,
-    FaEye
+    FaEye,
+    FaEdit,
+    FaTrash,
+    FaEllipsisV,
+    FaSpinner
 } from 'react-icons/fa';
 import SearchTable from '../shared/SearchTable';
 import SearchTableSkeletion from '../skeletons/SearchTableSkeletion';
@@ -80,6 +91,7 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(
         initialData && !initialData.success ? initialData.message : null
     );
@@ -117,6 +129,41 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
     const handleViewSurvey = (survey: SurveyData) => {
         setSelectedProject(survey);
         setIsSheetOpen(true);
+    };
+
+    const handleUpdateSurvey = (survey: SurveyData) => {
+        // Navigate to edit survey page
+        router.push(`/survey?id=${survey._id}&mode=edit`);
+    };
+
+    const handleDeleteSurvey = async (survey: SurveyData) => {
+        const orgName = survey.organisationInfo?.organisationName || 'Unknown Organisation';
+        const projectName = survey.projectInfo?.projectName || 'Unnamed Project';
+
+        if (window.confirm(`Are you sure you want to delete the survey?\n\nOrganisation: ${orgName}\nProject: ${projectName}\n\nThis action cannot be undone.`)) {
+            setDeletingId(survey._id);
+
+            try {
+                const result = await deleteSurvey(survey._id);
+
+                if (result.success) {
+                    // Remove the survey from the local state
+                    setData(prev => prev.filter(item => item._id !== survey._id));
+
+                    // You could add a success toast notification here
+                    console.log('Survey deleted successfully:', survey._id);
+                } else {
+                    throw new Error(result.message || 'Failed to delete survey');
+                }
+
+            } catch (error) {
+                console.error('Error deleting survey:', error);
+                const errorMessage = error instanceof Error ? error.message : 'Failed to delete survey. Please try again.';
+                alert(errorMessage);
+            } finally {
+                setDeletingId(null);
+            }
+        }
     };
 
     const getStatusBadge = (status: string) => {
@@ -284,17 +331,52 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleViewSurvey(row.original)}
-                        className="hover:bg-blue-50 hover:text-blue-600 border-blue-200"
-                    >
-                        <FaEye className="h-4 w-4 mr-1" />
-                        View
-                    </Button>
-                </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 w-8 p-0 hover:bg-gray-50"
+                            disabled={deletingId === row.original._id}
+                        >
+                            {deletingId === row.original._id ? (
+                                <FaSpinner className="h-4 w-4 animate-spin" />
+                            ) : (
+                                <FaEllipsisV className="h-4 w-4" />
+                            )}
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem
+                            onClick={() => handleViewSurvey(row.original)}
+                            className="cursor-pointer"
+                            disabled={deletingId === row.original._id}
+                        >
+                            <FaEye className="h-4 w-4 mr-2 text-blue-600" />
+                            View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => handleUpdateSurvey(row.original)}
+                            className="cursor-pointer"
+                            disabled={deletingId === row.original._id}
+                        >
+                            <FaEdit className="h-4 w-4 mr-2 text-green-600" />
+                            Edit Survey
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => handleDeleteSurvey(row.original)}
+                            className="cursor-pointer text-red-600 focus:text-red-600"
+                            disabled={deletingId === row.original._id}
+                        >
+                            {deletingId === row.original._id ? (
+                                <FaSpinner className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                                <FaTrash className="h-4 w-4 mr-2" />
+                            )}
+                            {deletingId === row.original._id ? 'Deleting...' : 'Delete Survey'}
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             ),
         },
     ], [router]);
@@ -377,8 +459,8 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                                             <col className="w-[30%]" />
                                             <col className="w-[25%]" />
                                             <col className="w-[25%]" />
-                                            <col className="w-[10%]" />
-                                            <col className="w-[10%]" />
+                                            <col className="w-[12%]" />
+                                            <col className="w-[8%]" />
                                         </colgroup>
                                 <thead className="bg-gray-50">
                                     {table.getHeaderGroups().map((headerGroup) => (
