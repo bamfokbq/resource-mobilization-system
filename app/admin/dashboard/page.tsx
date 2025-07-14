@@ -7,8 +7,8 @@ import {
     AdminKPISection,
     AdminRegionsSection,
     AdminActivitySection,
-    AdminTrendsSection,
-    AdminTechnicalSection,
+    // AdminTrendsSection,
+    // AdminTechnicalSection,
     AdminSurveyManagementSection
 } from '@/components/admin/AdminDashboardSections'
 
@@ -78,7 +78,7 @@ function ActivitySkeleton() {
     )
 }
 
-function TrendsSkeleton() {
+/* function TrendsSkeleton() {
     return (
         <div className="bg-white rounded-xl p-6 shadow-lg">
             <div className="animate-pulse">
@@ -87,9 +87,9 @@ function TrendsSkeleton() {
             </div>
         </div>
     )
-}
+} */
 
-function TechnicalSkeleton() {
+/* function TechnicalSkeleton() {
     return (
         <div className="bg-white rounded-xl p-6 shadow-lg">
             <div className="animate-pulse">
@@ -102,7 +102,7 @@ function TechnicalSkeleton() {
             </div>
         </div>
     )
-}
+} */
 
 function SurveyManagementSkeleton() {
     return (
@@ -167,13 +167,13 @@ export default async function AdminDashboardPage() {
                 <AdminActivitySection />
             </Suspense>
 
-            <Suspense fallback={<TrendsSkeleton />}>
+            {/* <Suspense fallback={<TrendsSkeleton />}>
                 <AdminTrendsSection />
-            </Suspense>
+            </Suspense> */}
 
-            <Suspense fallback={<TechnicalSkeleton />}>
+            {/* <Suspense fallback={<TechnicalSkeleton />}>
                 <AdminTechnicalSection />
-            </Suspense>
+            </Suspense> */}
 
             <Suspense fallback={<SurveyManagementSkeleton />}>
                 <AdminSurveyManagementSection />
