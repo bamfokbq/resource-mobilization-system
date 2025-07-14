@@ -6,10 +6,7 @@ import {
     AdminHeaderSection,
     AdminKPISection,
     AdminRegionsSection,
-    AdminActivitySection,
-    // AdminTrendsSection,
-    // AdminTechnicalSection,
-    AdminSurveyManagementSection
+    AdminActivitySection
 } from '@/components/admin/AdminDashboardSections'
 
 
@@ -78,47 +75,6 @@ function ActivitySkeleton() {
     )
 }
 
-/* function TrendsSkeleton() {
-    return (
-        <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
-                <div className="h-64 bg-gray-200 rounded"></div>
-            </div>
-        </div>
-    )
-} */
-
-/* function TechnicalSkeleton() {
-    return (
-        <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="h-32 bg-gray-200 rounded"></div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-} */
-
-function SurveyManagementSkeleton() {
-    return (
-        <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="h-40 bg-gray-200 rounded"></div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-}
-
 export default async function AdminDashboardPage() {
     // Safe data fetching with proper error handling
     const [analyticsResult, performanceResult, surveysResult] = await Promise.allSettled([
@@ -165,18 +121,6 @@ export default async function AdminDashboardPage() {
 
             <Suspense fallback={<ActivitySkeleton />}>
                 <AdminActivitySection />
-            </Suspense>
-
-            {/* <Suspense fallback={<TrendsSkeleton />}>
-                <AdminTrendsSection />
-            </Suspense> */}
-
-            {/* <Suspense fallback={<TechnicalSkeleton />}>
-                <AdminTechnicalSection />
-            </Suspense> */}
-
-            <Suspense fallback={<SurveyManagementSkeleton />}>
-                <AdminSurveyManagementSection />
             </Suspense>
 
             <ErrorStatesSection
