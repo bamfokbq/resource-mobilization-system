@@ -33,7 +33,7 @@ async function StatsCardsSection({ userId }: { userId: string }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
       <UserStatsCard
-        title="Total Surveys"
+        title="Total Mappings"
         value={totalSurveys}
         icon={<RiSurveyLine size={24} />}
         color="blue"
@@ -238,7 +238,7 @@ export default async function UserDashboardPage() {
           className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
         >
           <RiSurveyLine size={20} />
-          Start New Survey
+          Start New Mapping
         </Link>
       </div>
 

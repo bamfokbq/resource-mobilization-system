@@ -171,7 +171,7 @@ const AdminCharts: React.FC<AdminChartsProps> = ({ systemMetrics }) => {
               <YAxis tick={{ fontSize: 12 }} />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
-              <Bar dataKey="count" fill={COLORS.primary} name="Total Surveys" />
+              <Bar dataKey="count" fill={COLORS.primary} name="Total Mappings" />
               <Bar dataKey="completion" fill={COLORS.secondary} name="Completion %" />
             </BarChart>
           </ResponsiveContainer>

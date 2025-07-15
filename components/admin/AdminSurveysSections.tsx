@@ -21,7 +21,7 @@ export async function AdminSurveysStatsSection() {
                     <div className="p-2 bg-blue-100 rounded-lg">
                         <RiFileList2Line className="text-blue-600" size={20} />
                     </div>
-                    <span className="text-sm font-medium text-gray-600">Total Surveys</span>
+                    <span className="text-sm font-medium text-gray-600">Total Mappings</span>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">{totalSurveys}</div>
                 <div className="text-xs text-gray-500 mt-1">All survey submissions</div>

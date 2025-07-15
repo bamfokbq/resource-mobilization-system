@@ -7,8 +7,9 @@ import DashboardSidebar from '../shared/DashboardSidebar'
 export default function UserDashboardLinks({ session }: UserDashboardLinksProps) {
     // Navigation items configuration
     const navigationItems = [
-        { path: '/dashboard', label: 'Dashboard', icon: Home },
-        { path: '/dashboard/surveys', label: 'Surveys', icon: FileText },
+        // { path: '/dashboard', label: 'Dashboard', icon: Home },
+        // { path: '/dashboard/surveys', label: 'Surveys', icon: FileText },
+        { path: '/dashboard/surveys', label: 'Mapping', icon: FileText },
         { path: '/dashboard/profile', label: 'Profile', icon: Settings },
     ]
 

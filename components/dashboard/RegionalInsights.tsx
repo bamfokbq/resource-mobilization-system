@@ -65,7 +65,7 @@ const CustomScatterTooltip = ({ active, payload }: any) => {
         <p className="font-semibold text-gray-800 mb-2">{data.region}</p>
         <p className="text-sm text-blue-600">Complexity: {data.complexity}</p>
         <p className="text-sm text-green-600">Completion: {data.completion}%</p>
-        <p className="text-sm text-purple-600">Total Surveys: {data.surveys}</p>
+        <p className="text-sm text-purple-600">Total Mappings: {data.surveys}</p>
       </div>
     );
   }

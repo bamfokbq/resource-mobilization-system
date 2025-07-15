@@ -40,9 +40,9 @@ async function SurveyStatsSection({ userId }: { userId: string }) {
             Total
           </span>
         </div>
-        <h3 className="text-sm font-medium text-blue-700 mb-2">Total Surveys</h3>
+        <h3 className="text-sm font-medium text-blue-700 mb-2">Total Mappings</h3>
         <p className="text-3xl font-bold text-blue-900">{totalSurveys}</p>
-        <p className="text-xs text-blue-600 mt-2">All your surveys</p>
+        <p className="text-xs text-blue-600 mt-2">All your mappings</p>
       </div>
 
       <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -98,8 +98,8 @@ async function SurveyControlsSection({ userId }: { userId: string }) {
         <div className="flex items-center gap-3">
           <RiHistoryLine className="text-blue-500" size={24} />
           <div>
-            <h2 className="text-xl font-semibold text-gray-800">Survey History</h2>
-            <p className="text-gray-500 text-sm">View and manage your survey submissions</p>
+            <h2 className="text-xl font-semibold text-gray-800">Mapping History</h2>
+            <p className="text-gray-500 text-sm">View and manage your mapping submissions</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -142,16 +142,16 @@ export default async function SurveysPage() {
       <div className="flex justify-between items-center bg-white rounded-xl p-6 shadow-lg">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Survey Management
+            Mapping Management
           </h1>
-          <p className="text-gray-600 mt-2">Manage and track all your surveys in one place</p>
+          <p className="text-gray-600 mt-2">Manage and track all your mappings in one place</p>
         </div>
         <Link
           href="/dashboard/surveys/form"
           className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
         >
           <RiAddLine size={20} />
-          Start New Survey
+          Start New Mapping
         </Link>
       </div>
 
