@@ -57,7 +57,7 @@ const FEATURES = [
 const RESOURCES_LINK = [
     {
         id: 1,
-        title: "Take the Survey",
+        title: "Take the Mapping",
         description: "Provide insights on NCD-related activities.",
         link: '/survey',
     },
