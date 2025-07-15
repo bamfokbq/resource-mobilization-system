@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
-import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
-import { getAllSurveys } from '@/actions/surveyActions'
-import ErrorStatesSection from '@/components/dashboard/ErrorStatesSection'
+// import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
+// import { getAllSurveys } from '@/actions/surveyActions'
+// import ErrorStatesSection from '@/components/dashboard/ErrorStatesSection'
 import {
     AdminHeaderSection,
     AdminKPISection,
@@ -77,33 +77,33 @@ function ActivitySkeleton() {
 
 export default async function AdminDashboardPage() {
     // Safe data fetching with proper error handling
-    const [analyticsResult, performanceResult, surveysResult] = await Promise.allSettled([
-        getAdminAnalytics().catch(error => {
-            console.error('Analytics fetch failed:', error)
-            return { success: false, error: error.message || 'Failed to fetch analytics data' }
-        }),
-        getSystemPerformanceMetrics().catch(error => {
-            console.error('Performance metrics fetch failed:', error)
-            return { success: false, error: error.message || 'Failed to fetch performance data' }
-        }),
-        getAllSurveys().catch(error => {
-            console.error('Surveys fetch failed:', error)
-            return { success: false, error: error.message || 'Failed to fetch surveys data' }
-        }),
-    ])
+    // const [analyticsResult, performanceResult, surveysResult] = await Promise.allSettled([
+    //     getAdminAnalytics().catch(error => {
+    //         console.error('Analytics fetch failed:', error)
+    //         return { success: false, error: error.message || 'Failed to fetch analytics data' }
+    //     }),
+    //     getSystemPerformanceMetrics().catch(error => {
+    //         console.error('Performance metrics fetch failed:', error)
+    //         return { success: false, error: error.message || 'Failed to fetch performance data' }
+    //     }),
+    //     getAllSurveys().catch(error => {
+    //         console.error('Surveys fetch failed:', error)
+    //         return { success: false, error: error.message || 'Failed to fetch surveys data' }
+    //     }),
+    // ])
 
     // Extract results from Promise.allSettled
-    const analyticsData = analyticsResult.status === 'fulfilled'
-        ? analyticsResult.value
-        : { success: false, error: 'Connection failed' }
+    // const analyticsData = analyticsResult.status === 'fulfilled'
+    //     ? analyticsResult.value
+    //     : { success: false, error: 'Connection failed' }
 
-    const performanceData = performanceResult.status === 'fulfilled'
-        ? performanceResult.value
-        : { success: false, error: 'Connection failed' }
+    // const performanceData = performanceResult.status === 'fulfilled'
+    //     ? performanceResult.value
+    //     : { success: false, error: 'Connection failed' }
 
-    const surveysData = surveysResult.status === 'fulfilled'
-        ? surveysResult.value
-        : { success: false, error: 'Connection failed' }
+    // const surveysData = surveysResult.status === 'fulfilled'
+    //     ? surveysResult.value
+    //     : { success: false, error: 'Connection failed' }
 
     return (
         <div className="p-4 md:p-6 space-y-6 md:space-y-8 bg-gray-50 min-h-screen overflow-x-hidden">
@@ -123,12 +123,12 @@ export default async function AdminDashboardPage() {
                 <AdminActivitySection />
             </Suspense>
 
-            <ErrorStatesSection
+            {/* <ErrorStatesSection
                 analyticsResult={analyticsData}
                 performanceResult={performanceData}
                 dashboardStatsResult={{ success: true }}
                 surveysResult={surveysData}
-            />
+            /> */}
         </div>
     )
 }

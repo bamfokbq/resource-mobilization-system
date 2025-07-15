@@ -3,11 +3,7 @@ import AdminCharts from '@/components/dashboard/AdminCharts'
 import AdminKPICards from '@/components/dashboard/AdminKPICards'
 import { UserEngagementCharts } from '@/components/dashboard/UserEngagementCharts'
 
-// Simulate network delay for demonstration purposes
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 export async function AdminAnalyticsKPISection() {
-    await delay(200) // High priority
     const [analyticsResult] = await Promise.all([
         getAdminAnalytics()
     ])
@@ -18,7 +14,6 @@ export async function AdminAnalyticsKPISection() {
 }
 
 export async function AdminChartsSection() {
-    await delay(400) // Medium priority
     const analyticsResult = await getAdminAnalytics()
     
     const analyticsData = analyticsResult.success ? analyticsResult.data : null
@@ -31,7 +26,6 @@ export async function AdminChartsSection() {
 }
 
 export async function AdminEngagementSection() {
-    await delay(600) // Lower priority
     const analyticsResult = await getAdminAnalytics()
     const analyticsData = analyticsResult.success ? analyticsResult.data : null
     
