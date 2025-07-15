@@ -1,15 +1,12 @@
 import { Suspense } from 'react'
-import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
-import { getAllSurveys } from '@/actions/surveyActions'
-import ErrorStatesSection from '@/components/dashboard/ErrorStatesSection'
+// import { getAdminAnalytics, getSystemPerformanceMetrics } from '@/actions/adminAnalytics'
+// import { getAllSurveys } from '@/actions/surveyActions'
+// import ErrorStatesSection from '@/components/dashboard/ErrorStatesSection'
 import {
     AdminHeaderSection,
     AdminKPISection,
     AdminRegionsSection,
-    AdminActivitySection,
-    // AdminTrendsSection,
-    // AdminTechnicalSection,
-    AdminSurveyManagementSection
+    AdminActivitySection
 } from '@/components/admin/AdminDashboardSections'
 
 
@@ -78,76 +75,35 @@ function ActivitySkeleton() {
     )
 }
 
-/* function TrendsSkeleton() {
-    return (
-        <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
-                <div className="h-64 bg-gray-200 rounded"></div>
-            </div>
-        </div>
-    )
-} */
-
-/* function TechnicalSkeleton() {
-    return (
-        <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="h-32 bg-gray-200 rounded"></div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-} */
-
-function SurveyManagementSkeleton() {
-    return (
-        <div className="bg-white rounded-xl p-6 shadow-lg">
-            <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="h-40 bg-gray-200 rounded"></div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
-}
-
 export default async function AdminDashboardPage() {
     // Safe data fetching with proper error handling
-    const [analyticsResult, performanceResult, surveysResult] = await Promise.allSettled([
-        getAdminAnalytics().catch(error => {
-            console.error('Analytics fetch failed:', error)
-            return { success: false, error: error.message || 'Failed to fetch analytics data' }
-        }),
-        getSystemPerformanceMetrics().catch(error => {
-            console.error('Performance metrics fetch failed:', error)
-            return { success: false, error: error.message || 'Failed to fetch performance data' }
-        }),
-        getAllSurveys().catch(error => {
-            console.error('Surveys fetch failed:', error)
-            return { success: false, error: error.message || 'Failed to fetch surveys data' }
-        }),
-    ])
+    // const [analyticsResult, performanceResult, surveysResult] = await Promise.allSettled([
+    //     getAdminAnalytics().catch(error => {
+    //         console.error('Analytics fetch failed:', error)
+    //         return { success: false, error: error.message || 'Failed to fetch analytics data' }
+    //     }),
+    //     getSystemPerformanceMetrics().catch(error => {
+    //         console.error('Performance metrics fetch failed:', error)
+    //         return { success: false, error: error.message || 'Failed to fetch performance data' }
+    //     }),
+    //     getAllSurveys().catch(error => {
+    //         console.error('Surveys fetch failed:', error)
+    //         return { success: false, error: error.message || 'Failed to fetch surveys data' }
+    //     }),
+    // ])
 
     // Extract results from Promise.allSettled
-    const analyticsData = analyticsResult.status === 'fulfilled'
-        ? analyticsResult.value
-        : { success: false, error: 'Connection failed' }
+    // const analyticsData = analyticsResult.status === 'fulfilled'
+    //     ? analyticsResult.value
+    //     : { success: false, error: 'Connection failed' }
 
-    const performanceData = performanceResult.status === 'fulfilled'
-        ? performanceResult.value
-        : { success: false, error: 'Connection failed' }
+    // const performanceData = performanceResult.status === 'fulfilled'
+    //     ? performanceResult.value
+    //     : { success: false, error: 'Connection failed' }
 
-    const surveysData = surveysResult.status === 'fulfilled'
-        ? surveysResult.value
-        : { success: false, error: 'Connection failed' }
+    // const surveysData = surveysResult.status === 'fulfilled'
+    //     ? surveysResult.value
+    //     : { success: false, error: 'Connection failed' }
 
     return (
         <div className="p-4 md:p-6 space-y-6 md:space-y-8 bg-gray-50 min-h-screen overflow-x-hidden">
@@ -167,24 +123,12 @@ export default async function AdminDashboardPage() {
                 <AdminActivitySection />
             </Suspense>
 
-            {/* <Suspense fallback={<TrendsSkeleton />}>
-                <AdminTrendsSection />
-            </Suspense> */}
-
-            {/* <Suspense fallback={<TechnicalSkeleton />}>
-                <AdminTechnicalSection />
-            </Suspense> */}
-
-            <Suspense fallback={<SurveyManagementSkeleton />}>
-                <AdminSurveyManagementSection />
-            </Suspense>
-
-            <ErrorStatesSection
+            {/* <ErrorStatesSection
                 analyticsResult={analyticsData}
                 performanceResult={performanceData}
                 dashboardStatsResult={{ success: true }}
                 surveysResult={surveysData}
-            />
+            /> */}
         </div>
     )
 }

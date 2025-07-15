@@ -10,9 +10,6 @@ const LoginSchema = z.object({
 })
 
 export async function adminLoginAction(prevState: any, formData: FormData) {
-  // Simulate a delay to mimic real-world authentication
-  await new Promise(resolve => setTimeout(resolve, 1000))
-
   const rawFormData = {
     email: formData.get('email'),
     password: formData.get('password'),

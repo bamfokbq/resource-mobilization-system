@@ -11,9 +11,6 @@ import { TrendingUp, Activity, Users, CheckCircle } from 'lucide-react'
 
 // Async component for Survey Statistics Cards - Fastest loading
 async function SurveyStatsSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 100));
-
   const [surveysResult, analyticsResult] = await Promise.all([
     getUserSurveys(userId),
     getSurveyAnalytics(userId)
@@ -95,9 +92,6 @@ async function SurveyStatsSection({ userId }: { userId: string }) {
 
 // Async component for Survey Controls - Medium loading
 async function SurveyControlsSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 200));
-
   return (
     <div className="bg-white rounded-xl p-6 shadow-lg">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -123,9 +117,6 @@ async function SurveyControlsSection({ userId }: { userId: string }) {
 
 // Async component for Survey History List - Slower loading
 async function SurveyHistorySection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 400));
-
   const surveysResult = await getUserSurveys(userId);
 
   return <SurveyHistoryList initialData={surveysResult} />;

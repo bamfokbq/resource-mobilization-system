@@ -3,9 +3,11 @@
 import React from 'react'
 import { Badge } from '@/components/ui/badge'
 import { FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaUser } from 'react-icons/fa'
+import Link from 'next/link'
+import { TrendingUp } from 'lucide-react'
 
 interface RecentActivityProps {
-    activities: Array<{
+  activities: Array<{
     organisationName: string;
     projectName: string;
     region: string;
@@ -65,14 +67,14 @@ const RecentSurveyActivity: React.FC<RecentActivityProps> = ({ activities }) => 
           </div>
         </div>
         <Badge variant="outline" className="text-xs">
-                  Last {activities.length} activities
+          Last {activities.length} activities
         </Badge>
       </div>
-      
+
       <div className="space-y-4">
-              {activities.map((activity, index) => (
-          <div 
-                      key={index} 
+        {activities.map((activity, index) => (
+          <div
+            key={index}
             className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
           >
             <div className="flex-1">
@@ -82,7 +84,7 @@ const RecentSurveyActivity: React.FC<RecentActivityProps> = ({ activities }) => 
                 <span className="text-gray-400">•</span>
                 <span className="text-sm text-gray-600">{activity.projectName}</span>
               </div>
-              
+
               <div className="flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
                   <FaMapMarkerAlt className="h-3 w-3" />
@@ -98,7 +100,7 @@ const RecentSurveyActivity: React.FC<RecentActivityProps> = ({ activities }) => 
                 </div>
               </div>
             </div>
-            
+
             <div className="ml-4">
               <Badge className={`${getStatusBadge(activity.status)} font-medium`}>
                 {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
@@ -106,6 +108,14 @@ const RecentSurveyActivity: React.FC<RecentActivityProps> = ({ activities }) => 
             </div>
           </div>
         ))}
+        <div className='flex items-center justify-end mt-4'>
+          <Link
+            href="/admin/dashboard/surveys"
+            className="text-purple-600 hover:text-purple-800 font-medium flex items-center gap-2"
+          >
+            View All <TrendingUp size={16} />
+          </Link>
+        </div>
       </div>
     </div>
   )

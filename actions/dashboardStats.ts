@@ -1,5 +1,6 @@
 "use server"
 
+import { unstable_cache, revalidateTag } from 'next/cache'
 import { getDb } from "@/lib/db"
 
 export interface DashboardStats {
@@ -13,7 +14,8 @@ export interface DashboardStats {
   monthlyTrends: Array<{ month: string; surveys: number; drafts: number }>
 }
 
-export async function getDashboardStats(): Promise<{
+// Internal function that performs the actual database operations
+async function _getDashboardStatsInternal(): Promise<{
   success: boolean;
   data?: DashboardStats;
   message: string;
@@ -45,64 +47,77 @@ export async function getDashboardStats(): Promise<{
     const totalAttempts = totalSurveys + totalDrafts
     const completionRate = totalAttempts > 0 ? Math.round((totalSurveys / totalAttempts) * 100) : 0
 
-    // Get top regions
-    const regionStats = await surveysCollection.aggregate([
-      { $match: { status: 'submitted', 'organisationInfo.region': { $exists: true } } },
-      { $group: { _id: '$organisationInfo.region', count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 5 },
-      { $project: { region: '$_id', count: 1, _id: 0 } }
-    ]).toArray()
-
-    // Get top sectors
-    const sectorStats = await surveysCollection.aggregate([
-      { $match: { status: 'submitted', 'organisationInfo.sector': { $exists: true } } },
-      { $group: { _id: '$organisationInfo.sector', count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 5 },
-      { $project: { sector: '$_id', count: 1, _id: 0 } }
-    ]).toArray()
-
-    // Get monthly trends (last 6 months)
+    // Get monthly trends date range (last 6 months)
     const sixMonthsAgo = new Date()
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
 
-    const surveyTrends = await surveysCollection.aggregate([
-      {
-        $match: {
-          status: 'submitted',
-          submissionDate: { $gte: sixMonthsAgo }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: '$submissionDate' },
-            month: { $month: '$submissionDate' }
-          },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { '_id.year': 1, '_id.month': 1 } }
-    ]).toArray()
+    // Run all aggregation queries in parallel
+    const [regionStats, sectorStats, surveyTrends, draftTrends] = await Promise.all([
+      // Get top regions
+      surveysCollection.aggregate([
+        { $match: { status: 'submitted', 'organisationInfo.region': { $exists: true } } },
+        { $group: { _id: '$organisationInfo.region', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        { $project: { region: '$_id', count: 1, _id: 0 } }
+      ]).toArray(),
 
-    const draftTrends = await draftsCollection.aggregate([
-      {
-        $match: {
-          createdAt: { $gte: sixMonthsAgo }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: '$createdAt' },
-            month: { $month: '$createdAt' }
-          },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { '_id.year': 1, '_id.month': 1 } }
-    ]).toArray()
+      // Get top sectors
+      surveysCollection.aggregate([
+        { $match: { status: 'submitted', 'organisationInfo.sector': { $exists: true } } },
+        { $group: { _id: '$organisationInfo.sector', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        { $project: { sector: '$_id', count: 1, _id: 0 } }
+      ]).toArray(),
+
+      // Get survey trends (last 6 months)
+      surveysCollection.aggregate([
+        {
+          $match: {
+            status: 'submitted',
+            submissionDate: { $gte: sixMonthsAgo }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$submissionDate' },
+              month: { $month: '$submissionDate' }
+            },
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { '_id.year': 1, '_id.month': 1 } }
+      ]).toArray(),
+
+      // Get draft trends (last 6 months)
+      draftsCollection.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: sixMonthsAgo }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$createdAt' },
+              month: { $month: '$createdAt' }
+            },
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { '_id.year': 1, '_id.month': 1 } }
+      ]).toArray()
+    ])
+
+    // Convert surveyTrends and draftTrends arrays into maps for faster monthly trend lookup
+    const surveyTrendsMap = new Map(
+      surveyTrends.map(trend => [`${trend._id.year}-${trend._id.month}`, trend.count])
+    )
+    const draftTrendsMap = new Map(
+      draftTrends.map(trend => [`${trend._id.year}-${trend._id.month}`, trend.count])
+    )
 
     // Format monthly trends
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -113,9 +128,10 @@ export async function getDashboardStats(): Promise<{
       date.setMonth(date.getMonth() - i)
       const year = date.getFullYear()
       const month = date.getMonth() + 1
+      const key = `${year}-${month}`
       
-      const surveyCount = surveyTrends.find(t => t._id.year === year && t._id.month === month)?.count || 0
-      const draftCount = draftTrends.find(t => t._id.year === year && t._id.month === month)?.count || 0
+      const surveyCount = surveyTrendsMap.get(key) || 0
+      const draftCount = draftTrendsMap.get(key) || 0
       
       monthlyTrends.push({
         month: monthNames[date.getMonth()],
@@ -149,8 +165,18 @@ export async function getDashboardStats(): Promise<{
   }
 }
 
-// Get recent survey activity for dashboard
-export async function getRecentSurveyActivity(limit: number = 10): Promise<{
+// Cached version of getDashboardStats with 5-minute revalidation
+export const getDashboardStats = unstable_cache(
+  _getDashboardStatsInternal,
+  ['dashboard-stats'],
+  {
+    revalidate: 300, // 5 minutes
+    tags: ['dashboard-stats', 'surveys', 'drafts', 'users']
+  }
+)
+
+// Internal function for recent survey activity
+async function _getRecentSurveyActivityInternal(limit: number = 10): Promise<{
   success: boolean;
   data?: Array<{
     organisationName: string;
@@ -207,4 +233,32 @@ export async function getRecentSurveyActivity(limit: number = 10): Promise<{
       message: error instanceof Error ? error.message : 'Failed to fetch recent survey activity'
     }
   }
+}
+
+// Cached version of getRecentSurveyActivity with 2-minute revalidation
+export const getRecentSurveyActivity = unstable_cache(
+  _getRecentSurveyActivityInternal,
+  ['recent-survey-activity'],
+  {
+    revalidate: 120, // 2 minutes (more frequent updates for recent activity)
+    tags: ['recent-activity', 'surveys']
+  }
+)
+
+// Cache invalidation functions
+export async function invalidateDashboardStatsCache() {
+  revalidateTag('dashboard-stats')
+  revalidateTag('surveys')
+  revalidateTag('drafts')
+  revalidateTag('users')
+}
+
+export async function invalidateRecentActivityCache() {
+  revalidateTag('recent-activity')
+  revalidateTag('surveys')
+}
+
+export async function invalidateAllDashboardCaches() {
+  await invalidateDashboardStatsCache()
+  await invalidateRecentActivityCache()
 }

@@ -1,8 +1,23 @@
 'use client';
 
 import { getAllSurveys } from '@/actions/surveyActions';
+import { deleteSurvey } from '@/actions/surveyActions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import {
     Sheet,
     SheetContent,
@@ -21,7 +36,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import {
     FaAngleDoubleLeft, FaAngleDoubleRight, FaBuilding,
     FaCalendarAlt,
@@ -31,7 +46,11 @@ import {
     FaSortDown,
     FaSortUp,
     FaUser,
-    FaEye
+    FaEye,
+    FaEdit,
+    FaTrash,
+    FaEllipsisV,
+    FaSpinner
 } from 'react-icons/fa';
 import SearchTable from '../shared/SearchTable';
 import SearchTableSkeletion from '../skeletons/SearchTableSkeletion';
@@ -80,6 +99,10 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [selectedProject, setSelectedProject] = useState<SurveyData | null>(null);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [surveyToDelete, setSurveyToDelete] = useState<SurveyData | null>(null);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(
         initialData && !initialData.success ? initialData.message : null
     );
@@ -114,10 +137,49 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
         fetchSurveys();
     }, [initialData]);
 
-    const handleViewSurvey = (survey: SurveyData) => {
+    const handleViewSurvey = useCallback((survey: SurveyData) => {
         setSelectedProject(survey);
         setIsSheetOpen(true);
-    };
+    }, []);
+
+    const handleUpdateSurvey = useCallback((survey: SurveyData) => {
+        // Navigate to edit survey page
+        router.push(`/survey?id=${survey._id}&mode=edit`);
+    }, [router]);
+
+    const handleDeleteSurvey = useCallback(async (survey: SurveyData) => {
+        setSurveyToDelete(survey);
+        setDeleteConfirmOpen(true);
+        setDeleteError(null);
+    }, []);
+
+    const confirmDeleteSurvey = useCallback(async () => {
+        if (!surveyToDelete) return;
+
+        setDeletingId(surveyToDelete._id);
+        try {
+            const result = await deleteSurvey(surveyToDelete._id);
+
+            if (result.success) {
+                // Remove the deleted survey from local state
+                setData(prevData => prevData.filter(survey => survey._id !== surveyToDelete._id));
+                setDeleteConfirmOpen(false);
+                setSurveyToDelete(null);
+            } else {
+                setDeleteError(result.message || 'Failed to delete survey');
+            }
+        } catch (err) {
+            setDeleteError('An error occurred while deleting the survey');
+        } finally {
+            setDeletingId(null);
+        }
+    }, [surveyToDelete]);
+
+    const cancelDeleteSurvey = useCallback(() => {
+        setDeleteConfirmOpen(false);
+        setSurveyToDelete(null);
+        setDeleteError(null);
+    }, []);
 
     const getStatusBadge = (status: string) => {
         const statusColors: Record<string, string> = {
@@ -284,20 +346,55 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleViewSurvey(row.original)}
-                        className="hover:bg-blue-50 hover:text-blue-600 border-blue-200"
-                    >
-                        <FaEye className="h-4 w-4 mr-1" />
-                        View
-                    </Button>
-                </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 w-8 p-0 hover:bg-gray-50"
+                            disabled={deletingId === row.original._id}
+                        >
+                            {deletingId === row.original._id ? (
+                                <FaSpinner className="h-4 w-4 animate-spin" />
+                            ) : (
+                                <FaEllipsisV className="h-4 w-4" />
+                            )}
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem
+                            onClick={() => handleViewSurvey(row.original)}
+                            className="cursor-pointer"
+                            disabled={deletingId === row.original._id}
+                        >
+                            <FaEye className="h-4 w-4 mr-2 text-blue-600" />
+                            View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => handleUpdateSurvey(row.original)}
+                            className="cursor-pointer"
+                            disabled={deletingId === row.original._id}
+                        >
+                            <FaEdit className="h-4 w-4 mr-2 text-green-600" />
+                            Edit Survey
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => handleDeleteSurvey(row.original)}
+                            className="cursor-pointer text-red-600 focus:text-red-600"
+                            disabled={deletingId === row.original._id}
+                        >
+                            {deletingId === row.original._id ? (
+                                <FaSpinner className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                                <FaTrash className="h-4 w-4 mr-2" />
+                            )}
+                            {deletingId === row.original._id ? 'Deleting...' : 'Delete Survey'}
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             ),
         },
-    ], [router]);
+    ], [deletingId, handleViewSurvey, handleUpdateSurvey, handleDeleteSurvey]);
 
     const table = useReactTable({
         data,
@@ -377,8 +474,8 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                                             <col className="w-[30%]" />
                                             <col className="w-[25%]" />
                                             <col className="w-[25%]" />
-                                            <col className="w-[10%]" />
-                                            <col className="w-[10%]" />
+                                            <col className="w-[12%]" />
+                                            <col className="w-[8%]" />
                                         </colgroup>
                                 <thead className="bg-gray-50">
                                     {table.getHeaderGroups().map((headerGroup) => (
@@ -675,6 +772,76 @@ export default function AdminSurveyList({ initialData }: AdminSurveyListProps) {
                     )}
                 </SheetContent>
             </Sheet>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle className="text-red-600">Delete Survey</DialogTitle>
+                        <DialogDescription>
+                            Are you sure you want to delete this survey? This action cannot be undone.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    {surveyToDelete && (
+                        <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                            <div>
+                                <span className="font-medium text-gray-700">Organisation:</span>
+                                <span className="ml-2 text-gray-900">
+                                    {surveyToDelete.organisationInfo?.organisationName || 'Unknown Organisation'}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="font-medium text-gray-700">Project:</span>
+                                <span className="ml-2 text-gray-900">
+                                    {surveyToDelete.projectInfo?.projectName || 'Unnamed Project'}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="font-medium text-gray-700">Created By:</span>
+                                <span className="ml-2 text-gray-900">
+                                    {surveyToDelete.createdBy?.name || 'Unknown User'}
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {deleteError && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                            <p className="text-red-800 text-sm">{deleteError}</p>
+                        </div>
+                    )}
+
+                    <DialogFooter className="flex gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={cancelDeleteSurvey}
+                            disabled={deletingId !== null}
+                            className="flex-1"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={confirmDeleteSurvey}
+                            disabled={deletingId !== null}
+                            className="flex-1"
+                        >
+                            {deletingId === surveyToDelete?._id ? (
+                                <>
+                                    <FaSpinner className="animate-spin h-4 w-4 mr-2" />
+                                    Deleting...
+                                </>
+                            ) : (
+                                <>
+                                    <FaTrash className="h-4 w-4 mr-2" />
+                                    Delete Survey
+                                </>
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

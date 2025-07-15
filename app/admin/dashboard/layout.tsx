@@ -1,8 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import AdminDashboardLinks from '@/components/features/AdminDashboardLinks'
 import Header from '@/components/shared/Header'
-import AdminLoadingScreen from '@/components/shared/AdminLoadingScreen'
-import RedirectLoadingScreen from '@/components/shared/RedirectLoadingScreen'
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation'
 
@@ -12,28 +10,16 @@ export default async function AdminDashboardLayout({
     children: React.ReactNode;
 }>) {
     const session = await auth();
+
+    // Immediate redirects without loading screens
     if (!session) {
-        return (
-            <>
-                <RedirectLoadingScreen type="login" />
-                {redirect('/admin')}
-            </>
-        );
+        redirect('/admin');
     }
+
     const role = session?.user?.role;
 
-    if (role && role !== 'Admin') {
-        return (
-            <>
-                <RedirectLoadingScreen type="dashboard" />
-                {redirect('/dashboard')}
-            </>
-        );
-    }
-
-    // Show loading screen while role is being verified
-    if (!role) {
-        return <AdminLoadingScreen />;
+    if (!role || role !== 'Admin') {
+        redirect('/dashboard');
     }
 
     return (

@@ -32,9 +32,6 @@ export default function DisplayAdminProfile() {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call for admin profile update
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
       // For now, just show success message
       // In a real app, this would call an admin update action
       setIsEditing(false);

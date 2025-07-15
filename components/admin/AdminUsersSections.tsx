@@ -1,13 +1,7 @@
-import { Suspense } from 'react'
-import { auth } from '@/auth'
-import { getAllUsers, getUserStats } from '@/actions/users'
+import { getUserStats } from '@/actions/users'
 import RealAdminUsersTable from '@/components/tables/RealAdminUsersTable'
 
-// Simulate network delay for demonstration purposes
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-
 export async function AdminUserStatsSection() {
-    await delay(200) // High priority
     const userStats = await getUserStats()
     
     return (
@@ -60,6 +54,5 @@ export async function AdminUserStatsSection() {
 }
 
 export async function AdminUsersTableSection() {
-    await delay(500) // Lower priority
     return <RealAdminUsersTable />
 }
