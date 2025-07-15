@@ -13,7 +13,7 @@ export default function SurveyHero() {
                     <div className='flex gap-5 justify-between md:justify-start'>
                         <PrimaryButton
                             href="/auth/signin"
-                            text="Take the Survey"
+                            text="Take the Mapping"
                             bgColor="bg-pine-yellow"
                             textColor="text-navy-blue"
                         />
