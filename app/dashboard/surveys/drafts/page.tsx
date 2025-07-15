@@ -179,7 +179,7 @@ export default function DraftManagementPage() {
                   className="bg-blue-600 hover:bg-blue-700"
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  Start New Survey
+                  Start New Mapping
                 </Button>
               </div>
             </div>

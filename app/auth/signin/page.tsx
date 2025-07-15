@@ -9,10 +9,10 @@ export default function LoginPage() {
                 <div className="flex items-center justify-center h-full relative z-10 py-4 md:py-8">
                     <div className="text-center max-w-lg px-4 md:px-0">
                         <h3 className="text-lg md:text-4xl text-mint-green font-bold mb-2 md:mb-6">
-                            How to complete the survey
+                            How to complete the mapping
                         </h3>
                         <p className="text-white/90 text-sm md:text-lg mb-4 md:mb-10">
-                            Follow the steps below for a seamless survey experience:
+                            Follow the steps below for a seamless mapping experience:
                         </p>
                         <ul className="space-y-2 md:space-y-4 text-white/85 text-sm md:text-lg">
                             <li className="flex items-center space-x-2 md:space-x-3">

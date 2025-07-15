@@ -308,10 +308,10 @@ export default function SurveyHistoryList({ initialData }: SurveyHistoryListProp
                         </div>
                         <div>
                             <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                                Survey History
+                                Mapping History
                             </h2>
                             <p className="text-sm text-slate-500 mt-1">
-                                View and manage your completed surveys
+                                View and manage your completed mappings
                             </p>
                         </div>
                     </div>
@@ -342,10 +342,10 @@ export default function SurveyHistoryList({ initialData }: SurveyHistoryListProp
                     </div>
                     <div>
                         <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                            Survey History
+                            Mapping History
                         </h2>
                         <p className="text-sm text-slate-500 mt-1">
-                            View and manage your completed surveys
+                            View and manage your completed mappings
                         </p>
                     </div>
                 </div>                <div className="w-80">
@@ -360,13 +360,13 @@ export default function SurveyHistoryList({ initialData }: SurveyHistoryListProp
                     <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center">
                         <FaProjectDiagram className="h-8 w-8 text-slate-400" />
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">No surveys found</h3>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">No mappings found</h3>
                     <p className="text-slate-500 mb-6">Your survey history will appear here once you complete surveys.</p>
                     <Button
                         className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
                         onClick={() => router.push('/survey')}
                     >
-                        Start Your First Survey
+                        Start Your First Mapping
                     </Button>
                 </div>
             ) : (

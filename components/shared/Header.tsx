@@ -13,17 +13,17 @@ export default async function Header() {
     return (
         <header className={`relative flex-shrink-0 bg-white shadow-md p-4 flex justify-between items-center`}>
             <div className='flex items-center gap-4'>
-                <h1 className='text-navy-blue text-xl font-black'>
-                    NCD NAVIGATOR
+                <h1 className='text-navy-blue text-2xl font-black'>
+                    GHS Resource Navigator
                 </h1>
-                <Image
+                {/* <Image
                     src="/path.webp"
                     priority
                     alt='Logo'
                     height={150}
                     width={150}
                     className='w-auto'
-                />
+                /> */}
             </div>
             <nav className='hidden lg:flex items-center gap-10'>
                 {!isAuthenticated ? (
