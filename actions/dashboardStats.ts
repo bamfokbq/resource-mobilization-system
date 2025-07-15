@@ -45,64 +45,69 @@ export async function getDashboardStats(): Promise<{
     const totalAttempts = totalSurveys + totalDrafts
     const completionRate = totalAttempts > 0 ? Math.round((totalSurveys / totalAttempts) * 100) : 0
 
-    // Get top regions
-    const regionStats = await surveysCollection.aggregate([
-      { $match: { status: 'submitted', 'organisationInfo.region': { $exists: true } } },
-      { $group: { _id: '$organisationInfo.region', count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 5 },
-      { $project: { region: '$_id', count: 1, _id: 0 } }
-    ]).toArray()
-
-    // Get top sectors
-    const sectorStats = await surveysCollection.aggregate([
-      { $match: { status: 'submitted', 'organisationInfo.sector': { $exists: true } } },
-      { $group: { _id: '$organisationInfo.sector', count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 5 },
-      { $project: { sector: '$_id', count: 1, _id: 0 } }
-    ]).toArray()
-
-    // Get monthly trends (last 6 months)
+    // Get monthly trends date range (last 6 months)
     const sixMonthsAgo = new Date()
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
 
-    const surveyTrends = await surveysCollection.aggregate([
-      {
-        $match: {
-          status: 'submitted',
-          submissionDate: { $gte: sixMonthsAgo }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: '$submissionDate' },
-            month: { $month: '$submissionDate' }
-          },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { '_id.year': 1, '_id.month': 1 } }
-    ]).toArray()
+    // Run all aggregation queries in parallel
+    const [regionStats, sectorStats, surveyTrends, draftTrends] = await Promise.all([
+      // Get top regions
+      surveysCollection.aggregate([
+        { $match: { status: 'submitted', 'organisationInfo.region': { $exists: true } } },
+        { $group: { _id: '$organisationInfo.region', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        { $project: { region: '$_id', count: 1, _id: 0 } }
+      ]).toArray(),
 
-    const draftTrends = await draftsCollection.aggregate([
-      {
-        $match: {
-          createdAt: { $gte: sixMonthsAgo }
-        }
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: '$createdAt' },
-            month: { $month: '$createdAt' }
-          },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { '_id.year': 1, '_id.month': 1 } }
-    ]).toArray()
+      // Get top sectors
+      surveysCollection.aggregate([
+        { $match: { status: 'submitted', 'organisationInfo.sector': { $exists: true } } },
+        { $group: { _id: '$organisationInfo.sector', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 5 },
+        { $project: { sector: '$_id', count: 1, _id: 0 } }
+      ]).toArray(),
+
+      // Get survey trends (last 6 months)
+      surveysCollection.aggregate([
+        {
+          $match: {
+            status: 'submitted',
+            submissionDate: { $gte: sixMonthsAgo }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$submissionDate' },
+              month: { $month: '$submissionDate' }
+            },
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { '_id.year': 1, '_id.month': 1 } }
+      ]).toArray(),
+
+      // Get draft trends (last 6 months)
+      draftsCollection.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: sixMonthsAgo }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              year: { $year: '$createdAt' },
+              month: { $month: '$createdAt' }
+            },
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { '_id.year': 1, '_id.month': 1 } }
+      ]).toArray()
+    ])
 
     // Format monthly trends
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
