@@ -1,4 +1,4 @@
-import { getUserSurveys, getPredictiveAnalytics, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
+import { getUserSurveys, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
 import { auth } from '@/auth';
 import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
 import RegionalInsights from '@/components/dashboard/RegionalInsights';
@@ -16,74 +16,8 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { RiBarChartLine, RiCheckboxCircleLine, RiSurveyLine, RiTimeLine } from 'react-icons/ri';
 
-// Generate predictive analytics and milestones (these can remain mock for now as they require ML models)
-const generateMockPredictionData = () => {
-  const data = [];
-  const today = new Date();
-
-  // Historical data (30 days)
-  for (let i = 30; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    const progress = Math.min(100, 20 + (30 - i) * 2 + Math.random() * 5);
-    data.push({
-      date: date.toISOString().split('T')[0],
-      actual: progress,
-      predicted: progress + Math.random() * 2 - 1,
-      confidence: {
-        lower: Math.max(0, progress - 5),
-        upper: Math.min(100, progress + 5)
-      },
-      target: 20 + (30 - i) * 2.5
-    });
-  }
-
-  // Future predictions (30 days)
-  for (let i = 1; i <= 30; i++) {
-    const date = new Date(today);
-    date.setDate(date.getDate() + i);
-    const predicted = Math.min(100, 82 + i * 0.5 + Math.random() * 3);
-    data.push({
-      date: date.toISOString().split('T')[0],
-      actual: null,
-      predicted,
-      confidence: {
-        lower: Math.max(0, predicted - 8),
-        upper: Math.min(100, predicted + 8)
-      },
-      target: 82 + i * 0.6
-    });
-  }
-
-  return data;
-};
-
-const generateMockMilestones = () => {
-  const today = new Date();
-  return [
-    {
-      date: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      label: 'Q2 Target',
-      value: 90
-    },
-    {
-      date: new Date(today.getTime() + 21 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      label: 'Final Review',
-      value: 95
-    },
-    {
-      date: new Date(today.getTime() + 35 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      label: 'Project Completion',
-      value: 100
-    }
-  ];
-};
-
 // Async component for Stats Cards - Fastest loading
 async function StatsCardsSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 100));
-
   const userStatsResult = await getUserSurveyStatistics(userId);
   const surveysResult = await getUserSurveys(userId);
   const draftResult = await getUserDraft();
@@ -131,9 +65,6 @@ async function StatsCardsSection({ userId }: { userId: string }) {
 
 // Async component for Survey Metrics Chart
 async function SurveyMetricsSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 300));
-
   const [analyticsResult, surveysResult, draftResult] = await Promise.all([
     getSurveyAnalytics(userId),
     getUserSurveys(userId),
@@ -166,9 +97,6 @@ async function SurveyMetricsSection({ userId }: { userId: string }) {
 
 // Async component for Regional Insights
 async function RegionalInsightsSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 500));
-
   const analyticsResult = await getSurveyAnalytics(userId);
   const analyticsData = analyticsResult.success ? analyticsResult.data : null;
 
@@ -185,9 +113,6 @@ async function RegionalInsightsSection({ userId }: { userId: string }) {
 
 // Async component for Active Surveys
 async function ActiveSurveysSection() {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 400));
-
   const draftResult = await getUserDraft();
 
   const activeSurveys = [];
@@ -244,9 +169,6 @@ async function ActiveSurveysSection() {
 
 // Async component for Submitted Surveys Table
 async function SubmittedSurveysSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 700));
-
   const surveysResult = await getUserSurveys(userId);
 
   const userSurveys = surveysResult.success && surveysResult.data

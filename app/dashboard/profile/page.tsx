@@ -7,9 +7,6 @@ import { RiUserLine, RiSettings2Line } from 'react-icons/ri'
 
 // Async component for Profile Data - loads user profile from database
 async function ProfileSection({ userId }: { userId: string }) {
-  // Small delay to demonstrate streaming (remove in production)
-  await new Promise(resolve => setTimeout(resolve, 400));
-
   try {
     const profileResult = await getUserProfile(userId);
 
