@@ -56,9 +56,9 @@ export function useResourceSearch() {
   // Mock function to fetch suggestions (replace with actual API call)
   const fetchSuggestions = async (query: string): Promise<ResourceSearchSuggestion[]> => {
     try {
-      // Import the API function dynamically to avoid circular dependencies
-      const { searchSuggestions } = await import('@/lib/api/resources')
-      return await searchSuggestions(query)
+      // Import the server action dynamically
+      const { searchResourceSuggestions } = await import('@/actions/resources')
+      return await searchResourceSuggestions(query)
     } catch (error) {
       console.error('Failed to fetch suggestions:', error)
       return []

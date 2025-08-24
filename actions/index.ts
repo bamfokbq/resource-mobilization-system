@@ -24,6 +24,20 @@ export {
     deleteSurvey 
 } from './surveyActions'
 
+// Re-export resource actions for convenience
+export {
+    fetchResources,
+    searchResourceSuggestions,
+    getResourceById,
+    getResourcePartners,
+    getResourceProjects,
+    getResourceTags,
+    toggleResourceFavorite,
+    rateResource,
+    incrementResourceView,
+    incrementResourceDownload
+} from './resources'
+
 export async function addNewUser(prevState: any, formData: FormData) {
     try {
         const rawData = {

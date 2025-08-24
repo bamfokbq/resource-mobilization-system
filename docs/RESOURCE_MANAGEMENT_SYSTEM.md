@@ -127,12 +127,12 @@ const uiState = {
 The system includes a comprehensive mock API that can be easily replaced with real endpoints:
 
 ```typescript
-// Mock API functions
+// Server Actions
 await fetchResources(filters, pagination)
-await searchSuggestions(query)
-await getPartners()
-await getProjects() 
-await getTags()
+await searchResourceSuggestions(query)
+await getResourcePartners()
+await getResourceProjects() 
+await getResourceTags()
 ```
 
 ### Type Safety

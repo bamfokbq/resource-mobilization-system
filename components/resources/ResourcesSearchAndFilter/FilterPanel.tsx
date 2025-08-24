@@ -11,7 +11,7 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ResourceFilters, ResourceType, FileFormat, ResourceStatus, AccessLevel } from '@/types/resources'
-import { getPartners, getProjects, getTags } from '@/lib/api/resources'
+import { getResourcePartners, getResourceProjects, getResourceTags } from '@/actions/resources'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 
@@ -88,9 +88,9 @@ export function FilterPanel({
     const loadFilterData = async () => {
       try {
         const [partners, projects, tags] = await Promise.all([
-          getPartners(),
-          getProjects(),
-          getTags()
+          getResourcePartners(),
+          getResourceProjects(),
+          getResourceTags()
         ])
         
         setFilterData({
