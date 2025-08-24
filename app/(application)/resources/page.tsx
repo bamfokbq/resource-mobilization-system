@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function ResourcesPage() {
   return (
-    <section>
+    <section className='max-w-[1700px] mx-auto p-10'>
       <ResourcesSearchAndFilter />
       <ResourcesGrid />
       <ResourcesPagination />
