@@ -23,7 +23,7 @@ const NAVIGATION = [
     },
     {
         name: 'Resources',
-        href: '/#resources',
+        href: '/resources',
     }
 ]
 
