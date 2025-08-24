@@ -14,7 +14,7 @@ export interface ChartDataItem {
 interface CustomTooltipProps {
   active?: boolean;
   payload?: any[];
-  label?: string;
+  label?: string | number;
   totalValue: number;
   valueKey: string;
   tooltipFormatter?: (value: number) => string;
@@ -44,10 +44,11 @@ const DefaultCustomTooltip = ({ active, payload, label, totalValue, valueKey, to
   const value = payload[0].value;
   const percentage = (value / totalValue * 100).toFixed(1);
   const formattedValue = tooltipFormatter ? tooltipFormatter(value) : new Intl.NumberFormat().format(value);
+  const displayLabel = typeof label === 'number' ? label.toString() : label;
   
   return (
     <div className="bg-white/95 backdrop-blur-sm p-3 rounded-lg shadow-lg border border-gray-100 animate-in fade-in duration-200">
-      <p className="text-gray-600 text-sm font-medium mb-2">{label}</p>
+      <p className="text-gray-600 text-sm font-medium mb-2">{displayLabel}</p>
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-indigo-600" />
@@ -202,7 +203,10 @@ const GeneralChart = ({
               <LabelList
                 dataKey={valueKey}
                 position="right"
-                formatter={(value: number) => tooltipFormatter ? tooltipFormatter(value) : new Intl.NumberFormat().format(value)}
+                formatter={(value: any) => {
+                  const numValue = typeof value === 'number' ? value : Number(value);
+                  return tooltipFormatter ? tooltipFormatter(numValue) : new Intl.NumberFormat().format(numValue);
+                }}
                 style={{ fill: '#6b7280', fontSize: '12px' }}
               />
             </Bar>

@@ -9,8 +9,7 @@ const formSchema = z.object({
     region: z.string().nonempty("Region is required"),
     organisation: z.string().nonempty("Organisation is required"),
     role: z.enum(["User", "Admin"], {
-        required_error: "Role is required",
-        invalid_type_error: "Role must be either User or Admin"
+        message: "Role must be either User or Admin"
     }).default("User"),
     password: z.string().default(process.env.DEFAULT_PASSWORD || 'ncd@2025')
 })
@@ -51,9 +50,9 @@ export async function addNewUser(prevState: any, formData: FormData) {
 
         if (error instanceof z.ZodError) {
             const fieldErrors: Record<string, string> = {};
-            error.errors.forEach((err) => {
-                const fieldName = err.path[0] as string;
-                fieldErrors[fieldName] = err.message;
+            error.issues.forEach((issue) => {
+                const fieldName = issue.path[0] as string;
+                fieldErrors[fieldName] = issue.message;
             });
 
             return {
