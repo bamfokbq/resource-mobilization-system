@@ -1,20 +1,20 @@
 // Shared activity totals to ensure consistency across all components
-// Total target: 850 activities
+// Total target: 640 activities
 
 export const ACTIVITY_TOTALS = {
   // Component totals
-  REACH: 24,
-  PARTNERS: 18,
-  TARGET_GROUPS: 60,
-  ORGANIZATIONS: 100,
-  AGE_GROUPS: 150,
-  SETTINGS: 200,
-  GENDER: 100,
-  ACTIVITY_BY_REGION: 100,
-  DISEASES: 98,
+  REACH: 18,
+  PARTNERS: 14,
+  TARGET_GROUPS: 45,
+  ORGANIZATIONS: 75,
+  AGE_GROUPS: 113,
+  SETTINGS: 151,
+  GENDER: 75,
+  ACTIVITY_BY_REGION: 75,
+  DISEASES: 74,
   
   // Grand total
-  TOTAL: 850
+  TOTAL: 640
 } as const;
 
 // Verification function
