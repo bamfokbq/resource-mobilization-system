@@ -15,7 +15,7 @@ import { BarChart3Icon, TableIcon, FilterIcon, EyeIcon, CalendarIcon, MapPinIcon
 const diseaseActivities = [
     {
         disease: "Hypertension",
-        totalActivities: 89,
+        totalActivities: 24,
         activities: [
             { id: 1, name: "Community Blood Pressure Screening", region: "Greater Accra", implementer: "Ghana Health Service", status: "ongoing", timeline: "2023-2025", coverage: "85%", partners: ["WHO", "Local Clinics"] },
             { id: 2, name: "Hypertension Management Training", region: "Ashanti", implementer: "Kumasi Medical Center", status: "completed", timeline: "2022-2023", coverage: "92%", partners: ["USAID", "Medical Schools"] },
@@ -26,7 +26,7 @@ const diseaseActivities = [
     },
     {
         disease: "Diabetes",
-        totalActivities: 67,
+        totalActivities: 18,
         activities: [
             { id: 6, name: "Diabetes Prevention Program", region: "Greater Accra", implementer: "Private Clinics", status: "ongoing", timeline: "2023-2025", coverage: "73%", partners: ["Pharma Companies", "WHO"] },
             { id: 7, name: "Glucose Monitoring Initiative", region: "Central", implementer: "Regional NGOs", status: "ongoing", timeline: "2023-2024", coverage: "81%", partners: ["Local Government"] },
@@ -54,11 +54,68 @@ const diseaseActivities = [
     },
     {
         disease: "Mental Health",
-        totalActivities: 28,
+        totalActivities: 12,
         activities: [
-            { id: 16, name: "Community Mental Health", region: "Ashanti", implementer: "Mental Health Centers", status: "ongoing", timeline: "2023-2025", coverage: "71%", partners: ["Psychology Association"] },
-            { id: 17, name: "Youth Mental Health Program", region: "Greater Accra", implementer: "Educational Institutions", status: "ongoing", timeline: "2023-2024", coverage: "83%", partners: ["UNICEF", "Schools"] },
-            { id: 18, name: "Mental Health First Aid", region: "Eastern", implementer: "Community Groups", status: "completed", timeline: "2022-2023", coverage: "79%", partners: ["WHO"] }
+            { id: 10, name: "Mental Health First Aid Training", region: "Greater Accra", implementer: "Mental Health Authority", status: "ongoing", timeline: "2023-2024", coverage: "65%", partners: ["WHO", "Universities"] },
+            { id: 11, name: "Community Mental Health Program", region: "Ashanti", implementer: "Regional Hospitals", status: "completed", timeline: "2022-2023", coverage: "88%", partners: ["NGOs", "Religious Groups"] },
+            { id: 12, name: "Youth Mental Health Support", region: "Western", implementer: "Youth Organizations", status: "ongoing", timeline: "2023-2025", coverage: "55%", partners: ["UNICEF", "Schools"] }
+        ]
+    },
+    {
+        disease: "Cancer",
+        totalActivities: 9,
+        activities: [
+            { id: 13, name: "Cancer Screening Program", region: "Greater Accra", implementer: "Cancer Treatment Centers", status: "ongoing", timeline: "2023-2025", coverage: "45%", partners: ["International NGOs", "Medical Schools"] },
+            { id: 14, name: "Breast Cancer Awareness", region: "Ashanti", implementer: "Women's Groups", status: "completed", timeline: "2022-2023", coverage: "72%", partners: ["Pink Ribbon", "Health Ministry"] }
+        ]
+    },
+    {
+        disease: "Stroke",
+        totalActivities: 8,
+        activities: [
+            { id: 15, name: "Stroke Prevention Education", region: "Greater Accra", implementer: "Neurological Centers", status: "ongoing", timeline: "2023-2024", coverage: "38%", partners: ["Medical Associations", "Hospitals"] },
+            { id: 16, name: "Emergency Stroke Response", region: "Ashanti", implementer: "Emergency Services", status: "ongoing", timeline: "2023-2025", coverage: "82%", partners: ["Ambulance Services", "Hospitals"] }
+        ]
+    },
+    {
+        disease: "Kidney Disease",
+        totalActivities: 6,
+        activities: [
+            { id: 17, name: "Kidney Health Screening", region: "Greater Accra", implementer: "Dialysis Centers", status: "ongoing", timeline: "2023-2024", coverage: "35%", partners: ["Kidney Foundation", "Medical Schools"] },
+            { id: 18, name: "Chronic Kidney Disease Management", region: "Western", implementer: "Regional Hospitals", status: "ongoing", timeline: "2023-2025", coverage: "48%", partners: ["International Partners"] }
+        ]
+    },
+    {
+        disease: "Heart Disease",
+        totalActivities: 5,
+        activities: [
+            { id: 19, name: "Cardiac Rehabilitation Program", region: "Greater Accra", implementer: "Cardiac Centers", status: "ongoing", timeline: "2023-2024", coverage: "42%", partners: ["Heart Foundation", "Cardiologists"] },
+            { id: 20, name: "Heart Health Education", region: "Ashanti", implementer: "Community Health Workers", status: "completed", timeline: "2022-2023", coverage: "76%", partners: ["Local NGOs"] }
+        ]
+    },
+    {
+        disease: "Respiratory Disease",
+        totalActivities: 4,
+        activities: [
+            { id: 21, name: "Asthma Management Program", region: "Greater Accra", implementer: "Respiratory Clinics", status: "ongoing", timeline: "2023-2024", coverage: "33%", partners: ["Pharmaceutical Companies"] },
+            { id: 22, name: "COPD Awareness Campaign", region: "Northern", implementer: "Health Education Teams", status: "ongoing", timeline: "2023-2025", coverage: "67%", partners: ["WHO", "Local Groups"] }
+        ]
+    },
+    {
+        disease: "Liver Disease",
+        totalActivities: 3,
+        activities: [
+            { id: 23, name: "Hepatitis Screening Program", region: "Greater Accra", implementer: "Liver Clinics", status: "ongoing", timeline: "2023-2024", coverage: "28%", partners: ["Medical Research Centers"] },
+            { id: 24, name: "Liver Health Education", region: "Ashanti", implementer: "Community Volunteers", status: "completed", timeline: "2022-2023", coverage: "54%", partners: ["Health Ministry"] }
+        ]
+    },
+    {
+        disease: "Nutrition Disorders",
+        totalActivities: 9,
+        activities: [
+            { id: 25, name: "Malnutrition Prevention Program", region: "Northern", implementer: "Nutrition Centers", status: "ongoing", timeline: "2023-2025", coverage: "71%", partners: ["UNICEF", "WFP", "Local NGOs"] },
+            { id: 26, name: "Obesity Management Initiative", region: "Greater Accra", implementer: "Fitness Centers", status: "ongoing", timeline: "2023-2024", coverage: "29%", partners: ["Private Gyms", "Nutritionists"] },
+            { id: 27, name: "School Nutrition Program", region: "Western", implementer: "Education Directorate", status: "completed", timeline: "2022-2023", coverage: "89%", partners: ["School Feeding Program", "Parent Associations"] }
         ]
     },
     {

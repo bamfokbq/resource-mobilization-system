@@ -11,29 +11,29 @@ import { UsersIcon, FilterIcon, HeartIcon, AlertTriangleIcon, TrendingUpIcon, Us
 // Mock data for gender-focused activities
 const genderActivitiesData = [
   // Male-targeted activities
-  { id: 1, genderTarget: "Male", activity: "Men's Health Screening", disease: "Hypertension", region: "Greater Accra", activities: 45, isGenderSensitive: true, equityScore: 85 },
-  { id: 2, genderTarget: "Male", activity: "Prostate Cancer Awareness", disease: "Cancer", region: "Ashanti", activities: 32, isGenderSensitive: true, equityScore: 90 },
-  { id: 3, genderTarget: "Male", activity: "Male Mental Health Support", disease: "Mental Health", region: "Northern", activities: 28, isGenderSensitive: true, equityScore: 88 },
-  { id: 4, genderTarget: "Male", activity: "Occupational Health for Men", disease: "Hypertension", region: "Western", activities: 38, isGenderSensitive: false, equityScore: 75 },
-  { id: 5, genderTarget: "Male", activity: "Diabetes Prevention for Men", disease: "Diabetes", region: "Eastern", activities: 41, isGenderSensitive: true, equityScore: 82 },
+  { id: 1, genderTarget: "Male", activity: "Men's Health Screening", disease: "Hypertension", region: "Greater Accra", activities: 4, isGenderSensitive: true, equityScore: 85 },
+  { id: 2, genderTarget: "Male", activity: "Prostate Cancer Awareness", disease: "Cancer", region: "Ashanti", activities: 3, isGenderSensitive: true, equityScore: 90 },
+  { id: 3, genderTarget: "Male", activity: "Male Mental Health Support", disease: "Mental Health", region: "Northern", activities: 2, isGenderSensitive: true, equityScore: 88 },
+  { id: 4, genderTarget: "Male", activity: "Occupational Health for Men", disease: "Hypertension", region: "Western", activities: 3, isGenderSensitive: false, equityScore: 75 },
+  { id: 5, genderTarget: "Male", activity: "Diabetes Prevention for Men", disease: "Diabetes", region: "Eastern", activities: 3, isGenderSensitive: true, equityScore: 82 },
 
   // Female-targeted activities
-  { id: 6, genderTarget: "Female", activity: "Women's Health Education", disease: "Hypertension", region: "Greater Accra", activities: 89, isGenderSensitive: true, equityScore: 92 },
-  { id: 7, genderTarget: "Female", activity: "Cervical Cancer Screening", disease: "Cancer", region: "Ashanti", activities: 78, isGenderSensitive: true, equityScore: 95 },
-  { id: 8, genderTarget: "Female", activity: "Maternal Mental Health", disease: "Mental Health", region: "Northern", activities: 56, isGenderSensitive: true, equityScore: 88 },
-  { id: 9, genderTarget: "Female", activity: "Breast Cancer Support", disease: "Cancer", region: "Western", activities: 67, isGenderSensitive: true, equityScore: 93 },
-  { id: 10, genderTarget: "Female", activity: "Women's Diabetes Care", disease: "Diabetes", region: "Central", activities: 72, isGenderSensitive: true, equityScore: 87 },
-  { id: 11, genderTarget: "Female", activity: "Postpartum Health Services", disease: "Hypertension", region: "Volta", activities: 45, isGenderSensitive: true, equityScore: 90 },
+  { id: 6, genderTarget: "Female", activity: "Women's Health Education", disease: "Hypertension", region: "Greater Accra", activities: 7, isGenderSensitive: true, equityScore: 92 },
+  { id: 7, genderTarget: "Female", activity: "Cervical Cancer Screening", disease: "Cancer", region: "Ashanti", activities: 6, isGenderSensitive: true, equityScore: 95 },
+  { id: 8, genderTarget: "Female", activity: "Maternal Mental Health", disease: "Mental Health", region: "Northern", activities: 5, isGenderSensitive: true, equityScore: 88 },
+  { id: 9, genderTarget: "Female", activity: "Breast Cancer Support", disease: "Cancer", region: "Western", activities: 5, isGenderSensitive: true, equityScore: 93 },
+  { id: 10, genderTarget: "Female", activity: "Women's Diabetes Care", disease: "Diabetes", region: "Central", activities: 6, isGenderSensitive: true, equityScore: 87 },
+  { id: 11, genderTarget: "Female", activity: "Postpartum Health Services", disease: "Hypertension", region: "Volta", activities: 4, isGenderSensitive: true, equityScore: 90 },
 
   // All genders activities
-  { id: 12, genderTarget: "All", activity: "Community Health Education", disease: "Hypertension", region: "Greater Accra", activities: 134, isGenderSensitive: false, equityScore: 70 },
-  { id: 13, genderTarget: "All", activity: "General Health Screening", disease: "Diabetes", region: "Ashanti", activities: 98, isGenderSensitive: false, equityScore: 72 },
-  { id: 14, genderTarget: "All", activity: "Family Health Programs", disease: "Mental Health", region: "Northern", activities: 87, isGenderSensitive: true, equityScore: 85 },
-  { id: 15, genderTarget: "All", activity: "Workplace Wellness", disease: "Hypertension", region: "Western", activities: 76, isGenderSensitive: false, equityScore: 68 },
-  { id: 16, genderTarget: "All", activity: "Youth Health Initiative", disease: "Mental Health", region: "Eastern", activities: 92, isGenderSensitive: true, equityScore: 80 },
-  { id: 17, genderTarget: "All", activity: "Elder Care Program", disease: "Diabetes", region: "Central", activities: 64, isGenderSensitive: false, equityScore: 74 },
-  { id: 18, genderTarget: "All", activity: "Community Cancer Awareness", disease: "Cancer", region: "Upper East", activities: 58, isGenderSensitive: false, equityScore: 71 },
-  { id: 19, genderTarget: "All", activity: "School Health Program", disease: "Hypertension", region: "Bono", activities: 43, isGenderSensitive: true, equityScore: 78 }
+  { id: 12, genderTarget: "All", activity: "Community Health Education", disease: "Hypertension", region: "Greater Accra", activities: 11, isGenderSensitive: false, equityScore: 70 },
+  { id: 13, genderTarget: "All", activity: "General Health Screening", disease: "Diabetes", region: "Ashanti", activities: 8, isGenderSensitive: false, equityScore: 72 },
+  { id: 14, genderTarget: "All", activity: "Family Health Programs", disease: "Mental Health", region: "Northern", activities: 7, isGenderSensitive: true, equityScore: 85 },
+  { id: 15, genderTarget: "All", activity: "Workplace Wellness", disease: "Hypertension", region: "Western", activities: 6, isGenderSensitive: false, equityScore: 68 },
+  { id: 16, genderTarget: "All", activity: "Youth Health Initiative", disease: "Mental Health", region: "Eastern", activities: 7, isGenderSensitive: true, equityScore: 80 },
+  { id: 17, genderTarget: "All", activity: "Elder Care Program", disease: "Diabetes", region: "Central", activities: 5, isGenderSensitive: false, equityScore: 74 },
+  { id: 18, genderTarget: "All", activity: "Community Cancer Awareness", disease: "Cancer", region: "Upper East", activities: 5, isGenderSensitive: false, equityScore: 71 },
+  { id: 19, genderTarget: "All", activity: "School Health Program", disease: "Hypertension", region: "Bono", activities: 3, isGenderSensitive: true, equityScore: 78 }
 ]
 
 // Gender targets, diseases, and regions

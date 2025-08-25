@@ -12,7 +12,7 @@ import { MapIcon, TableIcon, BarChart3Icon, FilterIcon, TrendingUpIcon, UsersIco
 const regionalData = [
   {
     region: "Greater Accra",
-    activities: 169,
+    activities: 31,
     keyPrograms: ["Hypertension Management", "Diabetes Prevention", "Cancer Screening"],
     keyImplementers: ["Ghana Health Service", "Local NGOs", "Private Clinics"],
     populationReached: 2500000,
@@ -26,7 +26,7 @@ const regionalData = [
   },
   {
     region: "Ashanti",
-    activities: 90,
+    activities: 17,
     keyPrograms: ["Mental Health", "Cardiovascular Disease", "Stroke Prevention"],
     keyImplementers: ["Kumasi Medical Center", "Regional NGOs", "Community Groups"],
     populationReached: 1800000,
@@ -96,45 +96,101 @@ const regionalData = [
   },
   {
     region: "Northern",
-    activities: 35,
-    keyPrograms: ["Rural NCD Care", "Community Education"],
-    keyImplementers: ["Northern Regional Health", "Traditional Healers"],
-    populationReached: 890000,
+    activities: 16,
+    keyPrograms: ["Community Health Education", "Nutrition Programs", "Basic Healthcare"],
+    keyImplementers: ["Northern Regional Health", "International NGOs", "Faith-based Organizations"],
+    populationReached: 1200000,
+    yearData: {
+      2020: 32,
+      2021: 28,
+      2022: 15,
+      2023: 14
+    },
+    partners: ["UNICEF", "World Vision", "Local Chiefs"]
+  },
+  {
+    region: "Western",
+    activities: 7,
+    keyPrograms: ["Occupational Health", "Environmental Health", "Rural Clinics"],
+    keyImplementers: ["Mining Health Services", "Rural Health Networks", "Community Volunteers"],
+    populationReached: 850000,
+    yearData: {
+      2020: 12,
+      2021: 8,
+      2022: 8,
+      2023: 7
+    },
+    partners: ["Mining Companies", "Environmental Groups", "District Assembly"]
+  },
+  {
+    region: "Eastern",
+    activities: 7,
+    keyPrograms: ["School Health", "Maternal Health", "Community Outreach"],
+    keyImplementers: ["Eastern Regional Hospital", "School Health Teams", "Women's Groups"],
+    populationReached: 900000,
+    yearData: {
+      2020: 14,
+      2021: 11,
+      2022: 7,
+      2023: 5
+    },
+    partners: ["Education Ministry", "Women's Organizations", "Youth Groups"]
+  },
+  {
+    region: "Central",
+    activities: 5,
+    keyPrograms: ["Coastal Health", "Fishing Community Health", "Traditional Medicine"],
+    keyImplementers: ["Coastal Health Units", "Fishermen Associations", "Traditional Healers"],
+    populationReached: 650000,
     yearData: {
       2020: 8,
-      2021: 9,
-      2022: 9,
-      2023: 9
+      2021: 7,
+      2022: 5,
+      2023: 5
     },
-    partners: ["USAID", "Local Chiefs"]
+    partners: ["Fishing Cooperatives", "Traditional Councils", "Coastal NGOs"]
   },
   {
     region: "Upper East",
-    activities: 31,
-    keyPrograms: ["Cross-border Health", "Nutrition Programs"],
-    keyImplementers: ["District Health Services", "International NGOs"],
-    populationReached: 340000,
+    activities: 6,
+    keyPrograms: ["Border Health", "Nutrition Support", "Emergency Care"],
+    keyImplementers: ["Border Health Services", "Nutrition Centers", "Emergency Response Teams"],
+    populationReached: 400000,
     yearData: {
-      2020: 7,
-      2021: 8,
+      2020: 12,
+      2021: 10,
       2022: 8,
-      2023: 8
+      2023: 5
     },
-    partners: ["WFP", "Health Partners"]
+    partners: ["UNHCR", "Border Security", "International Relief"]
   },
   {
     region: "Upper West",
-    activities: 27,
-    keyPrograms: ["Remote Care", "Telemedicine"],
-    keyImplementers: ["Regional Hospitals", "Tech Partners"],
-    populationReached: 280000,
+    activities: 6,
+    keyPrograms: ["Rural Health Access", "Agricultural Health", "Water Sanitation"],
+    keyImplementers: ["Rural Health Posts", "Agricultural Extension", "Water Committees"],
+    populationReached: 350000,
     yearData: {
-      2020: 6,
-      2021: 7,
+      2020: 10,
+      2021: 8,
       2022: 7,
+      2023: 6
+    },
+    partners: ["Agricultural Ministry", "Water Organizations", "Rural Development"]
+  },
+  {
+    region: "Volta",
+    activities: 5,
+    keyPrograms: ["River Health", "Cultural Health", "Youth Programs"],
+    keyImplementers: ["River Communities", "Cultural Groups", "Youth Organizations"],
+    populationReached: 500000,
+    yearData: {
+      2020: 8,
+      2021: 7,
+      2022: 5,
       2023: 7
     },
-    partners: ["Tech4Health", "Government"]
+    partners: ["Cultural Associations", "River Committees", "Youth Leaders"]
   }
 ]
 
