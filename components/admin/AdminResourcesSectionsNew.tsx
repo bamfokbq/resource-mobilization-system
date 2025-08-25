@@ -1,10 +1,7 @@
-'use client'
-
 import React, { useState } from 'react'
 import { ResourceStatsSection } from './ResourceStatsSection'
 import { ResourceManagementTable } from './ResourceManagementTable'
 import { ResourceUploadSection } from './ResourceUploadSection'
-import { ResourceHeaderSection } from './ResourceHeaderSection'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Resource } from '@/types/resources'
 
@@ -51,7 +48,6 @@ export default function AdminResourcesSections() {
 }
 
 // Export individual sections for backward compatibility
-export { ResourceHeaderSection as AdminResourcesHeaderSection }
 export { ResourceStatsSection as AdminResourcesStatsSection }
 export { ResourceManagementTable as AdminResourcesManagementSection }
 export { ResourceUploadSection as AdminResourcesUploadSection }

@@ -1,10 +1,8 @@
+import { ResourceHeaderSection } from '@/components/admin/ResourceHeaderSection'
+import { ResourceManagementTable } from '@/components/admin/ResourceManagementTable'
+import { ResourceStatsSection } from '@/components/admin/ResourceStatsSection'
+import { ResourceUploadSection } from '@/components/admin/ResourceUploadSection'
 import { Suspense } from 'react'
-import {
-    AdminResourcesHeaderSection,
-    AdminResourcesStatsSection,
-    AdminResourcesManagementSection,
-    AdminResourcesUploadSection
-} from '@/components/admin/AdminResourcesSections'
 
 // Individual section skeletons
 function HeaderSkeleton() {
@@ -74,23 +72,23 @@ export default async function AdminResourcesPage() {
     return (
         <div className="p-4 md:p-6 space-y-6 md:space-y-8 bg-gray-50 min-h-screen overflow-x-hidden">
             <Suspense fallback={<HeaderSkeleton />}>
-                <AdminResourcesHeaderSection />
+                <ResourceHeaderSection />
             </Suspense>
 
             <Suspense fallback={<StatsSkeleton />}>
-                <AdminResourcesStatsSection />
+                <ResourceStatsSection />
             </Suspense>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8">
                 <div className="xl:col-span-2">
                     <Suspense fallback={<ManagementSkeleton />}>
-                        <AdminResourcesManagementSection />
+                        <ResourceManagementTable />
                     </Suspense>
                 </div>
                 
                 <div className="xl:col-span-1">
                     <Suspense fallback={<UploadSkeleton />}>
-                        <AdminResourcesUploadSection />
+                        <ResourceUploadSection />
                     </Suspense>
                 </div>
             </div>
