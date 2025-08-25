@@ -32,9 +32,17 @@ export async function GET(
     // Increment download count
     await incrementResourceDownload(id)
 
+    console.log('Resource fileUrl:', resource.fileUrl)
+
+    // Check if this is a mock resource (fileUrl starts with /api/)
+    if (resource.fileUrl.startsWith('/api/')) {
+      return NextResponse.json(
+        { error: 'This is a mock resource. No actual file available for download.' },
+        { status: 400 }
+      )
+    }
+
     // Extract object key from the file URL
-    // Assuming fileUrl is in format: https://bucket-name.region.linodeobjects.com/path/to/file.ext
-    // or s3://bucket-name/path/to/file.ext
     let objectKey: string
     
     if (resource.fileUrl.startsWith('s3://')) {
@@ -46,9 +54,12 @@ export async function GET(
       const url = new URL(resource.fileUrl)
       objectKey = url.pathname.substring(1) // Remove leading slash
     } else {
-      // Fallback: assume it's already a key or relative path
+      // If it's just a key/path, use it directly
       objectKey = resource.fileUrl
     }
+
+    console.log('Extracted object key:', objectKey)
+    console.log('Using bucket:', process.env.LINODE_BUCKET_NAME)
 
     // Generate signed URL for secure download
     const command = new GetObjectCommand({
@@ -60,6 +71,8 @@ export async function GET(
     const signedUrl = await getSignedUrl(linodeClient, command, {
       expiresIn: 300, // 5 minutes
     })
+
+    console.log('Generated signed URL successfully')
 
     // Return the signed URL for download
     return NextResponse.json({
@@ -73,7 +86,7 @@ export async function GET(
   } catch (error) {
     console.error('Error generating download URL:', error)
     return NextResponse.json(
-      { error: 'Failed to generate download URL' },
+      { error: 'Failed to generate download URL', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }

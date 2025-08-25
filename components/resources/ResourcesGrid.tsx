@@ -57,11 +57,44 @@ export default function ResourcesGrid() {
         setIsModalOpen(true)
     }
 
-    const handleDownloadResource = (resource: Resource) => {
-        // Simulate download
-        console.log('Downloading resource:', resource.fileName)
-        // In a real app, this would trigger the actual download
-        window.open(resource.fileUrl, '_blank')
+    const handleDownloadResource = async (resource: Resource) => {
+        try {
+            console.log('Downloading resource:', resource.fileName)
+
+            // Call the download API to get a signed URL
+            const response = await fetch(`/api/resources/${resource.id}/download`)
+
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error || `Failed to generate download URL: ${response.statusText}`)
+            }
+
+            const data = await response.json()
+
+            if (data.downloadUrl) {
+                // Create a temporary link and trigger download
+                const link = document.createElement('a')
+                link.href = data.downloadUrl
+                link.download = data.fileName || resource.fileName
+                link.style.display = 'none'
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+
+                console.log('Download initiated successfully')
+            } else {
+                throw new Error('No download URL received')
+            }
+        } catch (error) {
+            console.error('Download error:', error)
+
+            // Show user-friendly error message
+            if (error instanceof Error) {
+                alert(`Download failed: ${error.message}`)
+            } else {
+                alert('Download failed: Unknown error occurred')
+            }
+        }
     }
 
     const handleFavoriteResource = (resource: Resource) => {
