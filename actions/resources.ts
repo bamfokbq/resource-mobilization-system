@@ -613,12 +613,48 @@ export async function fetchResources(
       const totalItems = await db.collection('resources').countDocuments(query)
       const skip = (page - 1) * pageSize
 
-      filteredResources = await db.collection('resources')
+      const rawResources = await db.collection('resources')
         .find(query)
         .sort(sort)
         .skip(skip)
         .limit(pageSize)
-        .toArray() as unknown as Resource[]
+        .toArray()
+
+      // Convert MongoDB documents to plain objects
+      filteredResources = rawResources.map((doc: any) => ({
+        id: doc.id || doc._id.toString(),
+        title: doc.title,
+        description: doc.description,
+        type: doc.type,
+        fileFormat: doc.fileFormat,
+        fileSize: doc.fileSize,
+        fileName: doc.fileName,
+        fileUrl: doc.fileUrl,
+        thumbnailUrl: doc.thumbnailUrl,
+        status: doc.status,
+        accessLevel: doc.accessLevel,
+        uploadDate: doc.uploadDate,
+        publicationDate: doc.publicationDate,
+        lastModified: doc.lastModified,
+        partnerId: doc.partnerId,
+        partner: doc.partner || {
+          id: doc.partnerId,
+          name: 'Unknown Partner',
+          category: 'Unknown',
+          region: 'Unknown'
+        },
+        projectId: doc.projectId,
+        project: doc.project,
+        tags: doc.tags || [],
+        downloadCount: doc.downloadCount || 0,
+        viewCount: doc.viewCount || 0,
+        isFavorited: doc.isFavorited || false,
+        rating: doc.rating,
+        author: doc.author,
+        version: doc.version,
+        language: doc.language || 'English',
+        keywords: doc.keywords || []
+      }))
 
       const totalPages = Math.ceil(totalItems / pageSize)
 

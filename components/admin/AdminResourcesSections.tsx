@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { 
     Card, 
     CardContent, 
@@ -96,6 +96,7 @@ import {
     FileFormat,
     CreateResourceRequest
 } from '@/types/resources'
+import { createResource, fetchResources, getResourceStats, getResourcePartners } from '@/actions/resources'
 
 // Helper function to get file icon
 const getFileIcon = (format: FileFormat) => {
@@ -149,51 +150,6 @@ const getAccessLevelColor = (accessLevel: AccessLevel) => {
     }
 }
 
-// Mock data for demonstration
-const mockResources: Resource[] = Array.from({ length: 15 }, (_, i) => ({
-    id: `resource-${i + 1}`,
-    title: `Resource Document ${i + 1}`,
-    description: `This is a comprehensive resource document covering important topics for development programs and policy implementation.`,
-    type: ['research-findings', 'concept-notes', 'program-briefs', 'publications', 'reports'][i % 5] as ResourceType,
-    fileFormat: ['PDF', 'DOC', 'DOCX', 'XLS', 'PPT'][i % 5] as FileFormat,
-    fileSize: Math.floor(Math.random() * 15000000) + 500000,
-    fileName: `resource-document-${i + 1}.pdf`,
-    fileUrl: `/api/resources/${i + 1}/download`,
-    thumbnailUrl: i % 3 === 0 ? `/api/resources/${i + 1}/thumbnail` : undefined,
-    status: ['published', 'draft', 'under-review', 'archived'][i % 4] as ResourceStatus,
-    accessLevel: ['public', 'internal', 'restricted', 'confidential'][i % 4] as AccessLevel,
-    uploadDate: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString(),
-    publicationDate: Math.random() > 0.3 ? new Date(Date.now() - Math.random() * 60 * 24 * 60 * 60 * 1000).toISOString() : undefined,
-    lastModified: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-    partnerId: `partner-${(i % 5) + 1}`,
-    partner: {
-        id: `partner-${(i % 5) + 1}`,
-        name: ['UNICEF Ghana', 'WHO Ghana', 'Ghana Health Service', 'Plan International', 'World Vision'][i % 5],
-        category: 'International NGO',
-        region: 'Greater Accra'
-    },
-    projectId: `project-${(i % 3) + 1}`,
-    project: {
-        id: `project-${(i % 3) + 1}`,
-        name: ['Health System Strengthening', 'Education Reform', 'Community Development'][i % 3],
-        description: 'Project description',
-        startDate: '2023-01-01',
-        status: 'active',
-        partnerId: `partner-${(i % 5) + 1}`
-    },
-    tags: [
-        { id: `tag-${i % 8 + 1}`, name: ['health', 'education', 'policy', 'research', 'community', 'development', 'children', 'technology'][i % 8], color: '#3B82F6' }
-    ],
-    downloadCount: Math.floor(Math.random() * 500) + 10,
-    viewCount: Math.floor(Math.random() * 1500) + 50,
-    isFavorited: Math.random() > 0.7,
-    rating: Math.random() > 0.4 ? Math.floor(Math.random() * 5) + 1 : undefined,
-    author: ['Dr. John Smith', 'Prof. Sarah Johnson', 'Maria Garcia', 'David Chen'][i % 4],
-    version: `v${Math.floor(Math.random() * 3) + 1}.${Math.floor(Math.random() * 10)}`,
-    language: 'English',
-    keywords: ['development', 'policy', 'implementation']
-}))
-
 // Header Section Component
 export function AdminResourcesHeaderSection() {
     return (
@@ -235,40 +191,95 @@ export function AdminResourcesHeaderSection() {
 
 // Stats Section Component
 export function AdminResourcesStatsSection() {
-    const stats = useMemo(() => [
+    const [stats, setStats] = useState([
         {
             title: 'Total Resources',
-            value: '1,247',
-            change: '+12%',
+            value: '0',
+            change: '+0%',
             changeType: 'positive' as const,
             icon: FileText,
             color: 'text-blue-600 bg-blue-50'
         },
         {
             title: 'Total Downloads',
-            value: '45,892',
-            change: '+23%',
+            value: '0',
+            change: '+0%',
             changeType: 'positive' as const,
             icon: Download,
             color: 'text-green-600 bg-green-50'
         },
         {
             title: 'Storage Used',
-            value: '124.5 GB',
-            change: '+8%',
+            value: '0 GB',
+            change: '+0%',
             changeType: 'positive' as const,
             icon: Database,
             color: 'text-purple-600 bg-purple-50'
         },
         {
             title: 'Pending Reviews',
-            value: '23',
-            change: '-5%',
-            changeType: 'negative' as const,
+            value: '0',
+            change: '0%',
+            changeType: 'neutral' as const,
             icon: Clock,
             color: 'text-orange-600 bg-orange-50'
         }
-    ], [])
+    ])
+
+    const formatFileSize = (bytes: number): string => {
+        if (bytes === 0) return '0 GB'
+        const k = 1024
+        const sizes = ['Bytes', 'KB', 'MB', 'GB']
+        const i = Math.floor(Math.log(bytes) / Math.log(k))
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+    }
+
+    useEffect(() => {
+        const loadStats = async () => {
+            try {
+                const resourceStats = await getResourceStats()
+
+                setStats([
+                    {
+                        title: 'Total Resources',
+                        value: resourceStats.totalResources.toLocaleString(),
+                        change: '+12%', // You can calculate this based on historical data
+                        changeType: 'positive' as const,
+                        icon: FileText,
+                        color: 'text-blue-600 bg-blue-50'
+                    },
+                    {
+                        title: 'Total Downloads',
+                        value: resourceStats.totalDownloads.toLocaleString(),
+                        change: '+23%',
+                        changeType: 'positive' as const,
+                        icon: Download,
+                        color: 'text-green-600 bg-green-50'
+                    },
+                    {
+                        title: 'Storage Used',
+                        value: formatFileSize(resourceStats.totalStorageUsed),
+                        change: '+8%',
+                        changeType: 'positive' as const,
+                        icon: Database,
+                        color: 'text-purple-600 bg-purple-50'
+                    },
+                    {
+                        title: 'Pending Reviews',
+                        value: resourceStats.pendingReviews.toString(),
+                        change: resourceStats.pendingReviews > 0 ? '+5%' : '0%',
+                        changeType: resourceStats.pendingReviews > 0 ? 'positive' as const : 'neutral' as const,
+                        icon: Clock,
+                        color: 'text-orange-600 bg-orange-50'
+                    }
+                ])
+            } catch (error) {
+                console.error('Error loading resource stats:', error)
+            }
+        }
+
+        loadStats()
+    }, [])
 
     return (
         <motion.div
@@ -319,24 +330,71 @@ export function AdminResourcesStatsSection() {
 
 // Resource Management Section Component
 export function AdminResourcesManagementSection() {
-    const [resources] = useState<Resource[]>(mockResources)
+    const [resources, setResources] = useState<Resource[]>([])
+    const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState<string>('all')
     const [typeFilter, setTypeFilter] = useState<string>('all')
     const [selectedResource, setSelectedResource] = useState<Resource | null>(null)
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const pageSize = 25
+
+    // Load resources from database
+    useEffect(() => {
+        const loadResources = async () => {
+            setLoading(true)
+            try {
+                const filters = {
+                    search: searchTerm || undefined,
+                    status: statusFilter !== 'all' ? [statusFilter] as any : undefined,
+                    type: typeFilter !== 'all' ? [typeFilter] as any : undefined,
+                    sortBy: 'date' as const,
+                    sortOrder: 'desc' as const
+                }
+
+                const response = await fetchResources(filters, currentPage, pageSize)
+                setResources(response.resources)
+                setTotalPages(response.pagination.totalPages)
+            } catch (error) {
+                console.error('Error loading resources:', error)
+                toast.error('Failed to load resources')
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        loadResources()
+    }, [searchTerm, statusFilter, typeFilter, currentPage])
+
+    // Listen for resource updates
+    useEffect(() => {
+        const handleResourcesUpdated = () => {
+            // Reload resources when new ones are uploaded
+            setCurrentPage(1)
+        }
+
+        window.addEventListener('resourcesUpdated', handleResourcesUpdated)
+
+        return () => {
+            window.removeEventListener('resourcesUpdated', handleResourcesUpdated)
+        }
+    }, [])
+
+    // Debounced search
+    useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            setCurrentPage(1) // Reset to first page when search changes
+        }, 300)
+
+        return () => clearTimeout(debounceTimer)
+    }, [searchTerm])
 
     const filteredResources = useMemo(() => {
-        return resources.filter(resource => {
-            const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                resource.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                resource.author?.toLowerCase().includes(searchTerm.toLowerCase())
-            const matchesStatus = statusFilter === 'all' || resource.status === statusFilter
-            const matchesType = typeFilter === 'all' || resource.type === typeFilter
-            
-            return matchesSearch && matchesStatus && matchesType
-        })
-    }, [resources, searchTerm, statusFilter, typeFilter])
+        if (loading) return []
+        return resources
+    }, [resources, loading])
 
     const handleDeleteResource = useCallback((resourceId: string) => {
         toast.success('Resource deleted successfully')
@@ -426,100 +484,177 @@ export function AdminResourcesManagementSection() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <AnimatePresence>
-                                    {filteredResources.map((resource, index) => (
-                                        <motion.tr
-                                            key={resource.id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -20 }}
-                                            transition={{ duration: 0.2, delay: index * 0.02 }}
-                                            className="hover:bg-gray-50"
-                                        >
+                                {loading ? (
+                                    // Loading skeleton
+                                    Array.from({ length: 5 }).map((_, index) => (
+                                        <TableRow key={`loading-${index}`}>
                                             <TableCell>
                                                 <div className="flex items-center gap-3">
-                                                    {getFileIcon(resource.fileFormat)}
-                                                    <div className="min-w-0 flex-1">
-                                                        <p className="font-medium text-gray-900 truncate">
-                                                            {resource.title}
-                                                        </p>
-                                                        <p className="text-sm text-gray-500 truncate">
-                                                            {formatFileSize(resource.fileSize)}
-                                                        </p>
+                                                    <div className="h-4 w-4 bg-gray-200 rounded animate-pulse" />
+                                                    <div className="space-y-2">
+                                                        <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+                                                        <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" />
                                                     </div>
                                                 </div>
                                             </TableCell>
                                             <TableCell>
-                                                <Badge variant="outline" className="capitalize">
-                                                    {resource.type.replace('-', ' ')}
-                                                </Badge>
+                                                <div className="h-6 w-20 bg-gray-200 rounded animate-pulse" />
                                             </TableCell>
                                             <TableCell>
-                                                <Badge 
-                                                    variant="outline" 
-                                                    className={`capitalize ${getStatusColor(resource.status)}`}
-                                                >
-                                                    {resource.status}
-                                                </Badge>
+                                                <div className="h-6 w-16 bg-gray-200 rounded animate-pulse" />
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex items-center gap-2">
-                                                    <Building className="h-4 w-4 text-gray-400" />
-                                                    <span className="text-sm">{resource.partner.name}</span>
-                                                </div>
+                                                <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex items-center gap-2">
-                                                    <Calendar className="h-4 w-4 text-gray-400" />
-                                                    <span className="text-sm">
-                                                        {new Date(resource.uploadDate).toLocaleDateString()}
-                                                    </span>
-                                                </div>
+                                                <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
                                             </TableCell>
                                             <TableCell>
-                                                <div className="flex items-center gap-2">
-                                                    <Download className="h-4 w-4 text-gray-400" />
-                                                    <span className="text-sm">{resource.downloadCount}</span>
-                                                </div>
+                                                <div className="h-4 w-12 bg-gray-200 rounded animate-pulse" />
                                             </TableCell>
-                                            <TableCell className="text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                        <DropdownMenuItem
-                                                            onClick={() => window.open(resource.fileUrl, '_blank')}
-                                                        >
-                                                            <Eye className="mr-2 h-4 w-4" />
-                                                            View
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem
-                                                            onClick={() => handleEditResource(resource)}
-                                                        >
-                                                            <Edit className="mr-2 h-4 w-4" />
-                                                            Edit
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuSeparator />
-                                                        <DropdownMenuItem
-                                                            onClick={() => handleDeleteResource(resource.id)}
-                                                            className="text-red-600"
-                                                        >
-                                                            <Trash2 className="mr-2 h-4 w-4" />
-                                                            Delete
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
+                                            <TableCell>
+                                                <div className="h-8 w-8 bg-gray-200 rounded animate-pulse ml-auto" />
                                             </TableCell>
-                                        </motion.tr>
-                                    ))}
-                                </AnimatePresence>
+                                        </TableRow>
+                                    ))
+                                ) : filteredResources.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={7} className="text-center py-8">
+                                            <div className="flex flex-col items-center gap-2">
+                                                <FileText className="h-8 w-8 text-gray-400" />
+                                                <p className="text-gray-500">No resources found</p>
+                                                <p className="text-sm text-gray-400">
+                                                    {searchTerm || statusFilter !== 'all' || typeFilter !== 'all'
+                                                        ? 'Try adjusting your filters'
+                                                        : 'Upload your first resource to get started'
+                                                    }
+                                                </p>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                            <AnimatePresence>
+                                                {filteredResources.map((resource, index) => (
+                                                    <motion.tr
+                                                        key={resource.id}
+                                                        initial={{ opacity: 0, y: 20 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, y: -20 }}
+                                                        transition={{ duration: 0.2, delay: index * 0.02 }}
+                                                        className="hover:bg-gray-50"
+                                                    >
+                                                        <TableCell>
+                                                            <div className="flex items-center gap-3">
+                                                                {getFileIcon(resource.fileFormat)}
+                                                                <div className="min-w-0 flex-1">
+                                                                    <p className="font-medium text-gray-900 truncate">
+                                                                        {resource.title}
+                                                                    </p>
+                                                                    <p className="text-sm text-gray-500 truncate">
+                                                                        {formatFileSize(resource.fileSize)}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <Badge variant="outline" className="capitalize">
+                                                                {resource.type.replace('-', ' ')}
+                                                            </Badge>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <Badge
+                                                                variant="outline"
+                                                                className={`capitalize ${getStatusColor(resource.status)}`}
+                                                            >
+                                                                {resource.status}
+                                                            </Badge>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <div className="flex items-center gap-2">
+                                                                <Building className="h-4 w-4 text-gray-400" />
+                                                                <span className="text-sm">{resource.partner?.name || 'Unknown Partner'}</span>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <div className="flex items-center gap-2">
+                                                                <Calendar className="h-4 w-4 text-gray-400" />
+                                                                <span className="text-sm">
+                                                                    {new Date(resource.uploadDate).toLocaleDateString()}
+                                                                </span>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <div className="flex items-center gap-2">
+                                                                <Download className="h-4 w-4 text-gray-400" />
+                                                                <span className="text-sm">{resource.downloadCount}</span>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell className="text-right">
+                                                            <DropdownMenu>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                                                        <MoreHorizontal className="h-4 w-4" />
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
+                                                                <DropdownMenuContent align="end">
+                                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => window.open(resource.fileUrl, '_blank')}
+                                                                    >
+                                                                        <Eye className="mr-2 h-4 w-4" />
+                                                                        View
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => handleEditResource(resource)}
+                                                                    >
+                                                                        <Edit className="mr-2 h-4 w-4" />
+                                                                        Edit
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuSeparator />
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => handleDeleteResource(resource.id)}
+                                                                        className="text-red-600"
+                                                                    >
+                                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                                        Delete
+                                                                    </DropdownMenuItem>
+                                                                </DropdownMenuContent>
+                                                            </DropdownMenu>
+                                                        </TableCell>
+                                                    </motion.tr>
+                                                ))}
+                                            </AnimatePresence>
+                                )}
                             </TableBody>
                         </Table>
                     </ScrollArea>
+
+                    {/* Pagination */}
+                    {!loading && filteredResources.length > 0 && totalPages > 1 && (
+                        <div className="flex items-center justify-between px-2 py-4">
+                            <div className="text-sm text-gray-500">
+                                Page {currentPage} of {totalPages}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                                    disabled={currentPage === totalPages}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
@@ -604,6 +739,7 @@ export function AdminResourcesUploadSection() {
     const [isUploading, setIsUploading] = useState(false)
     const [dragActive, setDragActive] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+    const [partners, setPartners] = useState<any[]>([])
     const [resourceForm, setResourceForm] = useState<Partial<CreateResourceRequest>>({
         title: '',
         description: '',
@@ -611,8 +747,31 @@ export function AdminResourcesUploadSection() {
         status: 'draft',
         accessLevel: 'internal',
         partnerId: '',
+        author: '',
         keywords: []
     })
+
+    // Load partners from database
+    useEffect(() => {
+        const loadPartners = async () => {
+            try {
+                const partnerData = await getResourcePartners()
+                setPartners(partnerData)
+            } catch (error) {
+                console.error('Error loading partners:', error)
+                // Fallback to mock data if database fails
+                setPartners([
+                    { id: 'partner-1', name: 'UNICEF Ghana' },
+                    { id: 'partner-2', name: 'WHO Ghana' },
+                    { id: 'partner-3', name: 'Ghana Health Service' },
+                    { id: 'partner-4', name: 'Plan International' },
+                    { id: 'partner-5', name: 'World Vision Ghana' }
+                ])
+            }
+        }
+
+        loadPartners()
+    }, [])
 
     const handleDrag = useCallback((e: React.DragEvent) => {
         e.preventDefault()
@@ -642,30 +801,83 @@ export function AdminResourcesUploadSection() {
         }
     }, [])
 
-    const simulateUpload = useCallback(async () => {
+    const handleUpload = useCallback(async () => {
+        if (!selectedFiles.length || !resourceForm.title || !resourceForm.partnerId) {
+            toast.error('Please select files, provide a title, and select a partner')
+            return
+        }
+
         setIsUploading(true)
         setUploadProgress(0)
 
-        // Simulate upload progress
-        for (let i = 0; i <= 100; i += 10) {
-            await new Promise(resolve => setTimeout(resolve, 200))
-            setUploadProgress(i)
-        }
+        try {
+            // Upload each file
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i]
 
-        toast.success('Resource uploaded successfully!')
-        setIsUploading(false)
-        setUploadProgress(0)
-        setSelectedFiles([])
-        setResourceForm({
-            title: '',
-            description: '',
-            type: 'reports',
-            status: 'draft',
-            accessLevel: 'internal',
-            partnerId: '',
-            keywords: []
-        })
-    }, [])
+                // Update progress for current file
+                const fileProgress = Math.floor((i / selectedFiles.length) * 80) // 80% for file processing
+                setUploadProgress(fileProgress)
+
+                // Create the resource request
+                const createRequest: CreateResourceRequest = {
+                    title: selectedFiles.length > 1 ? `${resourceForm.title} - ${file.name}` : resourceForm.title!,
+                    description: resourceForm.description,
+                    type: resourceForm.type!,
+                    file: file,
+                    partnerId: resourceForm.partnerId!,
+                    projectId: resourceForm.projectId,
+                    tags: resourceForm.tags || [],
+                    status: resourceForm.status!,
+                    accessLevel: resourceForm.accessLevel!,
+                    publicationDate: undefined,
+                    author: resourceForm.author,
+                    keywords: resourceForm.keywords || []
+                }
+
+                // Call the server action to create the resource
+                const result = await createResource(createRequest)
+
+                if (!result.success) {
+                    throw new Error(result.message)
+                }
+
+                // Update progress
+                const completedProgress = Math.floor(((i + 1) / selectedFiles.length) * 90)
+                setUploadProgress(completedProgress)
+            }
+
+            // Final progress update
+            setUploadProgress(100)
+
+            // Show success message
+            const fileText = selectedFiles.length === 1 ? 'Resource' : `${selectedFiles.length} resources`
+            toast.success(`${fileText} uploaded successfully!`)
+
+            // Reset form and files
+            setSelectedFiles([])
+            setResourceForm({
+                title: '',
+                description: '',
+                type: 'reports',
+                status: 'draft',
+                accessLevel: 'internal',
+                partnerId: '',
+                author: '',
+                keywords: []
+            })
+
+            // Trigger refresh of the resources list by dispatching a custom event
+            window.dispatchEvent(new CustomEvent('resourcesUpdated'))
+
+        } catch (error) {
+            console.error('Upload error:', error)
+            toast.error(error instanceof Error ? error.message : 'Failed to upload resource')
+        } finally {
+            setIsUploading(false)
+            setUploadProgress(0)
+        }
+    }, [selectedFiles, resourceForm])
 
     return (
         <motion.div
@@ -728,12 +940,14 @@ export function AdminResourcesUploadSection() {
                                         id="file-upload"
                                         accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4,.avi,.mov"
                                     />
-                                    <label htmlFor="file-upload">
-                                        <Button variant="outline" className="cursor-pointer">
-                                            <FilePlus className="h-4 w-4 mr-2" />
-                                            Browse Files
-                                        </Button>
-                                    </label>
+                                    <Button
+                                        variant="outline"
+                                        className="cursor-pointer"
+                                        onClick={() => document.getElementById('file-upload')?.click()}
+                                    >
+                                        <FilePlus className="h-4 w-4 mr-2" />
+                                        Browse Files
+                                    </Button>
                                 </div>
                             </div>
 
@@ -787,6 +1001,7 @@ export function AdminResourcesUploadSection() {
                                         placeholder="Enter resource title"
                                         value={resourceForm.title}
                                         onChange={(e) => setResourceForm(prev => ({ ...prev, title: e.target.value }))}
+                                        className={!resourceForm.title ? 'border-red-300 focus:border-red-500' : ''}
                                     />
                                 </div>
 
@@ -842,27 +1057,62 @@ export function AdminResourcesUploadSection() {
                                     </div>
                                 </div>
 
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <Label htmlFor="upload-access">Access Level</Label>
+                                        <Select
+                                            value={resourceForm.accessLevel}
+                                            onValueChange={(value) => setResourceForm(prev => ({ ...prev, accessLevel: value as AccessLevel }))}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select access level" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="public">Public</SelectItem>
+                                                <SelectItem value="internal">Internal</SelectItem>
+                                                <SelectItem value="restricted">Restricted</SelectItem>
+                                                <SelectItem value="confidential">Confidential</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    <div>
+                                        <Label htmlFor="upload-partner">Partner *</Label>
+                                        <Select
+                                            value={resourceForm.partnerId}
+                                            onValueChange={(value) => setResourceForm(prev => ({ ...prev, partnerId: value }))}
+                                        >
+                                            <SelectTrigger className={!resourceForm.partnerId ? 'border-red-300 focus:border-red-500' : ''}>
+                                                <SelectValue placeholder="Select partner" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {partners.length > 0 ? (
+                                                    partners.map((partner) => (
+                                                        <SelectItem key={partner.id} value={partner.id}>
+                                                            {partner.name}
+                                                        </SelectItem>
+                                                    ))
+                                                ) : (
+                                                    <SelectItem disabled value="loading">Loading partners...</SelectItem>
+                                                )}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+
                                 <div>
-                                    <Label htmlFor="upload-access">Access Level</Label>
-                                    <Select 
-                                        value={resourceForm.accessLevel} 
-                                        onValueChange={(value) => setResourceForm(prev => ({ ...prev, accessLevel: value as AccessLevel }))}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select access level" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="public">Public</SelectItem>
-                                            <SelectItem value="internal">Internal</SelectItem>
-                                            <SelectItem value="restricted">Restricted</SelectItem>
-                                            <SelectItem value="confidential">Confidential</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                    <Label htmlFor="upload-author">Author (Optional)</Label>
+                                    <Input
+                                        id="upload-author"
+                                        placeholder="Enter author name"
+                                        value={resourceForm.author || ''}
+                                        onChange={(e) => setResourceForm(prev => ({ ...prev, author: e.target.value }))}
+                                    />
                                 </div>
 
                                 <Button 
-                                    onClick={simulateUpload}
-                                    disabled={isUploading || selectedFiles.length === 0 || !resourceForm.title}
+                                    onClick={handleUpload}
+                                    disabled={isUploading || selectedFiles.length === 0 || !resourceForm.title || !resourceForm.partnerId}
                                     className="w-full"
                                 >
                                     {isUploading ? (
