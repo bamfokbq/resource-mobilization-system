@@ -378,7 +378,21 @@ export async function deleteResource(resourceId: string): Promise<{ success: boo
     let resource: Resource | null = null
 
     if (db) {
-      resource = await db.collection('resources').findOne({ id: resourceId }) as Resource | null
+      // Try to find by both id and _id to ensure compatibility
+      const { ObjectId } = require('mongodb')
+      let query: any = { id: resourceId }
+
+      // If resourceId looks like an ObjectId, also search by _id
+      if (ObjectId.isValid(resourceId)) {
+        query = {
+          $or: [
+            { id: resourceId },
+            { _id: new ObjectId(resourceId) }
+          ]
+        }
+      }
+
+      resource = await db.collection('resources').findOne(query) as Resource | null
     } else {
       // Fallback to mock data
       resource = allResources.find(r => r.id === resourceId) || null
@@ -396,8 +410,28 @@ export async function deleteResource(resourceId: string): Promise<{ success: boo
 
     // Delete from MongoDB
     if (db) {
-      await db.collection('resources').deleteOne({ id: resourceId })
-      console.log(`Resource deleted from MongoDB: ${resourceId}`)
+      const { ObjectId } = require('mongodb')
+      let deleteQuery: any = { id: resourceId }
+
+      // If resourceId looks like an ObjectId, also try deleting by _id
+      if (ObjectId.isValid(resourceId)) {
+        deleteQuery = {
+          $or: [
+            { id: resourceId },
+            { _id: new ObjectId(resourceId) }
+          ]
+        }
+      }
+
+      const deleteResult = await db.collection('resources').deleteOne(deleteQuery)
+      console.log(`Resource deletion result: ${deleteResult.deletedCount} documents deleted for ID: ${resourceId}`)
+
+      if (deleteResult.deletedCount === 0) {
+        return {
+          success: false,
+          message: 'Resource not found in database'
+        }
+      }
     } else {
       // Remove from mock data
       const resourceIndex = allResources.findIndex(r => r.id === resourceId)

@@ -96,7 +96,7 @@ import {
     FileFormat,
     CreateResourceRequest
 } from '@/types/resources'
-import { createResource, fetchResources, getResourceStats, getResourcePartners } from '@/actions/resources'
+import { createResource, deleteResource, fetchResources, getResourceStats } from '@/actions/resources'
 
 // Helper function to get file icon
 const getFileIcon = (format: FileFormat) => {
@@ -339,40 +339,43 @@ export function AdminResourcesManagementSection() {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
+    const [refreshTrigger, setRefreshTrigger] = useState(0)
     const pageSize = 25
 
     // Load resources from database
-    useEffect(() => {
-        const loadResources = async () => {
-            setLoading(true)
-            try {
-                const filters = {
-                    search: searchTerm || undefined,
-                    status: statusFilter !== 'all' ? [statusFilter] as any : undefined,
-                    type: typeFilter !== 'all' ? [typeFilter] as any : undefined,
-                    sortBy: 'date' as const,
-                    sortOrder: 'desc' as const
-                }
-
-                const response = await fetchResources(filters, currentPage, pageSize)
-                setResources(response.resources)
-                setTotalPages(response.pagination.totalPages)
-            } catch (error) {
-                console.error('Error loading resources:', error)
-                toast.error('Failed to load resources')
-            } finally {
-                setLoading(false)
+    const loadResources = useCallback(async () => {
+        setLoading(true)
+        try {
+            const filters = {
+                search: searchTerm || undefined,
+                status: statusFilter !== 'all' ? [statusFilter] as any : undefined,
+                type: typeFilter !== 'all' ? [typeFilter] as any : undefined,
+                sortBy: 'date' as const,
+                sortOrder: 'desc' as const
             }
-        }
 
+            const response = await fetchResources(filters, currentPage, pageSize)
+            setResources(response.resources)
+            setTotalPages(response.pagination.totalPages)
+        } catch (error) {
+            console.error('Error loading resources:', error)
+            toast.error('Failed to load resources')
+        } finally {
+            setLoading(false)
+        }
+    }, [searchTerm, statusFilter, typeFilter, currentPage, refreshTrigger])
+
+    useEffect(() => {
         loadResources()
-    }, [searchTerm, statusFilter, typeFilter, currentPage])
+    }, [loadResources])
 
     // Listen for resource updates
     useEffect(() => {
         const handleResourcesUpdated = () => {
             // Reload resources when new ones are uploaded
             setCurrentPage(1)
+            // Force refresh the resources list by incrementing the trigger
+            setRefreshTrigger(prev => prev + 1)
         }
 
         window.addEventListener('resourcesUpdated', handleResourcesUpdated)
@@ -380,7 +383,7 @@ export function AdminResourcesManagementSection() {
         return () => {
             window.removeEventListener('resourcesUpdated', handleResourcesUpdated)
         }
-    }, [])
+    }, []) // Empty dependency array - this effect should only run once
 
     // Debounced search
     useEffect(() => {
@@ -396,8 +399,21 @@ export function AdminResourcesManagementSection() {
         return resources
     }, [resources, loading])
 
-    const handleDeleteResource = useCallback((resourceId: string) => {
-        toast.success('Resource deleted successfully')
+    const handleDeleteResource = useCallback(async (resourceId: string) => {
+        try {
+            const result = await deleteResource(resourceId)
+
+            if (result.success) {
+                toast.success('Resource deleted successfully')
+                // Refresh the resources list by incrementing the trigger
+                setRefreshTrigger(prev => prev + 1)
+            } else {
+                toast.error(result.message || 'Failed to delete resource')
+            }
+        } catch (error) {
+            console.error('Error deleting resource:', error)
+            toast.error('Failed to delete resource')
+        }
     }, [])
 
     const handleEditResource = useCallback((resource: Resource) => {
@@ -751,26 +767,19 @@ export function AdminResourcesUploadSection() {
         keywords: []
     })
 
-    // Load partners from database
+    // Use static partners data
     useEffect(() => {
-        const loadPartners = async () => {
-            try {
-                const partnerData = await getResourcePartners()
-                setPartners(partnerData)
-            } catch (error) {
-                console.error('Error loading partners:', error)
-                // Fallback to mock data if database fails
-                setPartners([
-                    { id: 'partner-1', name: 'UNICEF Ghana' },
-                    { id: 'partner-2', name: 'WHO Ghana' },
-                    { id: 'partner-3', name: 'Ghana Health Service' },
-                    { id: 'partner-4', name: 'Plan International' },
-                    { id: 'partner-5', name: 'World Vision Ghana' }
-                ])
-            }
-        }
-
-        loadPartners()
+        // Set static partners data
+        setPartners([
+            { id: 'partner-1', name: 'UNICEF Ghana', category: 'International NGO', region: 'Greater Accra' },
+            { id: 'partner-2', name: 'WHO Ghana', category: 'International Organization', region: 'Greater Accra' },
+            { id: 'partner-3', name: 'Ghana Health Service', category: 'Government Agency', region: 'National' },
+            { id: 'partner-4', name: 'Plan International', category: 'International NGO', region: 'Northern Region' },
+            { id: 'partner-5', name: 'World Vision Ghana', category: 'International NGO', region: 'Ashanti Region' },
+            { id: 'partner-6', name: 'Ministry of Health', category: 'Government Ministry', region: 'National' },
+            { id: 'partner-7', name: 'USAID Ghana', category: 'Bilateral Agency', region: 'Greater Accra' },
+            { id: 'partner-8', name: 'Save the Children Ghana', category: 'International NGO', region: 'Upper East Region' }
+        ])
     }, [])
 
     const handleDrag = useCallback((e: React.DragEvent) => {
@@ -993,8 +1002,8 @@ export function AdminResourcesUploadSection() {
                             <div className="space-y-4">
                                 <Separator />
                                 <h4 className="font-medium text-gray-900">Resource Information</h4>
-                                
-                                <div>
+
+                                <div className='space-y-2'>
                                     <Label htmlFor="upload-title">Title *</Label>
                                     <Input
                                         id="upload-title"
@@ -1005,7 +1014,7 @@ export function AdminResourcesUploadSection() {
                                     />
                                 </div>
 
-                                <div>
+                                <div className='space-y-2'>
                                     <Label htmlFor="upload-description">Description</Label>
                                     <Textarea
                                         id="upload-description"
@@ -1017,7 +1026,7 @@ export function AdminResourcesUploadSection() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div>
+                                    <div className='space-y-2'>
                                         <Label htmlFor="upload-type">Type</Label>
                                         <Select 
                                             value={resourceForm.type} 
@@ -1039,7 +1048,7 @@ export function AdminResourcesUploadSection() {
                                         </Select>
                                     </div>
 
-                                    <div>
+                                    <div className='space-y-2'>
                                         <Label htmlFor="upload-status">Status</Label>
                                         <Select 
                                             value={resourceForm.status} 
@@ -1058,7 +1067,7 @@ export function AdminResourcesUploadSection() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div>
+                                    <div className='space-y-2'>
                                         <Label htmlFor="upload-access">Access Level</Label>
                                         <Select
                                             value={resourceForm.accessLevel}
@@ -1076,7 +1085,7 @@ export function AdminResourcesUploadSection() {
                                         </Select>
                                     </div>
 
-                                    <div>
+                                    <div className='space-y-2'>
                                         <Label htmlFor="upload-partner">Partner *</Label>
                                         <Select
                                             value={resourceForm.partnerId}
@@ -1100,7 +1109,7 @@ export function AdminResourcesUploadSection() {
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className='space-y-2'>
                                     <Label htmlFor="upload-author">Author (Optional)</Label>
                                     <Input
                                         id="upload-author"
@@ -1134,7 +1143,7 @@ export function AdminResourcesUploadSection() {
             </Card>
 
             {/* Quick Stats */}
-            <Card>
+            {/* <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <BarChart3 className="h-5 w-5" />
@@ -1165,7 +1174,7 @@ export function AdminResourcesUploadSection() {
                         </div>
                     </div>
                 </CardContent>
-            </Card>
+            </Card> */}
         </motion.div>
     )
 }
