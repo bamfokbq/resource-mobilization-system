@@ -1,6 +1,19 @@
 'use server'
 
-import { Resource, ResourceFilters, ResourceResponse, ResourceSearchSuggestion } from '@/types/resources'
+import { Resource, ResourceFilters, ResourceResponse, ResourceSearchSuggestion, CreateResourceRequest, UpdateResourceRequest } from '@/types/resources'
+import { getDb } from '@/lib/db'
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+
+// Initialize Linode Object Storage client
+const linodeClient = new S3Client({
+  region: process.env.LINODE_REGION!,
+  endpoint: `https://${process.env.LINODE_REGION}.linodeobjects.com`,
+  credentials: {
+    accessKeyId: process.env.LINODE_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.LINODE_SECRET_ACCESS_KEY!,
+  },
+  forcePathStyle: false, // Linode supports virtual-hosted-style requests
+})
 
 // Mock data generation
 const generateMockResources = (count: number): Resource[] => {
@@ -119,6 +132,378 @@ const generateMockResources = (count: number): Resource[] => {
 // Generate static dataset
 const allResources = generateMockResources(250)
 
+// MongoDB and S3 Integration Helper Functions
+async function connectToDatabase() {
+  try {
+    return await getDb()
+  } catch (error) {
+    console.error('Failed to connect to database:', error)
+    return null
+  }
+}
+
+async function uploadToLinode(file: File, resourceId: string): Promise<string> {
+  try {
+    // Create a unique file key
+    const fileExtension = file.name.split('.').pop()
+    const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
+    const s3Key = `resources/${resourceId}/${sanitizedFileName}`
+
+    // Convert File to Buffer
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    // Upload to Linode Object Storage
+    const uploadCommand = new PutObjectCommand({
+      Bucket: process.env.LINODE_BUCKET_NAME!,
+      Key: s3Key,
+      Body: buffer,
+      ContentType: file.type,
+      ContentDisposition: `attachment; filename="${file.name}"`,
+      Metadata: {
+        originalName: file.name,
+        uploadDate: new Date().toISOString(),
+        resourceId: resourceId
+      }
+    })
+
+    await linodeClient.send(uploadCommand)
+
+    // Return the Linode Object Storage URL
+    return `https://${process.env.LINODE_BUCKET_NAME}.${process.env.LINODE_REGION}.linodeobjects.com/${s3Key}`
+  } catch (error) {
+    console.error('Error uploading to Linode Object Storage:', error)
+    throw new Error('Failed to upload file to Linode Object Storage')
+  }
+}
+
+async function deleteFromLinode(fileUrl: string) {
+  try {
+    // Extract key from URL
+    let objectKey: string
+
+    if (fileUrl.startsWith('s3://')) {
+      const urlParts = fileUrl.replace('s3://', '').split('/')
+      objectKey = urlParts.slice(1).join('/')
+    } else if (fileUrl.includes('.linodeobjects.com')) {
+      // Linode Object Storage URL format
+      const url = new URL(fileUrl)
+      objectKey = url.pathname.substring(1) // Remove leading slash
+    } else {
+      objectKey = fileUrl
+    }
+
+    const deleteCommand = new DeleteObjectCommand({
+      Bucket: process.env.LINODE_BUCKET_NAME!,
+      Key: objectKey
+    })
+
+    await linodeClient.send(deleteCommand)
+    console.log(`Successfully deleted file from Linode Object Storage: ${objectKey}`)
+  } catch (error) {
+    console.error('Error deleting from Linode Object Storage:', error)
+    throw new Error('Failed to delete file from Linode Object Storage')
+  }
+}
+
+// Server Actions for Resource Management
+export async function createResource(data: CreateResourceRequest): Promise<{ success: boolean; message: string; resourceId?: string }> {
+  try {
+    // Validate required fields
+    if (!data.title || !data.file) {
+      return {
+        success: false,
+        message: 'Title and file are required'
+      }
+    }
+
+    // Generate resource ID
+    const resourceId = `resource-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+
+    // Upload file to Linode Object Storage
+    const fileUrl = await uploadToLinode(data.file, resourceId)
+
+    // Create resource object
+    const newResource: Omit<Resource, 'partner' | 'project'> = {
+      id: resourceId,
+      title: data.title,
+      description: data.description,
+      type: data.type,
+      fileFormat: data.file.name.split('.').pop()?.toUpperCase() as any,
+      fileSize: data.file.size,
+      fileName: data.file.name,
+      fileUrl,
+      thumbnailUrl: undefined, // TODO: Generate thumbnail for supported file types
+      status: data.status,
+      accessLevel: data.accessLevel,
+      uploadDate: new Date().toISOString(),
+      publicationDate: data.publicationDate,
+      lastModified: new Date().toISOString(),
+      partnerId: data.partnerId,
+      projectId: data.projectId,
+      tags: data.tags?.map(tagName => ({
+        id: tagName,
+        name: tagName,
+        color: '#3B82F6'
+      })) || [],
+      downloadCount: 0,
+      viewCount: 0,
+      isFavorited: false,
+      rating: undefined,
+      author: data.author,
+      version: '1.0',
+      language: 'English',
+      keywords: data.keywords || []
+    }
+
+    // Save to MongoDB
+    const db = await connectToDatabase()
+    if (db) {
+      await db.collection('resources').insertOne(newResource)
+      console.log(`Resource saved to MongoDB: ${resourceId}`)
+    } else {
+      // Fallback: Add to mock data for demonstration
+      const resourceWithRelations = {
+        ...newResource,
+        partner: allResources.find(r => r.partnerId === data.partnerId)?.partner || {
+          id: data.partnerId,
+          name: 'Unknown Partner',
+          category: 'Unknown',
+          region: 'Unknown'
+        },
+        project: data.projectId ? allResources.find(r => r.projectId === data.projectId)?.project : undefined,
+      }
+      allResources.unshift(resourceWithRelations)
+    }
+
+    return {
+      success: true,
+      message: 'Resource created successfully',
+      resourceId: resourceId
+    }
+  } catch (error) {
+    console.error('Error creating resource:', error)
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to create resource'
+    }
+  }
+}
+
+export async function updateResource(data: UpdateResourceRequest): Promise<{ success: boolean; message: string }> {
+  try {
+    // Find existing resource in database
+    const db = await connectToDatabase()
+    let existingResource: Resource | null = null
+
+    if (db) {
+      existingResource = await db.collection('resources').findOne({ id: data.id }) as Resource | null
+    } else {
+      // Fallback to mock data
+      existingResource = allResources.find(r => r.id === data.id) || null
+    }
+
+    if (!existingResource) {
+      return {
+        success: false,
+        message: 'Resource not found'
+      }
+    }
+
+    // Update fields if provided
+    const updatedResource = {
+      ...existingResource,
+      title: data.title || existingResource.title,
+      description: data.description !== undefined ? data.description : existingResource.description,
+      type: data.type || existingResource.type,
+      status: data.status || existingResource.status,
+      accessLevel: data.accessLevel || existingResource.accessLevel,
+      partnerId: data.partnerId || existingResource.partnerId,
+      projectId: data.projectId !== undefined ? data.projectId : existingResource.projectId,
+      tags: data.tags ? data.tags.map(tagName => ({
+        id: tagName,
+        name: tagName,
+        color: '#3B82F6'
+      })) : existingResource.tags,
+      author: data.author !== undefined ? data.author : existingResource.author,
+      keywords: data.keywords !== undefined ? data.keywords : existingResource.keywords,
+      lastModified: new Date().toISOString()
+    }
+
+    // Handle file upload if new file provided
+    if (data.file) {
+      // Delete old file from Linode Object Storage
+      await deleteFromLinode(existingResource.fileUrl)
+
+      // Upload new file
+      const fileUrl = await uploadToLinode(data.file, data.id)
+      updatedResource.fileUrl = fileUrl
+      updatedResource.fileName = data.file.name
+      updatedResource.fileSize = data.file.size
+      updatedResource.fileFormat = data.file.name.split('.').pop()?.toUpperCase() as any
+    }
+
+    // Update in MongoDB
+    if (db) {
+      await db.collection('resources').updateOne(
+        { id: data.id },
+        { $set: updatedResource }
+      )
+      console.log(`Resource updated in MongoDB: ${data.id}`)
+    } else {
+      // Update mock data
+      const resourceIndex = allResources.findIndex(r => r.id === data.id)
+      if (resourceIndex !== -1) {
+        allResources[resourceIndex] = updatedResource
+      }
+    }
+
+    return {
+      success: true,
+      message: 'Resource updated successfully'
+    }
+  } catch (error) {
+    console.error('Error updating resource:', error)
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to update resource'
+    }
+  }
+}
+
+export async function deleteResource(resourceId: string): Promise<{ success: boolean; message: string }> {
+  try {
+    // Find resource in database
+    const db = await connectToDatabase()
+    let resource: Resource | null = null
+
+    if (db) {
+      resource = await db.collection('resources').findOne({ id: resourceId }) as Resource | null
+    } else {
+      // Fallback to mock data
+      resource = allResources.find(r => r.id === resourceId) || null
+    }
+
+    if (!resource) {
+      return {
+        success: false,
+        message: 'Resource not found'
+      }
+    }
+
+    // Delete file from Linode Object Storage
+    await deleteFromLinode(resource.fileUrl)
+
+    // Delete from MongoDB
+    if (db) {
+      await db.collection('resources').deleteOne({ id: resourceId })
+      console.log(`Resource deleted from MongoDB: ${resourceId}`)
+    } else {
+      // Remove from mock data
+      const resourceIndex = allResources.findIndex(r => r.id === resourceId)
+      if (resourceIndex !== -1) {
+        allResources.splice(resourceIndex, 1)
+      }
+    }
+
+    return {
+      success: true,
+      message: 'Resource deleted successfully'
+    }
+  } catch (error) {
+    console.error('Error deleting resource:', error)
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to delete resource'
+    }
+  }
+}
+
+export async function getResourceStats(): Promise<{
+  totalResources: number;
+  totalDownloads: number;
+  totalStorageUsed: number;
+  recentUploads: number;
+  pendingReviews: number;
+}> {
+  try {
+    // TODO: Get actual stats from MongoDB
+    // const db = await connectToDatabase();
+    // if (db) {
+    //   const totalResources = await db.collection('resources').countDocuments();
+    //   const totalDownloads = await db.collection('resources').aggregate([
+    //     { $group: { _id: null, total: { $sum: '$downloadCount' } } }
+    //   ]).toArray();
+    //   // ... other aggregations
+    // }
+
+    // Mock stats for demonstration
+    const totalResources = allResources.length
+    const totalDownloads = allResources.reduce((sum, r) => sum + r.downloadCount, 0)
+    const totalStorageUsed = allResources.reduce((sum, r) => sum + r.fileSize, 0)
+    const recentUploads = allResources.filter(r => {
+      const uploadDate = new Date(r.uploadDate)
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      return uploadDate > thirtyDaysAgo
+    }).length
+    const pendingReviews = allResources.filter(r => r.status === 'under-review').length
+
+    return {
+      totalResources,
+      totalDownloads,
+      totalStorageUsed,
+      recentUploads,
+      pendingReviews
+    }
+  } catch (error) {
+    console.error('Error getting resource stats:', error)
+    return {
+      totalResources: 0,
+      totalDownloads: 0,
+      totalStorageUsed: 0,
+      recentUploads: 0,
+      pendingReviews: 0
+    }
+  }
+}
+
+export async function generateResourceThumbnail(resourceId: string): Promise<{ success: boolean; thumbnailUrl?: string; message: string }> {
+  try {
+    const resource = allResources.find(r => r.id === resourceId)
+    if (!resource) {
+      return {
+        success: false,
+        message: 'Resource not found'
+      }
+    }
+
+    // TODO: Implement thumbnail generation for PDFs, images, and videos
+    // For PDFs: Use pdf-thumbnail or similar library
+    // For images: Resize using sharp or similar
+    // For videos: Extract frame using ffmpeg
+
+    const thumbnailUrl = `/api/resources/${resourceId}/thumbnail`
+
+    // Update resource with thumbnail URL
+    const resourceIndex = allResources.findIndex(r => r.id === resourceId)
+    if (resourceIndex !== -1) {
+      allResources[resourceIndex].thumbnailUrl = thumbnailUrl
+    }
+
+    return {
+      success: true,
+      thumbnailUrl,
+      message: 'Thumbnail generated successfully'
+    }
+  } catch (error) {
+    console.error('Error generating thumbnail:', error)
+    return {
+      success: false,
+      message: 'Failed to generate thumbnail'
+    }
+  }
+}
+
 // Server Actions
 export async function fetchResources(
   filters: ResourceFilters,
@@ -129,158 +514,279 @@ export async function fetchResources(
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, Math.random() * 800 + 200))
     
-    let filteredResources = [...allResources]
-    
-    // Apply search filter
-    if (filters.search) {
-      const searchTerm = filters.search.toLowerCase()
-      filteredResources = filteredResources.filter(resource =>
-        resource.title.toLowerCase().includes(searchTerm) ||
-        resource.description?.toLowerCase().includes(searchTerm) ||
-        resource.partner.name.toLowerCase().includes(searchTerm) ||
-        resource.project?.name.toLowerCase().includes(searchTerm) ||
-        resource.tags.some(tag => tag.name.toLowerCase().includes(searchTerm)) ||
-        resource.keywords?.some(keyword => keyword.toLowerCase().includes(searchTerm)) ||
-        resource.author?.toLowerCase().includes(searchTerm)
-      )
-    }
-    
-    // Apply type filter
-    if (filters.type?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        filters.type!.includes(resource.type)
-      )
-    }
-    
-    // Apply partner filter
-    if (filters.partnerId?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        filters.partnerId!.includes(resource.partnerId)
-      )
-    }
-    
-    // Apply project filter
-    if (filters.projectId?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        resource.projectId && filters.projectId!.includes(resource.projectId)
-      )
-    }
-    
-    // Apply status filter
-    if (filters.status?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        filters.status!.includes(resource.status)
-      )
-    }
-    
-    // Apply access level filter
-    if (filters.accessLevel?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        filters.accessLevel!.includes(resource.accessLevel)
-      )
-    }
-    
-    // Apply file format filter
-    if (filters.fileFormat?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        filters.fileFormat!.includes(resource.fileFormat)
-      )
-    }
-    
-    // Apply tags filter
-    if (filters.tags?.length) {
-      filteredResources = filteredResources.filter(resource =>
-        resource.tags.some(tag => filters.tags!.includes(tag.name))
-      )
-    }
-    
-    // Apply date range filter
-    if (filters.dateRange) {
-      const { from, to, field } = filters.dateRange
-      if (from || to) {
-        filteredResources = filteredResources.filter(resource => {
-          const dateToCompare = field === 'publicationDate' && resource.publicationDate
-            ? resource.publicationDate
-            : resource.uploadDate
-          
-          const resourceDate = new Date(dateToCompare)
-          
-          if (from && to) {
-            return resourceDate >= new Date(from) && resourceDate <= new Date(to)
-          } else if (from) {
-            return resourceDate >= new Date(from)
-          } else if (to) {
-            return resourceDate <= new Date(to)
-          }
-          
-          return true
-        })
+    const db = await connectToDatabase()
+    let filteredResources: Resource[] = []
+
+    if (db) {
+      // Build MongoDB query
+      const query: any = {}
+
+      // Apply search filter
+      if (filters.search) {
+        const searchTerm = filters.search
+        query.$or = [
+          { title: { $regex: searchTerm, $options: 'i' } },
+          { description: { $regex: searchTerm, $options: 'i' } },
+          { 'partner.name': { $regex: searchTerm, $options: 'i' } },
+          { 'project.name': { $regex: searchTerm, $options: 'i' } },
+          { 'tags.name': { $regex: searchTerm, $options: 'i' } },
+          { keywords: { $regex: searchTerm, $options: 'i' } },
+          { author: { $regex: searchTerm, $options: 'i' } }
+        ]
       }
-    }
-    
-    // Apply sorting
-    if (filters.sortBy) {
-      filteredResources.sort((a, b) => {
-        let aValue: any, bValue: any
-        
+
+      // Apply type filter
+      if (filters.type?.length) {
+        query.type = { $in: filters.type }
+      }
+
+      // Apply partner filter
+      if (filters.partnerId?.length) {
+        query.partnerId = { $in: filters.partnerId }
+      }
+
+      // Apply project filter
+      if (filters.projectId?.length) {
+        query.projectId = { $in: filters.projectId }
+      }
+
+      // Apply status filter
+      if (filters.status?.length) {
+        query.status = { $in: filters.status }
+      }
+
+      // Apply access level filter
+      if (filters.accessLevel?.length) {
+        query.accessLevel = { $in: filters.accessLevel }
+      }
+
+      // Apply file format filter
+      if (filters.fileFormat?.length) {
+        query.fileFormat = { $in: filters.fileFormat }
+      }
+
+      // Apply tags filter
+      if (filters.tags?.length) {
+        query['tags.name'] = { $in: filters.tags }
+      }
+
+      // Apply date range filter
+      if (filters.dateRange) {
+        const { from, to, field } = filters.dateRange
+        const dateField = field === 'publicationDate' ? 'publicationDate' : 'uploadDate'
+
+        if (from && to) {
+          query[dateField] = { $gte: from, $lte: to }
+        } else if (from) {
+          query[dateField] = { $gte: from }
+        } else if (to) {
+          query[dateField] = { $lte: to }
+        }
+      }
+
+      // Build sort criteria
+      let sort: any = {}
+      if (filters.sortBy) {
         switch (filters.sortBy) {
           case 'date':
-            aValue = new Date(a.uploadDate)
-            bValue = new Date(b.uploadDate)
+            sort.uploadDate = filters.sortOrder === 'desc' ? -1 : 1
             break
           case 'title':
-            aValue = a.title.toLowerCase()
-            bValue = b.title.toLowerCase()
+            sort.title = filters.sortOrder === 'desc' ? -1 : 1
             break
           case 'size':
-            aValue = a.fileSize
-            bValue = b.fileSize
+            sort.fileSize = filters.sortOrder === 'desc' ? -1 : 1
             break
           case 'downloads':
-            aValue = a.downloadCount
-            bValue = b.downloadCount
+            sort.downloadCount = filters.sortOrder === 'desc' ? -1 : 1
             break
           case 'relevance':
           default:
-            // For relevance, prioritize exact matches in title, then description
-            if (filters.search) {
-              const searchTerm = filters.search.toLowerCase()
-              const aTitleMatch = a.title.toLowerCase().includes(searchTerm)
-              const bTitleMatch = b.title.toLowerCase().includes(searchTerm)
-              
-              if (aTitleMatch && !bTitleMatch) return -1
-              if (!aTitleMatch && bTitleMatch) return 1
-            }
-            // Fall back to upload date for relevance
-            aValue = new Date(a.uploadDate)
-            bValue = new Date(b.uploadDate)
+            sort.uploadDate = -1 // Default to newest first
             break
         }
-        
-        if (filters.sortOrder === 'desc') {
-          return aValue < bValue ? 1 : aValue > bValue ? -1 : 0
-        } else {
-          return aValue > bValue ? 1 : aValue < bValue ? -1 : 0
+      } else {
+        sort.uploadDate = -1
+      }
+
+      // Execute query with pagination
+      const totalItems = await db.collection('resources').countDocuments(query)
+      const skip = (page - 1) * pageSize
+
+      filteredResources = await db.collection('resources')
+        .find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(pageSize)
+        .toArray() as unknown as Resource[]
+
+      const totalPages = Math.ceil(totalItems / pageSize)
+
+      return {
+        resources: filteredResources,
+        pagination: {
+          page,
+          pageSize,
+          totalItems,
+          totalPages
+        },
+        filters
+      }
+    } else {
+      // Fallback to mock data filtering (existing logic)
+      filteredResources = [...allResources]
+
+      // Apply search filter
+      if (filters.search) {
+        const searchTerm = filters.search.toLowerCase()
+        filteredResources = filteredResources.filter(resource =>
+          resource.title.toLowerCase().includes(searchTerm) ||
+          resource.description?.toLowerCase().includes(searchTerm) ||
+          resource.partner.name.toLowerCase().includes(searchTerm) ||
+          resource.project?.name.toLowerCase().includes(searchTerm) ||
+          resource.tags.some(tag => tag.name.toLowerCase().includes(searchTerm)) ||
+          resource.keywords?.some(keyword => keyword.toLowerCase().includes(searchTerm)) ||
+          resource.author?.toLowerCase().includes(searchTerm)
+        )
+      }
+
+      // Apply type filter
+      if (filters.type?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          filters.type!.includes(resource.type)
+        )
+      }
+
+      // Apply partner filter
+      if (filters.partnerId?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          filters.partnerId!.includes(resource.partnerId)
+        )
+      }
+
+      // Apply project filter
+      if (filters.projectId?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          resource.projectId && filters.projectId!.includes(resource.projectId)
+        )
+      }
+
+      // Apply status filter
+      if (filters.status?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          filters.status!.includes(resource.status)
+        )
+      }
+
+      // Apply access level filter
+      if (filters.accessLevel?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          filters.accessLevel!.includes(resource.accessLevel)
+        )
+      }
+
+      // Apply file format filter
+      if (filters.fileFormat?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          filters.fileFormat!.includes(resource.fileFormat)
+        )
+      }
+
+      // Apply tags filter
+      if (filters.tags?.length) {
+        filteredResources = filteredResources.filter(resource =>
+          resource.tags.some(tag => filters.tags!.includes(tag.name))
+        )
+      }
+
+      // Apply date range filter
+      if (filters.dateRange) {
+        const { from, to, field } = filters.dateRange
+        if (from || to) {
+          filteredResources = filteredResources.filter(resource => {
+            const dateToCompare = field === 'publicationDate' && resource.publicationDate
+              ? resource.publicationDate
+              : resource.uploadDate
+
+            const resourceDate = new Date(dateToCompare)
+
+            if (from && to) {
+              return resourceDate >= new Date(from) && resourceDate <= new Date(to)
+            } else if (from) {
+              return resourceDate >= new Date(from)
+            } else if (to) {
+              return resourceDate <= new Date(to)
+            }
+
+            return true
+          })
         }
-      })
-    }
-    
-    // Apply pagination
-    const totalItems = filteredResources.length
-    const totalPages = Math.ceil(totalItems / pageSize)
-    const startIndex = (page - 1) * pageSize
-    const endIndex = startIndex + pageSize
-    const paginatedResources = filteredResources.slice(startIndex, endIndex)
-    
-    return {
-      resources: paginatedResources,
-      pagination: {
-        page,
-        pageSize,
-        totalItems,
-        totalPages
-      },
-      filters
+      }
+
+      // Apply sorting
+      if (filters.sortBy) {
+        filteredResources.sort((a, b) => {
+          let aValue: any, bValue: any
+
+          switch (filters.sortBy) {
+            case 'date':
+              aValue = new Date(a.uploadDate)
+              bValue = new Date(b.uploadDate)
+              break
+            case 'title':
+              aValue = a.title.toLowerCase()
+              bValue = b.title.toLowerCase()
+              break
+            case 'size':
+              aValue = a.fileSize
+              bValue = b.fileSize
+              break
+            case 'downloads':
+              aValue = a.downloadCount
+              bValue = b.downloadCount
+              break
+            case 'relevance':
+            default:
+              // For relevance, prioritize exact matches in title, then description
+              if (filters.search) {
+                const searchTerm = filters.search.toLowerCase()
+                const aTitleMatch = a.title.toLowerCase().includes(searchTerm)
+                const bTitleMatch = b.title.toLowerCase().includes(searchTerm)
+
+                if (aTitleMatch && !bTitleMatch) return -1
+                if (!aTitleMatch && bTitleMatch) return 1
+              }
+              // Fall back to upload date for relevance
+              aValue = new Date(a.uploadDate)
+              bValue = new Date(b.uploadDate)
+              break
+          }
+
+          if (filters.sortOrder === 'desc') {
+            return aValue < bValue ? 1 : aValue > bValue ? -1 : 0
+          } else {
+            return aValue > bValue ? 1 : aValue < bValue ? -1 : 0
+          }
+        })
+      }
+
+      // Apply pagination
+      const totalItems = filteredResources.length
+      const totalPages = Math.ceil(totalItems / pageSize)
+      const startIndex = (page - 1) * pageSize
+      const endIndex = startIndex + pageSize
+      const paginatedResources = filteredResources.slice(startIndex, endIndex)
+
+      return {
+        resources: paginatedResources,
+        pagination: {
+          page,
+          pageSize,
+          totalItems,
+          totalPages
+        },
+        filters
+      }
     }
   } catch (error) {
     console.error('Error fetching resources:', error)
@@ -344,7 +850,15 @@ export async function searchResourceSuggestions(query: string): Promise<Resource
 export async function getResourceById(id: string): Promise<Resource | null> {
   try {
     await new Promise(resolve => setTimeout(resolve, 200))
-    return allResources.find(r => r.id === id) || null
+
+    const db = await connectToDatabase()
+    if (db) {
+      const resource = await db.collection('resources').findOne({ id }) as unknown as Resource | null
+      return resource
+    } else {
+    // Fallback to mock data
+      return allResources.find(r => r.id === id) || null
+    }
   } catch (error) {
     console.error('Error fetching resource by ID:', error)
     return null
