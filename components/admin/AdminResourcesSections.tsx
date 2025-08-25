@@ -88,7 +88,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { motion, AnimatePresence } from 'motion/react'
 import { toast } from 'sonner'
-import { FileUploadTest } from './FileUploadTest'
 import { 
     Resource, 
     ResourceType, 
@@ -688,9 +687,8 @@ export function AdminResourcesUploadSection() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <Tabs defaultValue="upload" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2">
+                        <TabsList className="grid w-full grid-cols-1">
                             <TabsTrigger value="upload">File Upload</TabsTrigger>
-                            <TabsTrigger value="test">Test Upload</TabsTrigger>
                         </TabsList>
                         
                         <TabsContent value="upload" className="space-y-6">
@@ -880,12 +878,6 @@ export function AdminResourcesUploadSection() {
                                     )}
                                 </Button>
                             </div>
-                        </TabsContent>
-                        
-                        <TabsContent value="test" className="space-y-4">
-                            <FileUploadTest onUploadSuccess={(resourceId) => {
-                                toast.success(`Resource uploaded with ID: ${resourceId}`)
-                            }} />
                         </TabsContent>
                     </Tabs>
                 </CardContent>
