@@ -8,49 +8,50 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { MapPinIcon, FilterIcon, BuildingIcon, HomeIcon, SchoolIcon, HospitalIcon, UsersIcon, BriefcaseIcon, HeartHandshakeIcon } from "lucide-react"
 
-// Mock data for settings activities
+// Mock data for settings activities (Total: 151 activities)
+// Part of overall 640 activities target across all components
 const settingsActivitiesData = [
   // Community
-  { id: 1, setting: "Community", activities: 11, typeOfService: "Health Education", implementingPartner: "Ghana Health Service", region: "Greater Accra" },
-  { id: 2, setting: "Community", activities: 7, typeOfService: "Screening Programs", implementingPartner: "WHO Ghana", region: "Ashanti" },
-  { id: 3, setting: "Community", activities: 5, typeOfService: "Awareness Campaigns", implementingPartner: "Ghana Red Cross", region: "Northern" },
-  { id: 4, setting: "Community", activities: 6, typeOfService: "Support Groups", implementingPartner: "Christian Health Association", region: "Western" },
+  { id: 1, setting: "Community", activities: 8, typeOfService: "Health Education", implementingPartner: "Ghana Health Service", region: "Greater Accra" },
+  { id: 2, setting: "Community", activities: 5, typeOfService: "Screening Programs", implementingPartner: "WHO Ghana", region: "Ashanti" },
+  { id: 3, setting: "Community", activities: 4, typeOfService: "Awareness Campaigns", implementingPartner: "Ghana Red Cross", region: "Northern" },
+  { id: 4, setting: "Community", activities: 4, typeOfService: "Support Groups", implementingPartner: "Christian Health Association", region: "Western" },
 
   // CHPS (Community-based Health Planning and Services)
-  { id: 5, setting: "CHPS", activities: 9, typeOfService: "Primary Care", implementingPartner: "Ghana Health Service", region: "Greater Accra" },
-  { id: 6, setting: "CHPS", activities: 7, typeOfService: "Health Promotion", implementingPartner: "Ministry of Health", region: "Ashanti" },
-  { id: 7, setting: "CHPS", activities: 4, typeOfService: "Disease Prevention", implementingPartner: "Ghana Health Service", region: "Northern" },
-  { id: 8, setting: "CHPS", activities: 6, typeOfService: "Community Outreach", implementingPartner: "WHO Ghana", region: "Eastern" },
+  { id: 5, setting: "CHPS", activities: 7, typeOfService: "Primary Care", implementingPartner: "Ghana Health Service", region: "Greater Accra" },
+  { id: 6, setting: "CHPS", activities: 5, typeOfService: "Health Promotion", implementingPartner: "Ministry of Health", region: "Ashanti" },
+  { id: 7, setting: "CHPS", activities: 3, typeOfService: "Disease Prevention", implementingPartner: "Ghana Health Service", region: "Northern" },
+  { id: 8, setting: "CHPS", activities: 4, typeOfService: "Community Outreach", implementingPartner: "WHO Ghana", region: "Eastern" },
 
   // Health Centre
-  { id: 9, setting: "Health Centre", activities: 12, typeOfService: "Clinical Care", implementingPartner: "Ghana Health Service", region: "Greater Accra" },
-  { id: 10, setting: "Health Centre", activities: 10, typeOfService: "Diagnostic Services", implementingPartner: "Ministry of Health", region: "Ashanti" },
-  { id: 11, setting: "Health Centre", activities: 7, typeOfService: "Treatment Programs", implementingPartner: "Ghana Health Service", region: "Western" },
-  { id: 12, setting: "Health Centre", activities: 8, typeOfService: "Preventive Care", implementingPartner: "WHO Ghana", region: "Central" },
+  { id: 9, setting: "Health Centre", activities: 9, typeOfService: "Clinical Care", implementingPartner: "Ghana Health Service", region: "Greater Accra" },
+  { id: 10, setting: "Health Centre", activities: 7, typeOfService: "Diagnostic Services", implementingPartner: "Ministry of Health", region: "Ashanti" },
+  { id: 11, setting: "Health Centre", activities: 5, typeOfService: "Treatment Programs", implementingPartner: "Ghana Health Service", region: "Western" },
+  { id: 12, setting: "Health Centre", activities: 6, typeOfService: "Preventive Care", implementingPartner: "WHO Ghana", region: "Central" },
 
   // District Hospital
-  { id: 13, setting: "District Hospital", activities: 7, typeOfService: "Specialized Care", implementingPartner: "Ministry of Health", region: "Greater Accra" },
-  { id: 14, setting: "District Hospital", activities: 6, typeOfService: "Surgery", implementingPartner: "Ghana Health Service", region: "Ashanti" },
-  { id: 15, setting: "District Hospital", activities: 3, typeOfService: "Emergency Care", implementingPartner: "Ghana Red Cross", region: "Northern" },
-  { id: 16, setting: "District Hospital", activities: 5, typeOfService: "Inpatient Services", implementingPartner: "Ministry of Health", region: "Eastern" },
+  { id: 13, setting: "District Hospital", activities: 5, typeOfService: "Specialized Care", implementingPartner: "Ministry of Health", region: "Greater Accra" },
+  { id: 14, setting: "District Hospital", activities: 4, typeOfService: "Surgery", implementingPartner: "Ghana Health Service", region: "Ashanti" },
+  { id: 15, setting: "District Hospital", activities: 2, typeOfService: "Emergency Care", implementingPartner: "Ghana Red Cross", region: "Northern" },
+  { id: 16, setting: "District Hospital", activities: 4, typeOfService: "Inpatient Services", implementingPartner: "Ministry of Health", region: "Eastern" },
 
   // Tertiary Facility
-  { id: 17, setting: "Tertiary Facility", activities: 5, typeOfService: "Advanced Treatment", implementingPartner: "Korle Bu Teaching Hospital", region: "Greater Accra" },
-  { id: 18, setting: "Tertiary Facility", activities: 3, typeOfService: "Research", implementingPartner: "University of Ghana Medical School", region: "Greater Accra" },
-  { id: 19, setting: "Tertiary Facility", activities: 3, typeOfService: "Specialist Care", implementingPartner: "Komfo Anokye Teaching Hospital", region: "Ashanti" },
+  { id: 17, setting: "Tertiary Facility", activities: 4, typeOfService: "Advanced Treatment", implementingPartner: "Korle Bu Teaching Hospital", region: "Greater Accra" },
+  { id: 18, setting: "Tertiary Facility", activities: 2, typeOfService: "Research", implementingPartner: "University of Ghana Medical School", region: "Greater Accra" },
+  { id: 19, setting: "Tertiary Facility", activities: 2, typeOfService: "Specialist Care", implementingPartner: "Komfo Anokye Teaching Hospital", region: "Ashanti" },
   { id: 20, setting: "Tertiary Facility", activities: 2, typeOfService: "Medical Education", implementingPartner: "KNUST Medical School", region: "Ashanti" },
 
   // Schools
-  { id: 21, setting: "Schools", activities: 18, typeOfService: "Health Education", implementingPartner: "Ghana Education Service", region: "Greater Accra" },
-  { id: 22, setting: "Schools", activities: 14, typeOfService: "Screening Programs", implementingPartner: "Ghana Health Service", region: "Ashanti" },
-  { id: 23, setting: "Schools", activities: 12, typeOfService: "Nutrition Programs", implementingPartner: "UNICEF Ghana", region: "Northern" },
-  { id: 24, setting: "Schools", activities: 13, typeOfService: "Mental Health Support", implementingPartner: "Mental Health Authority", region: "Western" },
+  { id: 21, setting: "Schools", activities: 13, typeOfService: "Health Education", implementingPartner: "Ghana Education Service", region: "Greater Accra" },
+  { id: 22, setting: "Schools", activities: 10, typeOfService: "Screening Programs", implementingPartner: "Ghana Health Service", region: "Ashanti" },
+  { id: 23, setting: "Schools", activities: 9, typeOfService: "Nutrition Programs", implementingPartner: "UNICEF Ghana", region: "Northern" },
+  { id: 24, setting: "Schools", activities: 10, typeOfService: "Mental Health Support", implementingPartner: "Mental Health Authority", region: "Western" },
 
   // Workplaces
-  { id: 25, setting: "Workplaces", activities: 7, typeOfService: "Occupational Health", implementingPartner: "Ministry of Employment", region: "Greater Accra" },
-  { id: 26, setting: "Workplaces", activities: 7, typeOfService: "Wellness Programs", implementingPartner: "Private Sector Partners", region: "Ashanti" },
-  { id: 27, setting: "Workplaces", activities: 5, typeOfService: "Health Screenings", implementingPartner: "Ghana Health Service", region: "Western" },
-  { id: 28, setting: "Workplaces", activities: 3, typeOfService: "Stress Management", implementingPartner: "Mental Health Authority", region: "Central" }
+  { id: 25, setting: "Workplaces", activities: 5, typeOfService: "Occupational Health", implementingPartner: "Ministry of Employment", region: "Greater Accra" },
+  { id: 26, setting: "Workplaces", activities: 5, typeOfService: "Wellness Programs", implementingPartner: "Private Sector Partners", region: "Ashanti" },
+  { id: 27, setting: "Workplaces", activities: 4, typeOfService: "Health Screenings", implementingPartner: "Ghana Health Service", region: "Western" },
+  { id: 28, setting: "Workplaces", activities: 2, typeOfService: "Stress Management", implementingPartner: "Mental Health Authority", region: "Central" }
 ]
 
 // Settings and filter options
