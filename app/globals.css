@@ -273,3 +273,46 @@
     @apply bg-background text-foreground;
   }
 }
+/* Resource Grid Utilities */
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Resource Card Animations */
+@layer components {
+  .resource-card {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  .resource-card:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+
+  .resource-card.compact {
+    @apply p-3;
+  }
+
+  .resource-card.list-layout {
+    @apply flex flex-row items-center space-x-4 p-4;
+  }
+
+  .resource-card.list-layout .resource-thumbnail {
+    @apply w-24 h-24 flex-shrink-0;
+  }
+
+  .resource-card.list-layout .resource-content {
+    @apply flex-1 min-w-0;
+  }
+}

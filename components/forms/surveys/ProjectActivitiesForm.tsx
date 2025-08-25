@@ -68,7 +68,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
       const validationResult = projectActivitiesSchema.safeParse(values)
 
       if (!validationResult.success) {
-        console.error('Validation errors:', validationResult.error.errors)
+        console.error('Validation errors:', validationResult.error.issues)
         toast.error("Please check all required fields")
         return
       }

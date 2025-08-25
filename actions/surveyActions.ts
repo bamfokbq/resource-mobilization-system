@@ -44,7 +44,7 @@ const surveyDataSchema = z.object({
     regions: z.array(z.string()).min(1, "At least one region is required"),
     targetedNCDs: z.array(z.string()).min(1, "At least one NCD must be selected"),
     fundingSource: z.string().min(1, "Funding source is required"),
-    ncdSpecificInfo: z.record(z.any()).optional(),
+    ncdSpecificInfo: z.record(z.string(), z.any()).optional(),
   }).optional(),
   
   projectActivities: z.object({
@@ -60,7 +60,7 @@ const surveyDataSchema = z.object({
     whoGapTargets: z.array(z.string()).optional(),
     ncdStrategyDomain: z.string().optional(),
     preventionFocus: z.string().optional(),
-    ncdActivities: z.record(z.any()).optional(),
+    ncdActivities: z.record(z.string(), z.any()).optional(),
   }).optional(),
   
   activities: z.array(z.object({
@@ -179,9 +179,9 @@ export async function submitSurveyData(formData: FormData): Promise<SurveySubmis
     if (error instanceof z.ZodError) {
       // Handle validation errors
       const fieldErrors: Record<string, string> = {}
-      error.errors.forEach((err) => {
-        const fieldName = err.path.join('.')
-        fieldErrors[fieldName] = err.message
+      error.issues.forEach((issue) => {
+        const fieldName = issue.path.join('.')
+        fieldErrors[fieldName] = issue.message
       })
       
       return {

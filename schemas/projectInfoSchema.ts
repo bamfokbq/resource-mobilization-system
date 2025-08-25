@@ -36,8 +36,7 @@ export const projectInfoSchema = z.object({
   regions: z.array(z.string()).min(1, "At least one region must be selected"),
   targetedNCDs: z.array(NcdEnum).min(1, "At least one NCD must be selected"),
   fundingSource: z.enum(FUNDING_SOURCES, {
-    required_error: "Please select a funding source",
-    invalid_type_error: "Please select a valid funding source"
+    message: "Please select a valid funding source"
   }).optional(),
   ncdSpecificInfo: z.record(NcdEnum, ncdSpecificInfoSchema)
 })

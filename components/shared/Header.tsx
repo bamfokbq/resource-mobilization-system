@@ -4,7 +4,6 @@ import Navigation from './Navigation'
 import PrimaryButton from './PrimaryButton'
 import MobileNavigation from './MobileNavigation'
 import Avatar from './Avatar'
-import Image from 'next/image';
 
 export default async function Header() {
     const session = await auth();

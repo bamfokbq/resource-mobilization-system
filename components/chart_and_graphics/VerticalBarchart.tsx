@@ -153,7 +153,10 @@ const VerticalBarchart = ({ data, name }: VerticalBarchartProps) => {
                             <LabelList
                                 dataKey="value"
                                 position="right"
-                                formatter={(value: number) => formatValue(value)}
+                                formatter={(value: any) => {
+                                    const numValue = typeof value === 'number' ? value : Number(value);
+                                    return formatValue(numValue);
+                                }}
                                 style={{ fill: '#6b7280', fontSize: '12px' }}
                             />
                         </Bar>
