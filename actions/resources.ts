@@ -199,7 +199,6 @@ async function deleteFromLinode(fileUrl: string) {
     })
 
     await linodeClient.send(deleteCommand)
-    console.log(`Successfully deleted file from Linode Object Storage: ${objectKey}`)
   } catch (error) {
     console.error('Error deleting from Linode Object Storage:', error)
     throw new Error('Failed to delete file from Linode Object Storage')
@@ -260,7 +259,6 @@ export async function createResource(data: CreateResourceRequest): Promise<{ suc
     const db = await connectToDatabase()
     if (db) {
       await db.collection('resources').insertOne(newResource)
-      console.log(`Resource saved to MongoDB: ${resourceId}`)
     } else {
       // Fallback: Add to mock data for demonstration
       const resourceWithRelations = {
@@ -349,7 +347,6 @@ export async function updateResource(data: UpdateResourceRequest): Promise<{ suc
         { id: data.id },
         { $set: updatedResource }
       )
-      console.log(`Resource updated in MongoDB: ${data.id}`)
     } else {
       // Update mock data
       const resourceIndex = allResources.findIndex(r => r.id === data.id)
@@ -424,7 +421,6 @@ export async function deleteResource(resourceId: string): Promise<{ success: boo
       }
 
       const deleteResult = await db.collection('resources').deleteOne(deleteQuery)
-      console.log(`Resource deletion result: ${deleteResult.deletedCount} documents deleted for ID: ${resourceId}`)
 
       if (deleteResult.deletedCount === 0) {
         return {
@@ -461,17 +457,68 @@ export async function getResourceStats(): Promise<{
   pendingReviews: number;
 }> {
   try {
-    // TODO: Get actual stats from MongoDB
-    // const db = await connectToDatabase();
-    // if (db) {
-    //   const totalResources = await db.collection('resources').countDocuments();
-    //   const totalDownloads = await db.collection('resources').aggregate([
-    //     { $group: { _id: null, total: { $sum: '$downloadCount' } } }
-    //   ]).toArray();
-    //   // ... other aggregations
-    // }
+    // Get actual stats from MongoDB
+    const db = await connectToDatabase();
 
-    // Mock stats for demonstration
+    if (db) {
+      // Total resources count
+      const totalResources = await db.collection('resources').countDocuments()
+
+      // Total downloads aggregation
+      const downloadAggregation = await db.collection('resources').aggregate([
+        { $group: { _id: null, total: { $sum: '$downloadCount' } } }
+      ]).toArray()
+      const totalDownloads = downloadAggregation.length > 0 ? downloadAggregation[0].total : 0
+
+      // Total storage used aggregation
+      const storageAggregation = await db.collection('resources').aggregate([
+        { $group: { _id: null, total: { $sum: '$fileSize' } } }
+      ]).toArray()
+      const totalStorageUsed = storageAggregation.length > 0 ? storageAggregation[0].total : 0
+
+      // Recent uploads (last 30 days)
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      const recentUploads = await db.collection('resources').countDocuments({
+        uploadDate: { $gte: thirtyDaysAgo.toISOString() }
+      })
+
+      // Pending reviews
+      const pendingReviews = await db.collection('resources').countDocuments({
+        status: 'under-review'
+      })
+
+      return {
+        totalResources,
+        totalDownloads,
+        totalStorageUsed,
+        recentUploads,
+        pendingReviews
+      }
+    } else {
+
+      // Fallback to mock stats if database connection fails
+      const totalResources = allResources.length
+      const totalDownloads = allResources.reduce((sum, r) => sum + r.downloadCount, 0)
+      const totalStorageUsed = allResources.reduce((sum, r) => sum + r.fileSize, 0)
+      const recentUploads = allResources.filter(r => {
+        const uploadDate = new Date(r.uploadDate)
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        return uploadDate > thirtyDaysAgo
+      }).length
+      const pendingReviews = allResources.filter(r => r.status === 'under-review').length
+
+      return {
+        totalResources,
+        totalDownloads,
+        totalStorageUsed,
+        recentUploads,
+        pendingReviews
+      }
+    }
+  } catch (error) {
+    console.error('Error getting resource stats:', error)
+
+    // Return fallback stats on error
     const totalResources = allResources.length
     const totalDownloads = allResources.reduce((sum, r) => sum + r.downloadCount, 0)
     const totalStorageUsed = allResources.reduce((sum, r) => sum + r.fileSize, 0)
@@ -488,15 +535,6 @@ export async function getResourceStats(): Promise<{
       totalStorageUsed,
       recentUploads,
       pendingReviews
-    }
-  } catch (error) {
-    console.error('Error getting resource stats:', error)
-    return {
-      totalResources: 0,
-      totalDownloads: 0,
-      totalStorageUsed: 0,
-      recentUploads: 0,
-      pendingReviews: 0
     }
   }
 }

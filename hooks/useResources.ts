@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { toast } from 'sonner'
 import { fetchResources, deleteResource } from '@/actions/resources'
 import { Resource } from '@/types/resources'
+import { triggerResourcesUpdated, triggerResourceDeleted } from '@/utils/events'
 
 interface UseResourcesProps {
     searchTerm?: string
@@ -52,6 +53,10 @@ export function useResources({
             if (result.success) {
                 toast.success('Resource deleted successfully')
                 setRefreshTrigger(prev => prev + 1)
+                // Trigger resource list updates
+                triggerResourcesUpdated()
+                // Trigger stats refresh for deletion
+                triggerResourceDeleted()
             } else {
                 toast.error(result.message || 'Failed to delete resource')
             }

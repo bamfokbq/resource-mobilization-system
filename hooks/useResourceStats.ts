@@ -17,7 +17,7 @@ export function useResourceStats() {
         recentUploads: 0,
         pendingReviews: 0
     })
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true) // Start with loading true
     const [error, setError] = useState<string | null>(null)
 
     const loadStats = useCallback(async () => {
@@ -27,9 +27,8 @@ export function useResourceStats() {
             const statsData = await getResourceStats()
             setStats(statsData)
         } catch (err) {
-            console.error('Error loading resource stats:', err)
             setError('Failed to load statistics')
-            // Set fallback stats
+            // Set fallback stats on error
             setStats({
                 totalResources: 0,
                 totalDownloads: 0,
@@ -48,17 +47,26 @@ export function useResourceStats() {
 
     useEffect(() => {
         loadStats()
+
+        // No automatic polling - only refresh on explicit events
     }, [loadStats])
 
-    // Listen for resource updates to refresh stats
+    // Listen for new resource additions and deletions
     useEffect(() => {
-        const handleResourcesUpdated = () => {
+        const handleNewResourceAdded = () => {
             refreshStats()
         }
 
-        window.addEventListener('resourcesUpdated', handleResourcesUpdated)
+        const handleResourceDeleted = () => {
+            refreshStats()
+        }
+
+        window.addEventListener('newResourceAdded', handleNewResourceAdded)
+        window.addEventListener('resourceDeleted', handleResourceDeleted)
+
         return () => {
-            window.removeEventListener('resourcesUpdated', handleResourcesUpdated)
+            window.removeEventListener('newResourceAdded', handleNewResourceAdded)
+            window.removeEventListener('resourceDeleted', handleResourceDeleted)
         }
     }, [refreshStats])
 

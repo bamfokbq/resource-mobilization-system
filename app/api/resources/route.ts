@@ -53,7 +53,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: result.message,
-      resourceId: result.resourceId
+      resourceId: result.resourceId,
+      shouldRefreshStats: true // Signal client to refresh stats for new resource
     })
   } catch (error) {
     console.error('Error uploading resource:', error)

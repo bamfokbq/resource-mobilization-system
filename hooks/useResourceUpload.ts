@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { toast } from 'sonner'
 import { createResource } from '@/actions/resources'
 import { CreateResourceRequest } from '@/types/resources'
+import { triggerNewResourceAdded, triggerResourcesUpdated } from '@/utils/events'
 
 export function useResourceUpload() {
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
@@ -95,6 +96,11 @@ export function useResourceUpload() {
                     throw new Error(result.message)
                 }
 
+                // Trigger stats refresh immediately after each successful upload (new resource added)
+                triggerNewResourceAdded()
+                // Also trigger resource list updates for other components
+                triggerResourcesUpdated()
+
                 // Update progress
                 const completedProgress = Math.floor(((i + 1) / selectedFiles.length) * 90)
                 setUploadProgress(completedProgress)
@@ -110,8 +116,10 @@ export function useResourceUpload() {
             // Reset form and files
             resetForm()
 
-            // Trigger refresh of the resources list by dispatching a custom event
-            window.dispatchEvent(new CustomEvent('resourcesUpdated'))
+            // Final trigger for stats refresh after all uploads complete
+            triggerNewResourceAdded()
+            // Also trigger resource list updates for other components
+            triggerResourcesUpdated()
 
         } catch (error) {
             console.error('Upload error:', error)

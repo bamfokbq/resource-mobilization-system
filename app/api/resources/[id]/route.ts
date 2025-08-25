@@ -75,6 +75,7 @@ export async function PUT(
     return NextResponse.json({
       success: true,
       message: result.message
+      // No shouldRefreshStats - updates don't affect stats
     })
   } catch (error) {
     console.error('Error updating resource:', error)
@@ -102,7 +103,8 @@ export async function DELETE(
 
     return NextResponse.json({
       success: true,
-      message: result.message
+      message: result.message,
+      shouldRefreshStats: true // Signal client to refresh stats after deletion
     })
   } catch (error) {
     console.error('Error deleting resource:', error)
