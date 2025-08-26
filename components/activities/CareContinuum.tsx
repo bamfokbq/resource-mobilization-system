@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { UnifiedFilterBar } from '@/components/shared/UnifiedFilterBar'
+import { ComponentActionBar } from '@/components/shared/ComponentActionBar'
 import { AddEditActivityModal } from '@/components/shared/AddEditActivityModal'
 import { ExportService, FIELD_MAPPINGS } from '@/lib/exportService'
-import { useUrlFilters, applyFilters } from '@/hooks/useUrlFilters'
+import { useSurveyDataFilters } from '@/components/providers/SurveyDataFilterProvider'
+import { applyFilters } from '@/hooks/useUrlFilters'
 import { Activity } from '@/types/activities'
 import { TrendingDownIcon, AlertTriangleIcon, BarChart3Icon, TableIcon, FilterIcon, EyeIcon } from "lucide-react"
 import { toast } from 'sonner'
@@ -271,7 +272,7 @@ export default function CareContinuum() {
     const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
     const [userRole, setUserRole] = useState<string | null>(null)
     
-    const { filters, updateFilter, clearAllFilters } = useUrlFilters()
+    const { globalFilters } = useSurveyDataFilters()
 
     useEffect(() => {
         setIsMounted(true)
@@ -300,18 +301,16 @@ export default function CareContinuum() {
         }))
     }, [])
 
-    // Apply URL filters to activities
+    // Apply global filters to activities
     const filteredActivities = useMemo(() => {
-        if (!filters) return allActivities
+        if (!globalFilters) return allActivities
 
-        return applyFilters(allActivities, filters, {
+        return applyFilters(allActivities, globalFilters, {
             region: 'region',
             organization: 'implementer',
-            disease: 'disease',
-            status: 'status',
-            level: 'level'
+            disease: 'disease'
         })
-    }, [allActivities, filters])
+    }, [allActivities, globalFilters])
 
     // Calculate stacked bar chart data
     const stackedChartData = useMemo(() => {
@@ -457,7 +456,7 @@ export default function CareContinuum() {
                 title: 'Care Continuum Activities Report',
                 customFields: {
                     'Total Activities': filteredActivities.length.toString(),
-                    'Filters Applied': Object.entries(filters).filter(([k, v]) => v && v !== 'all').length.toString()
+                    'Global Filters Applied': Object.entries(globalFilters).filter(([k, v]) => v && v !== 'all').length.toString()
                 }
             })
         } catch (error) {
@@ -497,14 +496,7 @@ export default function CareContinuum() {
         }
     }
 
-    // Filter options for the unified filter bar
-    const filterOptions = useMemo(() => ({
-        regions: [...new Set(allActivities.map(a => a.region))],
-        organizations: [...new Set(allActivities.map(a => a.implementer))],
-        diseases: [...new Set(allActivities.map(a => a.disease))],
-        statuses: [...new Set(allActivities.map(a => a.status))],
-        levels: [...new Set(allActivities.map(a => a.level))]
-    }), [allActivities])
+    // No longer need local filter options - using global filters from context
 
     if (!isMounted) {
         return <div>Loading...</div>
@@ -529,9 +521,9 @@ export default function CareContinuum() {
                   </div>
               </div>
 
-              {/* Unified Filter Bar */}
-              <UnifiedFilterBar
-                  options={filterOptions}
+              {/* Component Actions */}
+              <ComponentActionBar
+                  title="Care Continuum Actions"
                   showAddButton={userRole === 'Admin'}
                   showExportButtons={true}
                   showVisualizationDownload={true}
@@ -539,7 +531,6 @@ export default function CareContinuum() {
                   onExportExcel={handleExportExcel}
                   onExportPDF={handleExportPDF}
                   onDownloadVisualization={handleDownloadVisualization}
-                  title="Care Continuum Filters"
               />
 
               {/* Stacked Bar Chart */}

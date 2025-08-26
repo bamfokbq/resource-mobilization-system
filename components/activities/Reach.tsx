@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { UnifiedFilterBar } from '@/components/shared/UnifiedFilterBar'
+import { ComponentActionBar } from '@/components/shared/ComponentActionBar'
 import { AddEditActivityModal } from '@/components/shared/AddEditActivityModal'
 import { ExportService, FIELD_MAPPINGS } from '@/lib/exportService'
-import { useUrlFilters, applyFilters } from '@/hooks/useUrlFilters'
+import { useSurveyDataFilters } from '@/components/providers/SurveyDataFilterProvider'
+import { applyFilters } from '@/hooks/useUrlFilters'
 import { Activity } from '@/types/activities'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { UsersIcon, FilterIcon, TrendingUpIcon, MapPinIcon, TargetIcon, BuildingIcon, GlobeIcon, ActivityIcon, EyeIcon, BarChart3Icon, TableIcon } from "lucide-react"
@@ -83,7 +84,7 @@ export default function Reach() {
   const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
   const [userRole, setUserRole] = useState<string | null>(null)
   
-  const { filters, updateFilter, clearAllFilters } = useUrlFilters()
+  const { globalFilters } = useSurveyDataFilters()
 
   useEffect(() => {
     setIsMounted(true)
@@ -110,18 +111,16 @@ export default function Reach() {
     }))
   }, [])
 
-  // Apply URL filters to activities
+  // Apply global filters to activities
   const filteredActivities = useMemo(() => {
-    if (!filters) return allActivities
+    if (!globalFilters) return allActivities
 
-    return applyFilters(allActivities, filters, {
+    return applyFilters(allActivities, globalFilters, {
       region: 'region',
       organization: 'implementer',
-      disease: 'disease',
-      status: 'status',
-      level: 'level'
+      disease: 'disease'
     })
-  }, [allActivities, filters])
+  }, [allActivities, globalFilters])
 
   // Filter data based on current filters (for chart compatibility)
   const filteredData = useMemo(() => {
@@ -274,7 +273,7 @@ export default function Reach() {
         customFields: {
           'Total Activities': filteredActivities.length.toString(),
           'Total Estimated Reach': summaryStats.totalReach.toLocaleString(),
-          'Filters Applied': Object.entries(filters).filter(([k, v]) => v && v !== 'all').length.toString()
+          'Global Filters Applied': Object.entries(globalFilters).filter(([k, v]) => v && v !== 'all').length.toString()
         }
       })
     } catch (error) {
@@ -314,14 +313,7 @@ export default function Reach() {
     }
   }
 
-  // Filter options for the unified filter bar
-  const filterOptions = useMemo(() => ({
-    regions: [...new Set(allActivities.map(a => a.region))],
-    organizations: [...new Set(allActivities.map(a => a.implementer))],
-    diseases: [...new Set(allActivities.map(a => a.disease))],
-    statuses: [...new Set(allActivities.map(a => a.status))],
-    levels: [...new Set(allActivities.map(a => a.level))]
-  }), [allActivities])
+  // No longer need local filter options - using global filters from context
 
   if (!isMounted) {
     return <div>Loading...</div>
@@ -359,9 +351,9 @@ export default function Reach() {
           </div>
         </div>
 
-        {/* Unified Filter Bar */}
-        <UnifiedFilterBar
-          options={filterOptions}
+        {/* Component Actions */}
+        <ComponentActionBar
+          title="Population Reach Actions"
           showAddButton={userRole === 'Admin'}
           showExportButtons={true}
           showVisualizationDownload={true}
@@ -369,7 +361,6 @@ export default function Reach() {
           onExportExcel={handleExportExcel}
           onExportPDF={handleExportPDF}
           onDownloadVisualization={handleDownloadVisualization}
-          title="Population Reach Filters"
         />
 
 
