@@ -8,11 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ComponentActionBar } from '@/components/shared/ComponentActionBar'
-import { AddEditActivityModal } from '@/components/shared/AddEditActivityModal'
 import { ExportService, FIELD_MAPPINGS } from '@/lib/exportService'
 import { useSurveyDataFilters } from '@/components/providers/SurveyDataFilterProvider'
 import { applyFilters } from '@/hooks/useUrlFilters'
-import { Activity } from '@/types/activities'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { UsersIcon, FilterIcon, TrendingUpIcon, MapPinIcon, TargetIcon, BuildingIcon, GlobeIcon, ActivityIcon, EyeIcon, BarChart3Icon, TableIcon } from "lucide-react"
 import { toast } from 'sonner'
@@ -78,17 +76,12 @@ const INTERVENTION_COLORS = {
 
 export default function Reach() {
   const [isMounted, setIsMounted] = useState(false)
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
   const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
-  const [userRole, setUserRole] = useState<string | null>(null)
   
   const { globalFilters } = useSurveyDataFilters()
 
   useEffect(() => {
     setIsMounted(true)
-    setUserRole('Admin') // For demo purposes
   }, [])
 
   // Transform data to match Activity interface
@@ -235,31 +228,6 @@ export default function Reach() {
   }
 
   // Handler functions for the proposed features
-  const handleAddActivity = () => {
-    setSelectedActivity(null)
-    setIsAddModalOpen(true)
-  }
-
-  const handleEditActivity = (activity: Activity) => {
-    setSelectedActivity(activity)
-    setIsEditModalOpen(true)
-  }
-
-  const handleSaveActivity = async (activityData: Activity) => {
-    try {
-      console.log('Saving activity:', activityData)
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      toast.success(
-        selectedActivity ? 'Activity updated successfully!' : 'Activity created successfully!',
-        { description: `${activityData.name} has been saved.` }
-      )
-      setIsAddModalOpen(false)
-      setIsEditModalOpen(false)
-    } catch (error) {
-      console.error('Error saving activity:', error)
-      throw error
-    }
-  }
 
   const handleExportExcel = async () => {
     try {
@@ -354,10 +322,9 @@ export default function Reach() {
         {/* Component Actions */}
         <ComponentActionBar
           title="Population Reach Actions"
-          showAddButton={userRole === 'Admin'}
+          showAddButton={false}
           showExportButtons={true}
           showVisualizationDownload={true}
-          onAddClick={handleAddActivity}
           onExportExcel={handleExportExcel}
           onExportPDF={handleExportPDF}
           onDownloadVisualization={handleDownloadVisualization}
@@ -636,43 +603,28 @@ export default function Reach() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-2">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button variant="outline" size="sm">
-                                  <EyeIcon className="w-4 h-4 mr-1" />
-                                  View
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-2xl">
-                                <DialogHeader>
-                                  <DialogTitle>{item.activity}</DialogTitle>
-                                </DialogHeader>
-                                <div className="space-y-4">
-                                  <div className="grid grid-cols-2 gap-4">
-                                    <div><strong>Estimated Reach:</strong> {item.estimatedReach.toLocaleString()}</div>
-                                    <div><strong>Region:</strong> {item.region}</div>
-                                    <div><strong>Implementer:</strong> {item.implementer}</div>
-                                    <div><strong>Disease Type:</strong> {item.diseaseType}</div>
-                                    <div><strong>Intervention Type:</strong> {item.interventionType}</div>
-                                  </div>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                            
-                            {userRole === 'Admin' && (
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => {
-                                  const activity = allActivities.find(a => a.id === item.id.toString())
-                                  if (activity) handleEditActivity(activity)
-                                }}
-                              >
-                                Edit
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm">
+                                <EyeIcon className="w-4 h-4 mr-1" />
+                                View
                               </Button>
-                            )}
-                          </div>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl">
+                              <DialogHeader>
+                                <DialogTitle>{item.activity}</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div><strong>Estimated Reach:</strong> {item.estimatedReach.toLocaleString()}</div>
+                                  <div><strong>Region:</strong> {item.region}</div>
+                                  <div><strong>Implementer:</strong> {item.implementer}</div>
+                                  <div><strong>Disease Type:</strong> {item.diseaseType}</div>
+                                  <div><strong>Intervention Type:</strong> {item.interventionType}</div>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -682,23 +634,6 @@ export default function Reach() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Add Activity Modal */}
-      <AddEditActivityModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSave={handleSaveActivity}
-        mode="add"
-      />
-
-      {/* Edit Activity Modal */}
-      <AddEditActivityModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        onSave={handleSaveActivity}
-        activity={selectedActivity}
-        mode="edit"
-      />
     </section>
   )
 }
