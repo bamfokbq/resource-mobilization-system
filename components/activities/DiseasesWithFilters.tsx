@@ -224,8 +224,6 @@ export default function DiseasesWithFilters() {
         if (!filters) return allActivities
 
         return applyFilters(allActivities, filters, {
-            region: 'region',
-            organization: 'implementer',
             disease: 'disease',
             status: 'status',
             ageGroup: 'ageGroup',
@@ -248,8 +246,8 @@ export default function DiseasesWithFilters() {
 
     // Filter options for the filter bar
     const filterOptions = useMemo(() => ({
-        regions: [...new Set(allActivities.map(a => a.region))],
-        organizations: [...new Set(allActivities.map(a => a.implementer))],
+        regions: [], // Removed region filter
+        organizations: [], // Removed organization filter
         diseases: [...new Set(allActivities.map(a => a.disease))],
         statuses: [...new Set(allActivities.map(a => a.status))],
         ageGroups: [...new Set(allActivities.map(a => a.ageGroup))],
