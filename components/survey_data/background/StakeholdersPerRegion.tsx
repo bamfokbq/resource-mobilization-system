@@ -18,14 +18,14 @@ export default function StakeholdersPerRegion() {
       transition={{ duration: 0.6 }}
     >
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white mb-6">
+      <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
             <UsersIcon className="w-6 h-6" />
           </div>
           <div>
-            <h1 className='text-4xl font-bold mb-2'>Stakeholders Per Region</h1>
-            <p className='text-blue-100 text-lg'>
+            <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Stakeholders Per Region</h1>
+            <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
               Regional distribution of stakeholders and organizations involved in NCD activities across Ghana
             </p>
           </div>
@@ -47,9 +47,9 @@ export default function StakeholdersPerRegion() {
           </div>
         </CardHeader>
         <CardContent className="p-6">
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[80vh]'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 min-h-[60vh] lg:min-h-[80vh]'>
             <motion.div 
-              className='relative overflow-hidden w-full h-[80vh] bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border'
+              className='relative overflow-hidden w-full h-[50vh] lg:h-[80vh] bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border'
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -57,7 +57,7 @@ export default function StakeholdersPerRegion() {
               <SectorMap regionalData={REGIONAL_SECTOR_DATA} />
             </motion.div>
             <motion.div 
-              className='h-[80vh] bg-gradient-to-br from-white to-gray-50 rounded-xl border overflow-hidden'
+              className='h-[50vh] lg:h-[80vh] bg-gradient-to-br from-white to-gray-50 rounded-xl border overflow-hidden'
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -68,7 +68,7 @@ export default function StakeholdersPerRegion() {
                   <h3 className="text-lg font-semibold">Stakeholder Directory</h3>
                 </div>
               </div>
-              <div className="h-[calc(80vh-60px)] overflow-y-auto">
+              <div className="h-[calc(50vh-60px)] lg:h-[calc(80vh-60px)] overflow-y-auto">
                 <StakeholdersTable />
               </div>
             </motion.div>

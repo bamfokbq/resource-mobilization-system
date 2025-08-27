@@ -16,21 +16,21 @@ export default function StakeholderDetails() {
       transition={{ duration: 0.6, delay: 0.8 }}
     >
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white mb-6">
+      <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
             <ContactIcon className="w-6 h-6" />
           </div>
           <div>
-            <h1 className='text-4xl font-bold mb-2'>Stakeholder Details</h1>
-            <p className='text-blue-100 text-lg'>
+            <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Stakeholder Details</h1>
+            <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
               Comprehensive directory and profile information of key stakeholders in NCD activities
             </p>
           </div>
         </div>
         
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <UsersIcon className="w-5 h-5 text-blue-200" />
@@ -93,7 +93,7 @@ export default function StakeholderDetails() {
                   This section provides detailed profiles of key stakeholders, organizations, and partners 
                   involved in Non-Communicable Disease (NCD) prevention, management, and research activities across Ghana.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                   <div className="bg-white rounded-lg p-4 shadow-sm">
                     <h4 className="font-semibold text-gray-800 mb-2">Contact Information</h4>
                     <p className="text-sm text-gray-600">Complete contact details for all registered stakeholders</p>

@@ -298,7 +298,7 @@ export default function Diseases() {
         return (
             <div className="space-y-6">
                 {/* Disease Overview Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white">
                         <CardContent className="p-4">
                             <div className="flex items-center justify-between">
@@ -414,14 +414,14 @@ export default function Diseases() {
     <section className='mb-8' id='diseases'>
           <div className="space-y-8">
               {/* Header Section */}
-              <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">
+              <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white">
                   <div className="flex items-center gap-3 mb-4">
                       <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                           <HeartHandshakeIcon className="w-6 h-6" />
                       </div>
                       <div>
-                          <h1 className='text-4xl font-bold mb-2'>Activities by Disease Focus</h1>
-                          <p className='text-blue-100 text-lg'>
+                          <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Activities by Disease Focus</h1>
+                          <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
                               Comprehensive disease-specific activity tracking and analysis to support targeted intervention planning, resource allocation, and health outcome monitoring across all NCD categories.
                           </p>
                       </div>
@@ -452,7 +452,7 @@ export default function Diseases() {
                           </TabsList>
 
                           {/* Filters */}
-                          <div className="flex flex-wrap items-center gap-3">
+                          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3">
                               <div className="flex items-center gap-2">
                                   <FilterIcon className="w-4 h-4 text-gray-500" />
                                   <span className="text-sm font-medium text-gray-700">Filters:</span>
@@ -569,8 +569,8 @@ export default function Diseases() {
                                   </div>
                               </CardHeader>
                               <CardContent className="p-6">
-                                  <div ref={tableRef} className="rounded-lg border">
-                                      <Table>
+                                  <div ref={tableRef} className="rounded-lg border overflow-x-auto">
+                                      <Table className="min-w-[800px]">
                                           <TableHeader>
                                               <TableRow className="bg-gray-50">
                                                   <TableHead className="font-bold text-gray-800">Disease</TableHead>

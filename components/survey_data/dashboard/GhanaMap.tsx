@@ -42,7 +42,7 @@ export default function GhanaMap() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-fit">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 h-fit">
       {/* Interactive Map Section */}
       <motion.div 
         className="lg:col-span-2"
@@ -64,7 +64,7 @@ export default function GhanaMap() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-0 h-[600px]">
+          <CardContent className="p-0 h-[400px] sm:h-[500px] lg:h-[600px]">
             <LandingPageMapComponent />
           </CardContent>
         </Card>

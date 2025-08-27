@@ -17,21 +17,21 @@ export default function FundingSource() {
       transition={{ duration: 0.6, delay: 0.6 }}
     >
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white mb-6">
+      <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
             <WalletIcon className="w-6 h-6" />
           </div>
           <div>
-            <h1 className='text-4xl font-bold mb-2'>Funding Sources</h1>
-            <p className='text-blue-100 text-lg'>
+            <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Funding Sources</h1>
+            <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
               Financial support and investment sources for NCD prevention and management activities
             </p>
           </div>
         </div>
         
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <DollarSignIcon className="w-5 h-5 text-blue-200" />
@@ -72,7 +72,7 @@ export default function FundingSource() {
           </div>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Funding List */}
             <motion.div 
               className="space-y-4"

@@ -304,14 +304,14 @@ const legacyData = [
     <section className='mb-8' id='regional-activities'>
       <div className="space-y-8">
         {/* Header Section */}
-        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">
+        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
               <MapIcon className="w-6 h-6" />
             </div>
             <div>
-              <h1 className='text-4xl font-bold mb-2'>Activities By Region</h1>
-              <p className='text-blue-100 text-lg'>
+              <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Activities By Region</h1>
+              <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
                 Interactive overview showing geographic distribution of NCD activities to identify gaps, overlaps, and under-served regions.
               </p>
             </div>
@@ -329,7 +329,7 @@ const legacyData = [
             </div>
           </CardHeader>
           <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                   <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
@@ -389,7 +389,7 @@ const legacyData = [
 
         {/* Enhanced Tabs */}
         <Tabs defaultValue="map" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-1 rounded-xl h-14">
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 bg-gray-100 p-1 rounded-xl h-auto sm:h-14">
             <TabsTrigger
               value="map"
               className="flex items-center gap-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-navy-blue transition-all duration-200 rounded-lg"
@@ -436,7 +436,7 @@ const legacyData = [
                 </div>
               </CardHeader>
               <CardContent className="p-0">
-                <div ref={mapRef} className='h-[100vh] bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden'>
+                <div ref={mapRef} className='h-[60vh] sm:h-[70vh] lg:h-[100vh] bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden'>
                   <ActivitiesByRegionMapComponent />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
                     <div className="text-xs font-medium text-gray-600 mb-1">Total Activities</div>
@@ -571,7 +571,7 @@ const legacyData = [
               <CardContent className="p-6">
                 <div ref={summaryRef} className="space-y-6">
               {/* Main Stats Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white transform hover:scale-105 transition-transform duration-200">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
@@ -650,7 +650,7 @@ const legacyData = [
               </div>
 
               {/* Enhanced Analytics Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <Card className="border-0 shadow-xl bg-gradient-to-br from-white to-blue-50">
                   <CardHeader className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-t-lg">
                     <div className="flex items-center gap-3">

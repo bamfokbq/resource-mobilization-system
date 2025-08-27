@@ -528,14 +528,14 @@ export default function ContinuumOfCare() {
     <section className='mb-8' id='continuum-of-care'>
           <div className="space-y-8">
               {/* Header Section */}
-              <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">
+              <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white">
                   <div className="flex items-center gap-3 mb-4">
                       <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                           <BarChart3Icon className="w-6 h-6" />
                       </div>
                       <div>
-                          <h1 className='text-4xl font-bold mb-2'>Activities by Care Continuum</h1>
-                          <p className='text-blue-100 text-lg'>
+                          <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Activities by Care Continuum</h1>
+                          <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
                               Comprehensive analysis of healthcare activities across the continuum of care, from prevention to palliative care,
                               highlighting gaps and opportunities for improved NCD management across all 16 regions of Ghana.
                           </p>
@@ -641,8 +641,8 @@ export default function ContinuumOfCare() {
                           </div>
                       </CardHeader>
                       <CardContent className="p-0">
-                          <div ref={tableRef} className="max-h-[600px] overflow-y-auto">
-                              <Table>
+                          <div ref={tableRef} className="max-h-[600px] overflow-x-auto overflow-y-auto">
+                              <Table className="min-w-[700px]">
                                   <TableHeader>
                                       <TableRow className="bg-gray-50">
                                           <TableHead className="font-semibold">Activity</TableHead>
