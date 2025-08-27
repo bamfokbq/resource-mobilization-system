@@ -58,15 +58,16 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
 
   useEffect(() => {
     // Find which section matches the current path
-    const matchingSection = items.find(section => 
+    const matchingSectionIndex = items.findIndex(section => 
       pathname.startsWith(section.href) || 
       section.subItems.some(subItem => 
         pathname.includes(subItem.toLowerCase().replace(/\s+/g, '-'))
       )
     );
     
-    if (matchingSection) {
-      setOpenItem(matchingSection.name.toLowerCase());
+    if (matchingSectionIndex !== -1) {
+      const matchingSection = items[matchingSectionIndex];
+      setOpenItem(`${matchingSection.name.toLowerCase()}-${matchingSectionIndex}`);
     }
   }, [pathname]);
 
@@ -163,24 +164,25 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
               </Link>
           </motion.div>
 
-          <Accordion 
-              type="single" 
-              collapsible 
-              className="w-full space-y-3"
-              value={openItem}
-              onValueChange={setOpenItem}
-          >
-              {items.map((section, idx) => (
-                  <motion.div
-                      key={section.name}
-                      initial={{ x: -20, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.2 + idx * 0.1 }}
-                  >
-                      <AccordionItem
-                          value={section.name.toLowerCase()}
-                          className="border-0 bg-white/5 rounded-xl backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300"
-                      >
+          <div suppressHydrationWarning>
+            <Accordion 
+                type="single" 
+                collapsible 
+                className="w-full space-y-3"
+                value={openItem}
+                onValueChange={setOpenItem}
+            >
+                {items.map((section, idx) => (
+                    <motion.div
+                        key={`nav-${section.name}-${idx}`}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 + idx * 0.1 }}
+                    >
+                        <AccordionItem
+                            value={`${section.name.toLowerCase()}-${idx}`}
+                            className="border-0 bg-white/5 rounded-xl backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300"
+                        >
                           <AccordionTrigger 
                               className={`
                                   text-lg font-medium text-white hover:text-white 
@@ -235,6 +237,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                   </motion.div>
               ))}
           </Accordion>
+          </div>
       </motion.div>
   )
 }
