@@ -321,8 +321,8 @@ export default function Diseases() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {diseaseData.activities.map(activity => (
-                                <div key={activity.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                            {diseaseData.activities.map((activity, index) => (
+                                <div key={`drill-${index}-${activity.id}`} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                                     <div className="flex-1">
                                         <h4 className="font-semibold text-gray-900">{activity.name}</h4>
                                         <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
@@ -427,8 +427,8 @@ export default function Diseases() {
                                   </SelectTrigger>
                                   <SelectContent>
                                       <SelectItem value="all">All Diseases</SelectItem>
-                                      {diseaseActivities.map(disease => (
-                                          <SelectItem key={disease.disease} value={disease.disease}>
+                                      {diseaseActivities.map((disease, index) => (
+                                          <SelectItem key={`disease-${index}-${disease.disease}`} value={disease.disease}>
                                               {disease.disease}
                                           </SelectItem>
                                       ))}
@@ -441,8 +441,8 @@ export default function Diseases() {
                                   </SelectTrigger>
                                   <SelectContent>
                                       <SelectItem value="all">All Regions</SelectItem>
-                                      {allRegions.map(region => (
-                                          <SelectItem key={region} value={region}>
+                                      {allRegions.map((region, index) => (
+                                          <SelectItem key={`region-${index}-${region}`} value={region}>
                                               {region}
                                           </SelectItem>
                                       ))}
@@ -455,8 +455,8 @@ export default function Diseases() {
                                   </SelectTrigger>
                                   <SelectContent>
                                       <SelectItem value="all">All Status</SelectItem>
-                                      {allStatuses.map(status => (
-                                          <SelectItem key={status} value={status}>
+                                      {allStatuses.map((status, index) => (
+                                          <SelectItem key={`status-${index}-${status}`} value={status}>
                                               {status.charAt(0).toUpperCase() + status.slice(1)}
                                           </SelectItem>
                                       ))}
@@ -523,7 +523,7 @@ export default function Diseases() {
                                           </TableHeader>
                                           <TableBody>
                                               {filteredActivities.map((activity, index) => (
-                                                  <TableRow key={activity.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}>
+                                                  <TableRow key={`activity-${index}-${activity.id}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}>
                                                       <TableCell className="font-medium">
                                                           <Badge variant="outline" className="bg-indigo-50 border-indigo-200 text-indigo-700">
                                                               {activity.disease}

@@ -117,14 +117,14 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
               <div className="mt-8 space-y-6">
                 {ncdsSelectedFromProjectInfoForm.map((ncd, index) => (
                   <Accordion
-                    key={index}
+                    key={ncd}
                     type="single"
                     value={activeAccordion}
                     onValueChange={setActiveAccordion}
                     collapsible
                     className="bg-gradient-to-r from-background to-background/80 rounded-xl shadow-sm border border-border/40 overflow-hidden transition-all duration-200 hover:shadow-md"
                   >
-                    <AccordionItem value={`item-${index}`} className="px-6 border-none">
+                    <AccordionItem value={ncd.toLowerCase().replace(/\s+/g, '-')} className="px-6 border-none">
                       <AccordionTrigger className="hover:bg-muted/30 rounded-lg py-5 px-4 transition-all duration-200">
                         <div className="flex items-center gap-4">
                           <div className="h-3 w-3 rounded-full bg-gradient-to-r from-smit-green to-mint-green shadow-sm"></div>

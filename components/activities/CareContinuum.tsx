@@ -1,12 +1,21 @@
 "use client";
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { TrendingDownIcon, AlertTriangleIcon, BarChart3Icon, TableIcon, FilterIcon } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { ComponentActionBar } from '@/components/shared/ComponentActionBar'
+import { AddEditActivityModal } from '@/components/shared/AddEditActivityModal'
+import { ExportService, FIELD_MAPPINGS } from '@/lib/exportService'
+import { useSurveyDataFilters } from '@/components/providers/SurveyDataFilterProvider'
+import { applyFilters } from '@/hooks/useUrlFilters'
+import { Activity } from '@/types/activities'
+import { TrendingDownIcon, AlertTriangleIcon, BarChart3Icon, TableIcon, FilterIcon, EyeIcon } from "lucide-react"
+import { toast } from 'sonner'
 
 // Mock data for care continuum activities
 const careContinuumActivities = [
@@ -256,37 +265,86 @@ interface GapAnalysis {
 }
 
 export default function CareContinuum() {
-    const [selectedRegion, setSelectedRegion] = useState<string>("all")
-    const [selectedDisease, setSelectedDisease] = useState<string>("all")
+    const [isMounted, setIsMounted] = useState(false)
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
+    const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
+    const [userRole, setUserRole] = useState<string | null>(null)
+    
+    const { globalFilters } = useSurveyDataFilters()
+
+    useEffect(() => {
+        setIsMounted(true)
+        // In a real app, you'd get this from your auth context
+        setUserRole('Admin') // For demo purposes
+    }, [])
+
+    // Transform data to match Activity interface
+    const allActivities = useMemo(() => {
+        return careContinuumActivities.map(activity => ({
+            id: activity.id.toString(),
+            name: activity.activity,
+            description: `Care continuum activity for ${activity.diseases.join(', ')}`,
+            disease: activity.diseases[0] || '',
+            region: activity.region,
+            implementer: activity.partner,
+            targetPopulation: activity.targetGroup,
+            ageGroup: 'All Ages', // Default value
+            status: activity.status,
+            startDate: '2023-01-01', // Default values
+            endDate: '2024-12-31',
+            coverage: `${activity.coverage}%`,
+            level: activity.stage,
+            expectedOutcomes: `Improve care delivery at ${activity.stage} stage`,
+            timeline: '2023-2024'
+        }))
+    }, [])
+
+    // Apply global filters to activities
+    const filteredActivities = useMemo(() => {
+        if (!globalFilters) return allActivities
+
+        return applyFilters(allActivities, globalFilters, {
+            region: 'region',
+            organization: 'implementer',
+            disease: 'disease'
+        })
+    }, [allActivities, globalFilters])
 
     // Calculate stacked bar chart data
     const stackedChartData = useMemo(() => {
-        const filteredActivities = careContinuumActivities.filter(activity => {
-            const regionMatch = selectedRegion === "all" || activity.region === selectedRegion
-            const diseaseMatch = selectedDisease === "all" || activity.diseases.includes(selectedDisease)
-            return regionMatch && diseaseMatch
-        })
 
         return regions.map(region => {
             const regionActivities = filteredActivities.filter(activity => activity.region === region)
             const data: any = { region }
 
             careStages.forEach(stage => {
-                data[stage] = regionActivities.filter(activity => activity.stage === stage).length
+                data[stage] = regionActivities.filter(activity => activity.level === stage).length
             })
 
             return data
         })
-    }, [selectedRegion, selectedDisease])
+    }, [filteredActivities])
 
     // Calculate summary table data
     const summaryTableData = useMemo(() => {
-        return careContinuumActivities.filter(activity => {
-            const regionMatch = selectedRegion === "all" || activity.region === selectedRegion
-            const diseaseMatch = selectedDisease === "all" || activity.diseases.includes(selectedDisease)
-            return regionMatch && diseaseMatch
+        return filteredActivities.map(activity => {
+            // Find original activity data for display
+            const originalActivity = careContinuumActivities.find(orig => orig.id.toString() === activity.id)
+            return originalActivity || {
+                id: parseInt(activity.id),
+                activity: activity.name,
+                stage: activity.level || 'Unknown',
+                region: activity.region,
+                partner: activity.implementer,
+                targetGroup: activity.targetPopulation,
+                diseases: [activity.disease],
+                coverage: parseInt(activity.coverage?.replace('%', '') || '0'),
+                status: activity.status
+            }
         })
-    }, [selectedRegion, selectedDisease])
+    }, [filteredActivities])
 
     // Calculate gap analysis
     const gapAnalysis = useMemo(() => {
@@ -360,6 +418,90 @@ export default function CareContinuum() {
         return "bg-red-100 text-red-800 border-red-200"
     }
 
+    // New handler functions for the proposed features
+    const handleAddActivity = () => {
+        setSelectedActivity(null)
+        setIsAddModalOpen(true)
+    }
+
+    const handleEditActivity = (activity: Activity) => {
+        setSelectedActivity(activity)
+        setIsEditModalOpen(true)
+    }
+
+    const handleSaveActivity = async (activityData: Activity) => {
+        try {
+            console.log('Saving activity:', activityData)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            toast.success(
+                selectedActivity ? 'Activity updated successfully!' : 'Activity created successfully!',
+                { description: `${activityData.name} has been saved.` }
+            )
+            setIsAddModalOpen(false)
+            setIsEditModalOpen(false)
+        } catch (error) {
+            console.error('Error saving activity:', error)
+            throw error
+        }
+    }
+
+    const handleExportExcel = async () => {
+        try {
+            const exportData = ExportService.formatDataForExport(
+                filteredActivities,
+                FIELD_MAPPINGS.activities
+            )
+            await ExportService.exportToExcel(exportData, {
+                filename: 'care_continuum_activities',
+                title: 'Care Continuum Activities Report',
+                customFields: {
+                    'Total Activities': filteredActivities.length.toString(),
+                    'Global Filters Applied': Object.entries(globalFilters).filter(([k, v]) => v && v !== 'all').length.toString()
+                }
+            })
+        } catch (error) {
+            console.error('Export error:', error)
+            toast.error('Export failed. Please try again.')
+        }
+    }
+
+    const handleExportPDF = async () => {
+        try {
+            const exportData = ExportService.formatDataForExport(
+                filteredActivities,
+                FIELD_MAPPINGS.activities
+            )
+            await ExportService.exportToPDF(exportData, {
+                filename: 'care_continuum_activities',
+                title: 'Care Continuum Activities Report',
+                subtitle: 'Activities Across the Care Continuum'
+            })
+        } catch (error) {
+            console.error('Export error:', error)
+            toast.error('Export failed. Please try again.')
+        }
+    }
+
+    const handleDownloadVisualization = async () => {
+        if (chartRef) {
+            try {
+                await ExportService.exportChartAsImage(chartRef, {
+                    filename: 'care_continuum_chart',
+                    title: 'Care Continuum Activities Distribution'
+                })
+            } catch (error) {
+                console.error('Chart export error:', error)
+                toast.error('Chart export failed. Please try again.')
+            }
+        }
+    }
+
+    // No longer need local filter options - using global filters from context
+
+    if (!isMounted) {
+        return <div>Loading...</div>
+    }
+
   return (
     <section className='mb-8' id='care-continuum'>
           <div className="space-y-8">
@@ -379,56 +521,17 @@ export default function CareContinuum() {
                   </div>
               </div>
 
-              {/* Filters */}
-              <Card className="border-0 shadow-lg">
-                  <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-t-lg">
-                      <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                              <FilterIcon className="w-4 h-4 text-indigo-600" />
-                          </div>
-                          <CardTitle className="text-xl">Filter Options</CardTitle>
-                      </div>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="space-y-2">
-                              <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                  <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-                                  Region
-                              </label>
-                              <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                                  <SelectTrigger className="h-12 border-2 border-gray-200 hover:border-blue-300 transition-colors">
-                                      <SelectValue placeholder="Select region" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                      <SelectItem value="all">All Regions</SelectItem>
-                                      {regions.map(region => (
-                                          <SelectItem key={region} value={region}>{region}</SelectItem>
-                                      ))}
-                                  </SelectContent>
-                              </Select>
-                          </div>
-
-                          <div className="space-y-2">
-                              <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                  <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                                  Disease Focus
-                              </label>
-                              <Select value={selectedDisease} onValueChange={setSelectedDisease}>
-                                  <SelectTrigger className="h-12 border-2 border-gray-200 hover:border-green-300 transition-colors">
-                                      <SelectValue placeholder="Select disease" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                      <SelectItem value="all">All Diseases</SelectItem>
-                                      {diseases.map(disease => (
-                                          <SelectItem key={disease} value={disease}>{disease}</SelectItem>
-                                      ))}
-                                  </SelectContent>
-                              </Select>
-                          </div>
-                      </div>
-                  </CardContent>
-              </Card>
+              {/* Component Actions */}
+              <ComponentActionBar
+                  title="Care Continuum Actions"
+                  showAddButton={userRole === 'Admin'}
+                  showExportButtons={true}
+                  showVisualizationDownload={true}
+                  onAddClick={handleAddActivity}
+                  onExportExcel={handleExportExcel}
+                  onExportPDF={handleExportPDF}
+                  onDownloadVisualization={handleDownloadVisualization}
+              />
 
               {/* Stacked Bar Chart */}
               <Card className="border-0 shadow-lg">

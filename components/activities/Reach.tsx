@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { ComponentActionBar } from '@/components/shared/ComponentActionBar'
+import { ExportService, FIELD_MAPPINGS } from '@/lib/exportService'
+import { useSurveyDataFilters } from '@/components/providers/SurveyDataFilterProvider'
+import { applyFilters } from '@/hooks/useUrlFilters'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { UsersIcon, FilterIcon, TrendingUpIcon, MapPinIcon, TargetIcon, BuildingIcon, GlobeIcon, ActivityIcon } from "lucide-react"
+import { UsersIcon, FilterIcon, TrendingUpIcon, MapPinIcon, TargetIcon, BuildingIcon, GlobeIcon, ActivityIcon, EyeIcon, BarChart3Icon, TableIcon } from "lucide-react"
+import { toast } from 'sonner'
 
 // Mock data for reach activities
 const reachActivitiesData = [
@@ -68,24 +75,55 @@ const INTERVENTION_COLORS = {
 }
 
 export default function Reach() {
-  const [selectedRegion, setSelectedRegion] = useState<string>("all")
-  const [selectedDiseaseType, setSelectedDiseaseType] = useState<string>("all")
-  const [selectedInterventionType, setSelectedInterventionType] = useState<string>("all")
+  const [isMounted, setIsMounted] = useState(false)
+  const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
+  
+  const { globalFilters } = useSurveyDataFilters()
 
-  // Filter data based on selections
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  // Transform data to match Activity interface
+  const allActivities = useMemo(() => {
+    return reachActivitiesData.map(item => ({
+      id: item.id.toString(),
+      name: item.activity,
+      description: `Reach activity targeting ${item.diseaseType} through ${item.interventionType}`,
+      disease: item.diseaseType,
+      region: item.region,
+      implementer: item.implementer,
+      targetPopulation: `Estimated reach: ${item.estimatedReach.toLocaleString()}`,
+      ageGroup: 'All Ages', // Default value
+      status: 'ongoing', // Default value
+      startDate: '2023-01-01', // Default values
+      endDate: '2024-12-31',
+      level: item.interventionType,
+      expectedOutcomes: `Reach ${item.estimatedReach.toLocaleString()} people`,
+      timeline: '2023-2024'
+    }))
+  }, [])
+
+  // Apply global filters to activities
+  const filteredActivities = useMemo(() => {
+    if (!globalFilters) return allActivities
+
+    return applyFilters(allActivities, globalFilters, {
+      region: 'region',
+      organization: 'implementer',
+      disease: 'disease'
+    })
+  }, [allActivities, globalFilters])
+
+  // Filter data based on current filters (for chart compatibility)
   const filteredData = useMemo(() => {
-    let data = reachActivitiesData
-    if (selectedRegion !== "all") {
-      data = data.filter(item => item.region === selectedRegion)
-    }
-    if (selectedDiseaseType !== "all") {
-      data = data.filter(item => item.diseaseType === selectedDiseaseType)
-    }
-    if (selectedInterventionType !== "all") {
-      data = data.filter(item => item.interventionType === selectedInterventionType)
-    }
-    return data
-  }, [selectedRegion, selectedDiseaseType, selectedInterventionType])
+    return reachActivitiesData.filter(item => {
+      const matchingActivity = filteredActivities.find(activity => 
+        activity.id === item.id.toString()
+      )
+      return !!matchingActivity
+    })
+  }, [filteredActivities])
 
   // Calculate regional reach data
   const regionalReachData = useMemo(() => {
@@ -189,6 +227,66 @@ export default function Reach() {
     }
   }
 
+  // Handler functions for the proposed features
+
+  const handleExportExcel = async () => {
+    try {
+      const exportData = ExportService.formatDataForExport(
+        filteredActivities,
+        FIELD_MAPPINGS.activities
+      )
+      await ExportService.exportToExcel(exportData, {
+        filename: 'reach_activities',
+        title: 'Reach Activities Report',
+        customFields: {
+          'Total Activities': filteredActivities.length.toString(),
+          'Total Estimated Reach': summaryStats.totalReach.toLocaleString(),
+          'Global Filters Applied': Object.entries(globalFilters).filter(([k, v]) => v && v !== 'all').length.toString()
+        }
+      })
+    } catch (error) {
+      console.error('Export error:', error)
+      toast.error('Export failed. Please try again.')
+    }
+  }
+
+  const handleExportPDF = async () => {
+    try {
+      const exportData = ExportService.formatDataForExport(
+        filteredActivities,
+        FIELD_MAPPINGS.activities
+      )
+      await ExportService.exportToPDF(exportData, {
+        filename: 'reach_activities',
+        title: 'Reach Activities Report',
+        subtitle: 'Activity Reach Analysis'
+      })
+    } catch (error) {
+      console.error('Export error:', error)
+      toast.error('Export failed. Please try again.')
+    }
+  }
+
+  const handleDownloadVisualization = async () => {
+    if (chartRef) {
+      try {
+        await ExportService.exportChartAsImage(chartRef, {
+          filename: 'reach_activities_chart',
+          title: 'Reach Activities Distribution'
+        })
+      } catch (error) {
+        console.error('Chart export error:', error)
+        toast.error('Chart export failed. Please try again.')
+      }
+    }
+  }
+
+  // No longer need local filter options - using global filters from context
+
+  if (!isMounted) {
+    return <div>Loading...</div>
+  }
+
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
@@ -221,74 +319,17 @@ export default function Reach() {
           </div>
         </div>
 
-        {/* Filter Section */}
-        <Card className="border-0 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-t-lg">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <FilterIcon className="w-4 h-4 text-indigo-600" />
-              </div>
-              <CardTitle className="text-xl">Filter Population Reach Analysis</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-                  Region
-                </label>
-                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                  <SelectTrigger className="h-12 border-2 border-gray-200 hover:border-blue-300 transition-colors">
-                    <SelectValue placeholder="Select region" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Regions</SelectItem>
-                    {regions.map(region => (
-                      <SelectItem key={region} value={region}>{region}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+        {/* Component Actions */}
+        <ComponentActionBar
+          title="Population Reach Actions"
+          showAddButton={false}
+          showExportButtons={true}
+          showVisualizationDownload={true}
+          onExportExcel={handleExportExcel}
+          onExportPDF={handleExportPDF}
+          onDownloadVisualization={handleDownloadVisualization}
+        />
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                  Disease Type
-                </label>
-                <Select value={selectedDiseaseType} onValueChange={setSelectedDiseaseType}>
-                  <SelectTrigger className="h-12 border-2 border-gray-200 hover:border-green-300 transition-colors">
-                    <SelectValue placeholder="Select disease type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Disease Types</SelectItem>
-                    {diseaseTypes.map(disease => (
-                      <SelectItem key={disease} value={disease}>{disease}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
-                  Intervention Type
-                </label>
-                <Select value={selectedInterventionType} onValueChange={setSelectedInterventionType}>
-                  <SelectTrigger className="h-12 border-2 border-gray-200 hover:border-purple-300 transition-colors">
-                    <SelectValue placeholder="Select intervention type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Intervention Types</SelectItem>
-                    {interventionTypes.map(intervention => (
-                      <SelectItem key={intervention} value={intervention}>{intervention}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Summary Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -381,7 +422,7 @@ export default function Reach() {
               </div>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="h-80">
+              <div className="h-80" ref={setChartRef}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={regionalReachData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
@@ -530,6 +571,7 @@ export default function Reach() {
                     <TableHead className="font-semibold">Implementer</TableHead>
                     <TableHead className="font-semibold">Disease Type</TableHead>
                     <TableHead className="font-semibold">Intervention Type</TableHead>
+                    <TableHead className="font-semibold">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -559,6 +601,30 @@ export default function Reach() {
                           <Badge className={getInterventionColor(item.interventionType)}>
                             {item.interventionType}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm">
+                                <EyeIcon className="w-4 h-4 mr-1" />
+                                View
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl">
+                              <DialogHeader>
+                                <DialogTitle>{item.activity}</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div><strong>Estimated Reach:</strong> {item.estimatedReach.toLocaleString()}</div>
+                                  <div><strong>Region:</strong> {item.region}</div>
+                                  <div><strong>Implementer:</strong> {item.implementer}</div>
+                                  <div><strong>Disease Type:</strong> {item.diseaseType}</div>
+                                  <div><strong>Intervention Type:</strong> {item.interventionType}</div>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </TableCell>
                       </TableRow>
                     ))}

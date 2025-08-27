@@ -48,25 +48,25 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
           icon: <BiTask className="w-5 h-5" />,
           subItems: ['By Region', 'Diseases', 'Care Continuum', 'Target Groups', 'Organizations', 'Age Groups', 'Settings', 'Gender', 'Reach', 'Partners']
       },
-      {
-          name: 'Morbidity',
-          href: '/survey-data/activity-morbidity',
-          icon: <TbActivityHeartbeat className="w-5 h-5" />,
-          subItems: ['Hypertension', 'Diabetes', 'Traffic Accidents', 'Asthma', 'Sickle Cell', 'Stroke', 'Schizophrenia', 'Prostate Cancer', 'Lymphoma', 'Breast Cancer', 'Cervical Cancer']
-      },
+    //   {
+    //       name: 'Morbidity',
+    //       href: '/survey-data/activity-morbidity',
+    //       icon: <TbActivityHeartbeat className="w-5 h-5" />,
+    //       subItems: ['Hypertension', 'Diabetes', 'Traffic Accidents', 'Asthma', 'Sickle Cell', 'Stroke', 'Schizophrenia', 'Prostate Cancer', 'Lymphoma', 'Breast Cancer', 'Cervical Cancer']
+    //   },
   ]
 
   useEffect(() => {
     // Find which section matches the current path
-    const sectionIndex = items.findIndex(section => 
+    const matchingSection = items.find(section => 
       pathname.startsWith(section.href) || 
       section.subItems.some(subItem => 
         pathname.includes(subItem.toLowerCase().replace(/\s+/g, '-'))
       )
     );
     
-    if (sectionIndex !== -1) {
-      setOpenItem(`item-${sectionIndex}`);
+    if (matchingSection) {
+      setOpenItem(matchingSection.name.toLowerCase());
     }
   }, [pathname]);
 
@@ -178,7 +178,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                       transition={{ delay: 0.2 + idx * 0.1 }}
                   >
                       <AccordionItem
-                          value={`item-${idx}`}
+                          value={section.name.toLowerCase()}
                           className="border-0 bg-white/5 rounded-xl backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300"
                       >
                           <AccordionTrigger 
@@ -192,7 +192,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                               `}
                               onClick={(e) => {
                                   e.preventDefault();
-                                  setOpenItem(openItem === `item-${idx}` ? undefined : `item-${idx}`);
+                                  setOpenItem(openItem === section.name.toLowerCase() ? undefined : section.name.toLowerCase());
                               }}
                           >
                               <Link
