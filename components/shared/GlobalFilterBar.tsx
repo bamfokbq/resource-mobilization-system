@@ -117,7 +117,7 @@ export function GlobalFilterBar({ className }: GlobalFilterBarProps) {
   // Single component that handles both states with animations
   return (
     <motion.div 
-      className={cn("bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm", className)}
+      className={cn("bg-white border-b border-gray-200 sticky top-0 z-80 shadow-sm", className)}
       initial={{ height: "auto" }}
       animate={{ height: "auto" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
