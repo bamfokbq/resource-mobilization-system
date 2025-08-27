@@ -48,12 +48,12 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
           icon: <BiTask className="w-5 h-5" />,
           subItems: ['By Region', 'Diseases', 'Care Continuum', 'Target Groups', 'Organizations', 'Age Groups', 'Settings', 'Gender', 'Reach', 'Partners']
       },
-      {
-          name: 'Morbidity',
-          href: '/survey-data/activity-morbidity',
-          icon: <TbActivityHeartbeat className="w-5 h-5" />,
-          subItems: ['Hypertension', 'Diabetes', 'Traffic Accidents', 'Asthma', 'Sickle Cell', 'Stroke', 'Schizophrenia', 'Prostate Cancer', 'Lymphoma', 'Breast Cancer', 'Cervical Cancer']
-      },
+    //   {
+    //       name: 'Morbidity',
+    //       href: '/survey-data/activity-morbidity',
+    //       icon: <TbActivityHeartbeat className="w-5 h-5" />,
+    //       subItems: ['Hypertension', 'Diabetes', 'Traffic Accidents', 'Asthma', 'Sickle Cell', 'Stroke', 'Schizophrenia', 'Prostate Cancer', 'Lymphoma', 'Breast Cancer', 'Cervical Cancer']
+    //   },
   ]
 
   useEffect(() => {
