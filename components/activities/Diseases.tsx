@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import GeneralChart from '@/components/chart_and_graphics/GeneralChart'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { BarChart3Icon, TableIcon, FilterIcon, EyeIcon, CalendarIcon, MapPinIcon, UsersIcon, TrendingUpIcon, HeartHandshakeIcon } from 'lucide-react'
+import { BarChart3Icon, TableIcon, FilterIcon, EyeIcon, CalendarIcon, MapPinIcon, UsersIcon, TrendingUpIcon, HeartHandshakeIcon, Download, Image } from 'lucide-react'
+import ExportService from '@/lib/exportService'
 
 // Disease activity data with detailed information
 const diseaseActivities = [
@@ -176,6 +177,10 @@ export default function Diseases() {
     const [selectedImplementer, setSelectedImplementer] = useState<string>('all')
     const [selectedStatus, setSelectedStatus] = useState<string>('all')
     const [drillDownDisease, setDrillDownDisease] = useState<string | null>(null)
+    
+    // Refs for PNG export
+    const chartRef = useRef<HTMLDivElement>(null)
+    const tableRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         setIsMounted(true)
@@ -228,6 +233,33 @@ export default function Diseases() {
         setSelectedRegion('all')
         setSelectedImplementer('all')
         setSelectedStatus('all')
+    }
+
+    // PNG Export functions
+    const exportChartAsPNG = async () => {
+        if (chartRef.current) {
+            try {
+                await ExportService.exportChartAsImage(chartRef.current, {
+                    filename: `diseases_chart_${selectedDisease}_${selectedRegion}`,
+                    title: `Disease Activities Chart - ${selectedDisease} - ${selectedRegion}`
+                })
+            } catch (error) {
+                console.error('Chart PNG export error:', error)
+            }
+        }
+    }
+
+    const exportTableAsPNG = async () => {
+        if (tableRef.current) {
+            try {
+                await ExportService.exportTableAsPNG(tableRef.current, {
+                    filename: `diseases_table_${selectedDisease}_${selectedRegion}`,
+                    title: `Disease Activities Table - ${selectedDisease} - ${selectedRegion}`
+                })
+            } catch (error) {
+                console.error('Table PNG export error:', error)
+            }
+        }
     }
 
     const getStatusBadgeColor = (status: string) => {
@@ -473,25 +505,38 @@ export default function Diseases() {
                       <TabsContent value="chart">
                           <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50">
                               <CardHeader className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white">
-                                  <div className="flex items-center gap-3">
-                                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                                          <BarChart3Icon className="w-5 h-5" />
+                                  <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-3">
+                                          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                              <BarChart3Icon className="w-5 h-5" />
+                                          </div>
+                                          <CardTitle className="text-xl">Disease Activity Distribution</CardTitle>
                                       </div>
-                                      <CardTitle className="text-xl">Disease Activity Distribution</CardTitle>
+                                      <Button
+                                          onClick={exportChartAsPNG}
+                                          variant="outline"
+                                          size="sm"
+                                          className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                                      >
+                                          <Image className="h-4 w-4 mr-2" />
+                                          Export PNG
+                                      </Button>
                                   </div>
                               </CardHeader>
                               <CardContent className="p-6">
-                                  <GeneralChart 
-                                          data={filteredChartData}
-                                          layout="horizontal" 
-                                          title=""
-                                          height={500}
-                                          onBarClick={handleBarClick}
-                                          barGradient={{
-                                              startColor: '#4F46E5',
-                                              endColor: '#818CF8'
-                                          }}
-                                      />
+                                  <div ref={chartRef}>
+                                      <GeneralChart 
+                                              data={filteredChartData}
+                                              layout="horizontal" 
+                                              title=""
+                                              height={500}
+                                              onBarClick={handleBarClick}
+                                              barGradient={{
+                                                  startColor: '#4F46E5',
+                                                  endColor: '#818CF8'
+                                              }}
+                                          />
+                                  </div>
                               </CardContent>
                           </Card>
                       </TabsContent>
@@ -500,15 +545,26 @@ export default function Diseases() {
                       <TabsContent value="table">
                           <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50">
                               <CardHeader className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white">
-                                  <div className="flex items-center gap-3">
-                                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                                          <TableIcon className="w-5 h-5" />
+                                  <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-3">
+                                          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                              <TableIcon className="w-5 h-5" />
+                                          </div>
+                                          <CardTitle className="text-xl">Disease Activities Overview</CardTitle>
                                       </div>
-                                      <CardTitle className="text-xl">Disease Activities Overview</CardTitle>
+                                      <Button
+                                          onClick={exportTableAsPNG}
+                                          variant="outline"
+                                          size="sm"
+                                          className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                                      >
+                                          <Image className="h-4 w-4 mr-2" />
+                                          Export PNG
+                                      </Button>
                                   </div>
                               </CardHeader>
                               <CardContent className="p-6">
-                                  <div className="rounded-lg border">
+                                  <div ref={tableRef} className="rounded-lg border">
                                       <Table>
                                           <TableHeader>
                                               <TableRow className="bg-gray-50">

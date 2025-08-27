@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line
@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-table';
 import ncdStats from '@/constant/ncd_stats.json';
 import * as XLSX from 'xlsx';
+import ExportService from '@/lib/exportService';
 // Import shadcn Dialog components
 import {
   Dialog,
@@ -25,7 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Download, Image } from "lucide-react";
 
 // Custom colors for charts
 const COLORS = [
@@ -54,6 +55,10 @@ export default function HealthStats() {
   // Derived state
   const [filteredData, setFilteredData] = useState<{name: string; value: number}[]>([]);
   const [totalCases, setTotalCases] = useState(0);
+  
+  // Refs for PNG export
+  const chartRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
   
   // Get unique options for filters
   const regions = ['All', ...new Set(ncdStats.map(item => item.region))];
@@ -278,6 +283,33 @@ export default function HealthStats() {
     }
   };
 
+  // PNG Export functions
+  const exportChartAsPNG = async () => {
+    if (chartRef.current) {
+      try {
+        await ExportService.exportChartAsImage(chartRef.current, {
+          filename: `ncd_stats_chart_${selectedRegion}_${selectedDisease}_${selectedLevel}`,
+          title: `NCD Statistics Chart - ${selectedRegion} - ${selectedDisease} - ${selectedLevel}`
+        });
+      } catch (error) {
+        console.error('Chart PNG export error:', error);
+      }
+    }
+  };
+
+  const exportTableAsPNG = async () => {
+    if (tableRef.current) {
+      try {
+        await ExportService.exportTableAsPNG(tableRef.current, {
+          filename: `ncd_stats_table_${selectedRegion}_${selectedDisease}_${selectedLevel}`,
+          title: `NCD Statistics Table - ${selectedRegion} - ${selectedDisease} - ${selectedLevel}`
+        });
+      } catch (error) {
+        console.error('Table PNG export error:', error);
+      }
+    }
+  };
+
   // Table configuration
   const columnHelper = createColumnHelper<{name: string; value: number}>();
   
@@ -323,99 +355,105 @@ export default function HealthStats() {
     switch(chartType) {
       case 'pie':
         return (
-          <ResponsiveContainer width="100%" height={500}>
-            <PieChart>
-              <Pie
-                data={filteredData}
-                cx="50%"
-                cy="50%"
-                labelLine={true}
-                outerRadius={150}
-                fill="#8884d8"
-                dataKey="value"
-                nameKey="name"
-                label={({ name, percent }) => `${name}: ${percent ? (percent * 100).toFixed(0) : '0'}%`}
-              >
-                {filteredData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={regionColorMap[entry.name] || COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <div ref={chartRef}>
+            <ResponsiveContainer width="100%" height={500}>
+              <PieChart>
+                <Pie
+                  data={filteredData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={true}
+                  outerRadius={150}
+                  fill="#8884d8"
+                  dataKey="value"
+                  nameKey="name"
+                  label={({ name, percent }) => `${name}: ${percent ? (percent * 100).toFixed(0) : '0'}%`}
+                >
+                  {filteredData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={regionColorMap[entry.name] || COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         );
       case 'line':
         return (
-          <ResponsiveContainer width="100%" height={500}>
-            <LineChart
-              data={filteredData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 70
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                angle={-90}
-                textAnchor="end"
-                height={60}
-                tick={{ fontSize: 12 }}
-              />
-              <YAxis />
-              <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
-              <Legend />
-              <Line 
-                type="monotone"
-                dataKey="value" 
-                name="Cases"
-                stroke="#8884d8"
-                strokeWidth={2}
-                dot={{
-                  stroke: '#8884d8',
-                  strokeWidth: 2,
-                  r: 6,
-                  fill: 'white'
+          <div ref={chartRef}>
+            <ResponsiveContainer width="100%" height={500}>
+              <LineChart
+                data={filteredData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 70
                 }}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="name"
+                  angle={-90}
+                  textAnchor="end"
+                  height={60}
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis />
+                <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
+                <Legend />
+                <Line 
+                  type="monotone"
+                  dataKey="value" 
+                  name="Cases"
+                  stroke="#8884d8"
+                  strokeWidth={2}
+                  dot={{
+                    stroke: '#8884d8',
+                    strokeWidth: 2,
+                    r: 6,
+                    fill: 'white'
+                  }}
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         );
       case 'bar':
       default:
         return (
-          <ResponsiveContainer width="100%" height={500}>
-            <BarChart
-              data={filteredData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 70, // Increased bottom margin to accommodate vertical labels
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                angle={-90}
-                textAnchor="end"
-                height={60} // Increased height for the labels
-                tick={{ fontSize: 12 }} // Optional: control font size
-              />
-              <YAxis />
-              <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
-              <Legend />
-              <Bar dataKey="value" name="Cases">
-                {filteredData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={regionColorMap[entry.name] || COLORS[index % COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <div ref={chartRef}>
+            <ResponsiveContainer width="100%" height={500}>
+              <BarChart
+                data={filteredData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 70, // Increased bottom margin to accommodate vertical labels
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="name"
+                  angle={-90}
+                  textAnchor="end"
+                  height={60} // Increased height for the labels
+                  tick={{ fontSize: 12 }} // Optional: control font size
+                />
+                <YAxis />
+                <Tooltip formatter={(value) => [`${value} cases`, 'Total']} />
+                <Legend />
+                <Bar dataKey="value" name="Cases">
+                  {filteredData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={regionColorMap[entry.name] || COLORS[index % COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         );
     }
   };
@@ -427,7 +465,7 @@ export default function HealthStats() {
     }
 
     return (
-      <div className="overflow-x-auto">
+      <div ref={tableRef} className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             {table.getHeaderGroups().map(headerGroup => (
@@ -755,6 +793,46 @@ export default function HealthStats() {
         </h3>
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
           {viewMode === 'chart' ? renderChart() : renderTable()}
+        </div>
+        
+        {/* Export Buttons */}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              onClick={() => setShowExportModal(true)}
+              variant="outline"
+              className="border-green-200 hover:bg-green-50 text-green-700"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export Excel
+            </Button>
+            
+            {viewMode === 'chart' && (
+              <Button
+                onClick={exportChartAsPNG}
+                variant="outline"
+                className="border-blue-200 hover:bg-blue-50 text-blue-700"
+              >
+                <Image className="h-4 w-4 mr-2" />
+                Export Chart PNG
+              </Button>
+            )}
+            
+            {viewMode === 'table' && (
+              <Button
+                onClick={exportTableAsPNG}
+                variant="outline"
+                className="border-purple-200 hover:bg-purple-50 text-purple-700"
+              >
+                <Image className="h-4 w-4 mr-2" />
+                Export Table PNG
+              </Button>
+            )}
+          </div>
+          
+          <div className="text-sm text-gray-500">
+            Total Cases: <span className="font-semibold text-gray-700">{totalCases.toLocaleString()}</span>
+          </div>
         </div>
       </div>
       <div className="mt-8 text-center text-sm text-gray-600 flex items-center justify-center">

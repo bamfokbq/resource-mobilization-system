@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   ComposedChart,
   Line,
@@ -18,6 +18,9 @@ import {
   Pie
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
+import ExportService from '@/lib/exportService';
 
 interface SurveyMetric {
   month: string;
@@ -76,17 +79,58 @@ const renderCustomizedLabel = ({
 };
 
 export default function SurveyMetricsChart({ data, statusData }: SurveyMetricsChartProps) {
+  const trendsChartRef = useRef<HTMLDivElement>(null);
+  const statusChartRef = useRef<HTMLDivElement>(null);
+
+  const exportTrendsChart = async () => {
+    if (trendsChartRef.current) {
+      try {
+        await ExportService.exportChartAsImage(trendsChartRef.current, {
+          filename: 'survey_trends_chart',
+          title: 'Survey Activity Trends'
+        });
+      } catch (error) {
+        console.error('Trends chart export error:', error);
+      }
+    }
+  };
+
+  const exportStatusChart = async () => {
+    if (statusChartRef.current) {
+      try {
+        await ExportService.exportChartAsImage(statusChartRef.current, {
+          filename: 'survey_status_chart',
+          title: 'Survey Status Distribution'
+        });
+      } catch (error) {
+        console.error('Status chart export error:', error);
+      }
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Survey Trends Chart */}
       <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Survey Activity Trends
-          </CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Survey Activity Trends
+            </CardTitle>
+            <Button
+              onClick={exportTrendsChart}
+              variant="outline"
+              size="sm"
+              className="border-blue-200 hover:bg-blue-50 text-blue-700"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export PNG
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
+          <div ref={trendsChartRef}>
+            <ResponsiveContainer width="100%" height={300}>
             <ComposedChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <defs>
                 <linearGradient id="submittedGradient" x1="0" y1="0" x2="0" y2="1">
@@ -135,18 +179,31 @@ export default function SurveyMetricsChart({ data, statusData }: SurveyMetricsCh
               />
             </ComposedChart>
           </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
 
       {/* Survey Status Distribution */}
       <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-            Survey Status Distribution
-          </CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              Survey Status Distribution
+            </CardTitle>
+            <Button
+              onClick={exportStatusChart}
+              variant="outline"
+              size="sm"
+              className="border-green-200 hover:bg-green-50 text-green-700"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export PNG
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
+          <div ref={statusChartRef}>
+            <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
                 data={statusData}
@@ -182,6 +239,7 @@ export default function SurveyMetricsChart({ data, statusData }: SurveyMetricsCh
               />
             </PieChart>
           </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
     </div>

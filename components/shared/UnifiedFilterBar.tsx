@@ -18,7 +18,9 @@ import {
   FileSpreadsheet,
   FileText,
   Plus,
-  BarChart3
+  BarChart3,
+  Download,
+  Image
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -36,10 +38,14 @@ interface UnifiedFilterBarProps {
   showAddButton?: boolean
   showExportButtons?: boolean
   showVisualizationDownload?: boolean
+  showTablePngExport?: boolean
+  showChartPngExport?: boolean
   onAddClick?: () => void
   onExportExcel?: () => void
   onExportPDF?: () => void
   onDownloadVisualization?: () => void
+  onExportTablePng?: () => void
+  onExportChartPng?: () => void
   className?: string
   title?: string
 }
@@ -49,10 +55,14 @@ export function UnifiedFilterBar({
   showAddButton = false,
   showExportButtons = true,
   showVisualizationDownload = true,
+  showTablePngExport = false,
+  showChartPngExport = false,
   onAddClick,
   onExportExcel,
   onExportPDF,
   onDownloadVisualization,
+  onExportTablePng,
+  onExportChartPng,
   className,
   title = "Filters"
 }: UnifiedFilterBarProps) {
@@ -165,6 +175,28 @@ export function UnifiedFilterBar({
             >
               <BarChart3 className="h-4 w-4 mr-2" />
               Download Chart
+            </Button>
+          )}
+          
+          {showTablePngExport && onExportTablePng && (
+            <Button 
+              onClick={onExportTablePng}
+              variant="outline"
+              className="border-blue-200 hover:bg-blue-50 text-blue-700"
+            >
+              <Image className="h-4 w-4 mr-2" />
+              Export Table PNG
+            </Button>
+          )}
+          
+          {showChartPngExport && onExportChartPng && (
+            <Button 
+              onClick={onExportChartPng}
+              variant="outline"
+              className="border-indigo-200 hover:bg-indigo-50 text-indigo-700"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export Chart PNG
             </Button>
           )}
         </div>

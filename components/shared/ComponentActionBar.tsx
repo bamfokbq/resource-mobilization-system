@@ -6,7 +6,8 @@ import {
   FileSpreadsheet,
   FileText,
   Plus,
-  BarChart3
+  BarChart3,
+  Image
 } from "lucide-react"
 
 interface ComponentActionBarProps {
@@ -14,10 +15,12 @@ interface ComponentActionBarProps {
   showAddButton?: boolean
   showExportButtons?: boolean
   showVisualizationDownload?: boolean
+  showTablePngExport?: boolean
   onAddClick?: () => void
   onExportExcel?: () => void
   onExportPDF?: () => void
   onDownloadVisualization?: () => void
+  onExportTablePng?: () => void
   className?: string
 }
 
@@ -26,10 +29,12 @@ export function ComponentActionBar({
   showAddButton = false,
   showExportButtons = true,
   showVisualizationDownload = true,
+  showTablePngExport = false,
   onAddClick,
   onExportExcel,
   onExportPDF,
   onDownloadVisualization,
+  onExportTablePng,
   className
 }: ComponentActionBarProps) {
   return (
@@ -89,6 +94,19 @@ export function ComponentActionBar({
           >
             <BarChart3 className="w-4 h-4 mr-1" />
             Download Chart
+          </Button>
+        )}
+
+        {/* Export Table PNG */}
+        {showTablePngExport && onExportTablePng && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onExportTablePng}
+            className="bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+          >
+            <Image className="w-4 h-4 mr-1" />
+            Table PNG
           </Button>
         )}
       </div>

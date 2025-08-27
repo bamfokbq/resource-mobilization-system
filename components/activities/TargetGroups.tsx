@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UsersIcon, FilterIcon, TargetIcon, TrendingUpIcon, AlertCircleIcon } from "lucide-react"
+import { UsersIcon, FilterIcon, TargetIcon, TrendingUpIcon, AlertCircleIcon, Download, Image } from "lucide-react"
+import ExportService from '@/lib/exportService'
 
 // Mock data for target group activities (Total: 45 activities)
 // Part of overall 640 activities target across all components
@@ -201,6 +203,10 @@ export default function TargetGroups() {
   const [selectedType, setSelectedType] = useState<string>("all")
   const [selectedFocusArea, setSelectedFocusArea] = useState<string>("all")
   const [selectedPriority, setSelectedPriority] = useState<string>("all")
+  
+  // Refs for PNG export
+  const tableRef = useRef<HTMLDivElement>(null)
+  const summaryRef = useRef<HTMLDivElement>(null)
 
   // Filter data based on selections
   const filteredData = useMemo(() => {
@@ -233,6 +239,33 @@ export default function TargetGroups() {
     if (coverage >= 60) return "bg-yellow-100 text-yellow-800 border-yellow-200"
     if (coverage >= 40) return "bg-orange-100 text-orange-800 border-orange-200"
     return "bg-red-100 text-red-800 border-red-200"
+  }
+
+  // PNG Export functions
+  const exportTableAsPNG = async () => {
+    if (tableRef.current) {
+      try {
+        await ExportService.exportTableAsPNG(tableRef.current, {
+          filename: 'target_groups_table',
+          title: 'Target Groups Activities Table'
+        })
+      } catch (error) {
+        console.error('Table PNG export error:', error)
+      }
+    }
+  }
+
+  const exportSummaryAsPNG = async () => {
+    if (summaryRef.current) {
+      try {
+        await ExportService.exportChartAsImage(summaryRef.current, {
+          filename: 'target_groups_summary',
+          title: 'Target Groups Summary Analytics'
+        })
+      } catch (error) {
+        console.error('Summary PNG export error:', error)
+      }
+    }
   }
 
   const getPriorityBadgeColor = (priority: string) => {
