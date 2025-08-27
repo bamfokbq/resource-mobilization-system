@@ -1,15 +1,12 @@
 'use client'
 
 import React, { Suspense } from 'react'
-import { DateRangeSelector } from '@/components/shared/DateRangeSelector'
-import OrganisationSelector from '@/components/shared/OrganisationSelector'
-import RegionSelector from '@/components/shared/RegionSelector'
-import FilterSection from '@/components/shared/FilterSection'
+
 import StatsSection from '@/components/analytics/StatsSection'
 import GhanaMap from '@/components/survey_data/dashboard/GhanaMap'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { DashboardSkeleton } from '@/components/ui/loading-skeleton'
-import { TrendingUp, BarChart3, Map, Filter } from 'lucide-react'
+import { TrendingUp, BarChart3, Map } from 'lucide-react'
 import { motion } from 'motion/react'
 
 export default function SurveyDataPage() {
@@ -70,39 +67,7 @@ export default function SurveyDataPage() {
         </Card>
       </motion.div>
 
-      {/* Filters Section with Enhanced Design */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
-        <Card className="shadow-lg border-0 bg-white/70 backdrop-blur-sm">
-          <CardHeader className="pb-4">
-            <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-purple-600" />
-              <CardTitle className="text-xl text-gray-800">Data Filters</CardTitle>
-            </div>
-            <CardDescription>
-              Customize your data view with advanced filtering options
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Suspense 
-              fallback={
-                <div className="animate-pulse">
-                  <div className="h-24 bg-gray-200 rounded-lg"></div>
-                </div>
-              }
-            >
-              <FilterSection>
-                <DateRangeSelector />
-                <OrganisationSelector />
-                <RegionSelector />
-              </FilterSection>
-            </Suspense>
-          </CardContent>
-        </Card>
-      </motion.div>
+
 
       {/* Interactive Map Dashboard */}
       <motion.div
