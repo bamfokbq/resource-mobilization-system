@@ -49,13 +49,13 @@ export default function StatsSection() {
               <div className="mt-4 space-y-2">
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>This month</span>
-                  <span>{Math.floor(Math.random() * 40 + 60)}%</span>
+                  <span>{getProgressPercentage(stat.id)}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
                   <motion.div 
                     className={`h-1.5 rounded-full bg-gradient-to-r ${getGradientColors(index)}`}
                     initial={{ width: 0 }}
-                    animate={{ width: `${Math.floor(Math.random() * 40 + 60)}%` }}
+                    animate={{ width: `${getProgressPercentage(stat.id)}%` }}
                     transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
                   />
                 </div>
@@ -81,4 +81,11 @@ function getGradientColors(index: number) {
     'from-teal-500 to-teal-600'
   ]
   return gradients[index % gradients.length]
+}
+
+// Helper function to get deterministic progress percentage based on stat ID
+function getProgressPercentage(statId: number) {
+  // Use stat ID to generate consistent percentage values between 60-95%
+  const percentages = [75, 82, 68, 91, 77, 85, 73, 89]
+  return percentages[(statId - 1) % percentages.length]
 }
