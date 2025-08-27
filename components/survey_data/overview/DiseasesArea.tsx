@@ -11,9 +11,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { BarChart3Icon, TableIcon, FilterIcon, EyeIcon, CalendarIcon, MapPinIcon, UsersIcon, TrendingUpIcon, HeartHandshakeIcon, Download, Image } from 'lucide-react'
 import ExportService from '@/lib/exportService'
+import { DISEASE_ACTIVITIES_DATA } from '@/data/survey-mock-data'
 
 // Disease activity data with detailed information
-const diseaseActivities = [
+const diseaseActivities = DISEASE_ACTIVITIES_DATA;
+
+/* OLD HARDCODED DATA - REPLACED WITH CENTRALIZED DATA
+const oldDiseaseActivities = [
     {
         disease: "Hypertension",
         totalActivities: 24,
@@ -158,7 +162,8 @@ const diseaseActivities = [
             { id: 27, name: "NCD Risk Factor Surveillance", region: "Upper West", implementer: "Research Institutions", status: "completed", timeline: "2022-2023", coverage: "93%", partners: ["Universities"] }
         ]
     }
-]
+];
+*/
 
 const diseasesData = diseaseActivities.map(disease => ({
     name: disease.disease,

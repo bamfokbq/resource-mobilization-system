@@ -5,6 +5,7 @@ import { Feature, Geometry, FeatureCollection } from 'geojson';
 import { PathOptions, LatLngBounds, Layer, divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import geoData from '@/constant/geo.json';
+import { REGION_ACTIVITY_TOTALS, REGION_LABEL_POSITIONS } from '@/data/survey-mock-data';
 
 type RegionName =
     | "Greater Accra"
@@ -32,24 +33,7 @@ type RegionActivityData = {
     [K in RegionName]: ActivityData;
 }
 
-const activities: RegionActivityData = {
-    "Greater Accra": { total: 169 },
-    "Ashanti": { total: 90 },
-    "Western": { total: 89 },
-    "Western North": { total: 23 },
-    "Central": { total: 37 },
-    "Eastern": { total: 35 },
-    "Volta": { total: 25 },
-    "Oti": { total: 21 },
-    "Northern": { total: 35 },
-    "Savannah": { total: 33 },
-    "North East": { total: 34 },
-    "Upper East": { total: 31 },
-    "Upper West": { total: 27 },
-    "Bono": { total: 27 },
-    "Bono East": { total: 27 },
-    "Ahafo": { total: 23 }
-};
+const activities: RegionActivityData = REGION_ACTIVITY_TOTALS;
 
 const getColor = (total: number) => {
     if (total > 100) return '#0a2472';
@@ -117,25 +101,8 @@ const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Laye
     }
 };
 
-// Add this new constant for region label positions
-const regionLabels: { [K in RegionName]: [number, number] } = {
-    "Greater Accra": [5.7, 0.1],
-    "Ashanti": [6.7, -1.5],
-    "Western": [5.5, -2.2],
-    "Western North": [6.2, -2.8],
-    "Central": [5.5, -1.0],
-    "Eastern": [6.3, -0.4],
-    "Volta": [6.5, 0.5],
-    "Oti": [7.9, 0.2],
-    "Northern": [9.6, -0.3],
-    "Savannah": [9.2, -1.7],
-    "North East": [10.4, -0.6],
-    "Upper East": [10.8, -0.9],
-    "Upper West": [10.3, -2.2],
-    "Bono": [7.6, -2.4],
-    "Bono East": [7.9, -1.2],
-    "Ahafo": [6.9, -2.6]
-};
+// Region label positions from centralized data
+const regionLabels: { [K in RegionName]: [number, number] } = REGION_LABEL_POSITIONS;
 
 export default function ActivitiesByRegionMap() {
     const typedGeoData = geoData as FeatureCollection;

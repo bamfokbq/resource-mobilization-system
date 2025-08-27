@@ -16,9 +16,13 @@ import { applyFilters } from '@/hooks/useUrlFilters'
 import { Activity } from '@/types/activities'
 import { TrendingDownIcon, AlertTriangleIcon, BarChart3Icon, TableIcon, FilterIcon, EyeIcon } from "lucide-react"
 import { toast } from 'sonner'
+import { CARE_CONTINUUM_ACTIVITIES } from '@/data/survey-mock-data'
 
 // Mock data for care continuum activities
-const careContinuumActivities = [
+const careContinuumActivities = CARE_CONTINUUM_ACTIVITIES;
+
+/* OLD HARDCODED DATA - REPLACED WITH CENTRALIZED DATA
+const oldCareContinuumActivities = [
     {
         id: 1,
         activity: "Community Health Education",
@@ -228,7 +232,8 @@ const careContinuumActivities = [
         coverage: 67,
         status: "ongoing"
     }
-]
+];
+*/
 
 // Define care continuum stages
 const careStages = ["Prevention", "Screening", "Diagnosis", "Treatment", "Palliative Care"]

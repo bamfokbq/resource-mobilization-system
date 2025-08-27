@@ -9,9 +9,19 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { MapIcon, TableIcon, BarChart3Icon, FilterIcon, TrendingUpIcon, UsersIcon, TargetIcon, Download, Image } from 'lucide-react'
 import ExportService from '@/lib/exportService'
+import { REGIONAL_ACTIVITY_DATA } from '@/data/survey-mock-data'
 
 // Regional activity data
-const regionalData = [
+const regionalData = REGIONAL_ACTIVITY_DATA;
+
+export default function ActivityByRegion() {
+  const [selectedRegion, setSelectedRegion] = useState<string>('')
+  const [sortBy, setSortBy] = useState<string>('activities')
+  const chartRef = useRef<HTMLDivElement>(null)
+
+// Legacy data removed - now using REGIONAL_ACTIVITY_DATA
+/*
+const legacyData = [
   {
     region: "Greater Accra",
     activities: 31,
@@ -195,8 +205,9 @@ const regionalData = [
     partners: ["Cultural Associations", "River Committees", "Youth Leaders"]
   }
 ]
+*/
 
-export default function ActivityByRegion() {
+// The actual function starts here, properly formatted:
   const [selectedYear, setSelectedYear] = useState<string>("all")
   const [selectedPartner, setSelectedPartner] = useState<string>("all")
   const [selectedProgram, setSelectedProgram] = useState<string>("all")

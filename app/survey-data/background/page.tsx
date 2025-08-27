@@ -1,41 +1,31 @@
+"use client";
+
 import FundingSource from '@/components/survey_data/background/FundingSource'
 import NumberOfProjects from '@/components/survey_data/background/NumberOfProjects'
 import Sectors from '@/components/survey_data/background/Sectors'
 import StakeholderDetails from '@/components/survey_data/background/StakeholderDetails'
 import StakeholdersPerRegion from '@/components/survey_data/background/StakeholdersPerRegion'
 import React from 'react'
-
-const NUMBER_OF_PROJECTS_DATA = [
-  {
-    "Year": 2020,
-    "Number of Projects": 28
-  },
-  {
-    "Year": 2021,
-    "Number of Projects": 17
-  },
-  {
-    "Year": 2022,
-    "Number of Projects": 24
-  },
-  {
-    "Year": 2023,
-    "Number of Projects": 20
-  },
-  {
-    "Year": 2024,
-    "Number of Projects": 10
-  }
-]
+import { motion } from 'motion/react'
+import { PROJECT_TIMELINE_DATA } from '@/data/survey-mock-data'
 
 export default function SurveyBackgroundPage() {
   return (
-    <>
+    <motion.div 
+      className="space-y-8 min-h-screen"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
       <StakeholdersPerRegion />
       <Sectors />
-      <NumberOfProjects data={NUMBER_OF_PROJECTS_DATA} title="Number of Projects by Year" />
+      <NumberOfProjects 
+        data={PROJECT_TIMELINE_DATA} 
+        title="Number of Projects by Year"
+        description="Tracking the evolution of NCD-related projects and initiatives over time"
+      />
       <FundingSource />
       <StakeholderDetails />
-    </>
+    </motion.div>
   )
 }

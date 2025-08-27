@@ -15,6 +15,7 @@ import {
   Globe,
   Loader2
 } from 'lucide-react';
+import { DASHBOARD_STATS } from '@/data/survey-mock-data';
 
 export default function GhanaMap() {
   const LandingPageMapComponent = React.useMemo(() => {
@@ -87,19 +88,19 @@ export default function GhanaMap() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">10</div>
+                <div className="text-2xl font-bold text-blue-600">{DASHBOARD_STATS.totalRegions}</div>
                 <div className="text-xs text-blue-700">Regions</div>
               </div>
               <div className="text-center p-3 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">245</div>
+                <div className="text-2xl font-bold text-green-600">{DASHBOARD_STATS.totalActivities}</div>
                 <div className="text-xs text-green-700">Activities</div>
               </div>
               <div className="text-center p-3 bg-purple-50 rounded-lg">
-                <div className="text-2xl font-bold text-purple-600">89</div>
+                <div className="text-2xl font-bold text-purple-600">{DASHBOARD_STATS.totalOrganizations}</div>
                 <div className="text-xs text-purple-700">Organizations</div>
               </div>
               <div className="text-center p-3 bg-orange-50 rounded-lg">
-                <div className="text-2xl font-bold text-orange-600">15.2K</div>
+                <div className="text-2xl font-bold text-orange-600">{DASHBOARD_STATS.totalParticipants}</div>
                 <div className="text-xs text-orange-700">Participants</div>
               </div>
             </div>
