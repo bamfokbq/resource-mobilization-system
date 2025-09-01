@@ -150,7 +150,7 @@ export function ResourceUploadSection() {
 
                 {/* Resource Form */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
+                    <div className='space-y-2'>
                         <Label htmlFor="title">Title *</Label>
                         <Input
                             id="title"
@@ -161,7 +161,7 @@ export function ResourceUploadSection() {
                         />
                     </div>
 
-                    <div>
+                    <div className='space-y-2'>
                         <Label htmlFor="partner">Partner *</Label>
                         <Select
                             value={resourceForm.partnerId || ''}
@@ -181,7 +181,7 @@ export function ResourceUploadSection() {
                         </Select>
                     </div>
 
-                    <div>
+                    <div className='space-y-2'>
                         <Label htmlFor="type">Type</Label>
                         <Select
                             value={resourceForm.type || 'reports'}
@@ -201,7 +201,7 @@ export function ResourceUploadSection() {
                         </Select>
                     </div>
 
-                    <div>
+                    <div className='space-y-2'>
                         <Label htmlFor="status">Status</Label>
                         <Select
                             value={resourceForm.status || 'draft'}
@@ -220,7 +220,7 @@ export function ResourceUploadSection() {
                     </div>
                 </div>
 
-                <div>
+                <div className='space-y-2'>
                     <Label htmlFor="description">Description</Label>
                     <Textarea
                         id="description"
@@ -232,7 +232,7 @@ export function ResourceUploadSection() {
                     />
                 </div>
 
-                <div>
+                <div className='space-y-2'>
                     <Label htmlFor="author">Author</Label>
                     <Input
                         id="author"
