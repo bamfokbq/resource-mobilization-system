@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { SearchInput } from './ResourcesSearchAndFilter/SearchInput'
-import { FilterPanel } from './ResourcesSearchAndFilter/FilterPanel'
-import { ActiveFilters } from './ResourcesSearchAndFilter/ActiveFilters'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowUpDown, SortAsc, SortDesc } from 'lucide-react'
 import { useResourceFilters } from '@/hooks/useResourceFilters'
 import { ResourceFilters } from '@/types/resources'
+import { SortAsc, SortDesc } from 'lucide-react'
+import { useState } from 'react'
+import { ActiveFilters } from './ResourcesSearchAndFilter/ActiveFilters'
+import { FilterPanel } from './ResourcesSearchAndFilter/FilterPanel'
+import { SearchInput } from './ResourcesSearchAndFilter/SearchInput'
 
 export default function ResourcesSearchAndFilter() {
   const {
