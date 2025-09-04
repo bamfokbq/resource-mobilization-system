@@ -23,6 +23,7 @@ import {
   Image
 } from "lucide-react"
 import { toast } from "sonner"
+import { Route } from "next"
 
 interface FilterOptions {
   regions: string[]
@@ -100,7 +101,7 @@ export function UnifiedFilterBar({
 
   // Clear all filters
   const clearAllFilters = () => {
-    router.push(window.location.pathname, { scroll: false })
+    router.push(window.location.pathname as Route, { scroll: false })
   }
 
   // Count active filters

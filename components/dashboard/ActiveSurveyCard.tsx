@@ -15,7 +15,8 @@ export default function ActiveSurveyCard({ title, progress, lastUpdated, id }: A
   const isDraft = id === 'draft';
 
   return (
-    <Link href={href}>      <div
+    <Link href={href as any}>      
+    <div
       className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden group transform hover:scale-105 hover:-translate-y-1"
     >
       {/* Background Gradient */}

@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { PrimaryButtonProps } from '@/types/index'
+import { Route } from 'next'
 
 export default function OutlineButton({
     href,
@@ -8,7 +9,7 @@ export default function OutlineButton({
 }: PrimaryButtonProps) {
     return (
         <div>
-            <Link href={href}>
+            <Link href={href as Route}>
                 <button className="text-white w-full md:w-auto border-2 border-white hover:opacity-85 cursor-pointer py-3 px-8 rounded-4xl">
                     {text}
                 </button>

@@ -44,6 +44,6 @@ export async function adminLoginAction(prevState: any, formData: FormData) {
       errors: {}
     };
   } finally {
-    redirect('/admin/dashboard/');
+    redirect('/admin/dashboard');
   }
 }

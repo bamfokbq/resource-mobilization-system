@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import type { DashboardSidebarProps } from '@/types/dashboard-sidebar'
+import { Route } from 'next'
 
 export default function DashboardSidebar({ 
     session, 
@@ -55,7 +56,7 @@ export default function DashboardSidebar({
                 icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
                 description: 'Redirecting you to login...'
             })
-            router.push(redirectPath)
+            router.push(redirectPath as Route)
         } catch (error) {
             toast.dismiss(loadingToast)
             toast.error('Failed to sign out', {
@@ -100,7 +101,7 @@ export default function DashboardSidebar({
                             <li key={item.path} role="none">
                                 <Link
                                     className={linkClass(item.path, isActive)}
-                                    href={item.path}
+                                    href={item.path as Route}
                                     title={item.label}
                                     role="menuitem"
                                     aria-current={isActive ? 'page' : undefined}

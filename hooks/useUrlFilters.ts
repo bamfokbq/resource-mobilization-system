@@ -1,5 +1,6 @@
 'use client'
 
+import { Route } from 'next'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -79,7 +80,7 @@ export function useUrlFilters(): UseUrlFiltersReturn {
 
   // Clear all filters
   const clearAllFilters = useCallback(() => {
-    router.push(window.location.pathname, { scroll: false })
+    router.push(window.location.pathname as Route, { scroll: false })
   }, [router])
 
   // Clear a specific filter

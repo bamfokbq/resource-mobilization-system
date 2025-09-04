@@ -20,6 +20,7 @@ import { IoInformationCircleOutline } from 'react-icons/io5'
 import { BiTask } from 'react-icons/bi'
 import { TbActivityHeartbeat } from 'react-icons/tb'
 import { motion, AnimatePresence, MotionConfig } from 'motion/react'
+import { Route } from 'next'
 
 interface NcdStrategyNavProps {
     isOpen: boolean;
@@ -139,7 +140,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Link
-                                        href={section.href}
+                                        href={section.href as Route}
                                         className={`
                                             text-white hover:text-white transition-all duration-200 p-3 rounded-xl
                                             hover:bg-white/20 backdrop-blur-sm
@@ -148,7 +149,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                                         `}
                                     >
                                         {section.icon}
-                                    </Link>
+                                    </Link> 
                                 </TooltipTrigger>
                                 <TooltipContent
                                     side="right"
@@ -235,7 +236,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                               `}
                           >
                               <Link
-                                  href={section.href} 
+                                  href={section.href as Route} 
                                   className="flex-1 text-left flex items-center gap-3"
                                   onClick={(e) => e.stopPropagation()}
                               >
@@ -271,7 +272,7 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                                                   }}
                                               >
                                                   <Link
-                                                      href={`${section.href}/#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                                      href={`${section.href}/#${item.toLowerCase().replace(/\s+/g, '-')}` as Route}
                                                       className="group text-sm text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg px-4 py-2 flex items-center gap-2 backdrop-blur-sm"
                                                   >
                                                       <div className="w-2 h-2 rounded-full bg-white/40 group-hover:bg-mint-green transition-colors duration-200"></div>

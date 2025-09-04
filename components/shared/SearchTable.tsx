@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Search, X } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { Route } from 'next'
 
 export default function SearchTable() {
     const router = useRouter()
@@ -20,7 +21,7 @@ export default function SearchTable() {
             params.delete('searchQuery')
         }
 
-        router.push(`${pathname}?${params.toString()}`)
+        router.push(`${pathname}?${params.toString()}` as Route)
     }
 
     const handleClear = () => {
@@ -28,7 +29,7 @@ export default function SearchTable() {
 
         const params = new URLSearchParams(searchParams)
         params.delete('searchQuery')
-        router.push(`${pathname}?${params.toString()}`)
+        router.push(`${pathname}?${params.toString()}` as Route)
     }
 
     const handleSubmit = (e: React.FormEvent) => {
