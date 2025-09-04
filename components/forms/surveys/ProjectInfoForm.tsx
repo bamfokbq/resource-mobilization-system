@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFormStore } from "@/store/useFormStore"
-import { projectInfoSchema, ProjectInfoFormData, type NCDSpecificInfo as ZodNCDSpecificInfo } from "@/schemas/projectInfoSchema" // Import ZodNCDSpecificInfo
+import { projectInfoSchema, ProjectInfoFormData, type NCDSpecificInfo } from "@/schemas/projectInfoSchema"
 import { toast } from "sonner"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -15,38 +15,35 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
-import { FUNDING_SOURCES, NCD_DATA, REGIONS_GHANA, type NCDType as ConstantNCDType } from '@/constant'
+import { FUNDING_SOURCES, NCD_DATA, REGIONS_GHANA, type NCDType } from '@/constant'
 
 interface ProjectInfoFormProps {
   handleNext: () => void
   handlePrevious: () => void
 }
 
-// Define a type where optional array fields from ZodNCDSpecificInfo are made strictly string[]
-type NCDArrayFieldKeys = "districts" | "continuumOfCare" | "ageRanges" | "activityLevel" | "whoGapTargets" | "strategyDomain" | "secondaryPreventionFocus" | "researchFocus";
-
-type StrictNCDSpecificInfoItem =
-  // Omit fields that will be redefined with stricter (non-optional) types
-  Omit<ZodNCDSpecificInfo,
-    NCDArrayFieldKeys |
-    "activityDescription" |
-    "primaryTargetPopulation" |
-    "gender" |
-    "implementationArea"
-  > &
-  { [K in NCDArrayFieldKeys]: string[]; } &
-  {
-    activityDescription: string;
-    primaryTargetPopulation: string;
-    gender: "male" | "female" | "both";
-    implementationArea: "Urban" | "Rural" | "Both";
-  };
+// Helper function to create default NCD specific info
+const createDefaultNCDInfo = (): NCDSpecificInfo => ({
+  districts: [],
+  continuumOfCare: [],
+  activityDescription: "",
+  primaryTargetPopulation: "General Population",
+  secondaryTargetPopulation: undefined,
+  ageRanges: [],
+  gender: "both",
+  activityLevel: [],
+  implementationArea: "Both",
+  whoGapTargets: [],
+  strategyDomain: [],
+  secondaryPreventionFocus: [],
+  researchFocus: []
+})
 
 export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectInfoFormProps) {
   const { formData, updateFormData } = useFormStore()
 
   const form = useForm<ProjectInfoFormData>({
-    resolver: zodResolver(projectInfoSchema),
+    resolver: zodResolver(projectInfoSchema) as any,
     defaultValues: {
       totalProjects: 0,
       projectName: "",
@@ -56,41 +53,33 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
       projectGoal: "",
       projectObjectives: "",
       targetBeneficiaries: "",
-      projectLocation: "", estimatedBudget: "",
+      projectLocation: "",
+      estimatedBudget: "",
       regions: [],
       targetedNCDs: [],
       fundingSource: undefined,
-      ncdSpecificInfo: {} as Record<string, {
-        districts: string[];
-        continuumOfCare: string[];
-        activityDescription: string;
-        primaryTargetPopulation: string;
-        ageRanges: string[];
-        gender: string; activityLevel: string[];
-        implementationArea: string;
-        whoGapTargets: string[];
-        strategyDomain: string[];
-      }>
+      ncdSpecificInfo: {}
     }
   })
 
-  useEffect(() => {
-    if (formData?.projectInfo) {
-      // Ensure ncdSpecificInfo is always an object when resetting the form,
-      // as react-hook-form might expect an object based on defaultValues.
-      const projectInfoForReset = {
-        ...formData.projectInfo,
-        ncdSpecificInfo: formData.projectInfo.ncdSpecificInfo || {},
-        // Ensure fundingSource is properly set for the Select component
-        fundingSource: formData.projectInfo.fundingSource || undefined,
-      };
-      console.log('Resetting form with data:', projectInfoForReset);
-      console.log('FundingSource value:', projectInfoForReset.fundingSource);
-      form.reset(projectInfoForReset);
-    }
-  }, [formData, form])
+  // Memoize the form reset data to prevent unnecessary re-renders
+  const formResetData = useMemo(() => {
+    if (!formData?.projectInfo) return null;
+    
+    return {
+      ...formData.projectInfo,
+      ncdSpecificInfo: formData.projectInfo.ncdSpecificInfo || {},
+      fundingSource: formData.projectInfo.fundingSource || undefined,
+    };
+  }, [formData?.projectInfo]);
 
-  const onSubmit = (data: ProjectInfoFormData) => {
+  useEffect(() => {
+    if (formResetData) {
+      form.reset(formResetData);
+    }
+  }, [formResetData, form])
+
+  const onSubmit = useCallback((data: ProjectInfoFormData) => {
     try {
       const {
         totalProjects,
@@ -106,40 +95,21 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
         regions,
         targetedNCDs,
         fundingSource,
-        ncdSpecificInfo: rawNcdSpecificInfo
+        ncdSpecificInfo
       } = data;
 
-      const tempProcessedNcdSpecificInfo = JSON.parse(JSON.stringify(rawNcdSpecificInfo)) as Record<
-        keyof typeof rawNcdSpecificInfo,
-        ZodNCDSpecificInfo
-      >;
+      // Process NCD specific info to ensure all required fields have default values
+      const processedNcdSpecificInfo: Record<string, NCDSpecificInfo> = {} as any;
+      
+      // Initialize NCD specific info for all selected NCDs
+      targetedNCDs.forEach(ncd => {
+        processedNcdSpecificInfo[ncd] = {
+          ...createDefaultNCDInfo(),
+          ...(ncdSpecificInfo[ncd] || {})
+        };
+      });
 
-      for (const ncdKey in tempProcessedNcdSpecificInfo) {
-        if (Object.prototype.hasOwnProperty.call(tempProcessedNcdSpecificInfo, ncdKey)) {
-          const ncdDetail = tempProcessedNcdSpecificInfo[ncdKey as keyof typeof tempProcessedNcdSpecificInfo];
-          if (ncdDetail) {
-            // Initialize all required fields with default values
-            ncdDetail.districts = ncdDetail.districts ?? [];
-            ncdDetail.continuumOfCare = ncdDetail.continuumOfCare ?? [];
-            ncdDetail.ageRanges = ncdDetail.ageRanges ?? [];
-            ncdDetail.activityLevel = ncdDetail.activityLevel ?? [];
-            ncdDetail.whoGapTargets = ncdDetail.whoGapTargets ?? [];
-            ncdDetail.strategyDomain = ncdDetail.strategyDomain ?? [];
-            ncdDetail.secondaryPreventionFocus = ncdDetail.secondaryPreventionFocus ?? [];
-            ncdDetail.researchFocus = ncdDetail.researchFocus ?? [];
-            ncdDetail.activityDescription = ncdDetail.activityDescription ?? '';
-            ncdDetail.primaryTargetPopulation = ncdDetail.primaryTargetPopulation ?? 'General Population';
-            ncdDetail.gender = ncdDetail.gender ?? 'both';
-            ncdDetail.implementationArea = ncdDetail.implementationArea ?? 'Both';
-          }
-        }
-      }
-
-      // After processing, cast to the stricter type expected by the store.
-      const finalNcdSpecificInfo = tempProcessedNcdSpecificInfo as Record<
-        keyof typeof rawNcdSpecificInfo,
-        StrictNCDSpecificInfoItem
-        >; updateFormData({
+      updateFormData({
         projectInfo: {
           totalProjects,
           projectName,
@@ -153,8 +123,8 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
           estimatedBudget,
           regions,
           targetedNCDs,
-          fundingSource: fundingSource || 'Ghana Government', // Default to Ghana Government if undefined
-          ncdSpecificInfo: finalNcdSpecificInfo
+          fundingSource: (fundingSource || 'Ghana Government') as any,
+          ncdSpecificInfo: processedNcdSpecificInfo
         }
       });
 
@@ -170,28 +140,71 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
         duration: 5000,
       });
     }
-  }
+  }, [updateFormData, handleNext])
 
-  const onError = (errors: any) => {
+  const onError = useCallback((errors: any) => {
+    console.log('Validation errors:', errors);
+    
+    // Extract field names and their error messages
+    const errorFields = Object.keys(errors).map(fieldName => {
+      const fieldError = errors[fieldName];
+      let fieldDisplayName = '';
+      
+      // Map field names to user-friendly display names
+      switch (fieldName) {
+        case 'totalProjects':
+          fieldDisplayName = 'Total number of projects';
+          break;
+        case 'projectName':
+          fieldDisplayName = 'Project name';
+          break;
+        case 'startDate':
+          fieldDisplayName = 'Project start date';
+          break;
+        case 'projectGoal':
+          fieldDisplayName = 'Project goal';
+          break;
+        case 'regions':
+          fieldDisplayName = 'Project regions';
+          break;
+        case 'targetedNCDs':
+          fieldDisplayName = 'Targeted NCDs';
+          break;
+        case 'fundingSource':
+          fieldDisplayName = 'Funding source';
+          break;
+        case 'ncdSpecificInfo':
+          fieldDisplayName = 'NCD specific information';
+          break;
+        default:
+          fieldDisplayName = fieldName;
+      }
+      
+      return `${fieldDisplayName}: ${fieldError.message || 'This field is required'}`;
+    });
+    
+    const errorMessage = errorFields.length > 0 
+      ? `Please fix the following fields:\n• ${errorFields.join('\n• ')}`
+      : "There are some required fields that need to be filled correctly.";
+    
     toast.error("Please check your inputs", {
-      description: "There are some required fields that need to be filled correctly.",
-      duration: 5000,
-    })
-  }
+      description: errorMessage,
+      duration: 8000,
+    });
+  }, [])
 
-  const toggleRegion = (region: string) => {
+  const toggleRegion = useCallback((region: string) => {
     const currentRegions = form.getValues("regions")
     const newRegions = currentRegions.includes(region)
       ? currentRegions.filter((r) => r !== region)
       : [...currentRegions, region]
     form.setValue("regions", newRegions, { shouldValidate: true })
-  }
+  }, [form])
 
-  type NCDType = ConstantNCDType;
-
-  const toggleNCD = (ncd: NCDType) => {
+  const toggleNCD = useCallback((ncd: NCDType) => {
     const currentNCDs = form.getValues("targetedNCDs")
-    const newNCDs = currentNCDs.includes(ncd)
+    const isCurrentlySelected = currentNCDs.includes(ncd)
+    const newNCDs = isCurrentlySelected
       ? currentNCDs.filter((n) => n !== ncd)
       : [...currentNCDs, ncd]
 
@@ -201,25 +214,26 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
     const currentNCDInfo = form.getValues("ncdSpecificInfo") || {}
     const updatedNCDInfo = { ...currentNCDInfo }
 
-    if (!currentNCDs.includes(ncd)) {
+    if (isCurrentlySelected) {
+      // Remove NCD from specific info
       delete updatedNCDInfo[ncd]
-    } else if (!updatedNCDInfo[ncd]) {
-      updatedNCDInfo[ncd] = {
-        districts: [],
-        continuumOfCare: [],
-        activityDescription: "",
-        primaryTargetPopulation: "General Population",
-        ageRanges: [],
-        gender: "both",
-        activityLevel: [],
-        implementationArea: "Both",
-        whoGapTargets: [],
-        strategyDomain: []
-      }
+    } else {
+      // Add NCD with default values
+      updatedNCDInfo[ncd] = createDefaultNCDInfo()
     }
 
-    form.setValue("ncdSpecificInfo", updatedNCDInfo)
-  }
+    form.setValue("ncdSpecificInfo", updatedNCDInfo, { shouldValidate: true })
+  }, [form])
+
+  // Memoize form values to prevent unnecessary re-renders
+  const watchedRegions = form.watch("regions")
+  const watchedNCDs = form.watch("targetedNCDs")
+  const watchedFundingSource = form.watch("fundingSource")
+  
+  // Memoize form state for better performance
+  const formState = form.formState
+  const isSubmitting = formState.isSubmitting
+  const isValid = formState.isValid
 
   return (
     <section>
@@ -259,7 +273,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                         {...field}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                         min={0}
-
+                        max={999}
                         className="w-full p-3 border rounded-md bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       />
                     </FormControl>
@@ -402,7 +416,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                             <div key={region} className="flex items-center space-x-2">
                               <Checkbox
                                 id={`region-${region}`}
-                                checked={form.watch("regions").includes(region)}
+                                checked={watchedRegions.includes(region)}
                                 onCheckedChange={() => toggleRegion(region)}
                                 className="border-navy-blue data-[state=checked]:bg-navy-blue"
                               />
@@ -417,9 +431,9 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                         </div>
                       </ScrollArea>
                     </div>
-                    {form.watch("regions").length > 0 && (
+                    {watchedRegions.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {form.watch("regions").map((region) => (
+                        {watchedRegions.map((region) => (
                           <Badge key={region} variant="outline" className="bg-primary/10">
                             {region} Region
                           </Badge>
@@ -451,7 +465,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                           <div key={index} className="flex items-center space-x-2">
                             <Checkbox
                               id={`ncd-${ncd}`}
-                              checked={form.watch("targetedNCDs").includes(ncd)}
+                              checked={watchedNCDs.includes(ncd)}
                               onCheckedChange={() => toggleNCD(ncd)}
                               className="border-navy-blue data-[state=checked]:bg-navy-blue"
                             />
@@ -465,9 +479,9 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                         ))}
                       </div>
                     </div>
-                    {form.watch("targetedNCDs").length > 0 && (
+                    {watchedNCDs.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {form.watch("targetedNCDs").map((ncd) => (
+                        {watchedNCDs.map((ncd) => (
                           <Badge key={ncd} variant="secondary">
                             {ncd}
                           </Badge>
@@ -510,10 +524,8 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                       Your main source of funding contributes at least 60% of funds for your project.
                     </FormDescription>
                     <Select
-                      key={field.value}
-                      value={field.value}
+                      value={watchedFundingSource}
                       onValueChange={(value) => {
-                        console.log('FundingSource value changed to:', value);
                         field.onChange(value);
                       }}
                     >
@@ -567,9 +579,10 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
               </Button>
               <Button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+                disabled={isSubmitting}
+                className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                {isSubmitting ? 'Saving...' : 'Next'}
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
