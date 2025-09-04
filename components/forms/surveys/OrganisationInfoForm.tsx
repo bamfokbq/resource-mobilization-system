@@ -126,7 +126,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
 
   return (
     <section>
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-8">
+      <div className="bg-white rounded-xl shadow-md p-8">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">Section A: Organisation Information</h2>
           <p className="text-gray-600 text-lg">Please provide accurate information about your organization</p>

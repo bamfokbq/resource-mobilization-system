@@ -404,6 +404,7 @@ export default function ProjectInfoForm({ handleNext, handlePrevious }: ProjectI
                                 id={`region-${region}`}
                                 checked={form.watch("regions").includes(region)}
                                 onCheckedChange={() => toggleRegion(region)}
+                                className="border-navy-blue data-[state=checked]:bg-navy-blue"
                               />
                               <label
                                 htmlFor={`region-${region}`}
