@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
 
 interface AdditionalInfoFormProps {
   handleNext: () => void;
@@ -84,31 +84,38 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
   };
   return (
     <section>
-      <div className="bg-white rounded-lg shadow-sm p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Section D: Additional Information</h2>
-          <p className="text-gray-600 mb-2">
-            This section captures important details about project sustainability, risk management, and monitoring approaches.
-          </p>
-          <p className="text-gray-600">
-            Please provide comprehensive information to help understand the long-term viability and impact measurement of your project.
-          </p>
+      <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-violet-100 rounded-lg">
+              <FileText className="h-6 w-6 text-violet-600" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Section D: Additional Information</h2>
+              <p className="text-gray-600 text-lg">
+                This section captures important details about project sustainability, risk management, and monitoring approaches.
+              </p>
+              <p className="text-gray-600 mt-2">
+                Please provide comprehensive information to help understand the long-term viability and impact measurement of your project.
+              </p>
+            </div>
+          </div>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
-            <div className="bg-gray-50 p-6 rounded-lg space-y-6">
+            <div className="bg-gradient-to-br from-violet-50 to-purple-50 p-8 rounded-xl border border-violet-100 space-y-6">
               {/* D1. Potential Risks */}
               <FormField
                 control={form.control}
                 name="risks"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">
+                  <FormItem className="bg-white p-6 rounded-lg border border-gray-200">
+                    <FormLabel className="text-gray-700 font-semibold text-lg">
                       D1. Potential Risks and Mitigation Strategies
                       <span className="text-red-500 ml-1">*</span>
                     </FormLabel>
-                    <FormDescription className="text-sm text-gray-500 mt-1">
+                    <FormDescription className="text-gray-600 mt-2">
                       Identify potential risks that could affect your project and describe strategies to mitigate them
                     </FormDescription>
                     <FormControl>
@@ -116,10 +123,10 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                         {...field}
                         placeholder="Describe potential risks and strategies to mitigate them (e.g., funding delays, staff turnover, regulatory changes, etc.)"
                         rows={4}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                       />
                     </FormControl>
-                    <FormMessage className="mt-1 text-red-500 text-sm" />
+                    <FormMessage className="mt-2 text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -129,12 +136,12 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                 control={form.control}
                 name="sustainability"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">
+                  <FormItem className="bg-white p-6 rounded-lg border border-gray-200">
+                    <FormLabel className="text-gray-700 font-semibold text-lg">
                       D2. Project Sustainability Plan
                       <span className="text-red-500 ml-1">*</span>
                     </FormLabel>
-                    <FormDescription className="text-sm text-gray-500 mt-1">
+                    <FormDescription className="text-gray-600 mt-2">
                       Explain how the project will be sustained beyond the current funding period
                     </FormDescription>
                     <FormControl>
@@ -142,10 +149,10 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                         {...field}
                         placeholder="Describe sustainability strategies (e.g., future funding sources, community ownership, institutional integration, etc.)"
                         rows={4}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                       />
                     </FormControl>
-                    <FormMessage className="mt-1 text-red-500 text-sm" />
+                    <FormMessage className="mt-2 text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -155,12 +162,12 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                 control={form.control}
                 name="evaluation"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">
+                  <FormItem className="bg-white p-6 rounded-lg border border-gray-200">
+                    <FormLabel className="text-gray-700 font-semibold text-lg">
                       D3. Monitoring and Evaluation Plan
                       <span className="text-red-500 ml-1">*</span>
                     </FormLabel>
-                    <FormDescription className="text-sm text-gray-500 mt-1">
+                    <FormDescription className="text-gray-600 mt-2">
                       Describe your approach to monitoring progress and evaluating project impact
                     </FormDescription>
                     <FormControl>
@@ -168,10 +175,10 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                         {...field}
                         placeholder="Describe your monitoring and evaluation plan (e.g., key indicators, data collection methods, evaluation timeline, etc.)"
                         rows={4}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                       />
                     </FormControl>
-                    <FormMessage className="mt-1 text-red-500 text-sm" />
+                    <FormMessage className="mt-2 text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -181,11 +188,11 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                 control={form.control}
                 name="notes"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">
+                  <FormItem className="bg-white p-6 rounded-lg border border-gray-200">
+                    <FormLabel className="text-gray-700 font-semibold text-lg">
                       D4. Additional Notes or Comments
                     </FormLabel>
-                    <FormDescription className="text-sm text-gray-500 mt-1">
+                    <FormDescription className="text-gray-600 mt-2">
                       Any additional information, challenges, or insights about your project that you would like to share
                     </FormDescription>
                     <FormControl>
@@ -193,10 +200,10 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
                         {...field}
                         placeholder="Share any additional information, challenges, achievements, or insights about your project"
                         rows={3}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-violet-500 focus:border-violet-500"
                       />
                     </FormControl>
-                    <FormMessage className="mt-1 text-red-500 text-sm" />
+                    <FormMessage className="mt-2 text-red-500 text-sm" />
                   </FormItem>
                 )}
               />
@@ -207,14 +214,14 @@ export default function AdditionalInfoForm({ handleNext, handlePrevious }: Addit
               <Button
                 type="button"
                 onClick={handlePrevious}
-                className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg"
               >
                 <ChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
               <Button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+                className="px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl hover:from-violet-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
               >
                 Complete Survey
                 <ChevronRight className="h-4 w-4" />

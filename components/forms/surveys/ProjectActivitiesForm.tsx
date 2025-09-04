@@ -313,7 +313,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                         {...field}
                                       />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="mt-2 text-red-500 text-sm" />
                                   </FormItem>
                                 )}
                               />
