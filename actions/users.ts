@@ -3,6 +3,8 @@
 import { getDb } from "@/lib/db"
 import { ObjectId } from "mongodb"
 import { comparePassword, hashPassword } from "@/lib/password"
+import { generateSecureTemporaryPassword } from "@/lib/passwordGenerator"
+import { sendTemporaryPasswordEmail } from "@/lib/emailService"
 
 export async function updateUserProfile(userId: string, formData: FormData) {
   console.log(formData);
@@ -46,6 +48,10 @@ export async function createNewUser(formData: FormData) {
       return { success: false, error: "Invalid role" };
     }
 
+    // Generate secure temporary password
+    const temporaryPassword = generateSecureTemporaryPassword();
+    const hashedPassword = await hashPassword(temporaryPassword);
+
     const userData = {
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
@@ -54,7 +60,9 @@ export async function createNewUser(formData: FormData) {
       role: role as "User" | "Admin",
       region: formData.get('region') as string | null,
       organisation: formData.get('organisation') as string | null,
-      password: await hashPassword('ncd@2025'), // Using default password
+      password: hashedPassword,
+      temporaryPassword: temporaryPassword, // Store plain text temporarily for email notification
+      firstLogin: true, // Flag to force password change on first login
       createdAt: new Date(),
       isActive: true,
       bio: '',
@@ -78,9 +86,26 @@ export async function createNewUser(formData: FormData) {
     const result = await db.collection("users").insertOne(userData);
     if (!result.insertedId) {
       return { success: false, error: "Failed to create user" };
-    } return {
+    } 
+    
+    // Send email notification with temporary password
+    const emailResult = await sendTemporaryPasswordEmail(
+      userData.email,
+      `${userData.firstName} ${userData.lastName}`,
+      temporaryPassword
+    );
+    
+    if (!emailResult.success) {
+      console.warn('Failed to send email notification:', emailResult.error);
+      // Don't fail user creation if email fails, just log the warning
+    }
+    
+    return {
       success: true,
-      message: "User created successfully"
+      message: "User created successfully",
+      temporaryPassword: temporaryPassword, // Return for admin notification
+      userEmail: userData.email,
+      emailSent: emailResult.success
     };
 
   } catch (error) {
@@ -158,7 +183,8 @@ export async function getAllUsers() {
       createdAt: user.createdAt,
       bio: user.bio || '',
       passwordResetAt: user.passwordResetAt,
-      statusUpdatedAt: user.statusUpdatedAt
+      statusUpdatedAt: user.statusUpdatedAt,
+      firstLogin: user.firstLogin ?? false
     }))
   } catch (error) {
     console.error("Failed to fetch users:", error)

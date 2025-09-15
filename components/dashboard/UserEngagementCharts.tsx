@@ -188,7 +188,7 @@ export const UserEngagementCharts: React.FC<UserEngagementChartsProps> = ({ user
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ feature, usage }) => `${feature}: ${usage}%`}
+                label={({ name, value }) => `${name}: ${Number(value)}%`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="usage"

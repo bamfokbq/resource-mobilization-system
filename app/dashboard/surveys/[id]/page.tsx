@@ -616,7 +616,7 @@ export default async function SurveyPage({
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+            {/* <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
               <div className="p-2 rounded-lg bg-white shadow-sm">
                 <FaInfoCircle className="text-blue-500 h-4 w-4" />
               </div>
@@ -626,7 +626,7 @@ export default async function SurveyPage({
                   {survey.version || 'Not specified'}
                 </p>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
               <div className="p-2 rounded-lg bg-white shadow-sm">

@@ -30,6 +30,8 @@ interface CustomAdapterUser extends AdapterUser {
 interface UserData extends Omit<CustomAdapterUser, 'id' | 'emailVerified'> {
     password: string;
     createdAt: Date;
+    firstLogin: boolean;
+    temporaryPassword?: string;
 }
 
 

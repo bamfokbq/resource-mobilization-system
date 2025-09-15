@@ -221,7 +221,7 @@ const BusinessIntelligence: React.FC<BusinessIntelligenceProps> = ({ systemMetri
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ area, impact }) => `${area}: ${impact.toLocaleString()}`}
+                  label={({ name, value }) => `${name}: ${Number(value).toLocaleString()}`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="impact"

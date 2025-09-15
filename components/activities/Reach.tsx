@@ -496,7 +496,7 @@ export default function Reach() {
                       outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ name, value }) => `${name}: ${formatNumber(value || 0)}`}
+                      label={({ name, value }) => `${name}: ${formatNumber(Number(value) || 0)}`}
                       labelLine={false}
                     >
                       {diseaseReachData.map((entry, index) => (

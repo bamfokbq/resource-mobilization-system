@@ -14,6 +14,8 @@ export interface User {
     bio: string;
     passwordResetAt?: Date;
     statusUpdatedAt?: Date;
+    firstLogin: boolean;
+    temporaryPassword?: string;
 }
 
 export interface DialogState<T = User | null> {

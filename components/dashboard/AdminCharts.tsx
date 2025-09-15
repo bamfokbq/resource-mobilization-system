@@ -193,7 +193,11 @@ const AdminCharts: React.FC<AdminChartsProps> = ({ systemMetrics }) => {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ area, percentage }) => `${area}: ${percentage}%`}
+                label={({ name, value }) => {
+                  const total = systemMetrics.ncdFocusAreas.reduce((sum, item) => sum + item.count, 0);
+                  const percentage = total > 0 ? ((Number(value) / total) * 100).toFixed(0) : '0';
+                  return `${name}: ${percentage}%`;
+                }}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="count"

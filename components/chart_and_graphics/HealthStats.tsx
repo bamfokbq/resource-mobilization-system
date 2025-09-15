@@ -367,7 +367,11 @@ export default function HealthStats() {
                   fill="#8884d8"
                   dataKey="value"
                   nameKey="name"
-                  label={({ name, percent }) => `${name}: ${percent ? (percent * 100).toFixed(0) : '0'}%`}
+                  label={({ name, value }) => {
+                    const total = filteredData.reduce((sum, item) => sum + item.value, 0);
+                    const percentage = total > 0 ? ((Number(value) / total) * 100).toFixed(0) : '0';
+                    return `${name}: ${percentage}%`;
+                  }}
                 >
                   {filteredData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={regionColorMap[entry.name] || COLORS[index % COLORS.length]} />
