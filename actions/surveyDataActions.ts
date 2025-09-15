@@ -103,8 +103,8 @@ async function _getRegionalActivityDataInternal(): Promise<{
           organizations: { $addToSet: '$organisationInfo.organisationName' },
           projects: { $addToSet: '$projectInfo.projectName' },
           sectors: { $addToSet: '$organisationInfo.sector' },
-          ncds: { $addToSet: '$projectInfo.targetedNCDs' },
-          submissionDates: { $push: '$submissionDate' }
+          submissionDates: { $push: '$submissionDate' },
+          totalProjects: { $sum: '$projectInfo.totalProjects' }
         }
       },
       {
@@ -113,7 +113,12 @@ async function _getRegionalActivityDataInternal(): Promise<{
           activities: 1,
           keyPrograms: { $slice: ['$projects', 3] },
           keyImplementers: { $slice: ['$organizations', 3] },
-          populationReached: { $multiply: ['$activities', 100000] }, // Estimated population
+          populationReached: { 
+            $multiply: [
+              { $add: ['$activities', { $ifNull: ['$totalProjects', 0] }] }, 
+              50000
+            ]
+          },
           yearData: {
             $reduce: {
               input: '$submissionDates',
@@ -125,7 +130,12 @@ async function _getRegionalActivityDataInternal(): Promise<{
                     $arrayToObject: [
                       [{
                         k: { $toString: { $year: '$$this' } },
-                        v: { $add: [{ $getField: { field: { $toString: { $year: '$$this' } }, input: '$$value' } }, 1] }
+                        v: { 
+                          $add: [
+                            { $getField: { field: { $toString: { $year: '$$this' } }, input: '$$value' } }, 
+                            1
+                          ] 
+                        }
                       }]
                     ]
                   }
@@ -139,13 +149,44 @@ async function _getRegionalActivityDataInternal(): Promise<{
       { $sort: { activities: -1 } }
     ]).toArray()
 
+    // Validate and clean the data
+    const validatedData = regionalData
+      .filter(item => item.region && item.activities > 0)
+      .map(item => ({
+        ...item,
+        region: item.region || 'Unknown Region',
+        activities: item.activities || 0,
+        keyPrograms: Array.isArray(item.keyPrograms) ? item.keyPrograms : [],
+        keyImplementers: Array.isArray(item.keyImplementers) ? item.keyImplementers : [],
+        populationReached: item.populationReached || 0,
+        yearData: item.yearData || {},
+        partners: Array.isArray(item.partners) ? item.partners : []
+      }))
+
     return {
       success: true,
-      data: regionalData as RegionalActivityData[],
+      data: validatedData as RegionalActivityData[],
       message: 'Regional activity data retrieved successfully'
     }
   } catch (error) {
     console.error('Error fetching regional activity data:', error)
+    
+    // Handle specific MongoDB errors
+    if (error instanceof Error) {
+      if (error.message.includes('connection')) {
+        return {
+          success: false,
+          message: 'Database connection failed. Please try again later.'
+        }
+      }
+      if (error.message.includes('timeout')) {
+        return {
+          success: false,
+          message: 'Request timed out. Please try again.'
+        }
+      }
+    }
+    
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Failed to fetch regional activity data'
