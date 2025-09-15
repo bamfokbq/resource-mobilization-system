@@ -9,15 +9,145 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { MapIcon, TableIcon, BarChart3Icon, FilterIcon, TrendingUpIcon, UsersIcon, TargetIcon, Download, Image } from 'lucide-react'
 import ExportService from '@/lib/exportService'
-import { REGIONAL_ACTIVITY_DATA } from '@/data/survey-mock-data'
-
-// Regional activity data
-const regionalData = REGIONAL_ACTIVITY_DATA;
+import { useRegionalActivityData } from '@/hooks/useSurveyData'
 
 export default function ActivityByRegion() {
   const [selectedRegion, setSelectedRegion] = useState<string>('')
   const [sortBy, setSortBy] = useState<string>('activities')
   const chartRef = useRef<HTMLDivElement>(null)
+  const { data: regionalData, isLoading, error, refetch } = useRegionalActivityData()
+
+  // Move all hooks to the top before any conditional logic
+  const [selectedYear, setSelectedYear] = useState<string>("all")
+  const [selectedPartner, setSelectedPartner] = useState<string>("all")
+  const [selectedProgram, setSelectedProgram] = useState<string>("all")
+  
+  // Refs for PNG export
+  const mapRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLDivElement>(null)
+  const summaryRef = useRef<HTMLDivElement>(null)
+
+  const ActivitiesByRegionMapComponent = useMemo(() => {
+    return dynamic(
+      () => import('@/components/chart_and_graphics/ActivitiesByRegionMap'),
+      {
+        loading: () => <p>Loading Map...</p>,
+        ssr: false
+      }
+    );
+  }, []);
+
+  // Get unique filter options - moved before conditional returns
+  const years = ["2020", "2021", "2022", "2023"]
+  const allPartners = regionalData ? [...new Set(regionalData.flatMap(region => region.partners))] : []
+  const allPrograms = regionalData ? [...new Set(regionalData.flatMap(region => region.keyPrograms))] : []
+
+  // Filter data based on selections - moved before conditional returns
+  const filteredData = useMemo(() => {
+    if (!regionalData) return []
+    
+    return regionalData.filter(region => {
+      const yearMatch = selectedYear === "all" || true // Year filtering would need more complex logic
+      const partnerMatch = selectedPartner === "all" || region.partners.includes(selectedPartner)
+      const programMatch = selectedProgram === "all" || region.keyPrograms.includes(selectedProgram)
+
+      return yearMatch && partnerMatch && programMatch
+    }).map(region => {
+      let activities = region.activities;
+
+      if (selectedYear !== "all" && selectedYear in region.yearData) {
+        activities = region.yearData[selectedYear as "2020" | "2021" | "2022" | "2023"];
+      }
+
+      return {
+        ...region,
+        activities
+      };
+    })
+  }, [regionalData, selectedYear, selectedPartner, selectedProgram])
+
+  // Now handle conditional rendering after all hooks are called
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+              <MapIcon className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Activities By Region</h1>
+              <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
+                Loading regional activity data from database...
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <div className="h-96 bg-gray-200 animate-pulse rounded-xl"></div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-32 bg-gray-200 animate-pulse rounded-xl"></div>
+            <div className="h-32 bg-gray-200 animate-pulse rounded-xl"></div>
+            <div className="h-32 bg-gray-200 animate-pulse rounded-xl"></div>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-center py-8">
+          <div className="flex items-center gap-3 text-gray-600">
+            <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-lg font-medium">Fetching data from database...</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+            <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-red-800 mb-2">Error Loading Data</h3>
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={refetch}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!regionalData || regionalData.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-md mx-auto">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-yellow-100 rounded-full">
+            <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-yellow-800 mb-2">No Data Available</h3>
+          <p className="text-yellow-600 mb-4">No regional activity data found. This could be because no surveys have been submitted yet.</p>
+          <button
+            onClick={refetch}
+            className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+    )
+  }
 
 // Legacy data removed - now using REGIONAL_ACTIVITY_DATA
 /*
@@ -207,52 +337,7 @@ const legacyData = [
 ]
 */
 
-// The actual function starts here, properly formatted:
-  const [selectedYear, setSelectedYear] = useState<string>("all")
-  const [selectedPartner, setSelectedPartner] = useState<string>("all")
-  const [selectedProgram, setSelectedProgram] = useState<string>("all")
-  
-  // Refs for PNG export
-  const mapRef = useRef<HTMLDivElement>(null)
-  const tableRef = useRef<HTMLDivElement>(null)
-  const summaryRef = useRef<HTMLDivElement>(null)
-
-  const ActivitiesByRegionMapComponent = useMemo(() => {
-    return dynamic(
-      () => import('@/components/chart_and_graphics/ActivitiesByRegionMap'),
-      {
-        loading: () => <p>Loading Map...</p>,
-        ssr: false
-      }
-    );
-  }, []);
-
-  // Get unique filter options
-  const years = ["2020", "2021", "2022", "2023"]
-  const allPartners = [...new Set(regionalData.flatMap(region => region.partners))]
-  const allPrograms = [...new Set(regionalData.flatMap(region => region.keyPrograms))]
-
-  // Filter data based on selections
-  const filteredData = useMemo(() => {
-    return regionalData.filter(region => {
-      const yearMatch = selectedYear === "all" || true // Year filtering would need more complex logic
-      const partnerMatch = selectedPartner === "all" || region.partners.includes(selectedPartner)
-      const programMatch = selectedProgram === "all" || region.keyPrograms.includes(selectedProgram)
-
-      return yearMatch && partnerMatch && programMatch
-    }).map(region => {
-      let activities = region.activities;
-
-      if (selectedYear !== "all" && selectedYear in region.yearData) {
-        activities = region.yearData[selectedYear as "2020" | "2021" | "2022" | "2023"];
-      }
-
-      return {
-        ...region,
-        activities
-      };
-    })
-  }, [selectedYear, selectedPartner, selectedProgram])
+// The actual function continues here with all hooks already declared above
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
@@ -305,16 +390,34 @@ const legacyData = [
       <div className="space-y-8">
         {/* Header Section */}
         <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-              <MapIcon className="w-6 h-6" />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                <MapIcon className="w-6 h-6" />
+              </div>
+              <div>
+                <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Activities By Region</h1>
+                <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
+                  Interactive overview showing geographic distribution of NCD activities to identify gaps, overlaps, and under-served regions.
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Activities By Region</h1>
-              <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
-                Interactive overview showing geographic distribution of NCD activities to identify gaps, overlaps, and under-served regions.
-              </p>
-            </div>
+            <Button
+              onClick={refetch}
+              variant="outline"
+              size="sm"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+              ) : (
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              )}
+              {isLoading ? 'Refreshing...' : 'Refresh Data'}
+            </Button>
           </div>
         </div>
 
@@ -443,6 +546,10 @@ const legacyData = [
                     <div className="text-2xl font-bold text-navy-blue">
                       {filteredData.reduce((sum, region) => sum + region.activities, 0)}
                     </div>
+                    <div className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      Live Database Data
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -458,7 +565,13 @@ const legacyData = [
                     <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                       <TableIcon className="w-5 h-5" />
                     </div>
-                    <CardTitle className="text-xl">Regional Activity Summary</CardTitle>
+                    <div>
+                      <CardTitle className="text-xl">Regional Activity Summary</CardTitle>
+                      <div className="text-emerald-100 text-sm flex items-center gap-1 mt-1">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        Powered by Database
+                      </div>
+                    </div>
                   </div>
                   <Button
                     onClick={exportTableAsPNG}
@@ -511,7 +624,7 @@ const legacyData = [
                             </td>
                             <td className="p-4">
                               <div className="flex flex-wrap gap-1">
-                                {region.keyPrograms.slice(0, 2).map(program => (
+                                {region.keyPrograms.slice(0, 2).map((program: string) => (
                                   <Badge key={program} variant="outline" className="text-xs bg-blue-50 border-blue-200 text-blue-700">
                                     {program}
                                   </Badge>
@@ -555,7 +668,13 @@ const legacyData = [
                     <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                       <BarChart3Icon className="w-5 h-5" />
                     </div>
-                    <CardTitle className="text-xl">Summary Analytics</CardTitle>
+                    <div>
+                      <CardTitle className="text-xl">Summary Analytics</CardTitle>
+                      <div className="text-purple-100 text-sm flex items-center gap-1 mt-1">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        Real-time Database Analytics
+                      </div>
+                    </div>
                   </div>
                   <Button
                     onClick={exportSummaryAsPNG}

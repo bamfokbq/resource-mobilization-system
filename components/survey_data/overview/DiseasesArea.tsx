@@ -11,10 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { BarChart3Icon, TableIcon, FilterIcon, EyeIcon, CalendarIcon, MapPinIcon, UsersIcon, TrendingUpIcon, HeartHandshakeIcon, Download, Image } from 'lucide-react'
 import ExportService from '@/lib/exportService'
-import { DISEASE_ACTIVITIES_DATA } from '@/data/survey-mock-data'
-
-// Disease activity data with detailed information
-const diseaseActivities = DISEASE_ACTIVITIES_DATA;
+import { useDiseaseActivitiesData } from '@/hooks/useSurveyData'
 
 /* OLD HARDCODED DATA - REPLACED WITH CENTRALIZED DATA
 const oldDiseaseActivities = [
@@ -165,15 +162,6 @@ const oldDiseaseActivities = [
 ];
 */
 
-const diseasesData = diseaseActivities.map(disease => ({
-    name: disease.disease,
-    value: disease.totalActivities
-}))
-
-// Get all unique regions, implementers, and statuses for filters
-const allRegions = [...new Set(diseaseActivities.flatMap(d => d.activities.map(a => a.region)))]
-const allImplementers = [...new Set(diseaseActivities.flatMap(d => d.activities.map(a => a.implementer)))]
-const allStatuses = [...new Set(diseaseActivities.flatMap(d => d.activities.map(a => a.status)))]
 
 export default function Diseases() {
     const [isMounted, setIsMounted] = useState(false)
@@ -186,15 +174,30 @@ export default function Diseases() {
     // Refs for PNG export
     const chartRef = useRef<HTMLDivElement>(null)
     const tableRef = useRef<HTMLDivElement>(null)
+    const { data: diseaseActivities, isLoading, error } = useDiseaseActivitiesData()
 
+    // Move useEffect before conditional returns
     useEffect(() => {
         setIsMounted(true)
     }, [])
 
-    // Filter activities based on selected filters
+    // Get all unique regions, implementers, and statuses for filters - moved before conditional returns
+    const allRegions = diseaseActivities ? [...new Set(diseaseActivities.flatMap(d => d.activities.map((a: any) => a.region)))] : []
+    const allImplementers = diseaseActivities ? [...new Set(diseaseActivities.flatMap(d => d.activities.map((a: any) => a.implementer)))] : []
+    const allStatuses = diseaseActivities ? [...new Set(diseaseActivities.flatMap(d => d.activities.map((a: any) => a.status)))] : []
+
+    // Transform data for charts - moved before conditional returns
+    const diseasesData = diseaseActivities ? diseaseActivities.map(disease => ({
+        name: disease.disease,
+        value: disease.totalActivities
+    })) : []
+
+    // Filter activities based on selected filters - moved before conditional returns
     const filteredActivities = useMemo(() => {
+        if (!diseaseActivities) return []
+        
         let activities = diseaseActivities.flatMap(disease =>
-            disease.activities.map(activity => ({
+            disease.activities.map((activity: any) => ({
                 ...activity,
                 disease: disease.disease
             }))
@@ -214,10 +217,12 @@ export default function Diseases() {
         }
 
         return activities
-    }, [selectedDisease, selectedRegion, selectedImplementer, selectedStatus])
+    }, [diseaseActivities, selectedDisease, selectedRegion, selectedImplementer, selectedStatus])
 
-    // Get chart data based on filters
+    // Get chart data based on filters - moved before conditional returns
     const filteredChartData = useMemo(() => {
+        if (!filteredActivities) return []
+        
         const diseaseCount = filteredActivities.reduce((acc, activity) => {
             acc[activity.disease] = (acc[activity.disease] || 0) + 1
             return acc
@@ -225,9 +230,26 @@ export default function Diseases() {
 
         return Object.entries(diseaseCount).map(([disease, count]) => ({
             name: disease,
-            value: count
-        })).sort((a, b) => b.value - a.value)
+            value: count as number
+        })).sort((a, b) => (b.value as number) - (a.value as number))
     }, [filteredActivities])
+
+    if (isLoading) {
+        return (
+            <div className="space-y-6">
+                <div className="h-8 bg-gray-200 animate-pulse rounded"></div>
+                <div className="h-64 bg-gray-200 animate-pulse rounded"></div>
+            </div>
+        )
+    }
+
+    if (error || !diseaseActivities) {
+        return (
+            <div className="text-center py-8">
+                <p className="text-red-500">Error loading disease activities data: {error}</p>
+            </div>
+        )
+    }
 
     const handleBarClick = (data: any) => {
         setSelectedDisease(data.name)
@@ -289,11 +311,11 @@ export default function Diseases() {
         const diseaseData = diseaseActivities.find(d => d.disease === disease)
         if (!diseaseData) return null
 
-        const avgCoverage = diseaseData.activities.reduce((sum, activity) =>
+        const avgCoverage = diseaseData.activities.reduce((sum: number, activity: any) =>
             sum + parseInt(activity.coverage), 0) / diseaseData.activities.length
 
-        const ongoingCount = diseaseData.activities.filter(a => a.status === 'ongoing').length
-        const completedCount = diseaseData.activities.filter(a => a.status === 'completed').length
+        const ongoingCount = diseaseData.activities.filter((a: any) => a.status === 'ongoing').length
+        const completedCount = diseaseData.activities.filter((a: any) => a.status === 'completed').length
 
         return (
             <div className="space-y-6">
@@ -358,7 +380,7 @@ export default function Diseases() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {diseaseData.activities.map((activity, index) => (
+                            {diseaseData.activities.map((activity: any, index: number) => (
                                 <div key={`drill-${index}-${activity.id}`} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                                     <div className="flex-1">
                                         <h4 className="font-semibold text-gray-900">{activity.name}</h4>
@@ -398,7 +420,7 @@ export default function Diseases() {
                     </CardHeader>
                     <CardContent>
                         <div className="flex flex-wrap gap-2">
-                            {[...new Set(diseaseData.activities.flatMap(a => a.partners))].map(partner => (
+                            {([...new Set(diseaseData.activities.flatMap((a: any) => a.partners))] as string[]).map((partner: string) => (
                                 <Badge key={partner} variant="outline" className="bg-blue-50 border-blue-200 text-blue-700">
                                     {partner}
                                 </Badge>

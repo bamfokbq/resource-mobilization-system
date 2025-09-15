@@ -1,13 +1,56 @@
-import { ADMIN_STATS } from '@/constant'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { motion } from 'motion/react'
 import { TrendingUp, TrendingDown } from 'lucide-react'
+import { useAdminStats } from '@/hooks/useAdminStats'
+import { MdOutlinePoll } from "react-icons/md"
+import { FiUsers } from "react-icons/fi"
+import { BsCalendar3 } from "react-icons/bs"
+import { AiOutlineProject } from "react-icons/ai"
+
+// Icon mapping for each stat type
+const getIconForStat = (id: number) => {
+  switch (id) {
+    case 1: return MdOutlinePoll
+    case 2: return FiUsers
+    case 3: return BsCalendar3
+    case 4: return AiOutlineProject
+    default: return MdOutlinePoll
+  }
+}
 
 export default function StatsSection() {
+  const { stats, isLoading, lastUpdated } = useAdminStats()
+
+  if (isLoading) {
+    return (
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div key={index} className="animate-pulse">
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gray-200 rounded-xl"></div>
+                  <div className="w-16 h-6 bg-gray-200 rounded"></div>
+                </div>
+                <div className="space-y-2">
+                  <div className="w-24 h-4 bg-gray-200 rounded"></div>
+                  <div className="w-16 h-8 bg-gray-200 rounded"></div>
+                </div>
+                <div className="mt-4 space-y-2">
+                  <div className="w-full h-1 bg-gray-200 rounded-full"></div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      {ADMIN_STATS.map((stat, index) => (
+      {stats.map((stat, index) => (
         <motion.div
           key={stat.id}
           initial={{ opacity: 0, y: 20 }}
@@ -22,7 +65,10 @@ export default function StatsSection() {
             <CardContent className="relative p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className={`p-3 rounded-xl bg-gradient-to-br ${getGradientColors(index)} shadow-lg`}>
-                  <stat.icon className="w-6 h-6 text-white" />
+                  {(() => {
+                    const IconComponent = getIconForStat(stat.id)
+                    return <IconComponent className="w-6 h-6 text-white" />
+                  })()}
                 </div>
                 <Badge 
                   variant="secondary" 
@@ -64,6 +110,15 @@ export default function StatsSection() {
           </Card>
         </motion.div>
       ))}
+      
+      {/* Last updated indicator */}
+      {lastUpdated && (
+        <div className="col-span-full text-center">
+          <p className="text-xs text-gray-500">
+            Last updated: {new Date(lastUpdated).toLocaleString()}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
