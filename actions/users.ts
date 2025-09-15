@@ -137,11 +137,13 @@ export async function updateUserEditableProfile(userId: string, telephone: strin
 export async function getAllUsers() {
   try {
     const db = await getDb()
-    const users = await db.collection("users").find({}, {
+    const users = await db.collection("users").find({
+      email: { $ne: "systemowner@gmail.com" }
+    }, {
       projection: {
-        password: 0, 
+        password: 0,
       }
-    }).toArray()  
+    }).toArray();
     return users.map(user => ({
       id: user._id.toString(),
       name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
