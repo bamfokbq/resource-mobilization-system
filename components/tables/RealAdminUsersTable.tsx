@@ -604,7 +604,7 @@ export default function RealAdminUsersTable() {
                                 Are you sure you want to reset the password for <strong>{resetPasswordDialog.user?.name}</strong>?
                                 <br />
                                 <span className="text-sm text-muted-foreground mt-2 block">
-                                    A new temporary password will be generated and the user will need to change it on their next login.
+                                    The user's password will be reset to the default password.
                                 </span>
                             </DialogDescription>
                         </DialogHeader>

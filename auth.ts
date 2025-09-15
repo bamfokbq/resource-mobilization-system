@@ -32,7 +32,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: user.email,
             name: `${user.firstName} ${user.lastName}`,
             role: user.role, // ✅ Add role here
-            firstLogin: user.firstLogin || false, // Add firstLogin flag
           }
         } catch (error) {
           console.error("Auth error:", error)
@@ -50,7 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.email = user.email
         token.name = user.name
         token.role = user.role // ✅ Add role to JWT
-        token.firstLogin = user.firstLogin // Add firstLogin to JWT
       }
       return token
     },
@@ -60,7 +58,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.email = token.email as string
         session.user.name = token.name as string
         session.user.role = token.role as string // ✅ Add role to session
-        session.user.firstLogin = token.firstLogin as boolean // Add firstLogin to session
       }
       return session
     },

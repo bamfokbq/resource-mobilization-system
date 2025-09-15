@@ -1,6 +1,5 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import Header from '@/components/shared/Header'
-import FirstLoginGuard from '@/components/auth/FirstLoginGuard'
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 
@@ -26,10 +25,8 @@ export default async function AdminRootLayout({
     }
 
     return (
-        <FirstLoginGuard>
-            <section>
-                {children}
-            </section>
-        </FirstLoginGuard>
+        <section>
+            {children}
+        </section>
     );
 }

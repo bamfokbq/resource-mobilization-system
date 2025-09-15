@@ -34,9 +34,6 @@ interface AddNewUserFormProps {
 export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false)
-  const [temporaryPassword, setTemporaryPassword] = useState<string | null>(null)
-  const [newUserEmail, setNewUserEmail] = useState<string | null>(null)
-  const [emailSent, setEmailSent] = useState<boolean>(false)
 
   const {
     register,
@@ -94,10 +91,6 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
 
       toast.dismiss(loadingToast)
 
-      // Store temporary password and email for display
-      setTemporaryPassword(result.temporaryPassword || null)
-      setNewUserEmail(result.userEmail || null)
-      setEmailSent(result.emailSent || false)
 
       // Show success overlay
       setShowSuccessOverlay(true)
@@ -464,45 +457,6 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 <p className="text-gray-600">The new user account has been created and is ready to use.</p>
               </div>
 
-              {/* Temporary Password Display */}
-              {temporaryPassword && newUserEmail && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 space-y-3">
-                  <div className="flex items-center justify-center space-x-2">
-                    <AlertCircle className="h-5 w-5 text-yellow-600" />
-                    <span className="text-sm font-medium text-yellow-800">Important: Temporary Password</span>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-700">
-                      <strong>Email:</strong> {newUserEmail}
-                    </p>
-                    <div className="flex items-center justify-between bg-white border border-gray-200 rounded-md p-2">
-                      <code className="text-sm font-mono text-gray-800 flex-1 text-left">
-                        {temporaryPassword}
-                      </code>
-                      <button
-                        onClick={() => navigator.clipboard.writeText(temporaryPassword)}
-                        className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors"
-                      >
-                        Copy
-                      </button>
-                    </div>
-                    <p className="text-xs text-yellow-700">
-                      Please securely share this password with the user. They will be required to change it on first login.
-                    </p>
-                    {emailSent ? (
-                      <p className="text-xs text-green-700 flex items-center justify-center">
-                        <CheckCircle2 className="h-3 w-3 mr-1" />
-                        Email notification sent successfully
-                      </p>
-                    ) : (
-                      <p className="text-xs text-orange-700 flex items-center justify-center">
-                        <AlertCircle className="h-3 w-3 mr-1" />
-                        Email notification failed - please share password manually
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
 
               {/* Progress Dots */}
               <div className="flex justify-center space-x-2">

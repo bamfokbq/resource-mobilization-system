@@ -4,7 +4,6 @@ import UserDashboardLinks from '@/components/features/UserDashboardLinks';
 import UserProvider from '@/components/providers/UserProvider';
 import UserLoadingScreen from '@/components/shared/UserLoadingScreen'
 import RedirectLoadingScreen from '@/components/shared/RedirectLoadingScreen'
-import FirstLoginGuard from '@/components/auth/FirstLoginGuard'
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 
@@ -41,21 +40,19 @@ export default async function UserDashboardLayout({
 
     return (
         <UserProvider user={session?.user || null}>
-            <FirstLoginGuard>
-                <div className="flex flex-col h-screen">
-                    <Header />
-                    <div className="flex flex-1 overflow-hidden">
-                        <UserDashboardLinks />
-                        <ScrollArea className="flex-1 bg-gray-100">
-                            <div className="w-full h-full bg-gray-100">
-                                <div className="p-4">
-                                    {children}
-                                </div>
+            <div className="flex flex-col h-screen">
+                <Header />
+                <div className="flex flex-1 overflow-hidden">
+                    <UserDashboardLinks />
+                    <ScrollArea className="flex-1 bg-gray-100">
+                        <div className="w-full h-full bg-gray-100">
+                            <div className="p-4">
+                                {children}
                             </div>
-                        </ScrollArea>
-                    </div>
+                        </div>
+                    </ScrollArea>
                 </div>
-            </FirstLoginGuard>
+            </div>
         </UserProvider>
     )
 }
