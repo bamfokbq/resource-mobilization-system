@@ -201,14 +201,14 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
               </Link>
           </motion.div>
 
-          <div suppressHydrationWarning>
-            <Accordion 
-                type="single" 
-                collapsible 
-                className="w-full space-y-3"
-                value={openItem}
-                onValueChange={handleAccordionChange}
-            >
+          <Accordion 
+              type="single" 
+              collapsible 
+              className="w-full space-y-3"
+              value={openItem}
+              onValueChange={handleAccordionChange}
+              suppressHydrationWarning
+          >
                 {items.map((section, idx) => (
                     <motion.div
                         key={`nav-${section.name}-${idx}`}
@@ -288,7 +288,6 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                   </motion.div>
               ))}
           </Accordion>
-          </div>
       </motion.div>
       </MotionConfig>
   )

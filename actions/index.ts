@@ -21,6 +21,20 @@ export {
     invalidateAdminStatsCache
 } from './adminStats'
 
+// Re-export survey data actions for convenience
+export {
+    getRegionalActivityData,
+    getDiseaseActivitiesData,
+    getCareContinuumActivities,
+    getProjectTimelineData,
+    getSectorData,
+    getFundingData,
+    getStakeholderDetails,
+    getRegionActivityTotals,
+    invalidateSurveyDataCache,
+    invalidateAllSurveyDataCaches
+} from './surveyDataActions'
+
 // Re-export additional resource actions for convenience
 export {
     searchResourceSuggestions,

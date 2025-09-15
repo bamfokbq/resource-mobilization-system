@@ -16,10 +16,7 @@ import { applyFilters } from '@/hooks/useUrlFilters'
 import { Activity } from '@/types/activities'
 import { TrendingDownIcon, AlertTriangleIcon, BarChart3Icon, TableIcon, FilterIcon, EyeIcon } from "lucide-react"
 import { toast } from 'sonner'
-import { CARE_CONTINUUM_ACTIVITIES } from '@/data/survey-mock-data'
-
-// Mock data for care continuum activities
-const careContinuumActivities = CARE_CONTINUUM_ACTIVITIES;
+import { useCareContinuumActivities } from '@/hooks/useSurveyData'
 
 /* OLD HARDCODED DATA - REPLACED WITH CENTRALIZED DATA
 const oldCareContinuumActivities = [
@@ -281,15 +278,19 @@ export default function ContinuumOfCare() {
     const tableRef = useRef<HTMLDivElement>(null)
     
     const { globalFilters } = useSurveyDataFilters()
+    const { data: careContinuumActivities, isLoading, error } = useCareContinuumActivities()
 
+    // Move useEffect before conditional returns
     useEffect(() => {
         setIsMounted(true)
         // In a real app, you'd get this from your auth context
         setUserRole('Admin') // For demo purposes
     }, [])
 
-    // Transform data to match Activity interface
+    // Transform data to match Activity interface - moved before conditional returns
     const allActivities = useMemo(() => {
+        if (!careContinuumActivities) return []
+        
         return careContinuumActivities.map(activity => ({
             id: activity.id.toString(),
             name: activity.activity,
@@ -307,9 +308,9 @@ export default function ContinuumOfCare() {
             expectedOutcomes: `Improve care delivery at ${activity.stage} stage`,
             timeline: '2023-2024'
         }))
-    }, [])
+    }, [careContinuumActivities])
 
-    // Apply global filters to activities
+    // Apply global filters to activities - moved before conditional returns
     const filteredActivities = useMemo(() => {
         if (!globalFilters) return allActivities
 
@@ -320,8 +321,9 @@ export default function ContinuumOfCare() {
         })
     }, [allActivities, globalFilters])
 
-    // Calculate stacked bar chart data
+    // Calculate stacked bar chart data - moved before conditional returns
     const stackedChartData = useMemo(() => {
+        if (!filteredActivities) return []
 
         return regions.map(region => {
             const regionActivities = filteredActivities.filter(activity => activity.region === region)
@@ -335,8 +337,10 @@ export default function ContinuumOfCare() {
         })
     }, [filteredActivities])
 
-    // Calculate summary table data
+    // Calculate summary table data - moved before conditional returns
     const summaryTableData = useMemo(() => {
+        if (!filteredActivities || !careContinuumActivities) return []
+        
         return filteredActivities.map(activity => {
             // Find original activity data for display
             const originalActivity = careContinuumActivities.find(orig => orig.id.toString() === activity.id)
@@ -352,10 +356,12 @@ export default function ContinuumOfCare() {
                 status: activity.status
             }
         })
-    }, [filteredActivities])
+    }, [filteredActivities, careContinuumActivities])
 
-    // Calculate gap analysis
+    // Calculate gap analysis - moved before conditional returns
     const gapAnalysis = useMemo(() => {
+        if (!careContinuumActivities) return []
+        
         const gaps: GapAnalysis[] = []
 
         // Analyze gaps by disease and stage
@@ -402,7 +408,24 @@ export default function ContinuumOfCare() {
         })
 
         return gaps.slice(0, 8) // Limit to top 8 gaps
-    }, [])
+    }, [careContinuumActivities])
+
+    if (isLoading) {
+        return (
+            <div className="space-y-6">
+                <div className="h-8 bg-gray-200 animate-pulse rounded"></div>
+                <div className="h-64 bg-gray-200 animate-pulse rounded"></div>
+            </div>
+        )
+    }
+
+    if (error || !careContinuumActivities) {
+        return (
+            <div className="text-center py-8">
+                <p className="text-red-500">Error loading care continuum activities: {error}</p>
+            </div>
+        )
+    }
 
     const getSeverityColor = (severity: string) => {
         switch (severity) {

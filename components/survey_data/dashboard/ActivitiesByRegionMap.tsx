@@ -5,7 +5,8 @@ import { Feature, Geometry, FeatureCollection } from 'geojson';
 import { PathOptions, LatLngBounds, Layer, divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import geoData from '@/constant/geo.json';
-import { REGION_ACTIVITY_TOTALS, REGION_LABEL_POSITIONS } from '@/data/survey-mock-data';
+import { useRegionActivityTotals } from '@/hooks/useSurveyData';
+import { REGION_LABEL_POSITIONS } from '@/data/survey-mock-data';
 
 type RegionName =
     | "Greater Accra"
@@ -33,9 +34,42 @@ type RegionActivityData = {
     [K in RegionName]: ActivityData;
 }
 
-const activities: RegionActivityData = REGION_ACTIVITY_TOTALS;
+export default function ActivitiesByRegionMap() {
+  const { data: regionActivityTotals, isLoading, error } = useRegionActivityTotals()
 
-const getColor = (total: number) => {
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-gray-500">Loading map data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !regionActivityTotals) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="text-center text-red-500">
+          <p>Error loading map data: {error}</p>
+        </div>
+      </div>
+    )
+  }
+
+  const activities: RegionActivityData = regionActivityTotals as RegionActivityData;
+
+  // Region label positions from centralized data
+  const regionLabels: { [K in RegionName]: [number, number] } = REGION_LABEL_POSITIONS;
+
+  const typedGeoData = geoData as FeatureCollection;
+  const ghanaBounds = new LatLngBounds(
+      [4.7, -3.5], // Southwest coordinates
+      [11.2, 1.2]  // Northeast coordinates
+  );
+
+  const getColor = (total: number) => {
     if (total > 100) return '#0a2472';
     if (total > 75) return '#1e3799';
     if (total > 50) return '#4a69bd';
@@ -101,158 +135,149 @@ const onEachFeature = (feature: Feature<Geometry, { name: string }>, layer: Laye
     }
 };
 
-// Region label positions from centralized data
-const regionLabels: { [K in RegionName]: [number, number] } = REGION_LABEL_POSITIONS;
-
-export default function ActivitiesByRegionMap() {
-    const typedGeoData = geoData as FeatureCollection;
-    const ghanaBounds = new LatLngBounds(
-        [4.7, -3.5], // Southwest coordinates
-        [11.2, 1.2]  // Northeast coordinates
-    );
-    
-    return (
-        <div className="relative h-full w-full flex-col flex items-center justify-center z-40">
-            <MapContainer 
-                center={[8.0, -1.0]}
-                zoom={6.5} 
-                className="h-full w-full object-cover"
-                maxBounds={ghanaBounds}
-                minZoom={6.5}
-                maxZoom={8}
-                boundsOptions={{ padding: [0, 0] }}
-                zoomControl={false}
-                dragging={false}
-                scrollWheelZoom={false}
-                touchZoom={false}
-                doubleClickZoom={false}
-            >
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    className="map-tiles"
-                />
-                <GeoJSON
-                    data={typedGeoData}
-                    onEachFeature={onEachFeature}
-                    style={{
-                        weight: 2,
-                        opacity: 1,
-                        color: 'white',
-                        fillOpacity: 0.7,
-                    }}
-                />
-                {Object.entries(regionLabels).map(([region, position]) => {
-                    const { total } = activities[region as RegionName];
-                    return (
-                        <Marker
-                            key={region}
-                            position={position}
-                            icon={divIcon({
-                                className: 'region-label',
-                                html: `
-                                    <div class="label-container">
-                                        <span class="region-total">${total}</span>
-                                    </div>
-                                `,
-                                iconSize: [40, 20],
-                                iconAnchor: [20, 10]
-                            })}
-                        />
-                    );
-                })}
-            </MapContainer>
-            <div className="absolute bottom-4 left-4 bg-white/95 p-2 shadow-lg rounded-md z-[1000] scale-75 origin-bottom-left">
-                <h3 className="font-bold mb-1 text-sm text-gray-800">Activities</h3>
-                <div className="flex flex-col space-y-1">
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#0a2472] inline-block rounded-sm"></span> Over 100</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#1e3799] inline-block rounded-sm"></span> 76-100</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#4a69bd] inline-block rounded-sm"></span> 51-75</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#6a89cc] inline-block rounded-sm"></span> 26-50</div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#c7ecee] inline-block rounded-sm"></span> 0-25</div>
-                </div>
-                <p className="text-[10px] mt-1 text-gray-600 font-medium">*Number of activities</p>
-            </div>
-            <style>{`
-                .map-tiles {
-                    filter: grayscale(100%) brightness(0.8);
-                }
-                .leaflet-container {
-                    background: #f0f0f0;
-                }
-                .leaflet-popup-content-wrapper {
-                    border-radius: 8px;
-                    padding: 0;
-                }
-                .leaflet-popup-content {
-                    margin: 0;
-                    line-height: 1.4;
-                }
-                .custom-popup {
-                    min-width: 120px;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }
-                .popup-header {
-                    background: #2c3e50;
-                    color: white;
-                    padding: 3px 5px;
-                    font-size: 12px;
-                    font-weight: 600;
-                    border-radius: 4px 4px 0 0;
-                }
-                .popup-content {
-                    padding: 3px 5px;
-                    background: white;
-                    border-radius: 0 0 4px 4px;
-                }
-                .stat-row {
-                    display: flex;
-                    align-items: baseline;
-                    gap: 4px;
-                }
-                .stat-value {
-                    font-size: 16px;
-                    font-weight: 700;
-                    color: #2c3e50;
-                }
-                .stat-label {
-                    font-size: 11px;
-                    color: #666;
-                    text-transform: uppercase;
-                }
-                .label {
-                    color: #666;
-                }
-                .value {
-                    color: #2c3e50;
-                }
-                .region-name {
-                    font-weight: 600;
-                    color: #2c3e50;
-                }
-                .total-value {
-                    color: #666;
-                }
-                .region-label {
-                    background: transparent;
-                    border: none;
-                    box-shadow: none;
-                }
-                .label-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-                .region-total {
-                    font-size: 12px;
-                    font-weight: 700;
-                    color: #2c3e50;
-                    background: white;
-                    padding: 2px 6px;
-                    border-radius: 12px;
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                }
-            `}</style>
+  return (
+    <div className="relative h-full w-full flex-col flex items-center justify-center z-40">
+      <MapContainer 
+        center={[8.0, -1.0]}
+        zoom={6.5} 
+        className="h-full w-full object-cover"
+        maxBounds={ghanaBounds}
+        minZoom={6.5}
+        maxZoom={8}
+        boundsOptions={{ padding: [0, 0] }}
+        zoomControl={false}
+        dragging={false}
+        scrollWheelZoom={false}
+        touchZoom={false}
+        doubleClickZoom={false}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          className="map-tiles"
+        />
+        <GeoJSON
+          data={typedGeoData}
+          onEachFeature={onEachFeature}
+          style={{
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.7,
+          }}
+        />
+        {Object.entries(regionLabels).map(([region, position]) => {
+          const regionData = activities[region as RegionName];
+          const total = regionData?.total || 0;
+          return (
+            <Marker
+              key={region}
+              position={position}
+              icon={divIcon({
+                className: 'region-label',
+                html: `
+                  <div class="label-container">
+                    <span class="region-total">${total}</span>
+                  </div>
+                `,
+                iconSize: [40, 20],
+                iconAnchor: [20, 10]
+              })}
+            />
+          );
+        })}
+      </MapContainer>
+      <div className="absolute bottom-4 left-4 bg-white/95 p-2 shadow-lg rounded-md z-[1000] scale-75 origin-bottom-left">
+        <h3 className="font-bold mb-1 text-sm text-gray-800">Activities</h3>
+        <div className="flex flex-col space-y-1">
+          <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#0a2472] inline-block rounded-sm"></span> Over 100</div>
+          <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#1e3799] inline-block rounded-sm"></span> 76-100</div>
+          <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#4a69bd] inline-block rounded-sm"></span> 51-75</div>
+          <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#6a89cc] inline-block rounded-sm"></span> 26-50</div>
+          <div className="flex items-center gap-1 text-xs font-medium text-gray-700"><span className="w-3 h-3 bg-[#c7ecee] inline-block rounded-sm"></span> 0-25</div>
         </div>
-    );
+        <p className="text-[10px] mt-1 text-gray-600 font-medium">*Number of activities</p>
+      </div>
+      <style>{`
+        .map-tiles {
+          filter: grayscale(100%) brightness(0.8);
+        }
+        .leaflet-container {
+          background: #f0f0f0;
+        }
+        .leaflet-popup-content-wrapper {
+          border-radius: 8px;
+          padding: 0;
+        }
+        .leaflet-popup-content {
+          margin: 0;
+          line-height: 1.4;
+        }
+        .custom-popup {
+          min-width: 120px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .popup-header {
+          background: #2c3e50;
+          color: white;
+          padding: 3px 5px;
+          font-size: 12px;
+          font-weight: 600;
+          border-radius: 4px 4px 0 0;
+        }
+        .popup-content {
+          padding: 3px 5px;
+          background: white;
+          border-radius: 0 0 4px 4px;
+        }
+        .stat-row {
+          display: flex;
+          align-items: baseline;
+          gap: 4px;
+        }
+        .stat-value {
+          font-size: 16px;
+          font-weight: 700;
+          color: #2c3e50;
+        }
+        .stat-label {
+          font-size: 11px;
+          color: #666;
+          text-transform: uppercase;
+        }
+        .label {
+          color: #666;
+        }
+        .value {
+          color: #2c3e50;
+        }
+        .region-name {
+          font-weight: 600;
+          color: #2c3e50;
+        }
+        .total-value {
+          color: #666;
+        }
+        .region-label {
+          background: transparent;
+          border: none;
+          box-shadow: none;
+        }
+        .label-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .region-total {
+          font-size: 12px;
+          font-weight: 700;
+          color: #2c3e50;
+          background: white;
+          padding: 2px 6px;
+          border-radius: 12px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+      `}</style>
+    </div>
+  );
 }

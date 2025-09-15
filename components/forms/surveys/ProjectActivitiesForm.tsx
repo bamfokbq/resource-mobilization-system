@@ -123,6 +123,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                     onValueChange={setActiveAccordion}
                     collapsible
                     className="bg-gradient-to-r from-background to-background/80 rounded-xl shadow-sm border border-border/40 overflow-hidden transition-all duration-200 hover:shadow-md"
+                    suppressHydrationWarning
                   >
                     <AccordionItem value={ncd.toLowerCase().replace(/\s+/g, '-')} className="px-6 border-none">
                       <AccordionTrigger className="hover:bg-muted/30 rounded-lg py-5 px-4 transition-all duration-200">

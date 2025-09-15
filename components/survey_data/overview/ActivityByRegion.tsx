@@ -9,15 +9,80 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { MapIcon, TableIcon, BarChart3Icon, FilterIcon, TrendingUpIcon, UsersIcon, TargetIcon, Download, Image } from 'lucide-react'
 import ExportService from '@/lib/exportService'
-import { REGIONAL_ACTIVITY_DATA } from '@/data/survey-mock-data'
-
-// Regional activity data
-const regionalData = REGIONAL_ACTIVITY_DATA;
+import { useRegionalActivityData } from '@/hooks/useSurveyData'
 
 export default function ActivityByRegion() {
   const [selectedRegion, setSelectedRegion] = useState<string>('')
   const [sortBy, setSortBy] = useState<string>('activities')
   const chartRef = useRef<HTMLDivElement>(null)
+  const { data: regionalData, isLoading, error } = useRegionalActivityData()
+
+  // Move all hooks to the top before any conditional logic
+  const [selectedYear, setSelectedYear] = useState<string>("all")
+  const [selectedPartner, setSelectedPartner] = useState<string>("all")
+  const [selectedProgram, setSelectedProgram] = useState<string>("all")
+  
+  // Refs for PNG export
+  const mapRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLDivElement>(null)
+  const summaryRef = useRef<HTMLDivElement>(null)
+
+  const ActivitiesByRegionMapComponent = useMemo(() => {
+    return dynamic(
+      () => import('@/components/chart_and_graphics/ActivitiesByRegionMap'),
+      {
+        loading: () => <p>Loading Map...</p>,
+        ssr: false
+      }
+    );
+  }, []);
+
+  // Get unique filter options - moved before conditional returns
+  const years = ["2020", "2021", "2022", "2023"]
+  const allPartners = regionalData ? [...new Set(regionalData.flatMap(region => region.partners))] : []
+  const allPrograms = regionalData ? [...new Set(regionalData.flatMap(region => region.keyPrograms))] : []
+
+  // Filter data based on selections - moved before conditional returns
+  const filteredData = useMemo(() => {
+    if (!regionalData) return []
+    
+    return regionalData.filter(region => {
+      const yearMatch = selectedYear === "all" || true // Year filtering would need more complex logic
+      const partnerMatch = selectedPartner === "all" || region.partners.includes(selectedPartner)
+      const programMatch = selectedProgram === "all" || region.keyPrograms.includes(selectedProgram)
+
+      return yearMatch && partnerMatch && programMatch
+    }).map(region => {
+      let activities = region.activities;
+
+      if (selectedYear !== "all" && selectedYear in region.yearData) {
+        activities = region.yearData[selectedYear as "2020" | "2021" | "2022" | "2023"];
+      }
+
+      return {
+        ...region,
+        activities
+      };
+    })
+  }, [regionalData, selectedYear, selectedPartner, selectedProgram])
+
+  // Now handle conditional rendering after all hooks are called
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-8 bg-gray-200 animate-pulse rounded"></div>
+        <div className="h-64 bg-gray-200 animate-pulse rounded"></div>
+      </div>
+    )
+  }
+
+  if (error || !regionalData) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500">Error loading regional activity data: {error}</p>
+      </div>
+    )
+  }
 
 // Legacy data removed - now using REGIONAL_ACTIVITY_DATA
 /*
@@ -207,52 +272,7 @@ const legacyData = [
 ]
 */
 
-// The actual function starts here, properly formatted:
-  const [selectedYear, setSelectedYear] = useState<string>("all")
-  const [selectedPartner, setSelectedPartner] = useState<string>("all")
-  const [selectedProgram, setSelectedProgram] = useState<string>("all")
-  
-  // Refs for PNG export
-  const mapRef = useRef<HTMLDivElement>(null)
-  const tableRef = useRef<HTMLDivElement>(null)
-  const summaryRef = useRef<HTMLDivElement>(null)
-
-  const ActivitiesByRegionMapComponent = useMemo(() => {
-    return dynamic(
-      () => import('@/components/chart_and_graphics/ActivitiesByRegionMap'),
-      {
-        loading: () => <p>Loading Map...</p>,
-        ssr: false
-      }
-    );
-  }, []);
-
-  // Get unique filter options
-  const years = ["2020", "2021", "2022", "2023"]
-  const allPartners = [...new Set(regionalData.flatMap(region => region.partners))]
-  const allPrograms = [...new Set(regionalData.flatMap(region => region.keyPrograms))]
-
-  // Filter data based on selections
-  const filteredData = useMemo(() => {
-    return regionalData.filter(region => {
-      const yearMatch = selectedYear === "all" || true // Year filtering would need more complex logic
-      const partnerMatch = selectedPartner === "all" || region.partners.includes(selectedPartner)
-      const programMatch = selectedProgram === "all" || region.keyPrograms.includes(selectedProgram)
-
-      return yearMatch && partnerMatch && programMatch
-    }).map(region => {
-      let activities = region.activities;
-
-      if (selectedYear !== "all" && selectedYear in region.yearData) {
-        activities = region.yearData[selectedYear as "2020" | "2021" | "2022" | "2023"];
-      }
-
-      return {
-        ...region,
-        activities
-      };
-    })
-  }, [selectedYear, selectedPartner, selectedProgram])
+// The actual function continues here with all hooks already declared above
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
@@ -511,7 +531,7 @@ const legacyData = [
                             </td>
                             <td className="p-4">
                               <div className="flex flex-wrap gap-1">
-                                {region.keyPrograms.slice(0, 2).map(program => (
+                                {region.keyPrograms.slice(0, 2).map((program: string) => (
                                   <Badge key={program} variant="outline" className="text-xs bg-blue-50 border-blue-200 text-blue-700">
                                     {program}
                                   </Badge>
