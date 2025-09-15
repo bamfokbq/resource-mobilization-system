@@ -11,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Plus, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Trash2, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface PartnersInfoFormProps {
@@ -90,29 +90,39 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
   };
   return (
     <section>
-      <div className="bg-white rounded-lg shadow-sm p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Section C: Project Partners</h2>
-          <p className="text-gray-600 mb-2">
-            This section captures information about organizations or entities that your organization
-            collaborates with in implementing your NCD project(s).
-          </p>
-          <p className="text-gray-600">
-            Please provide details about each partner including their role, contribution, and contact information.
-            You can add multiple partners as needed.
-          </p>
+      <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-cyan-100 rounded-lg">
+              <Users className="h-6 w-6 text-cyan-600" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Section C: Project Partners</h2>
+              <p className="text-gray-600 text-lg">
+                This section captures information about organizations or entities that your organization
+                collaborates with in implementing your NCD project(s).
+              </p>
+              <p className="text-gray-600 mt-2">
+                Please provide details about each partner including their role, contribution, and contact information.
+                You can add multiple partners as needed.
+              </p>
+            </div>
+          </div>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
             <div className="space-y-6">
               {fields.length === 0 && (
-                <div className="text-center flex justify-center items-center flex-col py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                  <p className="text-gray-500 mb-4">No partners added yet</p>
+                <div className="text-center flex justify-center items-center flex-col py-12 bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl border-2 border-dashed border-cyan-300">
+                  <div className="p-4 bg-cyan-100 rounded-full mb-4">
+                    <Users className="h-8 w-8 text-cyan-600" />
+                  </div>
+                  <p className="text-gray-600 text-lg font-medium mb-6">No partners added yet</p>
                   <Button
                     type="button"
                     onClick={addPartner}
-                    className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+                    className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white flex items-center gap-2 px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                   >
                     <Plus className="h-4 w-4" />
                     Add First Partner
@@ -121,10 +131,13 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
               )}
 
               {fields.map((field, index) => (
-                <Card key={field.id} className="border border-gray-200">
-                  <CardHeader className="bg-gray-50 border-b border-gray-200">
+                <Card key={field.id} className="border border-cyan-200 shadow-lg bg-gradient-to-br from-white to-cyan-50">
+                  <CardHeader className="bg-gradient-to-r from-cyan-100 to-blue-100 border-b border-cyan-200 rounded-t-lg">
                     <div className="flex justify-between items-center">
-                      <CardTitle className="text-lg font-medium text-gray-800">
+                      <CardTitle className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <div className="p-1 bg-cyan-200 rounded">
+                          <Users className="h-4 w-4 text-cyan-700" />
+                        </div>
                         Partner {index + 1}
                       </CardTitle>
                       {fields.length > 0 && (
@@ -133,7 +146,7 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                           variant="outline"
                           size="sm"
                           onClick={() => remove(index)}
-                          className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400 flex items-center gap-1"
+                          className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400 flex items-center gap-1 rounded-lg"
                         >
                           <Trash2 className="h-4 w-4" />
                           Remove
@@ -147,22 +160,22 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                       control={form.control}
                       name={`partners.${index}.organisationName`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">
+                        <FormItem className="bg-white p-4 rounded-lg border border-gray-200">
+                          <FormLabel className="text-gray-700 font-semibold">
                             Organization Name
                             <span className="text-red-500 ml-1">*</span>
                           </FormLabel>
-                          <FormDescription className="text-sm text-gray-500 mt-1">
+                          <FormDescription className="text-gray-600 mt-2">
                             Enter the full name of the partner organization
                           </FormDescription>
                           <FormControl>
                             <Input
                               {...field}
                               placeholder="Enter organization name"
-                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                             />
                           </FormControl>
-                          <FormMessage className="mt-1 text-red-500 text-sm" />
+                          <FormMessage className="mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
@@ -172,22 +185,22 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                       control={form.control}
                       name={`partners.${index}.role`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">
+                        <FormItem className="bg-white p-4 rounded-lg border border-gray-200">
+                          <FormLabel className="text-gray-700 font-semibold">
                             Role in Project
                             <span className="text-red-500 ml-1">*</span>
                           </FormLabel>
-                          <FormDescription className="text-sm text-gray-500 mt-1">
+                          <FormDescription className="text-gray-600 mt-2">
                             Describe the specific role this partner plays in the project
                           </FormDescription>
                           <FormControl>
                             <Input
                               {...field}
                               placeholder="e.g., Technical advisor, Implementation partner, Funding partner"
-                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                             />
                           </FormControl>
-                          <FormMessage className="mt-1 text-red-500 text-sm" />
+                          <FormMessage className="mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />                    {/* Contribution */}
@@ -195,12 +208,12 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                       control={form.control}
                       name={`partners.${index}.contribution`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">
+                        <FormItem className="bg-white p-4 rounded-lg border border-gray-200">
+                          <FormLabel className="text-gray-700 font-semibold">
                             Contribution/Expertise
                             <span className="text-red-500 ml-1">*</span>
                           </FormLabel>
-                          <FormDescription className="text-sm text-gray-500 mt-1">
+                          <FormDescription className="text-gray-600 mt-2">
                             Describe what this partner contributes to the project (expertise, resources, etc.)
                           </FormDescription>
                           <FormControl>
@@ -208,10 +221,10 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                               {...field}
                               placeholder="Enter the specific contributions or expertise this partner provides"
                               rows={3}
-                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                             />
                           </FormControl>
-                          <FormMessage className="mt-1 text-red-500 text-sm" />
+                          <FormMessage className="mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
@@ -221,22 +234,22 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                       control={form.control}
                       name={`partners.${index}.contactPerson`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">
+                        <FormItem className="bg-white p-4 rounded-lg border border-gray-200">
+                          <FormLabel className="text-gray-700 font-semibold">
                             Contact Person
                             <span className="text-red-500 ml-1">*</span>
                           </FormLabel>
-                          <FormDescription className="text-sm text-gray-500 mt-1">
+                          <FormDescription className="text-gray-600 mt-2">
                             Name of the primary contact person at this organization
                           </FormDescription>
                           <FormControl>
                             <Input
                               {...field}
                               placeholder="Enter contact person's name"
-                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                             />
                           </FormControl>
-                          <FormMessage className="mt-1 text-red-500 text-sm" />
+                          <FormMessage className="mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
@@ -246,12 +259,12 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                       control={form.control}
                       name={`partners.${index}.email`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">
+                        <FormItem className="bg-white p-4 rounded-lg border border-gray-200">
+                          <FormLabel className="text-gray-700 font-semibold">
                             Email Address
                             <span className="text-red-500 ml-1">*</span>
                           </FormLabel>
-                          <FormDescription className="text-sm text-gray-500 mt-1">
+                          <FormDescription className="text-gray-600 mt-2">
                             Email address for the contact person or organization
                           </FormDescription>
                           <FormControl>
@@ -259,10 +272,10 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                               {...field}
                               type="email"
                               placeholder="Enter email address"
-                              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                             />
                           </FormControl>
-                          <FormMessage className="mt-1 text-red-500 text-sm" />
+                          <FormMessage className="mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
@@ -276,7 +289,7 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
                     type="button"
                     onClick={addPartner}
                     variant="outline"
-                    className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-2"
+                    className="border-cyan-300 text-cyan-600 hover:bg-cyan-50 hover:border-cyan-400 flex items-center gap-2 px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                   >
                     <Plus className="h-4 w-4" />
                     Add Another Partner
@@ -290,14 +303,14 @@ export default function PartnersInfoForm({ handleNext, handlePrevious }: Partner
               <Button
                 type="button"
                 onClick={handlePrevious}
-                className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg"
               >
                 <ChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
               <Button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+                className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold rounded-xl hover:from-cyan-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
               >
                 Next
                 <ChevronRight className="h-4 w-4" />

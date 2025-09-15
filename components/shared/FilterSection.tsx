@@ -1,20 +1,21 @@
 "use client";
 
-import { FaFilter } from 'react-icons/fa'
-import { TbFilterOff } from 'react-icons/tb'
-import React from 'react'
+import { Filter, X, ChevronDown } from 'lucide-react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { useRouter, useSearchParams } from "next/navigation"
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils'
+import { motion, AnimatePresence } from 'motion/react'
 
 interface FilterSectionProps {
   children: React.ReactNode
-//   onClearFilters?: () => void
 }
 
 export default function FilterSection({ children }: FilterSectionProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const [isExpanded, setIsExpanded] = useState(true)
     
     const activeFiltersCount = Array.from(searchParams.keys()).length
 
@@ -23,50 +24,136 @@ export default function FilterSection({ children }: FilterSectionProps) {
         for (const key of Array.from(params.keys())) {
             params.delete(key)
         }
-      router.replace(`?${params.toString()}`, { scroll: false })
+        router.replace(`?${params.toString()}`, { scroll: false })
     }
 
-  return (
-    <div className="relative bg-white rounded-xl shadow-sm p-3 mt-2 border border-gray-100">
-      <div 
-        className="absolute inset-0 opacity-[0.03] rounded-xl"
-        style={{ 
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-      <div className="relative">
-        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <FaFilter className="w-3.5 h-3.5 text-navy-blue/70" />
-            <h2 className="text-base font-medium text-navy-blue/90">
-              Filters
-              {activeFiltersCount > 0 && (
-                <span className="ml-2 px-2 py-0.5 text-xs bg-navy-blue/10 text-navy-blue rounded-full">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </h2>
-          </div>
-                  <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleClearFilters}
-                      disabled={activeFiltersCount === 0}
-                      className={cn(
-                          "text-gray-500 px-2 h-8 transition-all duration-200",
-                          activeFiltersCount > 0
-                              ? "hover:text-red-600 hover:bg-red-50"
-                              : "opacity-50 cursor-not-allowed"
-                      )}
-                  >
-                      <TbFilterOff className="w-4 h-4 mr-2" />
-                      Clear {activeFiltersCount > 0 ? `(${activeFiltersCount})` : 'filters'}
-                  </Button>
+    return (
+        <div className="bg-gradient-to-r from-slate-50 to-blue-50/30 rounded-2xl border border-slate-200/50 overflow-hidden">
+            {/* Header */}
+            <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200/50">
+                <div className="p-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg">
+                                <Filter className="w-4 h-4 text-white" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-slate-800">Data Filters</h3>
+                                <p className="text-sm text-slate-600">
+                                    Refine your data view
+                                    {activeFiltersCount > 0 && (
+                                        <Badge variant="secondary" className="ml-2 bg-purple-50 text-purple-700">
+                                            {activeFiltersCount} active
+                                        </Badge>
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            {activeFiltersCount > 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                >
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleClearFilters}
+                                        className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+                                    >
+                                        <X className="w-4 h-4 mr-2" />
+                                        Clear All
+                                    </Button>
+                                </motion.div>
+                            )}
+                            
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                className="text-slate-600 hover:bg-slate-100"
+                            >
+                                <motion.div
+                                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <ChevronDown className="w-4 h-4" />
+                                </motion.div>
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter Controls */}
+            <AnimatePresence>
+                {isExpanded && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="bg-white/50 backdrop-blur-sm"
+                    >
+                        <div className="p-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {React.Children.map(children, (child, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3, delay: index * 0.1 }}
+                                        className="space-y-2"
+                                    >
+                                        <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200/50 hover:shadow-md transition-all duration-200">
+                                            {child}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            {/* Active Filters Summary */}
+                            {activeFiltersCount > 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: 0.4 }}
+                                    className="mt-6 pt-4 border-t border-slate-200"
+                                >
+                                    <div className="flex items-center gap-2 text-sm text-slate-600">
+                                        <span className="font-medium">Active filters:</span>
+                                        <div className="flex flex-wrap gap-2">
+                                            {Array.from(searchParams.entries()).map(([key, value], index) => (
+                                                <motion.div
+                                                    key={`${key}-${value}`}
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                                                >
+                                                    <Badge 
+                                                        variant="secondary" 
+                                                        className="bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer"
+                                                        onClick={() => {
+                                                            const params = new URLSearchParams(searchParams)
+                                                            params.delete(key)
+                                                            router.replace(`?${params.toString()}`, { scroll: false })
+                                                        }}
+                                                    >
+                                                        {key}: {value}
+                                                        <X className="w-3 h-3 ml-1" />
+                                                    </Badge>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
-        <div className="flex flex-wrap gap-3 pt-4">
-          {children}
-        </div>
-      </div>
-    </div>
-  )
+    )
 }

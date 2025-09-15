@@ -91,6 +91,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
 
       toast.dismiss(loadingToast)
 
+
       // Show success overlay
       setShowSuccessOverlay(true)
 
@@ -440,8 +441,8 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
       {/* Success Overlay */}
       {showSuccessOverlay && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 shadow-2xl border border-green-200 max-w-md mx-4 transform animate-in zoom-in-95 duration-300">
-            <div className="text-center space-y-4">
+          <div className="bg-white rounded-2xl p-8 shadow-2xl border border-green-200 max-w-lg mx-4 transform animate-in zoom-in-95 duration-300">
+            <div className="text-center space-y-6">
               {/* Success Animation */}
               <div className="relative mx-auto w-20 h-20">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse"></div>
@@ -455,6 +456,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                 <h3 className="text-xl font-bold text-gray-900">User Created Successfully!</h3>
                 <p className="text-gray-600">The new user account has been created and is ready to use.</p>
               </div>
+
 
               {/* Progress Dots */}
               <div className="flex justify-center space-x-2">

@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import { NAVIGATION } from '@/constant';
 import { itemVariants, menuVariants } from '@/lib/animation_variant';
 import { FiMenu, FiX } from 'react-icons/fi'; // updated imports, now including FiMenu
+import { Route } from 'next';
 
 export default function MobileNavigation() {
     const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function MobileNavigation() {
                                     className="w-full"
                                 >
                                     <Link
-                                        href={item.href}
+                                        href={item.href as Route}
                                         className={`p-2 rounded-sm block w-full ${pathname === item.href ? 'bg-mint-green text-white' : 'text-navy-blue hover:text-light-blue'} transition-colors duration-200`}
                                         onClick={() => setIsOpen(false)}
                                     >
@@ -63,7 +64,7 @@ export default function MobileNavigation() {
                                 variants={itemVariants}
                                 transition={{ delay: NAVIGATION.length * 0.1 }}
                             >
-                                <Link className="bg-navy-blue text-white w-full block hover:opacity-85 cursor-pointer py-3 px-6 rounded-3xl text-center" href="/contact">
+                                <Link className="bg-navy-blue text-white w-full block hover:opacity-85 cursor-pointer py-3 px-6 rounded-3xl text-center" href="/contact-us">
                                     Contact us
                                 </Link>
                             </motion.li>

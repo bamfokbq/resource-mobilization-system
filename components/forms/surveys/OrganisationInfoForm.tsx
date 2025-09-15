@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Building2 } from 'lucide-react'
 import { REGIONS_GHANA, SECTORS_SELECT } from '@/constant'
 import { organisationInfoSchema } from '@/schemas/organisationInfoSchema'
 
@@ -126,10 +126,17 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
 
   return (
     <section>
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-8">
+      <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
         <div className="mb-10">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Section A: Organisation Information</h2>
-          <p className="text-gray-600 text-lg">Please provide accurate information about your organization</p>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Building2 className="h-6 w-6 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Section A: Organisation Information</h2>
+              <p className="text-gray-600 text-lg">Please provide accurate information about your organization</p>
+            </div>
+          </div>
         </div>
 
         <Form {...form}>
@@ -139,25 +146,34 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
               control={form.control}
               name="organisationName"
               render={({ field }) => (
-                <FormItem className="bg-gray-50 p-6 rounded-lg">
-                  <FormLabel className="text-lg font-semibold !text-current">
-                    A1. What is the full name of your organization? <span className="text-destructive">*</span>
+                <FormItem className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
+                  <FormLabel className="text-lg font-semibold text-gray-800">
+                    A1. What is the full name of your organization? <span className="text-red-500">*</span>
                   </FormLabel>
-                  <FormDescription className="text-gray-600">
+                  <FormDescription className="text-gray-600 mt-2">
                     Please provide the official name that was used for registration with the Government.
                   </FormDescription>
                   <FormControl>
-                    <Input className="mt-2" placeholder="Enter your organization's official registered name" {...field} />
+                    <Input 
+                      className="mt-3 bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                      placeholder="Enter your organization's official registered name" 
+                      {...field} 
+                    />
                   </FormControl>
-                  <FormMessage className="min-h-[20px] mt-2" />
+                  <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                 </FormItem>
               )}
             />
 
             {/* Location Information */}
-            <Card className="shadow-none border-none bg-gray-50">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold text-gray-900">Location Details</CardTitle>
+            <Card className="shadow-lg border border-gray-200 bg-gradient-to-br from-gray-50 to-blue-50">
+              <CardHeader className="bg-gradient-to-r from-gray-100 to-blue-100 rounded-t-lg">
+                <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <div className="p-1 bg-blue-100 rounded">
+                    <Building2 className="h-5 w-5 text-blue-600" />
+                  </div>
+                  Location Details
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-8 p-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -167,14 +183,14 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     name="region"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='!text-current'>
-                          A2. Head Office Region <span className="text-destructive">*</span>
+                        <FormLabel className="text-gray-700 font-semibold">
+                          A2. Head Office Region <span className="text-red-500">*</span>
                         </FormLabel>
                         <Select
                           key={`region-${field.value}`}
                           onValueChange={field.onChange} value={field.value || ""}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                               <SelectValue placeholder="Select region" />
                             </SelectTrigger>
                           </FormControl>
@@ -186,7 +202,7 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -197,8 +213,8 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     name="hasRegionalOffice"
                     render={({ field }) => (
                       <FormItem className="space-y-3">
-                        <FormLabel className='!text-current'>
-                          A2.a. Regional Office <span className="text-destructive">*</span>
+                        <FormLabel className="text-gray-700 font-semibold">
+                          A2.a. Regional Office <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
                           <RadioGroup
@@ -208,19 +224,19 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                           >
                             <FormItem className="flex items-center space-x-2 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="true" />
+                                <RadioGroupItem value="true" className="border-blue-500 text-blue-600" />
                               </FormControl>
-                              <FormLabel className="font-normal !text-current">Yes</FormLabel>
+                              <FormLabel className="font-normal text-gray-700 cursor-pointer">Yes</FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center space-x-2 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="false" />
+                                <RadioGroupItem value="false" className="border-blue-500 text-blue-600" />
                               </FormControl>
-                              <FormLabel className="font-normal">No</FormLabel>
+                              <FormLabel className="font-normal text-gray-700 cursor-pointer">No</FormLabel>
                             </FormItem>
                           </RadioGroup>
                         </FormControl>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -233,13 +249,17 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     name="regionalOfficeLocation"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='!text-current'>
-                          A2.b. Regional Office Location <span className="text-destructive">*</span>
+                        <FormLabel className="text-gray-700 font-semibold">
+                          A2.b. Regional Office Location <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter the location of your regional office" {...field} />
+                          <Input 
+                            className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                            placeholder="Enter the location of your regional office" 
+                            {...field} 
+                          />
                         </FormControl>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -248,26 +268,35 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
             </Card>
 
             {/* GPS Coordinates */}
-            <Card className="shadow-none border-none bg-gray-50">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold text-gray-900">Location Coordinates</CardTitle>
+            <Card className="shadow-lg border border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
+              <CardHeader className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-t-lg">
+                <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <div className="p-1 bg-green-100 rounded">
+                    <Building2 className="h-5 w-5 text-green-600" />
+                  </div>
+                  Location Coordinates
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-8 p-6">
                 <div>
-                  <FormLabel className='!text-current'>A3. GPS Coordinates</FormLabel>
-                  <FormDescription>
+                  <FormLabel className="text-gray-700 font-semibold">A3. GPS Coordinates</FormLabel>
+                  <FormDescription className="text-gray-600 mt-1">
                     If your HQ is different from your regional office, kindly provide the coordinates of the HQ.
                   </FormDescription>
-                  <div className="grid md:grid-cols-2 gap-4 mt-2">
+                  <div className="grid md:grid-cols-2 gap-4 mt-3">
                     <FormField
                       control={form.control}
                       name="gpsCoordinates.latitude"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input placeholder="Latitude" {...field} />
+                            <Input 
+                              className="bg-white border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+                              placeholder="Latitude" 
+                              {...field} 
+                            />
                           </FormControl>
-                          <FormMessage className="min-h-[20px] mt-2" />
+                          <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
@@ -277,9 +306,13 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input placeholder="Longitude" {...field} />
+                            <Input 
+                              className="bg-white border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+                              placeholder="Longitude" 
+                              {...field} 
+                            />
                           </FormControl>
-                          <FormMessage className="min-h-[20px] mt-2" />
+                          <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                         </FormItem>
                       )}
                     />
@@ -291,14 +324,18 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                   name="ghanaPostGPS"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='!text-current'>A3a. GhanaPost GPS Address</FormLabel>
-                      <FormDescription>
+                      <FormLabel className="text-gray-700 font-semibold">A3a. GhanaPost GPS Address</FormLabel>
+                      <FormDescription className="text-gray-600 mt-1">
                         If your HQ is different from your regional office, kindly provide the address of the HQ.
                       </FormDescription>
                       <FormControl>
-                        <Input placeholder="Enter your GhanaPost GPS address" {...field} />
+                        <Input 
+                          className="bg-white border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+                          placeholder="Enter your GhanaPost GPS address" 
+                          {...field} 
+                        />
                       </FormControl>
-                      <FormMessage className="min-h-[20px] mt-2" />
+                      <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
@@ -306,9 +343,14 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
             </Card>
 
             {/* Contact Information */}
-            <Card className="shadow-none border-none bg-gray-50">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold text-gray-900">Contact Information</CardTitle>
+            <Card className="shadow-lg border border-gray-200 bg-gradient-to-br from-purple-50 to-pink-50">
+              <CardHeader className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-t-lg">
+                <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <div className="p-1 bg-purple-100 rounded">
+                    <Building2 className="h-5 w-5 text-purple-600" />
+                  </div>
+                  Contact Information
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-8 p-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -318,14 +360,19 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     name="hqPhoneNumber"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='!text-current'>
-                          A5a. HQ Phone Number <span className="text-destructive">*</span>
+                        <FormLabel className="text-gray-700 font-semibold">
+                          A5a. HQ Phone Number <span className="text-red-500">*</span>
                         </FormLabel>
-                        <FormDescription>Enter without country code</FormDescription>
+                        <FormDescription className="text-gray-600 mt-1">Enter without country code</FormDescription>
                         <FormControl>
-                          <Input type="tel" placeholder="Enter phone number" {...field} />
+                          <Input 
+                            type="tel" 
+                            className="bg-white border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+                            placeholder="Enter phone number" 
+                            {...field} 
+                          />
                         </FormControl>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -334,13 +381,18 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     control={form.control}
                     name="regionalPhoneNumber"
                     render={({ field }) => (
-                      <FormItem className='!text-current'>
-                        <FormLabel>A5b. Regional Office Phone</FormLabel>
-                        <FormDescription>If different from HQ</FormDescription>
+                      <FormItem>
+                        <FormLabel className="text-gray-700 font-semibold">A5b. Regional Office Phone</FormLabel>
+                        <FormDescription className="text-gray-600 mt-1">If different from HQ</FormDescription>
                         <FormControl>
-                          <Input type="tel" placeholder="Enter regional office number" {...field} />
+                          <Input 
+                            type="tel" 
+                            className="bg-white border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+                            placeholder="Enter regional office number" 
+                            {...field} 
+                          />
                         </FormControl>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -353,14 +405,19 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='!text-current'>
-                          A6. Email Address <span className="text-destructive">*</span>
+                        <FormLabel className="text-gray-700 font-semibold">
+                          A6. Email Address <span className="text-red-500">*</span>
                         </FormLabel>
-                        <FormDescription>Active email address</FormDescription>
+                        <FormDescription className="text-gray-600 mt-1">Active email address</FormDescription>
                         <FormControl>
-                          <Input type="email" placeholder="organization@example.com" {...field} />
+                          <Input 
+                            type="email" 
+                            className="bg-white border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+                            placeholder="organization@example.com" 
+                            {...field} 
+                          />
                         </FormControl>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -370,12 +427,17 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                     name="website"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='!text-current'>A7. Website</FormLabel>
-                        <FormDescription>Optional</FormDescription>
+                        <FormLabel className="text-gray-700 font-semibold">A7. Website</FormLabel>
+                        <FormDescription className="text-gray-600 mt-1">Optional</FormDescription>
                         <FormControl>
-                          <Input type="url" placeholder="https://www.example.com" {...field} />
+                          <Input 
+                            type="url" 
+                            className="bg-white border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" 
+                            placeholder="https://www.example.com" 
+                            {...field} 
+                          />
                         </FormControl>
-                        <FormMessage className="min-h-[20px] mt-2" />
+                        <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                       </FormItem>
                     )}
                   />
@@ -388,15 +450,15 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
               control={form.control}
               name="sector"
               render={({ field }) => (
-                <FormItem className="bg-gray-50 p-6 rounded-lg">
-                  <FormLabel className="text-lg font-semibold !text-current">
-                    A4. Organization Sector <span className="text-destructive">*</span>
+                <FormItem className="bg-gradient-to-r from-orange-50 to-amber-50 p-6 rounded-xl border border-orange-100">
+                  <FormLabel className="text-lg font-semibold text-gray-800">
+                    A4. Organization Sector <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     key={`sector-${field.value}`}
                     onValueChange={field.onChange} value={field.value || ""}>
                     <FormControl>
-                      <SelectTrigger className="mt-2">
+                      <SelectTrigger className="mt-3 bg-white border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
                         <SelectValue placeholder="Select your organization's sector" />
                       </SelectTrigger>
                     </FormControl>
@@ -408,15 +470,15 @@ export default function OrganisationInfoForm({ handleNext }: OrganisationInfoFor
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage className="min-h-[20px] mt-2" />
+                  <FormMessage className="min-h-[20px] mt-2 text-red-500 text-sm" />
                 </FormItem>
               )}
             />
 
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end pt-6">
               <Button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center gap-2"
+                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center gap-2"
               >
                 Next
                 <ChevronRight className="h-4 w-4" />

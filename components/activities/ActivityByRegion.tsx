@@ -1,12 +1,14 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { MapIcon, TableIcon, BarChart3Icon, FilterIcon, TrendingUpIcon, UsersIcon, TargetIcon } from 'lucide-react'
+import { MapIcon, TableIcon, BarChart3Icon, FilterIcon, TrendingUpIcon, UsersIcon, TargetIcon, Download, Image } from 'lucide-react'
+import ExportService from '@/lib/exportService'
 
 // Regional activity data
 const regionalData = [
@@ -198,6 +200,11 @@ export default function ActivityByRegion() {
   const [selectedYear, setSelectedYear] = useState<string>("all")
   const [selectedPartner, setSelectedPartner] = useState<string>("all")
   const [selectedProgram, setSelectedProgram] = useState<string>("all")
+  
+  // Refs for PNG export
+  const mapRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLDivElement>(null)
+  const summaryRef = useRef<HTMLDivElement>(null)
 
   const ActivitiesByRegionMapComponent = useMemo(() => {
     return dynamic(
@@ -240,6 +247,46 @@ export default function ActivityByRegion() {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
     if (num >= 1000) return `${(num / 1000).toFixed(0)}K`
     return num.toString()
+  }
+
+  // PNG Export functions
+  const exportMapAsPNG = async () => {
+    if (mapRef.current) {
+      try {
+        await ExportService.exportChartAsImage(mapRef.current, {
+          filename: 'regional_activities_map',
+          title: 'Activities By Region - Map View'
+        })
+      } catch (error) {
+        console.error('Map PNG export error:', error)
+      }
+    }
+  }
+
+  const exportTableAsPNG = async () => {
+    if (tableRef.current) {
+      try {
+        await ExportService.exportTableAsPNG(tableRef.current, {
+          filename: 'regional_activities_table',
+          title: 'Activities By Region - Table View'
+        })
+      } catch (error) {
+        console.error('Table PNG export error:', error)
+      }
+    }
+  }
+
+  const exportSummaryAsPNG = async () => {
+    if (summaryRef.current) {
+      try {
+        await ExportService.exportChartAsImage(summaryRef.current, {
+          filename: 'regional_activities_summary',
+          title: 'Activities By Region - Summary Statistics'
+        })
+      } catch (error) {
+        console.error('Summary PNG export error:', error)
+      }
+    }
   }
 
   return (
@@ -358,8 +405,27 @@ export default function ActivityByRegion() {
           {/* Enhanced Interactive Map Tab */}
           <TabsContent value="map" className="mt-6">
             <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-blue-50 overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <MapIcon className="w-5 h-5" />
+                    </div>
+                    <CardTitle className="text-xl">Interactive Regional Map</CardTitle>
+                  </div>
+                  <Button
+                    onClick={exportMapAsPNG}
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Export PNG
+                  </Button>
+                </div>
+              </CardHeader>
               <CardContent className="p-0">
-                <div className='h-[100vh] bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden'>
+                <div ref={mapRef} className='h-[100vh] bg-gradient-to-br from-gray-50 to-blue-50 relative overflow-hidden'>
                   <ActivitiesByRegionMapComponent />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
                     <div className="text-xs font-medium text-gray-600 mb-1">Total Activities</div>
@@ -376,15 +442,26 @@ export default function ActivityByRegion() {
           <TabsContent value="table" className="mt-6">
             <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50">
               <CardHeader className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <TableIcon className="w-5 h-5" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <TableIcon className="w-5 h-5" />
+                    </div>
+                    <CardTitle className="text-xl">Regional Activity Summary</CardTitle>
                   </div>
-                  <CardTitle className="text-xl">Regional Activity Summary</CardTitle>
+                  <Button
+                    onClick={exportTableAsPNG}
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                  >
+                    <Image className="h-4 w-4 mr-2" />
+                    Export PNG
+                  </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="overflow-x-auto">
+                <div ref={tableRef} className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b-2 border-gray-200">
@@ -460,7 +537,28 @@ export default function ActivityByRegion() {
 
           {/* Enhanced Summary Statistics Tab */}
           <TabsContent value="summary" className="mt-6">
-            <div className="space-y-6">
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+              <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-700 text-white">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <BarChart3Icon className="w-5 h-5" />
+                    </div>
+                    <CardTitle className="text-xl">Summary Analytics</CardTitle>
+                  </div>
+                  <Button
+                    onClick={exportSummaryAsPNG}
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Export PNG
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div ref={summaryRef} className="space-y-6">
               {/* Main Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white transform hover:scale-105 transition-transform duration-200">
@@ -641,7 +739,9 @@ export default function ActivityByRegion() {
                   </CardContent>
                 </Card>
               </div>
-            </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

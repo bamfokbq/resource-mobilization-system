@@ -340,7 +340,11 @@ export default function Settings() {
                     outerRadius={120}
                     fill="#8884d8"
                     dataKey="value"
-                    label={({ name, percentage }) => `${name}: ${percentage}%`}
+                    label={({ name, value }) => {
+                      const total = pieChartData.reduce((sum, item) => sum + item.value, 0);
+                      const percentage = total > 0 ? ((Number(value) / total) * 100).toFixed(1) : '0';
+                      return `${name}: ${percentage}%`;
+                    }}
                     labelLine={false}
                   >
                     {pieChartData.map((entry, index) => (

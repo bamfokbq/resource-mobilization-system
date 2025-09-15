@@ -562,7 +562,7 @@ export default function SurveySuccessPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 py-8 px-4">
-      <div className="space-y-8 max-w-4xl mx-auto">
+      <div className="space-y-8 max-w-7xl mx-auto">
         {/* Enhanced Success Header with Glass Effect */}
         <div className="text-center space-y-4 relative">
           <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-3xl shadow-lg -z-10"></div>

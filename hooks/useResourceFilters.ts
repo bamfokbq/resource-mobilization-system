@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ResourceFilters } from '@/types/resources'
+import { Route } from 'next'
 
 // Custom debounce hook
 function useDebounceCallback<T extends (...args: any[]) => void>(
@@ -113,7 +114,7 @@ export function useResourceFilters() {
   const debouncedUpdateURL = useDebounceCallback((newFilters: ResourceFilters) => {
     const queryString = buildURLParams(newFilters)
     const newUrl = queryString ? `?${queryString}` : window.location.pathname
-    router.push(newUrl, { scroll: false })
+    router.push(newUrl as Route, { scroll: false })
   }, 300)
   
   // Update filters
@@ -156,7 +157,7 @@ export function useResourceFilters() {
   // Clear all filters
   const clearFilters = useCallback(() => {
     setFilters({})
-    router.push(window.location.pathname, { scroll: false })
+    router.push(window.location.pathname as Route, { scroll: false })
   }, [router])
   
   // Clear specific filter

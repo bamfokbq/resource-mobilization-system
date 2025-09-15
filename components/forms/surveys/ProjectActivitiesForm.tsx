@@ -83,7 +83,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="bg-gradient-to-br from-white to-blue-50 rounded-xl shadow-lg p-8 border border-blue-100">
           <div className="mb-8">
@@ -151,6 +151,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                         {getDistrictsByRegion(regionsSelectedFromProjectInfoForm[0]).map((district, index) => (
                                           <div className="flex items-center space-x-3 p-2 hover:bg-blue-50/50 rounded-md transition-colors" key={index}>
                                             <Checkbox
+                                              className="border-navy-blue data-[state=checked]:bg-navy-blue"
                                               id={`district-${index}`}
                                               checked={(field.value as string[])?.includes(district)}
                                               onCheckedChange={(checked) => {
@@ -312,7 +313,7 @@ export default function ProjectActivitiesForm({ handleNext, handlePrevious }: Pr
                                         {...field}
                                       />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="mt-2 text-red-500 text-sm" />
                                   </FormItem>
                                 )}
                               />

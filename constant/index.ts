@@ -99,10 +99,10 @@ const RESOURCES_ACTION = [
 ]
 
 const ADMIN_STATS = [
-    { id: 1, name: 'Survey', amount: 3500, icon: MdOutlinePoll },
-    { id: 2, name: "Users", amount: 235, icon: FiUsers },
-    { id: 3, name: 'Current year', amount: 2025, icon: BsCalendar3 },
-    { id: 4, name: 'Projects', amount: 219, icon: AiOutlineProject }
+    { id: 1, name: 'Total Activities', amount: 640, icon: MdOutlinePoll },
+    { id: 2, name: "Active Partners", amount: 156, icon: FiUsers },
+    { id: 3, name: 'Regions Covered', amount: 16, icon: BsCalendar3 },
+    { id: 4, name: 'NCD Focus Areas', amount: 15, icon: AiOutlineProject }
 ]
 
 const SURVEY_LISTS = Array.from({ length: 50 }, (_, index) => ({

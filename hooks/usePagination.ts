@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Route } from 'next'
 
 export interface PaginationState {
   page: number
@@ -51,7 +52,7 @@ export function usePagination(defaultPageSize: number = 25) {
     
     const queryString = params.toString()
     const newUrl = queryString ? `?${queryString}` : window.location.pathname
-    router.push(newUrl, { scroll: false })
+    router.push(newUrl as Route, { scroll: false })
   }, [router, searchParams])
   
   // Go to specific page

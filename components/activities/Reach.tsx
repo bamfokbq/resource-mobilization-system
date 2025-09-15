@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -77,6 +77,9 @@ const INTERVENTION_COLORS = {
 export default function Reach() {
   const [isMounted, setIsMounted] = useState(false)
   const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
+  
+  // Additional ref for table PNG export
+  const tableRef = useRef<HTMLDivElement>(null)
   
   const { globalFilters } = useSurveyDataFilters()
 
@@ -281,6 +284,20 @@ export default function Reach() {
     }
   }
 
+  const handleExportTablePng = async () => {
+    if (tableRef.current) {
+      try {
+        await ExportService.exportTableAsPNG(tableRef.current, {
+          filename: 'reach_activities_table',
+          title: 'Reach Activities Table'
+        })
+      } catch (error) {
+        console.error('Table PNG export error:', error)
+        toast.error('Table PNG export failed. Please try again.')
+      }
+    }
+  }
+
   // No longer need local filter options - using global filters from context
 
   if (!isMounted) {
@@ -325,9 +342,11 @@ export default function Reach() {
           showAddButton={false}
           showExportButtons={true}
           showVisualizationDownload={true}
+          showTablePngExport={true}
           onExportExcel={handleExportExcel}
           onExportPDF={handleExportPDF}
           onDownloadVisualization={handleDownloadVisualization}
+          onExportTablePng={handleExportTablePng}
         />
 
 
@@ -477,7 +496,7 @@ export default function Reach() {
                       outerRadius={100}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ name, value }) => `${name}: ${formatNumber(value || 0)}`}
+                      label={({ name, value }) => `${name}: ${formatNumber(Number(value) || 0)}`}
                       labelLine={false}
                     >
                       {diseaseReachData.map((entry, index) => (
@@ -561,7 +580,7 @@ export default function Reach() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="max-h-[600px] overflow-y-auto">
+            <div ref={tableRef} className="max-h-[600px] overflow-y-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">

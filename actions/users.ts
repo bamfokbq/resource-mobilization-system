@@ -46,6 +46,10 @@ export async function createNewUser(formData: FormData) {
       return { success: false, error: "Invalid role" };
     }
 
+    // Use default password
+    const defaultPassword = 'ncd@2025';
+    const hashedPassword = await hashPassword(defaultPassword);
+
     const userData = {
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
@@ -54,7 +58,7 @@ export async function createNewUser(formData: FormData) {
       role: role as "User" | "Admin",
       region: formData.get('region') as string | null,
       organisation: formData.get('organisation') as string | null,
-      password: await hashPassword('ncd@2025'), // Using default password
+      password: hashedPassword,
       createdAt: new Date(),
       isActive: true,
       bio: '',
@@ -78,7 +82,9 @@ export async function createNewUser(formData: FormData) {
     const result = await db.collection("users").insertOne(userData);
     if (!result.insertedId) {
       return { success: false, error: "Failed to create user" };
-    } return {
+    } 
+    
+    return {
       success: true,
       message: "User created successfully"
     };
@@ -137,11 +143,13 @@ export async function updateUserEditableProfile(userId: string, telephone: strin
 export async function getAllUsers() {
   try {
     const db = await getDb()
-    const users = await db.collection("users").find({}, {
+    const users = await db.collection("users").find({
+      email: { $ne: "systemowner@gmail.com" }
+    }, {
       projection: {
-        password: 0, 
+        password: 0,
       }
-    }).toArray()  
+    }).toArray();
     return users.map(user => ({
       id: user._id.toString(),
       name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),

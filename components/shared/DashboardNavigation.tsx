@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import type { Session } from 'next-auth'
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md'
+import { Route } from 'next'
 
 interface NavigationItem {
     path: string
@@ -129,7 +130,7 @@ export default function DashboardNavigation({
                                 <li key={item.path} role="none">
                                     <Link
                                         className={linkClass(item.path, isActive)}
-                                        href={item.path}
+                                        href={item.path as Route}
                                         title={item.label}
                                         role="menuitem"
                                         aria-current={isActive ? 'page' : undefined}
@@ -192,7 +193,7 @@ export default function DashboardNavigation({
                         <Link
                             key={item.path}
                             className={linkClass(item.path, isActive)}
-                            href={item.path}
+                            href={item.path as Route}
                             title={!isOpen ? item.label : ''}
                         >
                             <Icon className="text-2xl" />

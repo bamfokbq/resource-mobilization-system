@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -272,6 +272,9 @@ export default function CareContinuum() {
     const [chartRef, setChartRef] = useState<HTMLDivElement | null>(null)
     const [userRole, setUserRole] = useState<string | null>(null)
     
+    // Additional ref for table PNG export
+    const tableRef = useRef<HTMLDivElement>(null)
+    
     const { globalFilters } = useSurveyDataFilters()
 
     useEffect(() => {
@@ -496,6 +499,20 @@ export default function CareContinuum() {
         }
     }
 
+    const handleExportTablePng = async () => {
+        if (tableRef.current) {
+            try {
+                await ExportService.exportTableAsPNG(tableRef.current, {
+                    filename: 'care_continuum_table',
+                    title: 'Care Continuum Activities Table'
+                })
+            } catch (error) {
+                console.error('Table PNG export error:', error)
+                toast.error('Table PNG export failed. Please try again.')
+            }
+        }
+    }
+
     // No longer need local filter options - using global filters from context
 
     if (!isMounted) {
@@ -527,10 +544,12 @@ export default function CareContinuum() {
                   showAddButton={userRole === 'Admin'}
                   showExportButtons={true}
                   showVisualizationDownload={true}
+                  showTablePngExport={true}
                   onAddClick={handleAddActivity}
                   onExportExcel={handleExportExcel}
                   onExportPDF={handleExportPDF}
                   onDownloadVisualization={handleDownloadVisualization}
+                  onExportTablePng={handleExportTablePng}
               />
 
               {/* Stacked Bar Chart */}
@@ -617,7 +636,7 @@ export default function CareContinuum() {
                           </div>
                       </CardHeader>
                       <CardContent className="p-0">
-                          <div className="max-h-[600px] overflow-y-auto">
+                          <div ref={tableRef} className="max-h-[600px] overflow-y-auto">
                               <Table>
                                   <TableHeader>
                                       <TableRow className="bg-gray-50">

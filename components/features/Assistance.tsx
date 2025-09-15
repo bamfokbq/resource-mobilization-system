@@ -44,7 +44,7 @@ export default function Assistance() {
                                 transition={{ type: "spring" as const, stiffness: 400, damping: 10 }}
                             >
                                 <ContactWrapper
-                                    href={item.href || '#'}
+                                    href={item.href || '#' as any}
                                     className={`flex items-center gap-4 cursor-pointer p-3 rounded-lg ${item.href ? 'hover:bg-blue-50 transition-colors' : ''}`}
                                     aria-label={`Contact ${item.text}`}
                                 >

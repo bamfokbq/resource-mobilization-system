@@ -115,7 +115,7 @@ export default function FinalSubmissionForm({ handleNext, handlePrevious }: Fina
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-      <div className="space-y-8 max-w-6xl mx-auto">
+      <div className="space-y-8">
         {/* Enhanced Header with Glass Effect */}
         <div className="text-center space-y-4 relative">
           <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-3xl shadow-lg -z-10"></div>
