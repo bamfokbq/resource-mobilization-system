@@ -664,7 +664,7 @@ async function _getStakeholderDetailsInternal(): Promise<{
           },
           activities: { $slice: ['$projects', 3] },
           description: { $concat: ['Leading organization in ', '$sector', ' sector'] },
-          fundingContribution: { $concat: ['$$', { $toString: { $multiply: [{ $rand: {} }, 2000000] } }] },
+          fundingContribution: { $concat: [{ $literal: '$' }, { $toString: { $multiply: [{ $rand: {} }, 2000000] } }] },
           projectsInvolved: { $size: '$projects' }
         }
       },
