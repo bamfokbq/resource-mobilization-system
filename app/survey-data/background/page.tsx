@@ -40,7 +40,6 @@ export default function SurveyBackgroundPage() {
       <StakeholdersPerRegion />
       <Sectors />
       <NumberOfProjects 
-        data={projectTimelineData} 
         title="Number of Projects by Year"
         description="Tracking the evolution of NCD-related projects and initiatives over time"
       />

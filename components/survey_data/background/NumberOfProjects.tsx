@@ -1,34 +1,101 @@
 "use client";
-import { useState, useCallback, FC } from 'react';
+import React, { useState, useCallback, FC, useMemo, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceLine, Legend } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from 'motion/react';
 import { BarChart3Icon, TrendingUpIcon, CalendarIcon, SortAscIcon } from "lucide-react";
+import { useProjectTimelineData } from '@/hooks/useSurveyData';
 
 interface NumberOfProjectsChartProps {
-  data: { Year: number; "Number of Projects": number }[];
   title?: string;
   description?: string;
   options?: { barColor?: string; grid?: boolean };
 }
 
-const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ data, title, description, options }) => {
-  const [chartData, setChartData] = useState(data);
+const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ title, description, options }) => {
+  const { data: projectData, isLoading, error } = useProjectTimelineData()
+  const [chartData, setChartData] = useState<{ Year: number; "Number of Projects": number }[]>([]);
 
-  const totalValue = data.reduce((sum: number, item: { Year: number; "Number of Projects": number }) => sum + item["Number of Projects"], 0);
-  const average = totalValue / data.length;
-  const maxYear = data.reduce((max, item) => item["Number of Projects"] > max["Number of Projects"] ? item : max);
-  const minYear = data.reduce((min, item) => item["Number of Projects"] < min["Number of Projects"] ? item : min);
+  const computedData = useMemo(() => {
+    if (!projectData || projectData.length === 0) {
+      return {
+        data: [],
+        totalValue: 0,
+        average: 0,
+        maxYear: { Year: 0, "Number of Projects": 0 },
+        minYear: { Year: 0, "Number of Projects": 0 }
+      }
+    }
+
+    const totalValue = projectData.reduce((sum, item) => sum + (item["Number of Projects"] || 0), 0)
+    const average = totalValue / projectData.length
+    const maxYear = projectData.reduce((max, item) => (item["Number of Projects"] || 0) > (max["Number of Projects"] || 0) ? item : max)
+    const minYear = projectData.reduce((min, item) => (item["Number of Projects"] || 0) < (min["Number of Projects"] || 0) ? item : min)
+
+    return {
+      data: projectData,
+      totalValue,
+      average,
+      maxYear,
+      minYear
+    }
+  }, [projectData])
+
+  // Update chartData when computedData changes
+  useEffect(() => {
+    setChartData(computedData.data)
+  }, [computedData.data])
 
   const handleSort = useCallback(() => {
     setChartData([...chartData].sort((a, b) => b["Number of Projects"] - a["Number of Projects"]));
   }, [chartData]);
 
   const handleReset = useCallback(() => {
-    setChartData([...data].sort((a, b) => a.Year - b.Year));
-  }, [data]);
+    setChartData([...computedData.data].sort((a, b) => a.Year - b.Year));
+  }, [computedData.data]);
+
+  if (isLoading) {
+    return (
+      <motion.section 
+        id="projects" 
+        className="mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
+          <div className="h-8 bg-white/20 rounded animate-pulse mb-4"></div>
+          <div className="h-4 bg-white/20 rounded animate-pulse mb-6"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="bg-white/10 rounded-lg p-4 h-20 animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+        <Card className="border-0 shadow-xl bg-white overflow-hidden">
+          <div className="h-96 bg-gray-200 animate-pulse"></div>
+        </Card>
+      </motion.section>
+    )
+  }
+
+  if (error || !projectData) {
+    return (
+      <motion.section 
+        id="projects" 
+        className="mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <div className="text-center py-8">
+          <p className="text-red-500">Error loading project data: {error}</p>
+        </div>
+      </motion.section>
+    )
+  }
 
   return (
     <motion.section 
@@ -59,30 +126,30 @@ const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ data, title, descrip
               <TrendingUpIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Total Projects</span>
             </div>
-            <div className="text-2xl font-bold">{totalValue}</div>
+            <div className="text-2xl font-bold">{computedData.totalValue}</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <BarChart3Icon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Average/Year</span>
             </div>
-            <div className="text-2xl font-bold">{Math.round(average)}</div>
+            <div className="text-2xl font-bold">{Math.round(computedData.average)}</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <CalendarIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Peak Year</span>
             </div>
-            <div className="text-lg font-bold">{maxYear.Year}</div>
-            <div className="text-blue-200 text-sm">{maxYear["Number of Projects"]} projects</div>
+            <div className="text-lg font-bold">{computedData.maxYear.Year}</div>
+            <div className="text-blue-200 text-sm">{computedData.maxYear["Number of Projects"]} projects</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <CalendarIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Lowest Year</span>
             </div>
-            <div className="text-lg font-bold">{minYear.Year}</div>
-            <div className="text-blue-200 text-sm">{minYear["Number of Projects"]} projects</div>
+            <div className="text-lg font-bold">{computedData.minYear.Year}</div>
+            <div className="text-blue-200 text-sm">{computedData.minYear["Number of Projects"]} projects</div>
           </div>
         </div>
       </div>
@@ -160,12 +227,12 @@ const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ data, title, descrip
                     />
                     <Legend verticalAlign="top" align="right" wrapperStyle={{ paddingBottom: '20px' }} />
                     <ReferenceLine 
-                      x={average} 
+                      x={computedData.average} 
                       stroke="#EA580C" 
                       strokeDasharray="3 3" 
                       label={{ 
                         position: 'top', 
-                        value: `Avg: ${Math.round(average)}`, 
+                        value: `Avg: ${Math.round(computedData.average)}`, 
                         fill: '#EA580C', 
                         fontSize: 12 
                       }} 
@@ -191,7 +258,7 @@ const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ data, title, descrip
               <div className="bg-gradient-to-br from-gray-50 to-indigo-50 rounded-xl p-4 border">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Year Breakdown</h3>
                 <div className="space-y-3">
-                  {data.map((year) => (
+                  {computedData.data.map((year) => (
                     <div key={year.Year} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <CalendarIcon className="w-4 h-4 text-indigo-500" />
@@ -200,7 +267,7 @@ const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ data, title, descrip
                         </span>
                       </div>
                       <Badge 
-                        variant={year["Number of Projects"] === maxYear["Number of Projects"] ? "default" : "secondary"} 
+                        variant={year["Number of Projects"] === computedData.maxYear["Number of Projects"] ? "default" : "secondary"} 
                         className="text-xs"
                       >
                         {year["Number of Projects"]}
@@ -213,9 +280,9 @@ const NumberOfProjects: FC<NumberOfProjectsChartProps> = ({ data, title, descrip
               <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 border">
                 <h4 className="font-semibold text-gray-800 mb-2">Timeline Insights</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Peak activity in {maxYear.Year} with {maxYear["Number of Projects"]} projects</li>
-                  <li>• {data.filter(y => y["Number of Projects"] >= average).length} years above average</li>
-                  <li>• Total span: {Math.max(...data.map(d => d.Year)) - Math.min(...data.map(d => d.Year)) + 1} years of data</li>
+                  <li>• Peak activity in {computedData.maxYear.Year} with {computedData.maxYear["Number of Projects"]} projects</li>
+                  <li>• {computedData.data.filter(y => y["Number of Projects"] >= computedData.average).length} years above average</li>
+                  <li>• Total span: {computedData.data.length > 0 ? Math.max(...computedData.data.map(d => d.Year)) - Math.min(...computedData.data.map(d => d.Year)) + 1 : 0} years of data</li>
                 </ul>
               </div>
             </motion.div>

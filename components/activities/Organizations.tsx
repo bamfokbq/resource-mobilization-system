@@ -8,10 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { BuildingIcon, FilterIcon, EyeIcon, UsersIcon, MapPinIcon, HeartIcon } from "lucide-react"
+import { useStakeholderDetails } from '@/hooks/useSurveyData'
 
 // Mock data for organizations (Total: 75 activities)
 // Part of overall 640 activities target across all components
-const organizationsData = [
+const mockOrganizationsData = [
   {
     id: 1,
     name: "Ghana Health Service",
@@ -154,27 +155,55 @@ const organizationsData = [
   }
 ]
 
-// Organization types for filtering
-const organizationTypes = ["Government", "NGO", "CSO", "Academic"]
+// Organization types will be dynamically generated from data
 
 export default function Organizations() {
+  const { data: stakeholderData, isLoading, error } = useStakeholderDetails()
   const [selectedType, setSelectedType] = useState<string>("all")
   const [selectedOrganization, setSelectedOrganization] = useState<any>(null)
+
+  // Transform stakeholder data to organization format
+  const organizationsData = useMemo(() => {
+    if (!stakeholderData || stakeholderData.length === 0) {
+      return mockOrganizationsData
+    }
+
+    return stakeholderData.map((stakeholder, index) => ({
+      id: stakeholder.id || index + 1,
+      name: stakeholder.name || 'Unknown Organization',
+      type: stakeholder.type || 'Other',
+      activities: stakeholder.projectsInvolved || 0,
+      regionsCovered: [stakeholder.region || 'Unknown Region'],
+      diseaseFocus: stakeholder.activities || ['NCD Activities'],
+      fundingSource: stakeholder.fundingContribution || 'Unknown',
+      portfolio: (stakeholder.activities || []).map((activity: string, actIndex: number) => ({
+        activity: activity,
+        region: stakeholder.region || 'Unknown Region',
+        disease: 'NCD Activities'
+      }))
+    }))
+  }, [stakeholderData])
 
   // Filter organizations based on type
   const filteredOrganizations = useMemo(() => {
     if (selectedType === "all") return organizationsData
     return organizationsData.filter(org => org.type === selectedType)
-  }, [selectedType])
+  }, [selectedType, organizationsData])
 
   // Calculate summary statistics
   const summaryStats = useMemo(() => {
     return {
       totalOrganizations: filteredOrganizations.length,
       totalActivities: filteredOrganizations.reduce((sum, org) => sum + org.activities, 0),
-      avgActivitiesPerOrg: Math.round(filteredOrganizations.reduce((sum, org) => sum + org.activities, 0) / filteredOrganizations.length)
+      avgActivitiesPerOrg: filteredOrganizations.length > 0 ? Math.round(filteredOrganizations.reduce((sum, org) => sum + org.activities, 0) / filteredOrganizations.length) : 0
     }
   }, [filteredOrganizations])
+
+  // Get unique organization types from data
+  const organizationTypes = useMemo(() => {
+    const types = new Set(organizationsData.map(org => org.type))
+    return Array.from(types).sort()
+  }, [organizationsData])
 
   const getTypeBadgeColor = (type: string) => {
     switch (type) {
@@ -184,6 +213,35 @@ export default function Organizations() {
       case "Academic": return "bg-orange-100 text-orange-800 border-orange-200"
       default: return "bg-gray-100 text-gray-800 border-gray-200"
     }
+  }
+
+  if (isLoading) {
+    return (
+      <section className='mb-8' id='organizations'>
+        <div className="space-y-8">
+          <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">
+            <div className="h-8 bg-white/20 rounded animate-pulse mb-4"></div>
+            <div className="h-4 bg-white/20 rounded animate-pulse"></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-32 bg-gray-200 rounded-lg animate-pulse"></div>
+            ))}
+          </div>
+          <div className="h-96 bg-gray-200 rounded-lg animate-pulse"></div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className='mb-8' id='organizations'>
+        <div className="text-center py-8">
+          <p className="text-red-500">Error loading organization data: {error}</p>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -333,7 +391,7 @@ export default function Organizations() {
                       </TableCell>
                       <TableCell>
                         <div className="space-y-1">
-                          {org.diseaseFocus.slice(0, 2).map((disease, index) => (
+                          {org.diseaseFocus.slice(0, 2).map((disease: string, index: number) => (
                             <Badge key={index} variant="outline" className="text-xs mr-1 mb-1">
                               {disease}
                             </Badge>

@@ -1,15 +1,81 @@
 "use client";
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import GeneralChart from '@/components/chart_and_graphics/GeneralChart';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { motion } from 'motion/react'
 import { Building2Icon, BarChart3Icon, TrendingUpIcon } from "lucide-react"
-import { SECTOR_DATA, SECTOR_CHART_DATA, TOTAL_ORGANIZATIONS } from '@/data/survey-mock-data'
+import { useSectorData } from '@/hooks/useSurveyData'
 
 export default function Sectors() {
-  const topSector = SECTOR_DATA[0];
+  const { data: sectorData, isLoading, error } = useSectorData()
+
+  const computedData = useMemo(() => {
+    if (!sectorData || sectorData.length === 0) {
+      return {
+        totalOrganizations: 0,
+        topSector: null,
+        sectorData: [],
+        sectorChartData: []
+      }
+    }
+
+    const totalOrganizations = sectorData.reduce((sum, item) => sum + (item.Count || 0), 0)
+    const topSector = sectorData[0] || null
+    const sectorChartData = sectorData.map(item => ({
+      name: item.Sector,
+      value: item.Count
+    }))
+
+    return {
+      totalOrganizations,
+      topSector,
+      sectorData,
+      sectorChartData
+    }
+  }, [sectorData])
+
+  if (isLoading) {
+    return (
+      <motion.section 
+        className='mb-8' 
+        id='sectors'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
+          <div className="h-8 bg-white/20 rounded animate-pulse mb-4"></div>
+          <div className="h-4 bg-white/20 rounded animate-pulse mb-6"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="bg-white/10 rounded-lg p-4 h-20 animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+        <Card className="border-0 shadow-xl bg-white overflow-hidden">
+          <div className="h-64 bg-gray-200 animate-pulse"></div>
+        </Card>
+      </motion.section>
+    )
+  }
+
+  if (error || !sectorData) {
+    return (
+      <motion.section 
+        className='mb-8' 
+        id='sectors'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <div className="text-center py-8">
+          <p className="text-red-500">Error loading sector data: {error}</p>
+        </div>
+      </motion.section>
+    )
+  }
 
   return (
     <motion.section 
@@ -40,22 +106,22 @@ export default function Sectors() {
               <TrendingUpIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Total Organizations</span>
             </div>
-            <div className="text-2xl font-bold">{TOTAL_ORGANIZATIONS}</div>
+            <div className="text-2xl font-bold">{computedData.totalOrganizations}</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <BarChart3Icon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Leading Sector</span>
             </div>
-            <div className="text-lg font-bold">{topSector.Sector}</div>
-            <div className="text-blue-200 text-sm">{topSector.Count} organizations</div>
+            <div className="text-lg font-bold">{computedData.topSector?.Sector || 'N/A'}</div>
+            <div className="text-blue-200 text-sm">{computedData.topSector?.Count || 0} organizations</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <Building2Icon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Sector Types</span>
             </div>
-            <div className="text-2xl font-bold">{SECTOR_DATA.length}</div>
+            <div className="text-2xl font-bold">{computedData.sectorData.length}</div>
           </div>
         </div>
       </div>
@@ -83,7 +149,7 @@ export default function Sectors() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <GeneralChart data={SECTOR_CHART_DATA} layout="vertical" title="" />
+              <GeneralChart data={computedData.sectorChartData} layout="vertical" title="" />
             </motion.div>
             
             {/* Sector Summary */}
@@ -96,7 +162,7 @@ export default function Sectors() {
               <div className="bg-gradient-to-br from-gray-50 to-purple-50 rounded-xl p-4 border">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Top Sectors</h3>
                 <div className="space-y-3">
-                  {SECTOR_DATA.slice(0, 5).map((sector, index) => (
+                  {computedData.sectorData.slice(0, 5).map((sector, index) => (
                     <div key={sector.Sector} className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className={`w-3 h-3 rounded-full ${
@@ -120,8 +186,8 @@ export default function Sectors() {
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border">
                 <h4 className="font-semibold text-gray-800 mb-2">Sector Insights</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Local NGOs dominate with {((topSector.Count / TOTAL_ORGANIZATIONS) * 100).toFixed(1)}% share</li>
-                  <li>• {SECTOR_DATA.filter(s => s.Count >= 10).length} sectors have 10+ organizations</li>
+                  <li>• Local NGOs dominate with {computedData.topSector ? ((computedData.topSector.Count / Math.max(computedData.totalOrganizations, 1)) * 100).toFixed(1) : 0}% share</li>
+                  <li>• {computedData.sectorData.filter(s => s.Count >= 10).length} sectors have 10+ organizations</li>
                   <li>• Strong civil society engagement across all levels</li>
                 </ul>
               </div>
