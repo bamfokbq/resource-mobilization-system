@@ -69,7 +69,7 @@ export default function StakeholdersPerRegion() {
   }
   return (
     <motion.section 
-      className='mb-8' 
+      className='mb-8 mt-20' 
       id='stakeholders-per-region'
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

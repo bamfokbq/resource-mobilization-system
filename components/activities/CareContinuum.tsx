@@ -520,7 +520,7 @@ export default function CareContinuum() {
     }
 
   return (
-    <section className='mb-8' id='care-continuum'>
+      <section className='mb-8 mt-20' id='care-continuum'>
           <div className="space-y-8">
               {/* Header Section */}
               <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">

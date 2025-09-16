@@ -181,7 +181,7 @@ export default function AgeGroups() {
   }
 
   return (
-    <section className='mb-8' id='age-groups'>
+    <section className='mb-8 mt-20' id='age-groups'>
       <div className="space-y-8">
         {/* Header Section */}
         <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">

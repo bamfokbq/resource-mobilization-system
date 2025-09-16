@@ -290,7 +290,7 @@ export default function ActivityByRegion() {
   }
 
   return (
-    <section className='mb-8' id='by-region'>
+    <section className='mb-8 mt-20' id='by-region'>
       <div className="space-y-8">
         {/* Header Section */}
         <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-8 text-white">
