@@ -1,12 +1,78 @@
 "use client";
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { motion } from 'motion/react'
 import { UsersIcon, ContactIcon } from "lucide-react"
+import { useStakeholderDetails } from '@/hooks/useSurveyData'
 
 export default function StakeholderDetails() {
+  const { data: stakeholderData, isLoading, error } = useStakeholderDetails()
+
+  const computedData = useMemo(() => {
+    if (!stakeholderData || stakeholderData.length === 0) {
+      return {
+        totalStakeholders: 0,
+        organizationTypes: 0,
+        activeProjects: 0,
+        regionalCoverage: 0
+      }
+    }
+
+    const totalStakeholders = stakeholderData.length
+    const organizationTypes = new Set(stakeholderData.map(s => s.type)).size
+    const activeProjects = stakeholderData.reduce((sum, s) => sum + (s.projectsInvolved || 0), 0)
+    const regionalCoverage = new Set(stakeholderData.map(s => s.region)).size
+
+    return {
+      totalStakeholders,
+      organizationTypes,
+      activeProjects,
+      regionalCoverage
+    }
+  }, [stakeholderData])
+
+  if (isLoading) {
+    return (
+      <motion.section 
+        className='mb-8' 
+        id='stakeholder-info'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+      >
+        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
+          <div className="h-8 bg-white/20 rounded animate-pulse mb-4"></div>
+          <div className="h-4 bg-white/20 rounded animate-pulse mb-6"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="bg-white/10 rounded-lg p-4 h-20 animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+        <Card className="border-0 shadow-xl bg-white overflow-hidden">
+          <div className="h-64 bg-gray-200 animate-pulse"></div>
+        </Card>
+      </motion.section>
+    )
+  }
+
+  if (error || !stakeholderData) {
+    return (
+      <motion.section 
+        className='mb-8' 
+        id='stakeholder-info'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+      >
+        <div className="text-center py-8">
+          <p className="text-red-500">Error loading stakeholder data: {error}</p>
+        </div>
+      </motion.section>
+    )
+  }
   return (
     <motion.section 
       className='mb-8' 
@@ -36,28 +102,28 @@ export default function StakeholderDetails() {
               <UsersIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Total Stakeholders</span>
             </div>
-            <div className="text-2xl font-bold">25+</div>
+            <div className="text-2xl font-bold">{computedData.totalStakeholders}+</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <ContactIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Organization Types</span>
             </div>
-            <div className="text-2xl font-bold">8</div>
+            <div className="text-2xl font-bold">{computedData.organizationTypes}</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <UsersIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Active Projects</span>
             </div>
-            <div className="text-2xl font-bold">150+</div>
+            <div className="text-2xl font-bold">{computedData.activeProjects}+</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <ContactIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Regional Coverage</span>
             </div>
-            <div className="text-2xl font-bold">16</div>
+            <div className="text-2xl font-bold">{computedData.regionalCoverage}</div>
           </div>
         </div>
       </div>

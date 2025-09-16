@@ -1,13 +1,74 @@
 "use client";
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { motion } from 'motion/react'
 import { WalletIcon, DollarSignIcon, TrendingUpIcon, PieChartIcon } from "lucide-react"
-import { FUNDING_DATA, TOTAL_FUNDING, TOP_FUNDING_SOURCE } from '@/data/survey-mock-data'
+import { useFundingData } from '@/hooks/useSurveyData'
 
 export default function FundingSource() {
+  const { data: fundingData, isLoading, error } = useFundingData()
+
+  const computedData = useMemo(() => {
+    if (!fundingData || fundingData.length === 0) {
+      return {
+        totalFunding: 0,
+        topFundingSource: null,
+        fundingData: []
+      }
+    }
+
+    const totalFunding = fundingData.reduce((sum, item) => sum + (item.amount || 0), 0)
+    const topFundingSource = fundingData[0] || null
+
+    return {
+      totalFunding,
+      topFundingSource,
+      fundingData
+    }
+  }, [fundingData])
+
+  if (isLoading) {
+    return (
+      <motion.section 
+        className='mb-8' 
+        id='funding'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+      >
+        <div className="bg-gradient-to-r from-navy-blue to-blue-800 rounded-2xl p-4 sm:p-6 lg:p-8 text-white mb-6">
+          <div className="h-8 bg-white/20 rounded animate-pulse mb-4"></div>
+          <div className="h-4 bg-white/20 rounded animate-pulse mb-6"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="bg-white/10 rounded-lg p-4 h-20 animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+        <Card className="border-0 shadow-xl bg-white overflow-hidden">
+          <div className="h-64 bg-gray-200 animate-pulse"></div>
+        </Card>
+      </motion.section>
+    )
+  }
+
+  if (error || !fundingData) {
+    return (
+      <motion.section 
+        className='mb-8' 
+        id='funding'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+      >
+        <div className="text-center py-8">
+          <p className="text-red-500">Error loading funding data: {error}</p>
+        </div>
+      </motion.section>
+    )
+  }
   return (
     <motion.section 
       className='mb-8' 
@@ -37,22 +98,22 @@ export default function FundingSource() {
               <DollarSignIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Total Funding</span>
             </div>
-            <div className="text-2xl font-bold">${(TOTAL_FUNDING / 1000000).toFixed(1)}M</div>
+            <div className="text-2xl font-bold">${(computedData.totalFunding / 1000000).toFixed(1)}M</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUpIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Top Contributor</span>
             </div>
-            <div className="text-lg font-bold">{TOP_FUNDING_SOURCE.source.split(' ')[0]}</div>
-            <div className="text-blue-200 text-sm">{TOP_FUNDING_SOURCE.percentage}% of total</div>
+            <div className="text-lg font-bold">{computedData.topFundingSource?.source?.split(' ')[0] || 'N/A'}</div>
+            <div className="text-blue-200 text-sm">{computedData.topFundingSource?.percentage || 0}% of total</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <PieChartIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Funding Sources</span>
             </div>
-            <div className="text-2xl font-bold">{FUNDING_DATA.length}</div>
+            <div className="text-2xl font-bold">{computedData.fundingData.length}</div>
           </div>
         </div>
       </div>
@@ -81,7 +142,7 @@ export default function FundingSource() {
               transition={{ duration: 0.5, delay: 0.8 }}
             >
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Major Funding Sources</h3>
-              {FUNDING_DATA.map((funding, index) => (
+              {computedData.fundingData.map((funding, index) => (
                 <motion.div
                   key={funding.source}
                   className="bg-gradient-to-r from-white to-gray-50 rounded-xl p-4 border shadow-sm"
@@ -141,19 +202,19 @@ export default function FundingSource() {
                   <div className="flex justify-between items-center p-3 bg-white rounded-lg">
                     <span className="font-medium text-gray-700">International Funding</span>
                     <span className="text-lg font-bold text-green-600">
-                      {FUNDING_DATA.filter(f => f.type === 'International').reduce((sum, f) => sum + f.percentage, 0)}%
+                      {computedData.fundingData.filter(f => f.type === 'International').reduce((sum, f) => sum + (f.percentage || 0), 0)}%
                     </span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-white rounded-lg">
                     <span className="font-medium text-gray-700">Government Funding</span>
                     <span className="text-lg font-bold text-blue-600">
-                      {FUNDING_DATA.filter(f => f.type === 'Government').reduce((sum, f) => sum + f.percentage, 0)}%
+                      {computedData.fundingData.filter(f => f.type === 'Government').reduce((sum, f) => sum + (f.percentage || 0), 0)}%
                     </span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-white rounded-lg">
                     <span className="font-medium text-gray-700">Private & Foundation</span>
                     <span className="text-lg font-bold text-purple-600">
-                      {FUNDING_DATA.filter(f => ['Private', 'Foundation'].includes(f.type)).reduce((sum, f) => sum + f.percentage, 0)}%
+                      {computedData.fundingData.filter(f => ['Private', 'Foundation'].includes(f.type)).reduce((sum, f) => sum + (f.percentage || 0), 0)}%
                     </span>
                   </div>
                 </div>
@@ -172,12 +233,12 @@ export default function FundingSource() {
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border">
                 <h4 className="font-semibold text-gray-800 mb-3">Total Investment Impact</h4>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">${(TOTAL_FUNDING / 1000000).toFixed(1)}M</div>
+                  <div className="text-3xl font-bold text-blue-600">${(computedData.totalFunding / 1000000).toFixed(1)}M</div>
                   <div className="text-sm text-gray-600 mt-1">Supporting NCD prevention & management</div>
                   <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
                     <div className="bg-white p-2 rounded">
                       <div className="font-semibold text-gray-800">Avg per Source</div>
-                      <div className="text-blue-600">${((TOTAL_FUNDING / FUNDING_DATA.length) / 1000000).toFixed(1)}M</div>
+                      <div className="text-blue-600">${((computedData.totalFunding / Math.max(computedData.fundingData.length, 1)) / 1000000).toFixed(1)}M</div>
                     </div>
                     <div className="bg-white p-2 rounded">
                       <div className="font-semibold text-gray-800">Coverage</div>

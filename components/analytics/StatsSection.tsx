@@ -70,13 +70,13 @@ export default function StatsSection() {
                     return <IconComponent className="w-6 h-6 text-white" />
                   })()}
                 </div>
-                <Badge 
-                  variant="secondary" 
+                {/* <Badge
+                  variant="secondary"
                   className="bg-green-50 text-green-700 border-green-200"
                 >
                   <TrendingUp className="w-3 h-3 mr-1" />
                   +12%
-                </Badge>
+                </Badge> */}
               </div>
               
               <div className="space-y-2">

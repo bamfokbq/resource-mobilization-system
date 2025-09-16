@@ -500,10 +500,59 @@ async function _getFundingDataInternal(): Promise<{
     const fundingData = await surveysCollection.aggregate([
       { $match: { status: 'submitted' } },
       {
+        $addFields: {
+          cleanedBudget: {
+            $cond: {
+              if: { $eq: [{ $type: '$projectInfo.estimatedBudget' }, 'number'] },
+              then: '$projectInfo.estimatedBudget',
+              else: {
+                $toDouble: {
+                  $replaceAll: {
+                    input: {
+                      $replaceAll: {
+                        input: {
+                          $replaceAll: {
+                            input: {
+                              $replaceAll: {
+                                input: {
+                                  $replaceAll: {
+                                    input: {
+                                      $replaceAll: {
+                                        input: { $ifNull: ['$projectInfo.estimatedBudget', '0'] },
+                                        find: ',',
+                                        replacement: ''
+                                      }
+                                    },
+                                    find: ' ',
+                                    replacement: ''
+                                  }
+                                },
+                                find: 'GHc',
+                                replacement: ''
+                              }
+                            },
+                            find: 'USD',
+                            replacement: ''
+                          }
+                        },
+                        find: 'EUR',
+                        replacement: ''
+                      }
+                    },
+                    find: 'GHS',
+                    replacement: ''
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
         $group: {
           _id: '$projectInfo.fundingSource',
           count: { $sum: 1 },
-          totalBudget: { $sum: { $toDouble: '$projectInfo.estimatedBudget' } }
+          totalBudget: { $sum: '$cleanedBudget' }
         }
       },
       {
@@ -615,7 +664,7 @@ async function _getStakeholderDetailsInternal(): Promise<{
           },
           activities: { $slice: ['$projects', 3] },
           description: { $concat: ['Leading organization in ', '$sector', ' sector'] },
-          fundingContribution: { $concat: ['$', { $toString: { $multiply: [{ $rand: {} }, 2000000] } }] },
+          fundingContribution: { $concat: [{ $literal: '$' }, { $toString: { $multiply: [{ $rand: {} }, 2000000] } }] },
           projectsInvolved: { $size: '$projects' }
         }
       },
