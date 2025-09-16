@@ -5,10 +5,10 @@ import React from 'react'
 
 export default function SurverOverviewPage() {
   return (
-    <>
+    <section>
       <ActivityByRegion />
       <DiseasesArea />
       <ContinuumOfCare />
-    </>
+    </section>
   )
 }

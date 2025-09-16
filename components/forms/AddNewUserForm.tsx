@@ -31,6 +31,29 @@ interface AddNewUserFormProps {
   onSuccess?: () => void
 }
 
+const ORGANIZATIONS = {
+  'abak-foundation': 'ABAK Foundation',
+  'abepotia-aged-group': 'Abepotia Aged Group Association',
+  'african-cancer-organisation': 'African Cancer Organisation (ACO)',
+  'afrinet-ghana': 'Afrinet Ghana',
+  'agency-health-food-security': 'Agency for Health and Food Security',
+  'agriculture-environmental': 'Agriculture Environmental and Development',
+  'alcohol-policy-alliance': 'Alcohol Policy Alliance - Ghana',
+  'alliance-against-ncd': 'Alliance Against Non-Communicable Diseases',
+  'anglican-diocesan-development': 'Anglican Diocesan Development',
+  'ark-lifestyle-foundation': 'Ark Lifestyle Foundation',
+  'basicneeds-ghana': 'BasicNeeds-Ghana',
+  'breast-care-international': 'Breast Care International',
+  'breast-society-ghana': 'Breast Society of Ghana',
+  'bridge-of-life': 'Bridge of Life',
+  'cancer-health-foundation': 'Cancer Health Foundation',
+  'cancer-support-network': 'Cancer Support Network of Ghana',
+  'centre-advancing-rural': 'Centre For Advancing Rural Opportunities',
+  'citizens-watch-ghana': 'Citizens Watch Ghana',
+  'clinton-health-access': 'Clinton Health Access Initiative',
+  'other': 'Other'
+} as const
+
 export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false)
@@ -381,11 +404,11 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                       <SelectValue placeholder="Select an organisation" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vercel">Vercel</SelectItem>
-                      <SelectItem value="google">Google</SelectItem>
-                      <SelectItem value="microsoft">Microsoft</SelectItem>
-                      <SelectItem value="amazon">Amazon</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      {Object.entries(ORGANIZATIONS).map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   {errors.organisation && (

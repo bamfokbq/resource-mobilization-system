@@ -98,7 +98,7 @@ export default function FundingSource() {
               <DollarSignIcon className="w-5 h-5 text-blue-200" />
               <span className="text-blue-200 text-sm font-medium">Total Funding</span>
             </div>
-            <div className="text-2xl font-bold">${(computedData.totalFunding / 1000000).toFixed(1)}M</div>
+            <div className="text-2xl font-bold">GHS {(computedData.totalFunding / 1000000).toFixed(1)}M</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
@@ -168,7 +168,7 @@ export default function FundingSource() {
                     </div>
                     <div className="text-right">
                       <div className="text-lg font-bold text-gray-800">
-                        ${(funding.amount / 1000000).toFixed(1)}M
+                        GHS {(funding.amount / 1000000).toFixed(1)}M
                       </div>
                       <div className="text-sm text-gray-500">{funding.percentage}%</div>
                     </div>
@@ -233,12 +233,12 @@ export default function FundingSource() {
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border">
                 <h4 className="font-semibold text-gray-800 mb-3">Total Investment Impact</h4>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">${(computedData.totalFunding / 1000000).toFixed(1)}M</div>
+                  <div className="text-3xl font-bold text-blue-600">GHS {(computedData.totalFunding / 1000000).toFixed(1)}M</div>
                   <div className="text-sm text-gray-600 mt-1">Supporting NCD prevention & management</div>
                   <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
                     <div className="bg-white p-2 rounded">
                       <div className="font-semibold text-gray-800">Avg per Source</div>
-                      <div className="text-blue-600">${((computedData.totalFunding / Math.max(computedData.fundingData.length, 1)) / 1000000).toFixed(1)}M</div>
+                      <div className="text-blue-600">GHS {((computedData.totalFunding / Math.max(computedData.fundingData.length, 1)) / 1000000).toFixed(1)}M</div>
                     </div>
                     <div className="bg-white p-2 rounded">
                       <div className="font-semibold text-gray-800">Coverage</div>

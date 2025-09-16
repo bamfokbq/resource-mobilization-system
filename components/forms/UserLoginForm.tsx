@@ -77,7 +77,7 @@ export default function UserLoginForm() {
           color: '#065F46',
         },
       })
-      router.push("/dashboard/surveys")
+      router.push("/dashboard")
       router.refresh()
     } catch (error) {
       toast.error("Connection error. Please try again.", {
