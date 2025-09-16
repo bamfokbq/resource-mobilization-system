@@ -13,7 +13,7 @@ export default async function Header() {
         <header className={`relative flex-shrink-0 bg-white shadow-md p-4 flex justify-between items-center`}>
             <div className='flex items-center gap-4'>
                 <h1 className='text-navy-blue text-2xl font-black'>
-                    GHS Resource Navigator
+                    NCD NAVIGATOR
                 </h1>
                 {/* <Image
                     src="/path.webp"
