@@ -23,7 +23,7 @@ export default function Assistance() {
             <motion.div
                 initial={{ y: 20 }}
                 animate={{ y: 0 }}
-                className='max-w-3xl p-6 md:p-10 mx-auto w-full bg-gradient-to-br from-light-blue to-white rounded-2xl shadow-lg'
+                className='max-w-3xl p-6 md:p-10 mx-auto w-full bg-gradient-to-br from-ghs-yellow/20 to-ghs-green/20 rounded-2xl shadow-lg'
             >
                 <motion.h3
                     initial={{ x: -20 }}

@@ -18,7 +18,7 @@ export default function Home() {
       <PartnersMap />
       <HealthStats />
       <Contributions />
-      <ResourcesAction />
+      {/* <ResourcesAction /> */}
       <Assistance />
     </main>
   );
