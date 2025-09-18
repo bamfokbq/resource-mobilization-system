@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ResourceHeader() {
     return (
-        <section className="bg-gradient-to-r from-navy-blue to-mint-green p-6 my-6 rounded-2xl">
+        <section className="bg-ghs-green p-6 my-6 rounded-2xl">
             <div className="max-w-3xl mx-auto text-center">
                 <h1 className="text-3xl font-bold text-white">
                     Health Resources & Interventions
