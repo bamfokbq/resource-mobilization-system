@@ -92,20 +92,20 @@ export default function StatsSection() {
               </div>
               
               {/* Progress indicator */}
-              <div className="mt-4 space-y-2">
+              {/* <div className="mt-4 space-y-2">
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>This month</span>
                   <span>{getProgressPercentage(stat.id)}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-1.5">
-                  <motion.div 
+                  <motion.div
                     className={`h-1.5 rounded-full bg-gradient-to-r ${getGradientColors(index)}`}
                     initial={{ width: 0 }}
                     animate={{ width: `${getProgressPercentage(stat.id)}%` }}
                     transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
                   />
                 </div>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         </motion.div>

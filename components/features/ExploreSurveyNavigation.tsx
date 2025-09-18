@@ -2,14 +2,14 @@
 
 import NcdStrategyNav from '@/components/features/NcdStrategyNav'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { HiChevronLeft, HiSparkles } from 'react-icons/hi2'
+import { HiChevronLeft } from 'react-icons/hi2'
 import { motion, AnimatePresence } from 'motion/react'
+import Logo from '../shared/Logo'
 
 export default function ExploreSurveyNavigation() {
-    const [isOpen, setIsOpen] = useState(true)
-    const [isHovered, setIsHovered] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     // Auto-expand on hover when collapsed
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function ExploreSurveyNavigation() {
 
     return (
         <motion.div
-            className="bg-navy-blue h-screen flex flex-col items-stretch justify-between relative shadow-2xl border-r border-white/10"
+            className="bg-ghs-green h-screen flex flex-col items-stretch justify-between relative shadow-2xl border-r border-white/10"
             initial={false}
             animate={{
                 width: isOpen ? 320 : 72,
@@ -51,17 +51,9 @@ export default function ExploreSurveyNavigation() {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.2 }}
-                            className="flex-1"
+                            className="flex-1 text-center"
                         >
-                            <Link
-                                href={'/'}
-                                className="group text-white text-xl font-black flex items-center gap-2 hover:text-mint-green transition-all duration-300 transform hover:scale-105"
-                            >
-                                <HiSparkles className="w-6 h-6 text-mint-green group-hover:animate-pulse" />
-                                <span className="text-white">
-                                    NCD NAVIGATOR
-                                </span>
-                            </Link>
+                            <Logo />
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -114,7 +106,7 @@ export default function ExploreSurveyNavigation() {
             </div>
 
             {/* Decorative Elements */}
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-navy-blue/50 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-full h-32 bg-ghs-green/10 pointer-events-none" />
             <motion.div
                 className="absolute top-20 right-0 w-1 bg-mint-green rounded-l-full"
                 animate={{
