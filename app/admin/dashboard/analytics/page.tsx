@@ -146,23 +146,6 @@ export default async function AdminAnalyticsPage() {
             <Suspense fallback={<EngagementSkeleton />}>
                 <AdminEngagementSection />
             </Suspense>
-
-            {/* Footer Info */}
-            <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-500">
-                <div className="flex items-start gap-4">
-                    <div className="p-3 bg-blue-100 rounded-lg">
-                        <TrendingUp className="text-blue-600" size={24} />
-                    </div>
-                    <div>
-                        <h3 className="font-semibold text-gray-800 mb-2">Analytics Information</h3>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                            These analytics provide real-time insights into system performance, user engagement,
-                            and data trends. Data is updated every few minutes to ensure accuracy. Use the date
-                            range selector and filters to customize your view and export reports for further analysis.
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }

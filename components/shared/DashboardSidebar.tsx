@@ -71,7 +71,7 @@ export default function DashboardSidebar({
 
     return (
         <aside
-            className="bg-navy-blue flex-shrink-0 w-[90px] flex flex-col relative transition-all duration-300 
+            className="bg-ghs-green flex-shrink-0 w-[90px] flex flex-col relative transition-all duration-300 
                        shadow-xl border-r border-light-blue/10 h-screen overflow-hidden"
             role="navigation"
             aria-label={ariaLabel}
