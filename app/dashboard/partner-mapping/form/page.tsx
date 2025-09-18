@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
+import PartnerMappingFormPageClient from '@/components/forms/partner-mapping/PartnerMappingFormPageClient';
 
-export default function PartnerMappingForm() {
-  return (
-    <div>PartnerMappingForm</div>
-  )
+export default function PartnerMappingFormPage() {
+  return <PartnerMappingFormPageClient />;
 }
