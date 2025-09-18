@@ -18,7 +18,6 @@ import Link from 'next/link'
 import { MdDashboard, MdOutlinePreview } from 'react-icons/md'
 import { IoInformationCircleOutline } from 'react-icons/io5'
 import { BiTask } from 'react-icons/bi'
-import { TbActivityHeartbeat } from 'react-icons/tb'
 import { motion, AnimatePresence, MotionConfig } from 'motion/react'
 import { Route } from 'next'
 
@@ -111,14 +110,14 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                                     href="/survey-data"
                                     className="text-white hover:text-mint-green transition-all duration-200 p-3 rounded-xl hover:bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg"
                                 >
-                                    <MdDashboard className="w-6 h-6" />
+                                        <MdDashboard className="w-6 h-6 text-white" />
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent
                                 side="right"
                                 className="bg-white text-navy-blue z-50 font-medium shadow-xl border-0"
                             >
-                                <p>Dashboard</p>
+                                    <p>Dashboard</p>
                             </TooltipContent>
                         </Tooltip>
                     </motion.div>
@@ -194,8 +193,8 @@ export default function NcdStrategyNav({ isOpen }: NcdStrategyNavProps) {
                   className="group text-lg font-semibold text-white px-3 py-3 flex items-center gap-3 rounded-xl hover:bg-white/10 transition-all duration-200 backdrop-blur-sm border border-white/10 shadow-lg hover:shadow-xl"
                   onClick={() => setOpenItem(undefined)}
               >
-                  <div className="p-1 rounded-lg bg-mint-green">
-                      <MdDashboard className="w-5 h-5 text-navy-blue" />
+                      <div className="p-1 rounded-lg bg-mint-green/20">
+                          <MdDashboard className="w-5 h-5" />
                   </div>
                   <span className="group-hover:text-mint-green transition-colors duration-200">Dashboard</span>
               </Link>

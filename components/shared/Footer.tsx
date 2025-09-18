@@ -4,7 +4,7 @@ import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa6";
 
 export default function Footer() {
     return (
-        <footer className='h-fit bg-navy-blue p-4'>
+        <footer className='h-fit bg-ghs-green p-4'>
             <section className='max-w-4xl mx-auto w-full flex gap-10 flex-col md:flex-row justify-between py-4 md:py-8'>
                 <div className='flex flex-col gap-4'>
                     <h3 className='text-xl text-white font-medium'>Quick Links</h3>

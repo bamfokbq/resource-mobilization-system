@@ -145,8 +145,8 @@ export default function GeneralMap({
     return (
       <section className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-4 md:p-8 relative">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-navy-blue mb-2">{title}</h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-navy-blue to-mode-blue rounded-full"></div>
+          <h2 className="text-3xl font-bold text-ghs-green mb-2">{title}</h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-ghs-green to-mode-blue rounded-full"></div>
         </div>
         <div className="flex items-center justify-center" style={{ height: mapHeight }}>
           <div className="text-navy-blue animate-pulse">Loading Map...</div>
@@ -270,7 +270,7 @@ export default function GeneralMap({
             >
               <div className="h-full flex flex-col">
                 {/* Panel Header */}
-                <div className="bg-gradient-to-r from-navy-blue to-mode-blue text-white p-4">
+                <div className="bg-ghs-green text-white p-4">
                   {selectedRegion ? (
                     <div className="flex items-center justify-between">
                       <h3 className="font-bold text-xl flex items-center">
@@ -301,7 +301,7 @@ export default function GeneralMap({
                         </span>
                         Overview
                       </h3>
-                        <div className="text-sm bg-white text-navy-blue bg-opacity-20 px-3 py-1.5 rounded-full">
+                        <div className="text-sm bg-white text-ghs-green bg-opacity-20 px-3 py-1.5 rounded-full">
                           {dataItems.length} Total Activities
                       </div>
                     </div>
@@ -379,7 +379,7 @@ export default function GeneralMap({
                               key={region}
                               className={`p-3 rounded-lg cursor-pointer transition-all duration-200 transform hover:-translate-y-1 ${
                                 count > 0 
-                                  ? 'bg-gradient-to-br from-light-blue/30 to-light-blue/50 hover:shadow-md' 
+                                ? 'bg-gradient-to-br from-ghs-green/10 to-ghs-green/10 hover:shadow-md' 
                                   : 'bg-ligher-gray hover:bg-ligher-gray/80'
                               }`}
                               onClick={() => {
@@ -389,9 +389,9 @@ export default function GeneralMap({
                             >
                               <div className="flex flex-col h-full">
                                 <div className="text-sm font-medium text-dark-gray mb-1">Region</div>
-                                <div className="font-semibold text-navy-blue mb-2 line-clamp-1">{region}</div>
+                                <div className="font-semibold text-ghs-green mb-2 line-clamp-1">{region}</div>
                                 <div className="mt-auto pt-2 flex items-center justify-between">
-                                  <div className={`text-sm flex items-center ${count > 0 ? 'text-mode-blue' : 'text-dark-gray/50'}`}>
+                                  <div className={`text-sm flex items-center ${count > 0 ? 'text-ghs-green' : 'text-dark-gray/50'}`}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -399,7 +399,7 @@ export default function GeneralMap({
                                   </div>
                                   <span className={`inline-flex items-center justify-center rounded-full w-6 h-6 text-xs font-semibold ${
                                     count > 0 
-                                      ? 'bg-navy-blue text-white' 
+                                    ? 'bg-ghs-green text-white' 
                                       : 'bg-ligher-gray text-dark-gray/60'
                                   }`}>
                                     {count}

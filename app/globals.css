@@ -21,6 +21,10 @@
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
+  --color-ghs-green: hsl(var(--ghs-green));
+    --color-ghs-red: hsl(var(--ghs-red));
+    --color-ghs-black: hsl(var(--ghs-black));
+    --color-ghs-yellow: hsl(var(--ghs-yellow));
 
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
@@ -82,7 +86,11 @@
 
     @layer base {
       :root {
-      --navy-blue: 215, 100%, 34%;
+        --ghs-green: 118, 96%, 28%;
+          --ghs-red: 5, 96%, 48%;
+          --ghs-black: 0, 0%, 0%;
+          --ghs-yellow: 56, 96%, 48%;
+        --navy-blue: 215, 100%, 34%;
         --pine-yellow: 49, 99%, 50%;
         --nobe-red: 0, 100%, 50%;
         --mint-green: 120, 100%, 80%;
@@ -91,9 +99,9 @@
         --dark-gray: 0, 0%, 29%;
         --nobe-red-lighter: 0, 100%, 75%;
         --ligher-gray: 0, 0%, 93%;
-          --smit-green: 141, 87%, 31%;
+        --smit-green: 141, 87%, 31%;
           --mode-blue: 215, 100%, 34%;
-      --background: 0 0% 100%;
+          --background: 0 0% 100%;
         --foreground: 240 10% 3.9%;
         --card: 0 0% 100%;
         --card-foreground: 240 10% 3.9%;

@@ -27,7 +27,7 @@ export default async function Header() {
                 {!isAuthenticated ? (
                     <>
                         <Navigation />
-                        <PrimaryButton href='#assistance' bgColor='bg-navy-blue' text='Contact us' textColor='text-white' />
+                        <PrimaryButton href='#assistance' bgColor='bg-ghs-green' text='Contact us' textColor='text-white' />
                     </>
                 ) : (
                     <Avatar />
