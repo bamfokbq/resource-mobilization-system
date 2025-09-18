@@ -20,7 +20,7 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   telephone: z.string().min(10, "Phone number must be at least 10 digits"),
   role: z.enum(["User", "Admin"]),
-  region: z.string().optional(),
+  // region: z.string().optional(),
   organisation: z.string().optional(),
   password: z.string(),
 })
@@ -73,13 +73,14 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
         email: '',
         telephone: '',
         role: 'User',
-        region: '',
+        // region: '',
         organisation: '',
         password: 'rms@2025'
       }
   })
 
-  const regionValue = watch('region'); const organisationValue = watch('organisation');
+  // const regionValue = watch('region'); 
+  const organisationValue = watch('organisation');
   const roleValue = watch('role');
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true)
@@ -132,7 +133,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
           lastName: '',
           email: '',
           telephone: '',
-          region: '',
+          // region: '',
           organisation: '',
           role: 'User',
           password: 'rms@2025'
@@ -339,7 +340,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
             {/* Conditional Fields for User Role */}
             {roleValue !== "Admin" && (
               <>
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor="region" className="text-sm font-medium text-gray-700">
                     Region
                   </Label>
@@ -377,7 +378,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
                       {errors.region.message}
                     </p>
                   )}
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
                   <Label htmlFor="organisation" className="text-sm font-medium text-gray-700">
