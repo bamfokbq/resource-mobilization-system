@@ -91,6 +91,13 @@ export async function savePartnerMappingDraft(formData: PartnerMappingFormData):
         { returnDocument: 'after' }
       );
 
+      if (!updatedDraft) {
+        return {
+          success: false,
+          message: 'Failed to update draft. Please try again.',
+        };
+      }
+
       return {
         success: true,
         draft: {
@@ -114,6 +121,13 @@ export async function savePartnerMappingDraft(formData: PartnerMappingFormData):
       
       const result = await draftsCollection.insertOne(newDraft);
       const insertedDraft = await draftsCollection.findOne({ _id: result.insertedId });
+
+      if (!insertedDraft) {
+        return {
+          success: false,
+          message: 'Failed to create draft. Please try again.',
+        };
+      }
 
       return {
         success: true,
