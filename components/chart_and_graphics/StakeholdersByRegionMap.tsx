@@ -56,8 +56,8 @@ export default function StakeholdersByRegionMap() {
   return (
     <section className='py-8 px-4 bg-slate-50'>
       <div className="mb-8">
-        <h2 className="text-3xl font-bold text-navy-blue mb-2">Stakeholders by Region</h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-navy-blue to-mode-blue rounded-full"></div>
+        <h2 className="text-3xl font-bold text-ghs-green mb-2">Stakeholders by Region</h2>
+        <div className="w-20 h-1 bg-gradient-to-r from-ghs-green to-mode-blue rounded-full"></div>
       </div>
       <div className=" flex flex-row items-start gap-4">
         <div className="w-1/3"> {/* Changed: Map container takes 1/3 width */}

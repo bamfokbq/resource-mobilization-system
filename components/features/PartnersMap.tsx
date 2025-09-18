@@ -9,8 +9,8 @@ export default function PartnersMap() {
       () => import('./PartnersDisplayMap'),
       {
         loading: () => (
-          <div className="flex items-center justify-center h-[600px] bg-gradient-to-br from-navy-blue/15 to-mode-blue/10">
-            <div className="text-navy-blue animate-pulse">Loading Partners Map...</div>
+          <div className="flex items-center justify-center h-[600px] bg-gradient-to-br from-ghs-green/15 to-mode-blue/10">
+            <div className="text-ghs-green animate-pulse">Loading Partners Map...</div>
           </div>
         ),
         ssr: false
