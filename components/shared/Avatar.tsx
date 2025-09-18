@@ -9,7 +9,7 @@ export default async function Avatar() {
     
     return (
         <div className='flex items-center gap-2'>
-            <div className='h-10 text-white w-10 bg-navy-blue rounded-full flex items-center justify-center'>
+            <div className='h-10 text-white w-10 bg-ghs-green rounded-full flex items-center justify-center'>
                 <p>{firstLetter}</p>
             </div>
             <div className='flex flex-col'>

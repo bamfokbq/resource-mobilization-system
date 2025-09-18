@@ -29,8 +29,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/admin/dashboard/settings',
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    // '/admin/dashboard/settings',
+    // '/((?!api|_next/static|_next/image|favicon.ico).*)',
     // Add other protected routes here if needed
   ],
   runtime: 'nodejs',

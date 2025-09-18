@@ -5,7 +5,7 @@ import Image from 'next/image'
 export default function AdminPage() {
     return (
         <section className="flex flex-col md:flex-row mx-auto h-[100dvh] w-full overflow-hidden">
-            <div className="hidden md:block flex-1 relative bg-gradient-to-br from-navy-blue to-blue-900 p-4 md:p-8">
+            <div className="hidden md:block flex-1 relative bg-gradient-to-br from-ghs-green to-ghs-green/90 p-4 md:p-8">
                 <div className="flex items-center justify-center h-full relative z-10 py-4 md:py-8">
                     <Image src={'/admin_login_art.svg'} alt='Admin Login Icon' width={300} height={300} />
                 </div>

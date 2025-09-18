@@ -14,14 +14,6 @@ export default async function Header() {
         <header className={`relative flex-shrink-0 bg-white shadow-md p-4 flex justify-between items-center`}>
             <div className='flex items-center gap-4'>
                 <Logo />
-                {/* <Image
-                    src="/path.webp"
-                    priority
-                    alt='Logo'
-                    height={150}
-                    width={150}
-                    className='w-auto'
-                /> */}
             </div>
             <nav className='hidden lg:flex items-center gap-10'>
                 {!isAuthenticated ? (

@@ -100,7 +100,7 @@ export default function UserLoginForm() {
         className="w-full max-w-md mx-auto p-6 md:p-10 space-y-4 border border-ligher-gray rounded-lg"
         onSubmit={handleSubmit}
       >
-        <h4 className="text-2xl md:text-3xl font-bold text-[hsl(var(--navy-blue))] mb-6 md:mb-8 text-center">
+        <h4 className="text-2xl md:text-3xl font-bold text-ghs-green mb-6 md:mb-8 text-center">
           Welcome Back
         </h4>
 
@@ -149,7 +149,7 @@ export default function UserLoginForm() {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[hsl(var(--navy-blue))] hover:bg-[hsl(var(--navy-blue))]/90 text-white"
+            className="w-full bg-ghs-green hover:bg-ghs-green/90 text-white"
           >
             {isLoading ? "Signing in..." : "Sign In"}
           </Button>
