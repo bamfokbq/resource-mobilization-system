@@ -67,6 +67,7 @@ export default async function AdminDashboardUserPage() {
                         <AddNewUserModal />
                     </div>
                 )}
+                <AddNewUserModal />
             </div> 
             <Suspense fallback={<UsersTableSkeleton />}>
                 <AdminUsersTableSection />

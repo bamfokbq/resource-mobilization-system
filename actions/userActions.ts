@@ -11,7 +11,7 @@ const formSchema = z.object({
     role: z.enum(["User", "Admin"], {
         message: "Role must be either User or Admin"
     }).default("User"),
-    password: z.string().default(process.env.DEFAULT_PASSWORD || 'ncd@2025')
+    password: z.string().default(process.env.DEFAULT_PASSWORD || 'rms@2025')
 })
 
 export async function addNewUser(prevState: any, formData: FormData) {
@@ -20,7 +20,7 @@ export async function addNewUser(prevState: any, formData: FormData) {
             firstName: String(formData.get('firstName') ?? ''),
             lastName: String(formData.get('lastName') ?? ''),
             email: String(formData.get('email') ?? ''),
-            password: 'ncd@2025', // Using default password
+            password: 'rms@2025', // Using default password
             region: String(formData.get('region') ?? ''),
             organisation: String(formData.get('organisation') ?? ''),
             role: String(formData.get('role') ?? 'User')

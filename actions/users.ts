@@ -47,7 +47,7 @@ export async function createNewUser(formData: FormData) {
     }
 
     // Use default password
-    const defaultPassword = 'ncd@2025';
+    const defaultPassword = 'rms@2025';
     const hashedPassword = await hashPassword(defaultPassword);
 
     const userData = {
@@ -222,8 +222,8 @@ export async function resetUserPassword(userId: string, newPassword?: string) {
   try {
     const db = await getDb()
 
-    // Use provided password or default to 'ncd@2025'
-    const passwordToHash = newPassword || 'ncd@2025'
+    // Use provided password or default to 'rms@2025'
+    const passwordToHash = newPassword || 'rms@2025'
     const hashedPassword = await hashPassword(passwordToHash)
 
     const result = await db.collection("users").updateOne(

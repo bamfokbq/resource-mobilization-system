@@ -5,7 +5,7 @@ export default function LoginPage() {
     return (
         <section className="flex flex-col md:flex-row mx-auto h-[100dvh] w-full overflow-hidden">
             {/* Left instructional section */}
-            <div className="hidden md:block flex-1 relative bg-gradient-to-br from-navy-blue to-blue-900 p-4 md:p-8">
+            <div className="hidden md:block flex-1 relative bg-gradient-to-br from-ghs-green to-ghs-green/90 p-4 md:p-8">
                 <div className="flex items-center justify-center h-full relative z-10 py-4 md:py-8">
                     <div className="text-center max-w-lg px-4 md:px-0">
                         <h3 className="text-lg md:text-4xl text-mint-green font-bold mb-2 md:mb-6">

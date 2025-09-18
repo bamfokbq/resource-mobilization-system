@@ -33,7 +33,7 @@ export function ResetPasswordDialog({
                         Are you sure you want to reset the password for <strong>{dialog.user?.name}</strong>?
                         <br />
                         <span className="text-sm text-muted-foreground mt-2 block">
-                            The password will be reset to the default: <code className="bg-gray-100 px-1 rounded">ncd@2025</code>
+                            The password will be reset to the default: <code className="bg-gray-100 px-1 rounded">rms@2025</code>
                         </span>
                     </DialogDescription>
                 </DialogHeader>

@@ -75,7 +75,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
         role: 'User',
         region: '',
         organisation: '',
-        password: 'ncd@2025'
+        password: 'rms@2025'
       }
   })
 
@@ -93,7 +93,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
       const formData = new FormData()      // Set default password if not provided
       const formDataWithPassword = {
         ...data,
-        password: data.password || 'ncd@2025'
+        password: data.password || 'rms@2025'
       }
 
       Object.entries(formDataWithPassword).forEach(([key, value]) => {
@@ -135,7 +135,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
           region: '',
           organisation: '',
           role: 'User',
-          password: 'ncd@2025'
+          password: 'rms@2025'
         })
 
         // Call onSuccess callback to close modal
@@ -189,7 +189,7 @@ export function AddNewUserForm({ onSuccess }: AddNewUserFormProps) {
           </div>
           <div>
             <p className="text-sm font-medium text-blue-900">Account Setup Information</p>
-            <p className="text-xs text-blue-600">All fields marked with * are required. Default password will be set to "ncd@2025"</p>
+            <p className="text-xs text-blue-600">All fields marked with * are required. Default password will be set to "rms@2025"</p>
           </div>
         </div>
       </div>
