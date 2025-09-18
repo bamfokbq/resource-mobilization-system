@@ -4,6 +4,7 @@ import Navigation from './Navigation'
 import PrimaryButton from './PrimaryButton'
 import MobileNavigation from './MobileNavigation'
 import Avatar from './Avatar'
+import Logo from './Logo';
 
 export default async function Header() {
     const session = await auth();
@@ -12,9 +13,7 @@ export default async function Header() {
     return (
         <header className={`relative flex-shrink-0 bg-white shadow-md p-4 flex justify-between items-center`}>
             <div className='flex items-center gap-4'>
-                <h1 className='text-navy-blue text-2xl font-black'>
-                    NCD NAVIGATOR
-                </h1>
+                <Logo />
                 {/* <Image
                     src="/path.webp"
                     priority

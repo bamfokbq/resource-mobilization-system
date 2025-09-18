@@ -11,8 +11,8 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  title: "NCD Navigator",
-  description: "A tool to help you navigate the NCD landscape",
+  title: "Resource Mobilization System (RMS)",
+  description: "A platform to manage and mobilize resources effectively.",
 };
 
 export default function RootLayout({
