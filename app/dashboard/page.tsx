@@ -233,13 +233,22 @@ export default async function UserDashboardPage() {
           </h1>
           <p className="text-gray-600 mt-2">Comprehensive survey insights and predictions</p>
         </div>
-        <Link
-          href="/dashboard/surveys/form"
-          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
-        >
-          <RiSurveyLine size={20} />
-          Start New Mapping
-        </Link>
+        <div className='flex flex-col md:flex-row gap-4'>
+          <Link
+            href="/dashboard/partner-mapping/form"
+            className="bg-gradient-to-r from-green-600 to-yellow-500 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+          >
+            <RiSurveyLine size={20} />
+            Start Partner Mapping
+          </Link>
+          <Link
+            href="/dashboard/surveys/form"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+          >
+            <RiSurveyLine size={20} />
+            Start NCD Mapping
+          </Link>
+        </div>
       </div>
 
       {/* Enhanced Stats Cards - Stream in first (fastest) */}
