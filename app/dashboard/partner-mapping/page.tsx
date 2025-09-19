@@ -11,6 +11,9 @@ import { getPartnerMappings } from '@/actions/partnerMappingActions';
 import { toast } from 'sonner';
 import { RiAddLine, RiHistoryLine, RiBarChartLine, RiPieChartLine } from 'react-icons/ri';
 import { PartnerMappingDetailsDrawer } from '@/components/forms/partner-mapping/PartnerMappingDetailsDrawer';
+import PartnerMappingData from '@/components/activities/PartnerMappingData';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Database, BarChart3 } from 'lucide-react';
 
 interface PartnerMapping {
   id: string;
@@ -253,11 +256,48 @@ export default function PartnerMappingsPage() {
         </Link>
       </div>
 
-      {/* Partner Mapping Statistics Cards */}
-      <PartnerMappingStatsSection partnerMappings={partnerMappings} />
+      {/* Main Content with Tabs */}
+      <Tabs defaultValue="survey-data" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2 bg-white shadow-lg">
+          <TabsTrigger value="survey-data" className="flex items-center gap-2">
+            <Database className="w-4 h-4" />
+            Survey-Based Data
+          </TabsTrigger>
+          <TabsTrigger value="my-mappings" className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" />
+            My Mappings
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Partner Mapping Controls Section */}
-      <PartnerMappingControlsSection />
+        {/* Survey-Based Partner Mapping Data */}
+        <TabsContent value="survey-data" className="space-y-6">
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-t-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                  <Database className="w-5 h-5" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Survey-Based Partner Mapping Data</CardTitle>
+                  <p className="text-indigo-100 text-sm mt-1">
+                    Individual organization submissions from surveys that can be used for partner mapping
+                  </p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <PartnerMappingData />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* My Partner Mapping Submissions */}
+        <TabsContent value="my-mappings" className="space-y-6">
+          {/* Partner Mapping Statistics Cards */}
+          <PartnerMappingStatsSection partnerMappings={partnerMappings} />
+
+          {/* Partner Mapping Controls Section */}
+          <PartnerMappingControlsSection />
 
       {/* Partner Mapping History List */}
       {partnerMappings.length === 0 ? (
@@ -402,6 +442,8 @@ export default function PartnerMappingsPage() {
           ))}
         </div>
       )}
+        </TabsContent>
+      </Tabs>
 
       {/* Partner Mapping Details Drawer */}
       <PartnerMappingDetailsDrawer

@@ -7,7 +7,8 @@ import {
   getSectorData,
   getFundingData,
   getStakeholderDetails,
-  getRegionActivityTotals
+  getRegionActivityTotals,
+  getPartnerMappingData
 } from '@/actions'
 
 // Generic hook interface
@@ -278,6 +279,40 @@ export function useRegionActivityTotals(): UseSurveyDataReturn<any> {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
       setError(errorMessage)
       console.error('Error fetching region activity totals:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  return { data, isLoading, error, refetch: fetchData }
+}
+
+// Partner Mapping Data Hook
+export function usePartnerMappingData(): UseSurveyDataReturn<any[]> {
+  const [data, setData] = useState<any[] | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      
+      const result = await getPartnerMappingData()
+      
+      if (result.success && result.data) {
+        setData(result.data)
+      } else {
+        setError(result.message || 'Failed to fetch partner mapping data')
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+      setError(errorMessage)
+      console.error('Error fetching partner mapping data:', err)
     } finally {
       setIsLoading(false)
     }

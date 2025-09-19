@@ -31,6 +31,7 @@ export {
     getFundingData,
     getStakeholderDetails,
     getRegionActivityTotals,
+    getPartnerMappingData,
     invalidateSurveyDataCache,
     invalidateAllSurveyDataCaches
 } from './surveyDataActions'

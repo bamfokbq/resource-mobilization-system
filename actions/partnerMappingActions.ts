@@ -275,3 +275,56 @@ export async function getPartnerMappings(): Promise<{
     };
   }
 }
+
+export async function getAllPartnerMappings(): Promise<{
+  success: boolean;
+  partnerMappings?: any[];
+  message?: string;
+}> {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: 'Authentication required',
+      };
+    }
+
+    // Check if user is admin
+    if (session.user.role !== 'Admin') {
+      return {
+        success: false,
+        message: 'Admin access required',
+      };
+    }
+
+    const db = await getDb();
+    const partnerMappingsCollection = db.collection('partner_mappings');
+    
+    // Get all partner mappings from all users
+    const partnerMappings = await partnerMappingsCollection.find({}).sort({ createdAt: -1 }).toArray();
+
+    // Serialize MongoDB objects for client consumption
+    const serializedPartnerMappings = partnerMappings.map(mapping => ({
+      id: mapping._id.toString(),
+      userId: mapping.userId,
+      data: mapping.data,
+      createdAt: mapping.createdAt instanceof Date ? mapping.createdAt.toISOString() : new Date(mapping.createdAt).toISOString(),
+      updatedAt: mapping.updatedAt instanceof Date ? mapping.updatedAt.toISOString() : new Date(mapping.updatedAt).toISOString(),
+      status: mapping.status,
+    }));
+
+    return {
+      success: true,
+      partnerMappings: serializedPartnerMappings,
+    };
+
+  } catch (error) {
+    console.error('Error getting all partner mappings:', error);
+    return {
+      success: false,
+      message: 'Failed to load partner mappings. Please try again.',
+    };
+  }
+}
