@@ -2,6 +2,7 @@ import { MdOutlinePoll } from "react-icons/md"
 import { FiUsers } from "react-icons/fi"
 import { BsCalendar3 } from "react-icons/bs"
 import { AiOutlineProject } from "react-icons/ai"
+import { Network, BarChart3, Settings, Activity } from "lucide-react"
 import regionsData from './regions.json';
 
 const NAVIGATION = [
@@ -32,25 +33,25 @@ const FEATURES = [
         id: 1,
         title: "Stakehoder Mapping",
         description: "Identify who is doing what, where, and for whom.",
-        icon: "/mind-mapping.svg",
+        icon: Network,
     },
     {
         id: 2,
         title: "Data Visualisation",
         description: "Analyse and understand NCD service distribution.",
-        icon: "/business-analysis.svg",
+        icon: BarChart3,
     },
     {
         id: 3,
         title: "Resource Optimisation",
         description: "Prioritise investments effectively.",
-        icon: "/resource-optimization.svg",
+        icon: Settings,
     },
     {
         id: 4,
         title: "Real-Time Reporting",
         description: "Access live updates and metrics from stakeholders.",
-        icon: "/real-time-reporting.svg",
+        icon: Activity,
     }
 ]
 

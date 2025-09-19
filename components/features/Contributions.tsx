@@ -1,7 +1,7 @@
 import React from 'react'
 import SectionTitle from '../shared/SectionTitle'
 import { RESOURCES_LINK } from '@/constant'
-import Image from 'next/image'
+import { HandHeart } from 'lucide-react'
 
 export default function Contributions() {
     return (
@@ -12,7 +12,7 @@ export default function Contributions() {
                     <div className='h-full w-full bg-ghs-green rounded-[1.5rem_0.5rem_1.5rem_0.5rem]'>
                     </div>
                     <div className='h-full w-full flex items-center justify-center bg-white absolute -top-4 -right-4 rounded-[1.5rem_0.5rem_1.5rem_0.5rem]'>
-                        <Image src='/contribute-icon.svg' alt='Contribute' height={200} width={200} />
+                        <HandHeart size={200} className="text-ghs-green" />
                     </div>
                 </div>
                 <div className='w-full flex flex-col gap-6 justify-between'>
