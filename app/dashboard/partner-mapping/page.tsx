@@ -11,7 +11,7 @@ import { getPartnerMappings } from '@/actions/partnerMappingActions';
 import { toast } from 'sonner';
 import { RiAddLine, RiHistoryLine, RiBarChartLine, RiPieChartLine } from 'react-icons/ri';
 import { PartnerMappingDetailsDrawer } from '@/components/forms/partner-mapping/PartnerMappingDetailsDrawer';
-import PartnerMappingData from '@/components/activities/PartnerMappingData';
+import UserPartnerMappingData from '@/components/activities/UserPartnerMappingData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Database, BarChart3 } from 'lucide-react';
 
@@ -285,8 +285,8 @@ export default function PartnerMappingsPage() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-0">
-              <PartnerMappingData />
+            <CardContent className="p-6">
+              <UserPartnerMappingData />
             </CardContent>
           </Card>
         </TabsContent>
