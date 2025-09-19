@@ -1,6 +1,7 @@
 import { getUserSurveys, getSurveyAnalytics, getUserDraft, getUserSurveyStatistics } from '@/actions/surveyActions';
 import { auth } from '@/auth';
 import ActiveSurveyCard from '@/components/dashboard/ActiveSurveyCard';
+import PartnerMappingSummary from '@/components/dashboard/PartnerMappingSummary';
 import RegionalInsights from '@/components/dashboard/RegionalInsights';
 import SurveyMetricsChart from '@/components/dashboard/SurveyMetricsChart';
 import UserStatsCard from '@/components/dashboard/UserStatsCard';
@@ -10,7 +11,8 @@ import {
   ChartSkeleton,
   RegionalInsightsSkeleton,
   ActiveSurveysSkeleton,
-  SubmittedSurveysTableSkeleton
+  SubmittedSurveysTableSkeleton,
+  PartnerMappingSummarySkeleton
 } from '@/components/ui/loading-skeleton';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -266,7 +268,12 @@ export default async function UserDashboardPage() {
         <RegionalInsightsSection userId={session.user.id} />
       </Suspense>
 
-      {/* Active Surveys Section - Stream in fourth */}
+      {/* Partner Mapping Summary - Stream in fourth */}
+      <Suspense fallback={<PartnerMappingSummarySkeleton />}>
+        <PartnerMappingSummary />
+      </Suspense>
+
+      {/* Active Surveys Section - Stream in fifth */}
       <Suspense fallback={<ActiveSurveysSkeleton />}>
         <ActiveSurveysSection />
       </Suspense>
