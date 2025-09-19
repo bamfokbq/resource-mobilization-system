@@ -6,7 +6,7 @@ import { Credentials as CustomCredentials } from "./types/auth"
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/auth/signin",
-    signOut: "/auth/signout",
+    signOut: "/",
     error: "/auth/error",
     verifyRequest: "/auth/verify-request",
   },
