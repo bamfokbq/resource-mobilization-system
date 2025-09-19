@@ -20,15 +20,16 @@ export default function StakeholderDetails() {
       }
     }
 
-    const totalStakeholders = stakeholderData.length
+    // Count unique organizations (not individual submissions)
+    const uniqueOrganizations = new Set(stakeholderData.map(s => s.name)).size
     const organizationTypes = new Set(stakeholderData.map(s => s.type)).size
-    const activeProjects = stakeholderData.reduce((sum, s) => sum + (s.projectsInvolved || 0), 0)
+    const totalSubmissions = stakeholderData.length // Each record is now 1 submission
     const regionalCoverage = new Set(stakeholderData.map(s => s.region)).size
 
     return {
-      totalStakeholders,
+      totalStakeholders: uniqueOrganizations,
       organizationTypes,
-      activeProjects,
+      activeProjects: totalSubmissions, // Now represents total submissions
       regionalCoverage
     }
   }, [stakeholderData])
@@ -88,9 +89,9 @@ export default function StakeholderDetails() {
             <ContactIcon className="w-6 h-6" />
           </div>
           <div>
-            <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Stakeholder Details</h1>
+            <h1 className='text-2xl sm:text-3xl lg:text-4xl font-bold mb-2'>Organization Submissions</h1>
             <p className='text-blue-100 text-sm sm:text-base lg:text-lg'>
-              Comprehensive directory and profile information of key stakeholders in NCD activities
+              Individual organization submissions and participation in NCD activities
             </p>
           </div>
         </div>
@@ -100,9 +101,9 @@ export default function StakeholderDetails() {
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <UsersIcon className="w-5 h-5 text-blue-200" />
-              <span className="text-blue-200 text-sm font-medium">Total Stakeholders</span>
+              <span className="text-blue-200 text-sm font-medium">Unique Organizations</span>
             </div>
-            <div className="text-2xl font-bold">{computedData.totalStakeholders}+</div>
+            <div className="text-2xl font-bold">{computedData.totalStakeholders}</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
@@ -114,9 +115,9 @@ export default function StakeholderDetails() {
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
               <UsersIcon className="w-5 h-5 text-blue-200" />
-              <span className="text-blue-200 text-sm font-medium">Active Projects</span>
+              <span className="text-blue-200 text-sm font-medium">Total Submissions</span>
             </div>
-            <div className="text-2xl font-bold">{computedData.activeProjects}+</div>
+            <div className="text-2xl font-bold">{computedData.activeProjects}</div>
           </div>
           <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-2">
@@ -135,9 +136,9 @@ export default function StakeholderDetails() {
               <UsersIcon className="w-5 h-5" />
             </div>
             <div>
-              <CardTitle className="text-xl">Stakeholder Directory & Profiles</CardTitle>
+              <CardTitle className="text-xl">Organization Submissions Directory</CardTitle>
               <CardDescription className="text-teal-100">
-                Detailed information about organizations and individuals contributing to NCD initiatives
+                Individual organization submissions and participation tracking for NCD initiatives
               </CardDescription>
             </div>
           </div>
@@ -154,10 +155,10 @@ export default function StakeholderDetails() {
                 <div className="w-20 h-20 bg-teal-100 rounded-full mx-auto flex items-center justify-center">
                   <UsersIcon className="w-10 h-10 text-teal-600" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800">Comprehensive Stakeholder Database</h3>
+                <h3 className="text-2xl font-bold text-gray-800">Organization Submissions Database</h3>
                 <p className="text-gray-600 max-w-2xl mx-auto">
-                  This section provides detailed profiles of key stakeholders, organizations, and partners 
-                  involved in Non-Communicable Disease (NCD) prevention, management, and research activities across Ghana.
+                  This section tracks individual organization submissions and participation in 
+                  Non-Communicable Disease (NCD) prevention, management, and research activities across Ghana.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                   <div className="bg-white rounded-lg p-4 shadow-sm">

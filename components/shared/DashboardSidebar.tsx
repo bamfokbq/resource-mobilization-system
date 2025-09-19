@@ -54,9 +54,9 @@ export default function DashboardSidebar({
             toast.dismiss(loadingToast)
             toast.success('Signed out successfully', {
                 icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
-                description: 'Redirecting you to login...'
+                description: 'Redirecting you to home page...'
             })
-            router.push(redirectPath as Route)
+            router.push('/')
         } catch (error) {
             toast.dismiss(loadingToast)
             toast.error('Failed to sign out', {

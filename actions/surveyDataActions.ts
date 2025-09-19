@@ -629,47 +629,36 @@ async function _getStakeholderDetailsInternal(): Promise<{
     const stakeholderData = await surveysCollection.aggregate([
       { $match: { status: 'submitted' } },
       {
-        $group: {
-          _id: '$organisationInfo.organisationName',
-          sector: { $first: '$organisationInfo.sector' },
-          region: { $first: '$organisationInfo.region' },
-          email: { $first: '$organisationInfo.email' },
-          phone: { $first: '$organisationInfo.hqPhoneNumber' },
-          website: { $first: '$organisationInfo.website' },
-          projects: { $push: '$projectInfo.projectName' },
-          ncds: { $addToSet: '$projectInfo.targetedNCDs' }
-        }
-      },
-      {
         $project: {
           id: { $toString: '$_id' },
-          name: '$_id',
+          name: '$organisationInfo.organisationName',
           type: {
             $switch: {
               branches: [
-                { case: { $eq: ['$sector', 'Ghana Government'] }, then: 'Government' },
-                { case: { $regexMatch: { input: '$sector', regex: /NGO/i } }, then: 'NGO' },
-                { case: { $eq: ['$sector', 'Private'] }, then: 'Private' },
-                { case: { $regexMatch: { input: '$sector', regex: /Academic|Research/i } }, then: 'Academic' }
+                { case: { $eq: ['$organisationInfo.sector', 'Ghana Government'] }, then: 'Government' },
+                { case: { $regexMatch: { input: '$organisationInfo.sector', regex: /NGO/i } }, then: 'NGO' },
+                { case: { $eq: ['$organisationInfo.sector', 'Private'] }, then: 'Private' },
+                { case: { $regexMatch: { input: '$organisationInfo.sector', regex: /Academic|Research/i } }, then: 'Academic' }
               ],
               default: 'Other'
             }
           },
-          sector: 1,
-          region: 1,
+          sector: '$organisationInfo.sector',
+          region: '$organisationInfo.region',
           contact: {
-            phone: '$phone',
-            email: '$email',
-            website: '$website'
+            phone: '$organisationInfo.hqPhoneNumber',
+            email: '$organisationInfo.email',
+            website: '$organisationInfo.website'
           },
-          activities: { $slice: ['$projects', 3] },
-          description: { $concat: ['Leading organization in ', '$sector', ' sector'] },
+          activities: ['$projectInfo.projectName'],
+          description: { $concat: ['Leading organization in ', '$organisationInfo.sector', ' sector'] },
           fundingContribution: { $concat: [{ $literal: '$' }, { $toString: { $multiply: [{ $rand: {} }, 2000000] } }] },
-          projectsInvolved: { $size: '$projects' }
+          projectsInvolved: 1,
+          submissionDate: '$submissionDate',
+          userId: '$userId'
         }
       },
-      { $limit: 10 },
-      { $sort: { projectsInvolved: -1 } }
+      { $sort: { submissionDate: -1 } }
     ]).toArray()
 
     return {
@@ -754,6 +743,86 @@ export const getRegionActivityTotals = unstable_cache(
   {
     revalidate: 300,
     tags: ['region-activity-totals', 'surveys']
+  }
+)
+
+// 9. Partner Mapping Data from Survey Submissions
+async function _getPartnerMappingDataInternal(): Promise<{
+  success: boolean
+  data?: any[]
+  message: string
+}> {
+  try {
+    const db = await getDb()
+    const surveysCollection = db.collection('surveys')
+
+    // First check if there are any surveys at all
+    const totalSurveys = await surveysCollection.countDocuments()
+    console.log('Total surveys in database:', totalSurveys)
+    
+    const submittedSurveys = await surveysCollection.countDocuments({ status: 'submitted' })
+    console.log('Submitted surveys:', submittedSurveys)
+
+    const partnerMappingData = await surveysCollection.aggregate([
+      { $match: { status: 'submitted' } },
+      {
+        $project: {
+          id: { $toString: '$_id' },
+          organization: '$organisationInfo.organisationName',
+          projectName: '$projectInfo.projectName',
+          projectRegion: '$organisationInfo.region',
+          district: '$organisationInfo.district',
+          disease: '$projectInfo.targetedNCDs',
+          workNature: {
+            $switch: {
+              branches: [
+                { case: { $regexMatch: { input: '$projectInfo.projectName', regex: /research/i } }, then: 'RESEARCH' },
+                { case: { $regexMatch: { input: '$projectInfo.projectName', regex: /program/i } }, then: 'PROGRAM' },
+                { case: { $regexMatch: { input: '$projectInfo.projectName', regex: /initiative/i } }, then: 'INITIATIVE' },
+                { case: { $regexMatch: { input: '$projectInfo.projectName', regex: /project/i } }, then: 'PROJECT' }
+              ],
+              default: 'OTHER'
+            }
+          },
+          year: { $year: '$submissionDate' },
+          sector: '$organisationInfo.sector',
+          contact: {
+            phone: '$organisationInfo.hqPhoneNumber',
+            email: '$organisationInfo.email',
+            website: '$organisationInfo.website'
+          },
+          submissionDate: '$submissionDate',
+          userId: '$userId',
+          // Partner information - this would need to be extracted from project activities or partnerships
+          partner: { $literal: 'To be mapped' },
+          role: { $literal: 'To be defined' }
+        }
+      },
+      { $sort: { submissionDate: -1 } }
+    ]).toArray()
+
+    console.log('Partner mapping data found:', partnerMappingData.length)
+
+    return {
+      success: true,
+      data: partnerMappingData,
+      message: 'Partner mapping data retrieved successfully'
+    }
+  } catch (error) {
+    console.error('Error fetching partner mapping data:', error)
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to fetch partner mapping data'
+    }
+  }
+}
+
+export const getPartnerMappingData = unstable_cache(
+  _getPartnerMappingDataInternal,
+  ['partner-mapping-data'],
+  {
+    revalidate: 300,
+    tags: ['partner-mapping-data', 'surveys']
   }
 )
 

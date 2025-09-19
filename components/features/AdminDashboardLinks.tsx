@@ -16,6 +16,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
         { path: '/admin/dashboard/resources', label: 'Resources', icon: Folder },
         // { path: '/admin/dashboard/surveys', label: 'Surveys', icon: FileText },
         { path: '/admin/dashboard/surveys', label: 'Mapping', icon: FileText },
+        { path: '/admin/dashboard/partner-mapping', label: 'Partner Mapping', icon: FileText },
         // { path: '/admin/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
         { path: '/admin/dashboard/profile', label: 'Profile', icon: UserRoundPen },
     ]
@@ -23,7 +24,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
     // Add Settings link only for system owner
     const navigationItems = isSystemOwner 
         ? [
-            ...baseNavigationItems.slice(0, 6), // First 6 items
+            ...baseNavigationItems.slice(0, 7), // First 6 items
             { path: '/admin/dashboard/settings', label: 'Settings', icon: Settings },
             ...baseNavigationItems.slice(6) // Profile item
           ]

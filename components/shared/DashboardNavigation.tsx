@@ -61,38 +61,28 @@ export default function DashboardNavigation({
     const handleSignOut = async () => {
         setLoading(true)
         
-        if (isAdmin) {
-            const loadingToast = toast.loading('Signing out...', {
-                icon: <Loader2 className="animate-spin" />,
-                description: 'Please wait while we sign you out'
-            })
+        const loadingToast = toast.loading('Signing out...', {
+            icon: <Loader2 className="animate-spin" />,
+            description: 'Please wait while we sign you out'
+        })
 
-            try {
-                await signOut({ redirect: false })
-                toast.dismiss(loadingToast)
-                toast.success('Signed out successfully', {
-                    icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
-                    description: 'Redirecting you to login...'
-                })
-                router.push("/admin")
-            } catch (error) {
-                toast.dismiss(loadingToast)
-                toast.error('Failed to sign out', {
-                    icon: <AlertCircle className="text-red-500 h-5 w-5" />,
-                    description: 'Please try again'
-                })
-                console.error('Sign out error:', error)
-            } finally {
-                setLoading(false)
-            }
-        } else {
-            try {
-                await signOut({ redirect: true, callbackUrl: redirectPath })
-            } catch (error) {
-                console.error('Sign out error:', error)
-            } finally {
-                setLoading(false)
-            }
+        try {
+            await signOut({ redirect: false })
+            toast.dismiss(loadingToast)
+            toast.success('Signed out successfully', {
+                icon: <CheckCircle2 className="text-green-500 h-5 w-5" />,
+                description: 'Redirecting you to home page...'
+            })
+            router.push('/')
+        } catch (error) {
+            toast.dismiss(loadingToast)
+            toast.error('Failed to sign out', {
+                icon: <AlertCircle className="text-red-500 h-5 w-5" />,
+                description: 'Please try again'
+            })
+            console.error('Sign out error:', error)
+        } finally {
+            setLoading(false)
         }
     }
 
