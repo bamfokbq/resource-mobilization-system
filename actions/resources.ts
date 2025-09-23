@@ -206,8 +206,8 @@ async function uploadToLinode(file: File, resourceId: string): Promise<string> {
     // Return the Linode Object Storage URL
     return `https://${process.env.LINODE_BUCKET_NAME}.${process.env.LINODE_REGION}.linodeobjects.com/${s3Key}`
   } catch (error) {
-    console.error('Error uploading to Linode Object Storage:', error)
-    throw new Error('Failed to upload file to Linode Object Storage')
+    console.error('Error uploading:', error)
+    throw new Error('Failed to upload file')
   }
 }
 
