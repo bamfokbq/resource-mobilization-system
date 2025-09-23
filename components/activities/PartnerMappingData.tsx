@@ -32,7 +32,6 @@ export default function PartnerMappingData() {
   const [partnerMappingData, setPartnerMappingData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [selectedWorkNature, setSelectedWorkNature] = useState<string>("all")
   const [selectedRegion, setSelectedRegion] = useState<string>("all")
   const [selectedMapping, setSelectedMapping] = useState<any>(null)
 
@@ -100,7 +99,6 @@ export default function PartnerMappingData() {
     }
 
     let filtered = partnerMappingData.filter(item => {
-      const workNatureMatch = selectedWorkNature === "all" || item.workNature === selectedWorkNature
       const regionMatch = selectedRegion === "all" || item.projectRegion === selectedRegion
       const searchMatch = searchTerm === "" || 
         item.organization.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -109,7 +107,7 @@ export default function PartnerMappingData() {
         item.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (Array.isArray(item.disease) ? item.disease.join(' ').toLowerCase() : item.disease.toLowerCase()).includes(searchTerm.toLowerCase())
       
-      return workNatureMatch && regionMatch && searchMatch
+      return regionMatch && searchMatch
     })
 
     // Sort the filtered data
@@ -139,7 +137,7 @@ export default function PartnerMappingData() {
     })
 
     return filtered
-  }, [partnerMappingData, selectedWorkNature, selectedRegion, searchTerm, sortField, sortDirection])
+  }, [partnerMappingData, selectedRegion, searchTerm, sortField, sortDirection])
 
   // Pagination logic
   const totalPages = Math.ceil(filteredAndSortedData.length / itemsPerPage)
@@ -153,31 +151,25 @@ export default function PartnerMappingData() {
       return {
         totalSubmissions: 0,
         uniqueOrganizations: 0,
-        workNatureTypes: 0,
+        uniquePartners: 0,
         regionalCoverage: 0
       }
     }
 
     const totalSubmissions = filteredAndSortedData.length
     const uniqueOrganizations = new Set(filteredAndSortedData.map(item => item.organization)).size
-    const workNatureTypes = new Set(filteredAndSortedData.map(item => item.workNature)).size
+    const uniquePartners = new Set(filteredAndSortedData.map(item => item.partner)).size
     const regionalCoverage = new Set(filteredAndSortedData.map(item => item.projectRegion)).size
 
     return {
       totalSubmissions,
       uniqueOrganizations,
-      workNatureTypes,
+      uniquePartners,
       regionalCoverage
     }
   }, [filteredAndSortedData])
 
-  // Get unique work nature types and regions for filters
-  const workNatureTypes = useMemo(() => {
-    if (!partnerMappingData) return []
-    const types = new Set(partnerMappingData.map(item => item.workNature))
-    return Array.from(types).sort()
-  }, [partnerMappingData])
-
+  // Get unique regions for filters
   const regions = useMemo(() => {
     if (!partnerMappingData) return []
     const regionSet = new Set(partnerMappingData.map(item => item.projectRegion))
@@ -185,17 +177,6 @@ export default function PartnerMappingData() {
   }, [partnerMappingData])
 
   // Helper functions
-  const getWorkNatureBadgeColor = (workNature: string) => {
-    switch (workNature) {
-      case "PROJECT": return "bg-blue-100 text-blue-800 border-blue-200"
-      case "PROGRAM": return "bg-green-100 text-green-800 border-green-200"
-      case "INITIATIVE": return "bg-purple-100 text-purple-800 border-purple-200"
-      case "RESEARCH": return "bg-orange-100 text-orange-800 border-orange-200"
-      case "OTHER": return "bg-gray-100 text-gray-800 border-gray-200"
-      default: return "bg-gray-100 text-gray-800 border-gray-200"
-    }
-  }
-
   const handleSort = (field: string) => {
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
@@ -226,11 +207,10 @@ export default function PartnerMappingData() {
 
   const handleExport = () => {
     const csvContent = [
-      ['Organization', 'Project Name', 'Work Nature', 'Region', 'Disease', 'Partner', 'Role', 'Year', 'Submission Date'],
+      ['Organization', 'Project Name', 'Region', 'Disease', 'Partner', 'Role', 'Year', 'Submission Date'],
       ...filteredAndSortedData.map(item => [
         item.organization,
         item.projectName,
-        item.workNature,
         item.projectRegion,
         Array.isArray(item.disease) ? item.disease.join(', ') : item.disease,
         item.partner,
@@ -350,24 +330,7 @@ export default function PartnerMappingData() {
             </div>
 
             {/* Filter Controls */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-                  Work Nature
-                </label>
-                <Select value={selectedWorkNature} onValueChange={setSelectedWorkNature}>
-                  <SelectTrigger className="h-12 border-2 border-gray-200 hover:border-blue-300 transition-colors">
-                    <SelectValue placeholder="Select work nature" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Work Nature</SelectItem>
-                    {workNatureTypes.map(type => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                   <div className="w-4 h-4 bg-green-500 rounded-full"></div>
@@ -460,9 +423,9 @@ export default function PartnerMappingData() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-3xl font-bold">{summaryStats.workNatureTypes}</div>
-                  <div className="text-purple-100 mt-1 font-medium">Work Nature Types</div>
-                  <div className="text-xs text-purple-200 mt-2">Different types of work</div>
+                <div className="text-3xl font-bold">{summaryStats.uniquePartners}</div>
+                <div className="text-purple-100 mt-1 font-medium">Unique Partners</div>
+                <div className="text-xs text-purple-200 mt-2">Partner organizations</div>
                 </div>
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                   <TargetIcon className="w-6 h-6" />
@@ -577,7 +540,7 @@ export default function PartnerMappingData() {
                       />
                     </TableHead>
                     <TableHead 
-                      className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group"
+                    className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group w-1/4"
                       onClick={() => handleSort('organization')}
                     >
                       <div className="flex items-center gap-2">
@@ -588,7 +551,7 @@ export default function PartnerMappingData() {
                       </div>
                     </TableHead>
                     <TableHead 
-                      className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group"
+                    className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group w-1/4"
                       onClick={() => handleSort('projectName')}
                     >
                       <div className="flex items-center gap-2">
@@ -599,18 +562,7 @@ export default function PartnerMappingData() {
                       </div>
                     </TableHead>
                     <TableHead 
-                      className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group"
-                      onClick={() => handleSort('workNature')}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold tracking-wide">Work Nature</span>
-                        <ArrowUpDownIcon className={`w-4 h-4 transition-colors group-hover:text-indigo-600 ${
-                          sortField === 'workNature' ? 'text-indigo-600' : 'text-gray-400'
-                        }`} />
-                      </div>
-                    </TableHead>
-                    <TableHead 
-                      className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group"
+                    className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group w-1/6"
                       onClick={() => handleSort('projectRegion')}
                     >
                       <div className="flex items-center gap-2">
@@ -621,7 +573,7 @@ export default function PartnerMappingData() {
                       </div>
                     </TableHead>
                     <TableHead 
-                      className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group"
+                    className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group w-1/6"
                       onClick={() => handleSort('disease')}
                     >
                       <div className="flex items-center gap-2">
@@ -632,7 +584,7 @@ export default function PartnerMappingData() {
                       </div>
                     </TableHead>
                     <TableHead 
-                      className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group"
+                    className="font-bold text-gray-700 cursor-pointer hover:bg-gray-200 transition-all duration-200 px-4 py-4 group w-1/8"
                       onClick={() => handleSort('year')}
                     >
                       <div className="flex items-center gap-2">
@@ -642,7 +594,7 @@ export default function PartnerMappingData() {
                         }`} />
                       </div>
                     </TableHead>
-                    <TableHead className="font-bold text-gray-700 px-4 py-4">
+                  <TableHead className="font-bold text-gray-700 px-4 py-4 w-1/8">
                       <span className="text-sm font-semibold tracking-wide">Actions</span>
                     </TableHead>
                   </TableRow>
@@ -650,7 +602,7 @@ export default function PartnerMappingData() {
                 <TableBody>
                   {paginatedData.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={8} className="px-4 py-16 text-center">
+                    <TableCell colSpan={7} className="px-4 py-16 text-center">
                         <div className="flex flex-col items-center gap-4">
                           <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
                             <BuildingIcon className="w-10 h-10 text-gray-400" />
@@ -658,16 +610,15 @@ export default function PartnerMappingData() {
                           <div>
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">No Partner Mappings Found</h3>
                             <p className="text-gray-500 mb-4">
-                              {searchTerm || selectedWorkNature !== "all" || selectedRegion !== "all"
+                            {searchTerm || selectedRegion !== "all"
                                 ? "Try adjusting your search criteria or filters to find what you're looking for."
                                 : "No partner mapping submissions have been submitted yet."}
                             </p>
-                            {(searchTerm || selectedWorkNature !== "all" || selectedRegion !== "all") && (
+                          {(searchTerm || selectedRegion !== "all") && (
                               <Button
                                 variant="outline"
                                 onClick={() => {
                                   setSearchTerm("")
-                                  setSelectedWorkNature("all")
                                   setSelectedRegion("all")
                                 }}
                                 className="text-indigo-600 border-indigo-200 hover:bg-indigo-50"
@@ -718,12 +669,7 @@ export default function PartnerMappingData() {
                           <div className="text-xs text-gray-500 mt-1">Project</div>
                         </div>
                       </TableCell>
-                      <TableCell className="px-4 py-4">
-                        <Badge className={`${getWorkNatureBadgeColor(item.workNature)} font-medium px-3 py-1 rounded-full shadow-sm transition-all duration-200 group-hover:shadow-md`}>
-                          {item.workNature}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="px-4 py-4">
+                        <TableCell className="px-4 py-4">
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
                             <MapPinIcon className="w-3 h-3 text-green-600" />
@@ -787,10 +733,7 @@ export default function PartnerMappingData() {
                                   <div className="p-4 bg-blue-50 rounded-lg">
                                     <h3 className="font-semibold text-blue-800 mb-2">Project Information</h3>
                                     <p className="text-blue-700 font-medium">{selectedMapping.projectName}</p>
-                                    <div className="flex items-center gap-2 mt-2">
-                                      <Badge className={getWorkNatureBadgeColor(selectedMapping.workNature)}>
-                                        {selectedMapping.workNature}
-                                      </Badge>
+                                        <div className="flex items-center gap-2 mt-2">
                                       <span className="text-sm text-blue-600">{selectedMapping.year}</span>
                                     </div>
                                   </div>
