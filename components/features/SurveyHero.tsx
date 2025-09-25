@@ -17,7 +17,7 @@ export default function ResourceMobilizationHero() {
                     <div className='flex gap-5 justify-between md:justify-start'>
                         <PrimaryButton
                             href="/auth/signin"
-                            text="Start Mobilizing"
+                            text="Start Mapping"
                             bgColor="bg-pine-yellow"
                             textColor="text-navy-blue"
                         />
