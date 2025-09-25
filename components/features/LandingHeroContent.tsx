@@ -4,7 +4,7 @@ import OutlineButton from '../shared/OutlineButton'
 
 export default function LandingHeroContent() {
     return (
-        <section className='md:w-[60%] flex flex-col gap-5'>
+        <section className='md:w-[60%] bg-ghs-green flex flex-col gap-5 justify-center p-5 md:p-10'>
             <div className='text-white flex flex-col gap-3'>
                 <h1 className='text-center md:text-left text-3xl md:text-4xl xl:text-5xl leading-snug font-extrabold tracking-tight'>
                     Quality Data for Efficient Resource Mobilisation in the Ghana Health Service.

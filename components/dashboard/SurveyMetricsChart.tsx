@@ -33,6 +33,7 @@ interface SurveyStatus {
   name: string;
   value: number;
   color: string;
+  [key: string]: any; // Index signature for recharts compatibility
 }
 
 interface SurveyMetricsChartProps {

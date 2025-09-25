@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
@@ -649,7 +650,7 @@ export default function PartnerMappingData() {
                         }`} />
                       </div>
                     </TableHead>
-                  <TableHead className="font-bold text-green-800 px-6 py-6 w-1/8">
+                  <TableHead className="font-bold text-green-800 px-6 py-6 w-16">
                       <span className="text-sm font-bold tracking-wide">Actions</span>
                     </TableHead>
                   </TableRow>
@@ -750,40 +751,45 @@ export default function PartnerMappingData() {
                         </div>
                       </TableCell>
                       <TableCell className="px-6 py-6">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewMapping(item.mappingId)}
-                            className="flex items-center gap-2 bg-green-50 hover:bg-green-100 border-green-200 hover:border-green-300 text-green-700 hover:text-green-800 transition-all duration-200 shadow-sm hover:shadow-md"
-                          >
-                            <EyeIcon className="w-4 h-4" />
-                            <span className="font-medium">View</span>
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEditMapping(item.mappingId)}
-                            className="flex items-center gap-2 bg-yellow-50 hover:bg-yellow-100 border-yellow-200 hover:border-yellow-300 text-yellow-700 hover:text-yellow-800 transition-all duration-200 shadow-sm hover:shadow-md"
-                          >
-                            <EditIcon className="w-4 h-4" />
-                            <span className="font-medium">Edit</span>
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDeleteMapping(item.mappingId)}
-                            disabled={isDeleting === item.mappingId}
-                            className="flex items-center gap-2 bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300 text-red-700 hover:text-red-800 transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50"
-                          >
-                            {isDeleting === item.mappingId ? (
-                              <RefreshCw className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <TrashIcon className="w-4 h-4" />
-                            )}
-                            <span className="font-medium">Delete</span>
-                          </Button>
-                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
+                            >
+                              <MoreHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem
+                              onClick={() => handleViewMapping(item.mappingId)}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <EyeIcon className="w-4 h-4 text-blue-600" />
+                              <span>View Details</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleEditMapping(item.mappingId)}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <EditIcon className="w-4 h-4 text-orange-600" />
+                              <span>Edit Mapping</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteMapping(item.mappingId)}
+                              disabled={isDeleting === item.mappingId}
+                              className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
+                            >
+                              {isDeleting === item.mappingId ? (
+                                <RefreshCw className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <TrashIcon className="w-4 h-4" />
+                              )}
+                              <span>Delete Mapping</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                     ))
@@ -839,37 +845,45 @@ export default function PartnerMappingData() {
                             <p className="text-sm text-green-600 font-medium">Organization</p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewMapping(item.mappingId)}
-                            className="h-8 w-8 p-0 bg-green-50 hover:bg-green-100 border-green-200 hover:border-green-300 text-green-700 hover:text-green-800"
-                          >
-                            <EyeIcon className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEditMapping(item.mappingId)}
-                            className="h-8 w-8 p-0 bg-yellow-50 hover:bg-yellow-100 border-yellow-200 hover:border-yellow-300 text-yellow-700 hover:text-yellow-800"
-                          >
-                            <EditIcon className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDeleteMapping(item.mappingId)}
-                            disabled={isDeleting === item.mappingId}
-                            className="h-8 w-8 p-0 bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300 text-red-700 hover:text-red-800 disabled:opacity-50"
-                          >
-                            {isDeleting === item.mappingId ? (
-                              <RefreshCw className="w-4 h-4 animate-spin" />
-                            ) : (
-                              <TrashIcon className="w-4 h-4" />
-                            )}
-                          </Button>
-                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-8 w-8 p-0 border-gray-300 hover:bg-gray-50"
+                            >
+                              <MoreHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem
+                              onClick={() => handleViewMapping(item.mappingId)}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <EyeIcon className="w-4 h-4 text-blue-600" />
+                              <span>View Details</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleEditMapping(item.mappingId)}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <EditIcon className="w-4 h-4 text-orange-600" />
+                              <span>Edit Mapping</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteMapping(item.mappingId)}
+                              disabled={isDeleting === item.mappingId}
+                              className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
+                            >
+                              {isDeleting === item.mappingId ? (
+                                <RefreshCw className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <TrashIcon className="w-4 h-4" />
+                              )}
+                              <span>Delete Mapping</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
 
                       {/* Project Information */}

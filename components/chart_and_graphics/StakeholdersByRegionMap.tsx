@@ -73,9 +73,6 @@ export default function StakeholdersByRegionMap() {
         {/* Enhanced Header Section */}
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="p-3 bg-ghs-green/10 rounded-full">
-              <MapPin className="h-8 w-8 text-ghs-green" />
-            </div>
             <h2 className="text-4xl font-bold text-ghs-green">Stakeholders by Region</h2>
           </div>
           <div className="w-24 h-1 bg-gradient-to-r from-ghs-green to-blue-600 rounded-full mx-auto mb-4"></div>
