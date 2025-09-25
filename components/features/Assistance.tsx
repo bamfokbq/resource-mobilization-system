@@ -7,9 +7,9 @@ import { MdEmail } from "react-icons/md";
 import { motion } from 'motion/react';
 
 const contactInfo = [
-    { icon: <FaUser />, text: "Isaac Tandoh", href: null },
-    { icon: <FaPhone />, text: "Phone: +233 24 235 6456", href: "tel:+233242356456" },
-    { icon: <MdEmail />, text: "Email: isaac.tandoh@ghs.gov.gh", href: "mailto:isaac.tandoh@ghs.gov.gh" }
+    { icon: <FaUser />, text: "Nicholas Nyagblornu", href: null },
+    { icon: <FaPhone />, text: "Phone: 030 398 2351", href: "tel:+2330303982351" },
+    { icon: <MdEmail />, text: "Email: resourcemobilisation@ghs.gov.gh", href: "mailto:resourcemobilisation@ghs.gov.gh" }
 ];
 
 export default function Assistance() {

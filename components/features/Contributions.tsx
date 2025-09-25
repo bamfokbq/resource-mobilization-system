@@ -18,7 +18,7 @@ export default function Contributions() {
                 <div className='w-full flex flex-col gap-6 justify-between'>
                     {RESOURCES_LINK.map((link) => <div key={link.id} className='bg-white shadow-xl h-full flex items-center rounded-xl px-4 py-6'>
                         <div>
-                            <h3>{link.title}</h3>
+                            <h3 className='text-ghs-green font-medium'>{link.title}</h3>
                             <p>{link.description}</p>
                         </div>
                     </div>)}

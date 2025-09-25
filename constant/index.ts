@@ -77,24 +77,30 @@ const FEATURES = [
         icon: BsCalendar3,
     }
 ]
-
+/**
+ * Contribute to improving health service delivery across facilities.
+Researchers & Data Analysts
+Provide evidence through data generation and analysis to strengthen decision-making.
+Development Partners & Donors
+Collaborate on health initiatives, funding, and technical support.
+ */
 const RESOURCES_LINK = [
     {
         id: 1,
         title: "Take the Mapping",
-        description: "Provide insights on NCD-related activities.",
+        description: "Contribute to improving health service delivery across facilities.",
         link: '/survey',
     },
     {
         id: 2,
-        title: "Explore Data",
-        description: "Access and analyse data on NCD services.",
+        title: "Researchers & Data Analysts",
+        description: "Provide evidence through data generation and analysis to strengthen decision-making.",
         link: '/explore-data',
     },
     {
         id: 3,
-        title: "Join as a Partner",
-        description: "Collaborate on initiatives and funding.",
+        title: "Development Partners & Donors",
+        description: "Collaborate on health initiatives, funding, and technical support.",
         link: '/partners',
     }
 ]

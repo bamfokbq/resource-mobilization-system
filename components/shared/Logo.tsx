@@ -7,7 +7,7 @@ export default function Logo() {
       <Link className='flex items-center gap-4' href={'/'}>
       <Image src={'/ghs-official.png'} priority alt='Logo' height={50} width={50} className='w-auto' />
       <h2 className='text-gray-700 font-bold text-xl md:text-2xl flex flex-col'><span>Ghana Health Service</span>
-        <span>Resource Mobilisation System</span>
+        <span>Resource Mobilisation System (RMS)</span>
       </h2>
     </Link>
   )
