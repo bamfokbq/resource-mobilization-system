@@ -203,7 +203,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
     }, [selectedPartnerNameForSheet, processedData]);
 
   return (
-    <Card className="w-full bg-white/90 backdrop-blur-sm border-0 shadow-xl">
+    <Card className="w-full h-[700px] bg-white/90 backdrop-blur-sm border-0 shadow-xl flex flex-col">
       <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
@@ -223,7 +223,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex-1 overflow-hidden">
         {/* Search and Filter Bar */}
         <div className="p-6 pb-4 border-b border-slate-200 bg-slate-50/50">
           <div className="flex flex-col sm:flex-row gap-4">
@@ -269,7 +269,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-auto flex-1">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

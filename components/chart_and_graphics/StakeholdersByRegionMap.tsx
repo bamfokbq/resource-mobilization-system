@@ -69,63 +69,20 @@ export default function StakeholdersByRegionMap() {
 
   return (
     <section className='py-8 px-4 h-fit'>
-      <div className="max-w-7xl mx-auto">
+      <div>
         {/* Enhanced Header Section */}
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="p-3 bg-ghs-green/10 rounded-full">
-              <MapPin className="h-8 w-8 text-ghs-green" />
-            </div>
             <h2 className="text-4xl font-bold text-ghs-green">Stakeholders by Region</h2>
           </div>
           <div className="w-24 h-1 bg-gradient-to-r from-ghs-green to-blue-600 rounded-full mx-auto mb-4"></div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Total Regions</CardTitle>
-              <BarChart3 className="h-4 w-4 text-ghs-green" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-ghs-green">{Object.keys(regionLabels).length}</div>
-              <p className="text-xs text-slate-500">Active regions in Ghana</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Selected Region</CardTitle>
-              <Filter className="h-4 w-4 text-blue-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">
-                {selectedRegionOnMap ? '1' : 'All'}
-              </div>
-              <p className="text-xs text-slate-500">
-                {selectedRegionOnMap ? `Filtered by ${selectedRegionOnMap}` : 'Viewing all regions'}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Interactive Map</CardTitle>
-              <Users className="h-4 w-4 text-purple-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-purple-600">Live</div>
-              <p className="text-xs text-slate-500">Click regions to filter data</p>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Main Content Layout */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
           {/* Map Section */}
-          <div className="xl:col-span-1">
-            <Card className="h-full bg-white/90 backdrop-blur-sm border-0 shadow-xl">
+          <div className="xl:col-span-2">
+            <Card className="h-full mx-auto">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xl font-semibold text-slate-800 flex items-center gap-2">
@@ -175,7 +132,7 @@ export default function StakeholdersByRegionMap() {
           </div>
 
           {/* Table Section */}
-          <div className="xl:col-span-1">
+          <div className="xl:col-span-3">
             <PartnersTable selectedRegion={selectedRegionOnMap} />
           </div>
         </div>
