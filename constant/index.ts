@@ -12,7 +12,7 @@ const NAVIGATION = [
     },
     {
         name: 'Features',
-        href: '/#features',
+        href: '/features',
     },
     {
         name: 'Survey',

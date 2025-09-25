@@ -15,7 +15,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
         { path: '/admin/dashboard/users', label: 'Users', icon: Users },
         { path: '/admin/dashboard/resources', label: 'Resources', icon: Folder },
         // { path: '/admin/dashboard/surveys', label: 'Surveys', icon: FileText },
-        { path: '/admin/dashboard/surveys', label: 'Mapping', icon: FileText },
+        // { path: '/admin/dashboard/surveys', label: 'Mapping', icon: FileText },
         { path: '/admin/dashboard/partner-mapping', label: 'Partners', icon: Handshake },
         // { path: '/admin/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
         { path: '/admin/dashboard/profile', label: 'Profile', icon: UserRoundPen },

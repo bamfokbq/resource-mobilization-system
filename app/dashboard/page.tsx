@@ -243,13 +243,13 @@ export default async function UserDashboardPage() {
             <RiSurveyLine size={20} />
             Start Partner Mapping
           </Link>
-          <Link
+          {/* <Link
             href="/dashboard/surveys/form"
             className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
           >
             <RiSurveyLine size={20} />
             Start NCD Mapping
-          </Link>
+          </Link> */}
         </div>
       </div>
 
