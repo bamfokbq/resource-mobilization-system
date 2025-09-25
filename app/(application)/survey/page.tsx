@@ -10,7 +10,7 @@ export default function SurveyPage() {
         <section>
             <SurveyHero />
             <WhoCompleteSurvey />
-            <ParticipateDetails />
+            {/* <ParticipateDetails /> */}
             <SurveyInstructions />
             <Assistance />
         </section>
