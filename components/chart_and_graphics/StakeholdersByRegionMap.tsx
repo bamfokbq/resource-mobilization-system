@@ -73,6 +73,9 @@ export default function StakeholdersByRegionMap() {
         {/* Enhanced Header Section */}
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
+            <div className="p-3 bg-ghs-green/10 rounded-full">
+              <MapPin className="h-8 w-8 text-ghs-green" />
+            </div>
             <h2 className="text-4xl font-bold text-ghs-green">Stakeholders by Region</h2>
           </div>
           <div className="w-24 h-1 bg-gradient-to-r from-ghs-green to-blue-600 rounded-full mx-auto mb-4"></div>
@@ -82,7 +85,7 @@ export default function StakeholdersByRegionMap() {
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
           {/* Map Section */}
           <div className="xl:col-span-2">
-            <Card className="h-full mx-auto">
+            <Card className="h-full bg-gradient-to-br from-white/95 to-slate-50/90 backdrop-blur-sm border-0 shadow-xl">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xl font-semibold text-slate-800 flex items-center gap-2">
@@ -107,10 +110,10 @@ export default function StakeholdersByRegionMap() {
                     regionNameField="name"
                     mapHeight="700px"
                     onRegionSelect={handleRegionSelect}
-                    emptyRegionColor="#e0f2fe"
-                    filledRegionColor="#81c784"
-                    selectedRegionColor="#388e3c"
-                    showRegionLabels={false}
+                    emptyRegionColor="#4ade80"
+                    filledRegionColor="#22c55e"
+                    selectedRegionColor="#16a34a"
+                    showRegionLabels={true}
                     showTooltips={true}
                     enableInteractions={true}
                   />

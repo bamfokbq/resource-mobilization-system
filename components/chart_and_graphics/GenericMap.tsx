@@ -37,6 +37,9 @@ function MapBounds({ bounds }: { bounds: LatLngBounds }) {
   return null;
 }
 
+// Medium green for all regions
+const defaultRegionColor = '#4ade80'; // Medium green
+
 export default function GenericMap({
   geoData,
   regionLabels,
@@ -108,7 +111,9 @@ export default function GenericMap({
       const isSelected = currentSelectedRegion && region.toLowerCase() === currentSelectedRegion.toLowerCase();
       const isHovered = currentHoveredRegion && region.toLowerCase() === currentHoveredRegion.toLowerCase();
       
-      let fillColor = emptyRegionColor;
+      // Use medium green for all regions
+      let fillColor = defaultRegionColor;
+      
       if (isSelected) {
         fillColor = selectedRegionColor;
       } else if (isHovered) {
@@ -224,12 +229,12 @@ export default function GenericMap({
             key={`${selectedRegion || 'none'}-${hoveredRegion || 'none'}`}
             data={geoData}
             onEachFeature={onEachFeature}
-            style={{ 
+            style={{
               weight: 2, 
               opacity: 1, 
               color: '#ffffff', 
-              fillOpacity: 0.4,
-              fillColor: emptyRegionColor
+              fillOpacity: 0.6,
+              fillColor: defaultRegionColor
             }}
           />
           
@@ -246,13 +251,11 @@ export default function GenericMap({
                   className: 'region-label',
                   html: `
                     <div class="label-container ${isSelected ? 'selected' : isHovered ? 'hovered' : ''}">
-                      <div class="region-marker">
-                        <span class="region-name">${region}</span>
-                      </div>
+                      <span class="region-name">${region}</span>
                     </div>
                   `,
-                  iconSize: [80, 30],
-                  iconAnchor: [40, 15]
+                  iconSize: [60, 20],
+                  iconAnchor: [30, 10]
                 })}
                 eventHandlers={enableInteractions ? {
                   click: () => {
@@ -275,8 +278,8 @@ export default function GenericMap({
       <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-slate-200">
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: emptyRegionColor }}></div>
-            <span className="text-slate-600">Available</span>
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: defaultRegionColor }}></div>
+            <span className="text-slate-600">Regions</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded" style={{ backgroundColor: filledRegionColor }}></div>
@@ -367,46 +370,33 @@ export default function GenericMap({
           transition: all 0.3s ease;
         }
         
-        .region-marker {
-          background: rgba(255, 255, 255, 0.98);
-          border: 2px solid #0ea5e9;
-          border-radius: 8px;
-          padding: 6px 12px;
-          box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
-          transition: all 0.3s ease;
-        }
-        
         .region-name {
-          font-size: 12px;
-          font-weight: 700;
-          color: #0ea5e9;
+          font-size: 11px;
+          font-weight: 600;
+          color: #374151;
           white-space: nowrap;
           text-align: center;
-          text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-        }
-        
-        .label-container.hovered .region-marker {
-          background: rgba(14, 165, 233, 0.1);
-          border-color: #0284c7;
-          transform: scale(1.05);
-          box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+          background: rgba(255, 255, 255, 0.95);
+          padding: 4px 8px;
+          border-radius: 4px;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          transition: all 0.2s ease;
         }
         
         .label-container.hovered .region-name {
-          color: #0284c7;
-        }
-        
-        .label-container.selected .region-marker {
-          background: rgba(14, 165, 233, 0.15);
-          border-color: #0284c7;
-          border-width: 3px;
-          transform: scale(1.1);
-          box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+          background: rgba(255, 255, 255, 1);
+          color: #22c55e;
+          transform: scale(1.05);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
         
         .label-container.selected .region-name {
-          color: #0284c7;
-          font-weight: 800;
+          background: rgba(34, 197, 94, 0.1);
+          color: #16a34a;
+          font-weight: 700;
+          transform: scale(1.1);
+          box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);
         }
         
         .custom-tooltip-wrapper {
@@ -503,10 +493,7 @@ export default function GenericMap({
         @media (max-width: 768px) {
           .region-name {
             font-size: 10px;
-          }
-          
-          .region-marker {
-            padding: 3px 8px;
+            padding: 3px 6px;
           }
           
           .tooltip-header {
