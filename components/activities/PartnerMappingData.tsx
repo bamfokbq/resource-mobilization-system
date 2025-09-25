@@ -6,9 +6,9 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
 import { 
   BuildingIcon, 
   FilterIcon, 
@@ -25,11 +25,11 @@ import {
   MoreHorizontalIcon,
   TrashIcon,
   EditIcon,
-  AlertTriangle,
   CheckCircle,
   X,
   Save,
-  RefreshCw
+  RefreshCw,
+  AlertTriangle
 } from "lucide-react"
 import { getAllPartnerMappings, deletePartnerMapping, updatePartnerMapping, getPartnerMappingById } from '@/actions/partnerMappingActions'
 import { toast } from 'sonner'
@@ -50,10 +50,11 @@ export default function PartnerMappingData() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc")
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
-  const [showBulkActions, setShowBulkActions] = useState(false)
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
   const [isUpdating, setIsUpdating] = useState<string | null>(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [mappingToDelete, setMappingToDelete] = useState<string | null>(null)
+  const [editFormData, setEditFormData] = useState<any>(null)
 
   // Load mapping submission data
   useEffect(() => {
@@ -198,24 +199,6 @@ export default function PartnerMappingData() {
     }
   }
 
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      const allIds = new Set(paginatedData.map(item => item.id))
-      setSelectedItems(allIds)
-    } else {
-      setSelectedItems(new Set())
-    }
-  }
-
-  const handleSelectItem = (id: string, checked: boolean) => {
-    const newSelected = new Set(selectedItems)
-    if (checked) {
-      newSelected.add(id)
-    } else {
-      newSelected.delete(id)
-    }
-    setSelectedItems(newSelected)
-  }
 
   const handleExport = () => {
     const csvContent = [
@@ -241,12 +224,6 @@ export default function PartnerMappingData() {
     window.URL.revokeObjectURL(url)
   }
 
-  const handleBulkDelete = () => {
-    // This would typically call an API to delete the selected items
-    console.log('Bulk delete items:', Array.from(selectedItems))
-    setSelectedItems(new Set())
-    setShowBulkActions(false)
-  }
 
   const handleViewMapping = async (mappingId: string) => {
     try {
@@ -270,6 +247,7 @@ export default function PartnerMappingData() {
       if (result.success && result.partnerMapping) {
         setEditingMapping(result.partnerMapping)
         setSelectedMapping(result.partnerMapping)
+        setEditFormData(result.partnerMapping.data.partnerMappings[0])
         setIsSheetOpen(true)
         setIsEditing(true)
       } else {
@@ -281,14 +259,17 @@ export default function PartnerMappingData() {
     }
   }
 
-  const handleDeleteMapping = async (mappingId: string) => {
-    if (!confirm('Are you sure you want to delete this partner mapping? This action cannot be undone.')) {
-      return
-    }
+  const handleDeleteMapping = (mappingId: string) => {
+    setMappingToDelete(mappingId)
+    setIsDeleteModalOpen(true)
+  }
 
-    setIsDeleting(mappingId)
+  const confirmDeleteMapping = async () => {
+    if (!mappingToDelete) return
+
+    setIsDeleting(mappingToDelete)
     try {
-      const result = await deletePartnerMapping(mappingId)
+      const result = await deletePartnerMapping(mappingToDelete)
       if (result.success) {
         toast.success('Partner mapping deleted successfully')
         // Refresh the data
@@ -326,7 +307,21 @@ export default function PartnerMappingData() {
       toast.error('Failed to delete partner mapping')
     } finally {
       setIsDeleting(null)
+      setIsDeleteModalOpen(false)
+      setMappingToDelete(null)
     }
+  }
+
+  const cancelDeleteMapping = () => {
+    setIsDeleteModalOpen(false)
+    setMappingToDelete(null)
+  }
+
+  const handleFormInputChange = (field: string, value: string) => {
+    setEditFormData((prev: any) => ({
+      ...prev,
+      [field]: value
+    }))
   }
 
   const handleUpdateMapping = async (mappingId: string, updateData: any) => {
@@ -451,65 +446,61 @@ export default function PartnerMappingData() {
         <CardContent className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
             {/* Summary Statistics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-green-500 to-green-600 text-white overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-transparent"></div>
+          <Card className="border-0 shadow-2xl bg-green-200 text-green-800 overflow-hidden relative">
             <CardContent className="p-4 sm:p-6 lg:p-8 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">{summaryStats.totalSubmissions}</div>
-                  <div className="text-green-100 text-sm sm:text-base lg:text-lg font-semibold">Total Submissions</div>
-                  <div className="text-xs text-green-200 mt-1 sm:mt-2">Individual survey submissions</div>
+                  <div className="text-green-800 text-sm sm:text-base lg:text-lg font-semibold">Total Submissions</div>
+                  <div className="text-xs text-green-700 mt-1 sm:mt-2">Individual survey submissions</div>
                 </div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
-                  <BuildingIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-300 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                  <BuildingIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-green-800" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 text-white overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent"></div>
+          <Card className="border-0 shadow-2xl bg-yellow-200 text-yellow-800 overflow-hidden relative">
             <CardContent className="p-4 sm:p-6 lg:p-8 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">{summaryStats.uniqueOrganizations}</div>
-                  <div className="text-yellow-100 text-sm sm:text-base lg:text-lg font-semibold">Unique Organizations</div>
-                  <div className="text-xs text-yellow-200 mt-1 sm:mt-2">Participating in partnerships</div>
+                  <div className="text-yellow-800 text-sm sm:text-base lg:text-lg font-semibold">Unique Organizations</div>
+                  <div className="text-xs text-yellow-700 mt-1 sm:mt-2">Participating in partnerships</div>
                 </div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
-                  <UsersIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-yellow-300 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                  <UsersIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-yellow-800" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-red-500 to-red-600 text-white overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-400/20 to-transparent"></div>
+          <Card className="border-0 shadow-2xl bg-red-200 text-red-800 overflow-hidden relative">
             <CardContent className="p-4 sm:p-6 lg:p-8 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">{summaryStats.uniquePartners}</div>
-                <div className="text-red-100 text-sm sm:text-base lg:text-lg font-semibold">Unique Partners</div>
-                <div className="text-xs text-red-200 mt-1 sm:mt-2">Partner organizations</div>
+                <div className="text-red-800 text-sm sm:text-base lg:text-lg font-semibold">Unique Partners</div>
+                <div className="text-xs text-red-700 mt-1 sm:mt-2">Partner organizations</div>
                 </div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
-                  <TargetIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-red-300 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                  <TargetIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-red-800" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-green-600 to-yellow-600 text-white overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-yellow-400/20"></div>
+          <Card className="border-0 shadow-2xl bg-blue-200 text-blue-800 overflow-hidden relative">
             <CardContent className="p-4 sm:p-6 lg:p-8 relative z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2">{summaryStats.regionalCoverage}</div>
-                  <div className="text-white/90 text-sm sm:text-base lg:text-lg font-semibold">Regions Covered</div>
-                  <div className="text-xs text-white/70 mt-1 sm:mt-2">Geographic coverage</div>
+                  <div className="text-blue-800 text-sm sm:text-base lg:text-lg font-semibold">Regions Covered</div>
+                  <div className="text-xs text-blue-700 mt-1 sm:mt-2">Geographic coverage</div>
                 </div>
-                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
-                  <MapPinIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-300 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                  <MapPinIcon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-800" />
                 </div>
               </div>
             </CardContent>
@@ -591,46 +582,6 @@ export default function PartnerMappingData() {
           </CardContent>
         </Card>
 
-        {/* Bulk Actions Bar */}
-        {selectedItems.size > 0 && (
-          <Card className="border-0 shadow-2xl bg-gradient-to-r from-yellow-50 via-red-50 to-red-100 border-red-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                    <AlertTriangle className="w-4 h-4 text-red-600" />
-                  </div>
-                  <div>
-                    <span className="font-bold text-red-800 text-lg">
-                      {selectedItems.size} item{selectedItems.size !== 1 ? 's' : ''} selected
-                    </span>
-                    <p className="text-red-600 text-sm">Choose an action to perform on selected items</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleBulkDelete}
-                    className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400 transition-all duration-300"
-                  >
-                    <TrashIcon className="w-4 h-4 mr-2" />
-                    Delete Selected
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedItems(new Set())}
-                    className="text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-all duration-300"
-                  >
-                    <X className="w-4 h-4 mr-2" />
-                    Clear Selection
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Enhanced Partner Mapping Data Table */}
         <Card className="border-0 shadow-2xl bg-white overflow-hidden">
@@ -643,13 +594,6 @@ export default function PartnerMappingData() {
               <Table className="relative">
                 <TableHeader>
                   <TableRow className="bg-gradient-to-r from-green-50 to-yellow-50 border-b-2 border-green-200">
-                    <TableHead className="w-12 px-6 py-6">
-                      <Checkbox
-                        checked={selectedItems.size === paginatedData.length && paginatedData.length > 0}
-                        onCheckedChange={handleSelectAll}
-                        className="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
-                      />
-                    </TableHead>
                     <TableHead 
                     className="font-bold text-green-800 cursor-pointer hover:bg-green-100 transition-all duration-200 px-6 py-6 group w-1/4"
                       onClick={() => handleSort('organization')}
@@ -713,7 +657,7 @@ export default function PartnerMappingData() {
                 <TableBody>
                   {paginatedData.length === 0 ? (
                     <TableRow>
-                    <TableCell colSpan={7} className="px-4 py-16 text-center">
+                    <TableCell colSpan={6} className="px-4 py-16 text-center">
                         <div className="flex flex-col items-center gap-4">
                           <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
                             <BuildingIcon className="w-10 h-10 text-gray-400" />
@@ -745,20 +689,9 @@ export default function PartnerMappingData() {
                     paginatedData.map((item, index) => (
                     <TableRow 
                       key={item.id} 
-                      className={`group transition-all duration-200 hover:shadow-md hover:bg-gradient-to-r hover:from-green-50 hover:to-yellow-50 ${
-                        selectedItems.has(item.id) 
-                          ? 'bg-gradient-to-r from-green-100 to-yellow-100 border-l-4 border-green-500 shadow-sm' 
-                          : 'border-b border-green-100'
-                      } ${index % 2 === 0 ? 'bg-white' : 'bg-green-50/30'}`}
+                      className={`group transition-all duration-200 hover:shadow-md hover:bg-gradient-to-r hover:from-green-50 hover:to-yellow-50 border-b border-green-100 ${index % 2 === 0 ? 'bg-white' : 'bg-green-50/30'}`}
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      <TableCell className="px-6 py-6">
-                        <Checkbox
-                          checked={selectedItems.has(item.id)}
-                          onCheckedChange={(checked) => handleSelectItem(item.id, checked as boolean)}
-                          className="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 transition-all duration-200"
-                        />
-                      </TableCell>
                       <TableCell className="px-6 py-6">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-white text-sm font-bold shadow-lg">
@@ -889,22 +822,13 @@ export default function PartnerMappingData() {
                 paginatedData.map((item, index) => (
                   <Card 
                     key={item.id} 
-                    className={`group transition-all duration-200 hover:shadow-lg hover:scale-[1.02] ${
-                      selectedItems.has(item.id) 
-                        ? 'bg-gradient-to-r from-green-100 to-yellow-100 border-l-4 border-green-500 shadow-lg' 
-                        : 'bg-white border-green-200'
-                    }`}
+                    className="group transition-all duration-200 hover:shadow-lg hover:scale-[1.02] bg-white border-green-200"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
                     <CardContent className="p-6">
                       {/* Header with Organization and Actions */}
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <Checkbox
-                            checked={selectedItems.has(item.id)}
-                            onCheckedChange={(checked) => handleSelectItem(item.id, checked as boolean)}
-                            className="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
-                          />
                           <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-white text-lg font-bold shadow-lg">
                             {item.organization.charAt(0).toUpperCase()}
                           </div>
@@ -1152,17 +1076,17 @@ export default function PartnerMappingData() {
 
         {/* Sheet for Viewing/Editing Partner Mapping */}
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetContent className="w-[800px] sm:max-w-[800px]">
-            <SheetHeader className="bg-gradient-to-r from-green-50 to-yellow-50 p-6 -m-6 mb-6 border-b border-green-200">
+          <SheetContent className="w-[800px] sm:max-w-[800px] p-0">
+            <SheetHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-blue-200">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
                   {isEditing ? <EditIcon className="w-6 h-6 text-white" /> : <EyeIcon className="w-6 h-6 text-white" />}
                 </div>
                 <div>
-                  <SheetTitle className="text-2xl font-bold text-green-800">
+                  <SheetTitle className="text-2xl font-bold text-gray-900">
                     {isEditing ? 'Edit Partner Mapping' : 'View Partner Mapping'}
                   </SheetTitle>
-                  <SheetDescription className="text-green-600">
+                  <SheetDescription className="text-gray-600">
                     {isEditing ? 'Modify the partner mapping details below' : 'Review the partner mapping details below'}
                   </SheetDescription>
                 </div>
@@ -1170,83 +1094,227 @@ export default function PartnerMappingData() {
             </SheetHeader>
 
             {selectedMapping && (
-              <div className="space-y-6 py-6">
+              <div className="h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                <div className="space-y-6 p-6">
                 {/* Project Overview */}
-                <div className="bg-green-50 rounded-2xl p-6 border border-green-200">
-                  <h3 className="text-lg font-bold text-green-800 mb-4 flex items-center gap-2">
-                    <BuildingIcon className="w-5 h-5" />
+                <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <BuildingIcon className="w-4 h-4 text-blue-600" />
+                    </div>
                     Project Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-semibold text-green-700">Organization</label>
-                      <p className="text-green-900 font-medium">{selectedMapping.data.partnerMappings[0]?.organization}</p>
+                      <label className="text-sm font-medium text-gray-600">Organization</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.organization || ''}
+                          onChange={(e) => handleFormInputChange('organization', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.organization}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-green-700">Project Name</label>
-                      <p className="text-green-900 font-medium">{selectedMapping.data.partnerMappings[0]?.projectName}</p>
+                      <label className="text-sm font-medium text-gray-600">Project Name</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.projectName || ''}
+                          onChange={(e) => handleFormInputChange('projectName', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.projectName}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-green-700">Year</label>
-                      <p className="text-green-900 font-medium">{selectedMapping.data.partnerMappings[0]?.year}</p>
+                      <label className="text-sm font-medium text-gray-600">Year</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.year || ''}
+                          onChange={(e) => handleFormInputChange('year', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.year}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-green-700">Work Nature</label>
-                      <p className="text-green-900 font-medium">{selectedMapping.data.partnerMappings[0]?.workNature}</p>
+                      <label className="text-sm font-medium text-gray-600">Work Nature</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.workNature || ''}
+                          onChange={(e) => handleFormInputChange('workNature', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.workNature}</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* Location and Disease Focus */}
-                <div className="bg-yellow-50 rounded-2xl p-6 border border-yellow-200">
-                  <h3 className="text-lg font-bold text-yellow-800 mb-4 flex items-center gap-2">
-                    <MapPinIcon className="w-5 h-5" />
+                <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                      <MapPinIcon className="w-4 h-4 text-emerald-600" />
+                    </div>
                     Location & Focus
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-semibold text-yellow-700">Region</label>
-                      <p className="text-yellow-900 font-medium">{selectedMapping.data.partnerMappings[0]?.projectRegion}</p>
+                      <label className="text-sm font-medium text-gray-600">Region</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.projectRegion || ''}
+                          onChange={(e) => handleFormInputChange('projectRegion', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.projectRegion}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-yellow-700">District</label>
-                      <p className="text-yellow-900 font-medium">{selectedMapping.data.partnerMappings[0]?.district || 'N/A'}</p>
+                      <label className="text-sm font-medium text-gray-600">District</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.district || ''}
+                          onChange={(e) => handleFormInputChange('district', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.district || 'N/A'}</p>
+                      )}
                     </div>
                     <div className="md:col-span-2">
-                      <label className="text-sm font-semibold text-yellow-700">Disease Focus</label>
-                      <p className="text-yellow-900 font-medium">{selectedMapping.data.partnerMappings[0]?.disease}</p>
+                      <label className="text-sm font-medium text-gray-600">Disease Focus</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.disease || ''}
+                          onChange={(e) => handleFormInputChange('disease', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.disease}</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* Partner Information */}
-                <div className="bg-red-50 rounded-2xl p-6 border border-red-200">
-                  <h3 className="text-lg font-bold text-red-800 mb-4 flex items-center gap-2">
-                    <UsersIcon className="w-5 h-5" />
+                <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <UsersIcon className="w-4 h-4 text-orange-600" />
+                    </div>
                     Partner Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-semibold text-red-700">Partner Organization</label>
-                      <p className="text-red-900 font-medium">{selectedMapping.data.partnerMappings[0]?.partner}</p>
+                      <label className="text-sm font-medium text-gray-600">Partner Organization</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.partner || ''}
+                          onChange={(e) => handleFormInputChange('partner', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.partner}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-red-700">Role</label>
-                      <p className="text-red-900 font-medium">{selectedMapping.data.partnerMappings[0]?.role}</p>
+                      <label className="text-sm font-medium text-gray-600">Role</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.role || ''}
+                          onChange={(e) => handleFormInputChange('role', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.role}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Sector</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.sector || ''}
+                          onChange={(e) => handleFormInputChange('sector', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.sector || 'N/A'}</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">Work Nature</label>
+                      {isEditing ? (
+                        <Input
+                          value={editFormData?.workNature || ''}
+                          onChange={(e) => handleFormInputChange('workNature', e.target.value)}
+                          className="mt-1"
+                        />
+                      ) : (
+                        <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.workNature}</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
+                {/* Contact Information */}
+                {(selectedMapping.data.partnerMappings[0]?.phone || selectedMapping.data.partnerMappings[0]?.email || selectedMapping.data.partnerMappings[0]?.website) && (
+                  <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <BuildingIcon className="w-4 h-4 text-purple-600" />
+                      </div>
+                      Contact Information
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {selectedMapping.data.partnerMappings[0]?.phone && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Phone</label>
+                          <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.phone}</p>
+                        </div>
+                      )}
+                      {selectedMapping.data.partnerMappings[0]?.email && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Email</label>
+                          <p className="text-gray-900 font-medium mt-1">{selectedMapping.data.partnerMappings[0]?.email}</p>
+                        </div>
+                      )}
+                      {selectedMapping.data.partnerMappings[0]?.website && (
+                        <div className="md:col-span-2">
+                          <label className="text-sm font-medium text-gray-600">Website</label>
+                          <a 
+                            href={selectedMapping.data.partnerMappings[0]?.website} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 underline font-medium mt-1 block"
+                          >
+                            {selectedMapping.data.partnerMappings[0]?.website}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Submission Details */}
-                <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <CalendarIcon className="w-5 h-5" />
+                <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                      <CalendarIcon className="w-4 h-4 text-gray-600" />
+                    </div>
                     Submission Details
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-semibold text-gray-700">Created</label>
-                      <p className="text-gray-900 font-medium">
+                      <label className="text-sm font-medium text-gray-600">Created</label>
+                      <p className="text-gray-900 font-medium mt-1">
                         {new Date(selectedMapping.createdAt).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
@@ -1257,8 +1325,8 @@ export default function PartnerMappingData() {
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-gray-700">Last Updated</label>
-                      <p className="text-gray-900 font-medium">
+                      <label className="text-sm font-medium text-gray-600">Last Updated</label>
+                      <p className="text-gray-900 font-medium mt-1">
                         {new Date(selectedMapping.updatedAt).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
@@ -1269,49 +1337,123 @@ export default function PartnerMappingData() {
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-gray-700">Status</label>
+                      <label className="text-sm font-medium text-gray-600">Status</label>
                       <Badge 
                         variant="outline" 
-                        className="bg-green-100 text-green-800 border-green-300"
+                        className="bg-gray-100 text-gray-800 border-gray-300 mt-1"
                       >
                         {selectedMapping.status}
                       </Badge>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold text-gray-700">Mapping ID</label>
-                      <p className="text-gray-900 font-mono text-sm">{selectedMapping.id}</p>
+                      <label className="text-sm font-medium text-gray-600">Mapping ID</label>
+                      <p className="text-gray-900 font-mono text-sm mt-1">{selectedMapping.id}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                {isEditing && (
-                  <div className="flex items-center gap-3 pt-6 border-t border-gray-200">
-                    <Button
-                      onClick={() => handleUpdateMapping(selectedMapping.id, selectedMapping.data)}
-                      disabled={isUpdating === selectedMapping.id}
-                      className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-                    >
-                      {isUpdating === selectedMapping.id ? (
-                        <RefreshCw className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <Save className="w-4 h-4" />
-                      )}
-                      Save Changes
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setIsEditing(false)}
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                )}
+                <div className="flex items-center gap-3 pt-6 border-t border-gray-200">
+                  {isEditing ? (
+                    <>
+                      <Button
+                        onClick={() => handleUpdateMapping(selectedMapping.id, { ...selectedMapping.data, partnerMappings: [editFormData] })}
+                        disabled={isUpdating === selectedMapping.id}
+                        className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white flex items-center gap-2 shadow-lg"
+                      >
+                        {isUpdating === selectedMapping.id ? (
+                          <RefreshCw className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Save className="w-4 h-4" />
+                        )}
+                        Save Changes
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsEditing(false)}
+                        className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                      >
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={() => setIsEditing(true)}
+                        variant="outline"
+                        className="border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-2"
+                      >
+                        <EditIcon className="w-4 h-4" />
+                        Edit Mapping
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => handleDeleteMapping(selectedMapping.id)}
+                        className="border-red-300 text-red-700 hover:bg-red-50 hover:border-red-400"
+                      >
+                        <TrashIcon className="w-4 h-4 mr-2" />
+                        Delete Mapping
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsSheetOpen(false)}
+                        className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                      >
+                        Close
+                      </Button>
+                    </>
+                  )}
+                </div>
+                </div>
               </div>
             )}
           </SheetContent>
         </Sheet>
+
+        {/* Delete Confirmation Modal */}
+        <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 text-red-800">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <TrashIcon className="w-5 h-5 text-red-600" />
+                </div>
+                Confirm Deletion
+              </DialogTitle>
+              <DialogDescription className="text-gray-600 pt-2">
+                Are you sure you want to delete this partner mapping? This action cannot be undone and will permanently remove all associated data.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex gap-3 pt-4">
+              <Button
+                variant="outline"
+                onClick={cancelDeleteMapping}
+                disabled={isDeleting !== null}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={confirmDeleteMapping}
+                disabled={isDeleting !== null}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                {isDeleting ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <TrashIcon className="w-4 h-4 mr-2" />
+                    Delete Mapping
+                  </>
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
     </div>
   )
 }
