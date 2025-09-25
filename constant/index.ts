@@ -2,7 +2,7 @@ import { MdOutlinePoll } from "react-icons/md"
 import { FiUsers } from "react-icons/fi"
 import { BsCalendar3 } from "react-icons/bs"
 import { AiOutlineProject } from "react-icons/ai"
-import { Network, BarChart3, Settings, Activity } from "lucide-react"
+import { Network, BarChart3, Settings, Activity, NotebookIcon } from "lucide-react"
 import regionsData from './regions.json';
 
 const NAVIGATION = [
@@ -31,20 +31,20 @@ const NAVIGATION = [
 const FEATURES = [
     {
         id: 1,
-        title: "Stakehoder Mapping",
+        title: "Stakeholder Mapping",
         description: "Identify who is doing what, where, and for whom.",
         icon: Network,
     },
     {
         id: 2,
         title: "Data Visualisation",
-        description: "Analyse and understand NCD service distribution.",
+        description: "Analyse and understand service delivery distribution.",
         icon: BarChart3,
     },
     {
         id: 3,
         title: "Resource Optimisation",
-        description: "Prioritise investments effectively.",
+        description: "Prioritise investments and reduce duplication.",
         icon: Settings,
     },
     {
@@ -52,6 +52,29 @@ const FEATURES = [
         title: "Real-Time Reporting",
         description: "Access live updates and metrics from stakeholders.",
         icon: Activity,
+    }, {
+        id: 5,
+        title: 'Accountability & Transparency',
+        description: 'Monitor and verify the flow of resources across all levels',
+        icon: NotebookIcon,
+    },
+    {
+        id: 6,
+        title: "Predictive Analytics",
+        description: "Forecast future needs and inform planning decisions.",
+        icon: AiOutlineProject,
+    },
+    {
+        id: 7,
+        title: "System Integration",
+        description: "Connect with existing national health information platforms.",
+        icon: FiUsers,
+    },
+    {
+        id: 8,
+        title: "Equity Tracking",
+        description: "Ensure resources are fairly distributed to the regions and communities that need them most.",
+        icon: BsCalendar3,
     }
 ]
 
