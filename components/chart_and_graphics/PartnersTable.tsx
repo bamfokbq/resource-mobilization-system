@@ -80,7 +80,7 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   });
 
     const processedData = useMemo(() => {
@@ -219,10 +219,6 @@ export default function PartnersTable({ selectedRegion }: PartnersTableProps) {
             <Badge variant="outline" className="bg-ghs-green/10 text-ghs-green border-ghs-green/20">
               {data.length} stakeholder{data.length !== 1 ? 's' : ''}
             </Badge>
-            {/* <Button variant="outline" size="sm" className="h-8">
-              <Download className="h-4 w-4 mr-1" />
-              Export
-            </Button> */}
           </div>
         </div>
       </CardHeader>

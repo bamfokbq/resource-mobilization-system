@@ -120,7 +120,7 @@ export default function GenericMap({
         weight: isSelected ? 3 : isHovered ? 2.5 : 2,
         opacity: 1,
         color: isSelected ? selectedRegionColor : isHovered ? filledRegionColor : '#ffffff',
-        fillOpacity: isSelected ? 0.8 : isHovered ? 0.6 : 0.4,
+        fillOpacity: isSelected ? 0.7 : isHovered ? 0.5 : 0.3,
         dashArray: isSelected ? '5, 5' : undefined,
       };
       (layer as any).setStyle(style);
@@ -368,44 +368,45 @@ export default function GenericMap({
         }
         
         .region-marker {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          border-radius: 20px;
-          padding: 4px 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+          background: rgba(255, 255, 255, 0.98);
+          border: 2px solid #0ea5e9;
+          border-radius: 8px;
+          padding: 6px 12px;
+          box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
           transition: all 0.3s ease;
         }
         
         .region-name {
-          font-size: 11px;
-          font-weight: 600;
-          color: #374151;
+          font-size: 12px;
+          font-weight: 700;
+          color: #0ea5e9;
           white-space: nowrap;
           text-align: center;
+          text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
         
         .label-container.hovered .region-marker {
-          background: rgba(56, 142, 60, 0.1);
-          border-color: #388e3c;
+          background: rgba(14, 165, 233, 0.1);
+          border-color: #0284c7;
           transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
         
         .label-container.hovered .region-name {
-          color: #388e3c;
+          color: #0284c7;
         }
         
         .label-container.selected .region-marker {
-          background: rgba(56, 142, 60, 0.2);
-          border-color: #388e3c;
-          border-width: 2px;
+          background: rgba(14, 165, 233, 0.15);
+          border-color: #0284c7;
+          border-width: 3px;
           transform: scale(1.1);
-          box-shadow: 0 4px 12px rgba(56, 142, 60, 0.3);
+          box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
         }
         
         .label-container.selected .region-name {
-          color: #388e3c;
-          font-weight: 700;
+          color: #0284c7;
+          font-weight: 800;
         }
         
         .custom-tooltip-wrapper {
