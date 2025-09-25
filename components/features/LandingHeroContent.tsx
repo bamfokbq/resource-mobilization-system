@@ -6,7 +6,7 @@ export default function LandingHeroContent() {
     return (
         <section className='md:w-[60%] flex flex-col gap-5'>
             <div className='text-white flex flex-col gap-3'>
-                <h1 className='text-center md:text-left text-4xl md:text-5xl xl:text-[3.5rem] leading-snug font-black tracking-tight'>
+                <h1 className='text-center md:text-left text-3xl md:text-4xl xl:text-5xl leading-snug font-extrabold tracking-tight'>
                     Quality Data for Efficient Resource Mobilisation in the Ghana Health Service.
                     {/* <span className='text-pine-yellow'>Quality</span> Data for{' '}
                     <span className='text-mint-green'>Effective</span> {' '} and Efficient
