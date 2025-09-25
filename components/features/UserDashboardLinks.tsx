@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, FileText, Settings, Network } from 'lucide-react'
+import { Home, FileText, Settings, Handshake } from 'lucide-react'
 import type { UserDashboardLinksProps } from '@/types/dashboard-sidebar'
 import DashboardSidebar from '../shared/DashboardSidebar'
 
@@ -10,7 +10,7 @@ export default function UserDashboardLinks({ session }: UserDashboardLinksProps)
         { path: '/dashboard', label: 'Dashboard', icon: Home },
         // { path: '/dashboard/surveys', label: 'Surveys', icon: FileText },
         { path: '/dashboard/surveys', label: 'Mapping', icon: FileText },
-        { path: '/dashboard/partner-mapping', label: 'Partner Mapping', icon: Network },
+        { path: '/dashboard/partner-mapping', label: 'Partners', icon: Handshake  },
         { path: '/dashboard/profile', label: 'Profile', icon: Settings },
     ]
 

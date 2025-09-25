@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Plus, Trash2, Save, Users, MapPin, Calendar, Building2, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, Save, Users, MapPin, Calendar, Building2, FileText, AlertCircle, CheckCircle2, Sparkles, ArrowRight, Target, Globe } from 'lucide-react';
 import { toast } from 'sonner';
 import { WORK_NATURE_OPTIONS, DISEASE_OPTIONS, YEAR_OPTIONS, REGION_OPTIONS } from '@/types/partner-mapping';
 
@@ -50,11 +50,30 @@ export default function PartnerMappingForm({
 
   const addPartnerMapping = () => {
     setPartnerMappings([...partnerMappings, createEmptyPartnerMapping()]);
+    
+    // Show success toast for adding new partner mapping
+    toast.success('New Partner Mapping Added', {
+      description: `Partner mapping ${partnerMappings.length + 1} has been added to your form`,
+      duration: 2000,
+    });
   };
 
   const removePartnerMapping = (index: number) => {
     if (partnerMappings.length > 1) {
+      const removedMapping = partnerMappings[index];
       setPartnerMappings(partnerMappings.filter((_, i) => i !== index));
+      
+      // Show confirmation toast for removing partner mapping
+      toast.success('Partner Mapping Removed', {
+        description: `Partner mapping ${index + 1}${removedMapping.organization ? ` (${removedMapping.organization})` : ''} has been removed`,
+        duration: 2000,
+      });
+    } else {
+      // Show warning toast if trying to remove the last mapping
+      toast.warning('Cannot Remove Last Mapping', {
+        description: 'At least one partner mapping is required',
+        duration: 3000,
+      });
     }
   };
 
@@ -62,6 +81,24 @@ export default function PartnerMappingForm({
     const updated = [...partnerMappings];
     updated[index] = { ...updated[index], [field]: value };
     setPartnerMappings(updated);
+    
+    // Clear validation errors for this specific field when user starts typing
+    if (validationErrors[`mapping-${index}`]) {
+      const fieldErrors = validationErrors[`mapping-${index}`].filter(error => 
+        !error.toLowerCase().includes(field.toLowerCase())
+      );
+      
+      if (fieldErrors.length === 0) {
+        const newErrors = { ...validationErrors };
+        delete newErrors[`mapping-${index}`];
+        setValidationErrors(newErrors);
+      } else {
+        setValidationErrors({
+          ...validationErrors,
+          [`mapping-${index}`]: fieldErrors
+        });
+      }
+    }
   };
 
   const validateForm = async () => {
@@ -78,25 +115,66 @@ export default function PartnerMappingForm({
     }
     
     setValidationErrors(errors);
+    
+    // Show validation error toast if there are errors
+    if (Object.keys(errors).length > 0) {
+      const totalErrors = Object.values(errors).flat().length;
+      toast.error('Validation Errors Found', {
+        description: `Please fix ${totalErrors} error${totalErrors !== 1 ? 's' : ''} in ${Object.keys(errors).length} partner mapping${Object.keys(errors).length !== 1 ? 's' : ''}`,
+        duration: 5000,
+      });
+    }
+    
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    
+    // Show loading toast
+    const loadingToastId = toast.loading('Submitting partner mappings...', {
+      description: `Processing ${partnerMappings.length} partner mapping${partnerMappings.length !== 1 ? 's' : ''}`,
+    });
+    
     try {
       const isValid = await validateForm();
       
       if (!isValid) {
-        toast.error('Please fix validation errors before submitting');
+        toast.error('Validation Failed', {
+          description: 'Please fix the highlighted errors before submitting',
+          id: loadingToastId,
+        });
         return;
       }
 
       await onSubmit(partnerMappings);
       setValidationErrors({});
-      toast.success('Partner mappings submitted successfully!');
+      
+      // Show success toast with detailed information
+      toast.success('Partner Mappings Submitted Successfully!', {
+        description: `Successfully submitted ${partnerMappings.length} partner mapping${partnerMappings.length !== 1 ? 's' : ''} for ${partnerMappings.length > 0 ? partnerMappings[0].year : 'the selected year'}`,
+        id: loadingToastId,
+        duration: 5000,
+        action: {
+          label: 'View Details',
+          onClick: () => {
+            // Navigate to admin dashboard partner mapping page
+            window.location.href = '/admin/dashboard/partner-mapping';
+          },
+        },
+      });
     } catch (error) {
       console.error('Submission error:', error);
-      toast.error('Failed to submit partner mappings');
+      toast.error('Submission Failed', {
+        description: 'An error occurred while submitting your partner mappings. Please try again.',
+        id: loadingToastId,
+        duration: 5000,
+        action: {
+          label: 'Retry',
+          onClick: () => handleSubmit(),
+        },
+      });
+      // Don't clear validation errors on submission failure
     } finally {
       setIsSubmitting(false);
     }
@@ -105,12 +183,30 @@ export default function PartnerMappingForm({
   const handleSaveDraft = async () => {
     if (onSaveDraft) {
       setIsSavingDraft(true);
+      
+      // Show loading toast
+      const loadingToastId = toast.loading('Saving draft...', {
+        description: 'Storing your progress locally',
+      });
+      
       try {
         await onSaveDraft(partnerMappings);
-        toast.success('Draft saved successfully');
+        toast.success('Draft Saved Successfully!', {
+          description: `Your ${partnerMappings.length} partner mapping${partnerMappings.length !== 1 ? 's' : ''} have been saved as a draft`,
+          id: loadingToastId,
+          duration: 3000,
+        });
       } catch (error) {
         console.error('Save draft error:', error);
-        toast.error('Failed to save draft');
+        toast.error('Failed to Save Draft', {
+          description: 'An error occurred while saving your draft. Please try again.',
+          id: loadingToastId,
+          duration: 4000,
+          action: {
+            label: 'Retry',
+            onClick: () => handleSaveDraft(),
+          },
+        });
       } finally {
         setIsSavingDraft(false);
       }
@@ -122,31 +218,53 @@ export default function PartnerMappingForm({
     return mappingErrors.find(error => error.toLowerCase().includes(fieldName.toLowerCase()));
   };
 
+  const getFieldErrorCount = (mappingIndex: number) => {
+    return validationErrors[`mapping-${mappingIndex}`]?.length || 0;
+  };
+
+  const hasFieldError = (mappingIndex: number, fieldName: string) => {
+    return !!getFieldError(mappingIndex, fieldName);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-green-50 p-4 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0 bg-grid-green-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10" />
+      
+      <div className="max-w-7xl mx-auto space-y-8 relative">
         {/* Header Section */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Users className="w-6 h-6 text-blue-600" />
+        <div className="bg-white rounded-2xl shadow-lg border border-green-200 p-8 relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="p-4 bg-green-600 rounded-2xl shadow-sm">
+                    <Users className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white" />
                 </div>
-                <h1 className="text-3xl font-bold text-slate-900">Partner Mapping Form</h1>
+                <div>
+                  <h1 className="text-4xl font-bold text-green-900">
+                    Partner Mapping Form
+                  </h1>
+                  <p className="text-green-700 text-lg font-medium mt-2">
+                    Map partners to projects and initiatives across different regions and disease areas
+                  </p>
+                </div>
               </div>
-              <p className="text-slate-600 text-sm">
-                Map partners to projects and initiatives across different regions and disease areas
-              </p>
+              <div className="flex items-center gap-2 text-sm text-green-600">
+                <Sparkles className="w-4 h-4 text-green-500" />
+                <span>Professional partnership management made simple</span>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-4">
               {onSaveDraft && (
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handleSaveDraft}
                   disabled={isLoading || isSavingDraft}
-                  className="min-w-[120px]"
+                  className="min-w-[140px] border-2 border-slate-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {isSavingDraft ? 'Saving...' : 'Save Draft'}
@@ -155,8 +273,8 @@ export default function PartnerMappingForm({
               <Button
                 type="button"
                 onClick={addPartnerMapping}
-                disabled={isLoading}
-                className="bg-green-600 hover:bg-green-700 min-w-[140px] cursor-pointer"
+                disabled={isLoading || isSubmitting || isSavingDraft}
+                className="bg-green-600 hover:bg-green-700 min-w-[160px] cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Partner
@@ -166,46 +284,72 @@ export default function PartnerMappingForm({
         </div>
 
         {/* Progress Indicator */}
-        {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <div className="bg-white rounded-xl shadow-sm border border-green-200 p-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-600" />
-              <span className="text-sm font-medium text-slate-700">
-                {partnerMappings.length} Partner{partnerMappings.length !== 1 ? 's' : ''} Added
-              </span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-600" />
+                <span className="text-sm font-medium text-slate-700">
+                  {partnerMappings.length} Partner{partnerMappings.length !== 1 ? 's' : ''} Added
+                </span>
+              </div>
+              {getFieldErrorCount(0) > 0 && (
+                <div className="flex items-center gap-1 text-red-600">
+                  <AlertCircle className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    {Object.keys(validationErrors).length} mapping{Object.keys(validationErrors).length !== 1 ? 's' : ''} with errors
+                  </span>
+                </div>
+              )}
             </div>
-            <Badge variant="secondary" className="bg-slate-100 text-slate-700">
-              Step {partnerMappings.length} of {Math.max(partnerMappings.length, 1)}
-            </Badge>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200">
+                {partnerMappings.length} mapping{partnerMappings.length !== 1 ? 's' : ''}
+              </Badge>
+              {(isSubmitting || isSavingDraft) && (
+                <div className="flex items-center gap-2 text-green-600">
+                  <div className="w-4 h-4 animate-spin rounded-full border-2 border-green-600 border-t-transparent" />
+                  <span className="text-sm font-medium">
+                    {isSubmitting ? 'Submitting...' : 'Saving...'}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Partner Mappings */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {partnerMappings.map((mapping, index) => (
-            <Card key={index} className="overflow-hidden border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-                <div className="flex flex-row items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Users className="w-5 h-5 text-blue-600" />
+            <Card key={index} className="overflow-hidden border-green-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+              <CardHeader className="bg-green-50 border-b border-green-200 relative overflow-hidden">
+                <div className="flex flex-row items-center justify-between relative">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <div className="p-3 bg-green-600 rounded-xl shadow-sm">
+                        <Users className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">{index + 1}</span>
+                      </div>
                     </div>
                     <div>
-                      <CardTitle className="text-lg text-slate-900">
+                      <CardTitle className="text-xl font-bold text-green-900">
                         Partner Mapping {index + 1}
                       </CardTitle>
-                      <p className="text-sm text-slate-600 mt-1">
+                      <p className="text-sm text-green-700 mt-1 font-medium">
                         {mapping.organization || 'New partner mapping'}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {validationErrors[`mapping-${index}`] && (
-                      <div className="flex items-center gap-1 text-red-600">
+                  <div className="flex items-center gap-3">
+                    {getFieldErrorCount(index) > 0 && (
+                      <div className="flex items-center gap-2 text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-200">
                         <AlertCircle className="w-4 h-4" />
-                        <span className="text-sm font-medium">
-                          {validationErrors[`mapping-${index}`].length} error{validationErrors[`mapping-${index}`].length !== 1 ? 's' : ''}
+                        <span className="text-sm font-semibold">
+                          {getFieldErrorCount(index)} error{getFieldErrorCount(index) !== 1 ? 's' : ''} found
                         </span>
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                       </div>
                     )}
                     {partnerMappings.length > 1 && (
@@ -215,7 +359,7 @@ export default function PartnerMappingForm({
                         size="sm"
                         onClick={() => removePartnerMapping(index)}
                         disabled={isLoading}
-                        className="hover:bg-red-600"
+                        className="hover:bg-red-600 shadow-sm hover:shadow-md transition-all duration-300"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -223,12 +367,14 @@ export default function PartnerMappingForm({
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
+              <CardContent className="p-8 space-y-8">
                 {/* Basic Information Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Calendar className="w-5 h-5 text-slate-600" />
-                    <h3 className="text-lg font-semibold text-slate-900">Basic Information</h3>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-green-600 rounded-lg">
+                      <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-green-900">Basic Information</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Year */}
@@ -242,9 +388,9 @@ export default function PartnerMappingForm({
                         onValueChange={(value) => updatePartnerMapping(index, 'year', parseInt(value))}
                       >
                         <SelectTrigger 
-                          className={getFieldError(index, 'year') ? 'border-red-500 focus:border-red-500' : ''}
+                          className={hasFieldError(index, 'year') ? 'border-red-500 focus:border-red-500 ring-red-200' : ''}
                           aria-label="Select year"
-                          aria-invalid={!!getFieldError(index, 'year')}
+                          aria-invalid={hasFieldError(index, 'year')}
                         >
                           <SelectValue placeholder="Select year" />
                         </SelectTrigger>
@@ -256,10 +402,10 @@ export default function PartnerMappingForm({
                           ))}
                         </SelectContent>
                       </Select>
-                      {getFieldError(index, 'year') && (
-                        <p className="text-sm text-red-600 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {getFieldError(index, 'year')}
+                      {hasFieldError(index, 'year') && (
+                        <p className="text-sm text-red-600 flex items-center gap-1 animate-in slide-in-from-top-1 duration-200">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                          <span className="font-medium">{getFieldError(index, 'year')}</span>
                         </p>
                       )}
                     </div>
@@ -274,7 +420,7 @@ export default function PartnerMappingForm({
                         value={mapping.workNature}
                         onValueChange={(value) => updatePartnerMapping(index, 'workNature', value)}
                       >
-                        <SelectTrigger className={getFieldError(index, 'workNature') ? 'border-red-500 focus:border-red-500' : ''}>
+                        <SelectTrigger className={hasFieldError(index, 'workNature') ? 'border-red-500 focus:border-red-500 ring-red-200' : ''}>
                           <SelectValue placeholder="Select work nature" />
                         </SelectTrigger>
                         <SelectContent>
@@ -285,10 +431,10 @@ export default function PartnerMappingForm({
                           ))}
                         </SelectContent>
                       </Select>
-                      {getFieldError(index, 'workNature') && (
-                        <p className="text-sm text-red-600 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {getFieldError(index, 'workNature')}
+                      {hasFieldError(index, 'workNature') && (
+                        <p className="text-sm text-red-600 flex items-center gap-1 animate-in slide-in-from-top-1 duration-200">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                          <span className="font-medium">{getFieldError(index, 'workNature')}</span>
                         </p>
                       )}
                     </div>
@@ -303,15 +449,15 @@ export default function PartnerMappingForm({
                         value={mapping.organization}
                         onChange={(e) => updatePartnerMapping(index, 'organization', e.target.value)}
                         placeholder="Enter organization name"
-                        className={getFieldError(index, 'organization') ? 'border-red-500 focus:border-red-500' : ''}
+                        className={hasFieldError(index, 'organization') ? 'border-red-500 focus:border-red-500 ring-red-200' : ''}
                         aria-label="Organization name"
                         aria-invalid={!!getFieldError(index, 'organization')}
                         aria-describedby={getFieldError(index, 'organization') ? `org-error-${index}` : undefined}
                       />
-                      {getFieldError(index, 'organization') && (
-                        <p id={`org-error-${index}`} className="text-sm text-red-600 flex items-center gap-1" role="alert">
-                          <AlertCircle className="w-4 h-4" />
-                          {getFieldError(index, 'organization')}
+                      {hasFieldError(index, 'organization') && (
+                        <p id={`org-error-${index}`} className="text-sm text-red-600 flex items-center gap-1 animate-in slide-in-from-top-1 duration-200" role="alert">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                          <span className="font-medium">{getFieldError(index, 'organization')}</span>
                         </p>
                       )}
                     </div>
@@ -338,13 +484,15 @@ export default function PartnerMappingForm({
                   </div>
                 </div>
 
-                <Separator className="my-6" />
+                <Separator className="my-8 bg-gradient-to-r from-transparent via-green-200 to-transparent" />
 
                 {/* Location Information Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <MapPin className="w-5 h-5 text-slate-600" />
-                    <h3 className="text-lg font-semibold text-slate-900">Location Information</h3>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-green-600 rounded-lg">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-green-900">Location Information</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -399,13 +547,15 @@ export default function PartnerMappingForm({
                   </div>
                 </div>
 
-                <Separator className="my-6" />
+                <Separator className="my-8 bg-gradient-to-r from-transparent via-green-200 to-transparent" />
 
                 {/* Partner Information Section */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Users className="w-5 h-5 text-slate-600" />
-                    <h3 className="text-lg font-semibold text-slate-900">Partner Information</h3>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-green-600 rounded-lg">
+                      <Target className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-green-900">Partner Information</h3>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Disease */}
@@ -488,22 +638,29 @@ export default function PartnerMappingForm({
         </div>
 
         {/* Action Buttons */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-slate-600">
-              <p>Ready to submit your partner mappings?</p>
-              <p className="text-xs mt-1">
-                {partnerMappings.length} partner{partnerMappings.length !== 1 ? 's' : ''} will be submitted
-              </p>
+        <div className="bg-white rounded-2xl shadow-lg border border-green-200 p-8 relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-600 rounded-lg">
+                  <CheckCircle2 className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-green-900">Ready to submit your partner mappings?</p>
+                  <p className="text-sm text-green-700">
+                    {partnerMappings.length} partner{partnerMappings.length !== 1 ? 's' : ''} will be submitted
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               {onSaveDraft && (
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handleSaveDraft}
                   disabled={isLoading || isSavingDraft}
-                  className="w-full sm:w-auto min-w-[120px]"
+                  className="w-full sm:w-auto min-w-[140px] border-2 border-green-300 hover:border-green-400 hover:bg-green-50 transition-all duration-300"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {isSavingDraft ? 'Saving...' : 'Save Draft'}
@@ -512,18 +669,29 @@ export default function PartnerMappingForm({
               <Button
                 type="button"
                 onClick={handleSubmit}
-                disabled={isLoading || isSubmitting}
-                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 min-w-[180px]"
+                disabled={isLoading || isSubmitting || isSavingDraft}
+                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 min-w-[200px] shadow-sm hover:shadow-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Submitting...
+                    <span className="flex items-center gap-2">
+                      Submitting...
+                      <span className="text-xs opacity-75">
+                        ({partnerMappings.length} mapping{partnerMappings.length !== 1 ? 's' : ''})
+                      </span>
+                    </span>
                   </>
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4 mr-2" />
-                    Submit Partner Mappings
+                    <span className="flex items-center gap-2">
+                      Submit Partner Mappings
+                      <span className="text-xs opacity-75">
+                        ({partnerMappings.length} mapping{partnerMappings.length !== 1 ? 's' : ''})
+                      </span>
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
               </Button>
