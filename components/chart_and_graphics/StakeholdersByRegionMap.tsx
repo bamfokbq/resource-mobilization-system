@@ -1,22 +1,25 @@
 "use client";
 
-import React, { useState } from 'react'; // Added useState
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import geoData from '@/constant/geo.json'; // Importing GeoJSON data
+import geoData from '@/constant/geo.json';
 import { FeatureCollection } from 'geojson';
 import PartnersTable from './PartnersTable';
+import { MapPin, Users, BarChart3, Filter } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 // Define a simple type for stakeholder data items
 interface StakeholderDataItem {
   id: number;
-  Region: string; // This should match a region name in geoData properties
+  Region: string;
   name: string;
   type: string;
   contact?: string;
 }
 
 // Sample region labels (coordinates for map markers/labels)
-// These would typically be the centroids or prominent points of your regions
 const regionLabels = {
   "Greater Accra": [5.6037, -0.1870] as [number, number],
   "Ashanti": [6.7590, -1.5401] as [number, number],
@@ -37,13 +40,20 @@ const regionLabels = {
 };
 
 export default function StakeholdersByRegionMap() {
-  const [selectedRegionOnMap, setSelectedRegionOnMap] = useState<string | null>(null); // Added state for selected region
+  const [selectedRegionOnMap, setSelectedRegionOnMap] = useState<string | null>(null);
+  const [isMapLoading, setIsMapLoading] = useState(true);
 
     const GenericMapComponent = React.useMemo(() => {
         return dynamic(
-            () => import('./GenericMap'), // Assuming GenericMap is in the same directory
-            {
-                loading: () => <div className="flex justify-center items-center h-96"><p className="text-lg">Loading Map...</p></div>,
+      () => import('./GenericMap'),
+      {
+        loading: () => (
+          <div className="flex flex-col justify-center items-center h-96 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border-2 border-dashed border-slate-300">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ghs-green mb-4"></div>
+            <p className="text-lg font-medium text-slate-600">Loading Interactive Map...</p>
+            <p className="text-sm text-slate-500 mt-1">Please wait while we prepare the regional data</p>
+          </div>
+        ),
                 ssr: false
             }
         );
@@ -53,29 +63,81 @@ export default function StakeholdersByRegionMap() {
     setSelectedRegionOnMap(region);
   };
 
+  const clearSelection = () => {
+    setSelectedRegionOnMap(null);
+  };
+
   return (
-    <section className='py-8 px-4 bg-slate-50'>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-ghs-green mb-2">Stakeholders by Region</h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-ghs-green to-mode-blue rounded-full"></div>
-      </div>
-      <div className=" flex flex-row items-start gap-4">
-        <div className="w-1/3"> {/* Changed: Map container takes 1/3 width */}
-              <GenericMapComponent
-            geoData={geoData as FeatureCollection}
-            regionLabels={regionLabels}
-            regionNameField="name" // Key in `geoData.features.properties` for region name
-            mapHeight="700px"
-            onRegionSelect={handleRegionSelect} // Pass the handler to GenericMapComponent
-            //   dataItemFields={dataItemFields}
-            // Optional: customize colors if needed
-            emptyRegionColor="#c8e6c9"  // Light green
-            filledRegionColor="#81c784"  // Medium green
-            selectedRegionColor="#388e3c" // Darker green
-          />
+    <section className='py-8 px-4 h-fit'>
+      <div>
+        {/* Enhanced Header Section */}
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center gap-3 mb-4">
+            <div className="p-3 bg-ghs-green/10 rounded-full">
+              <MapPin className="h-8 w-8 text-ghs-green" />
+            </div>
+            <h2 className="text-4xl font-bold text-ghs-green">Stakeholders by Region</h2>
+          </div>
+          <div className="w-24 h-1 bg-gradient-to-r from-ghs-green to-blue-600 rounded-full mx-auto mb-4"></div>
         </div>
-        <div className="w-2/3"> {/* Changed: Wrapper for PartnersTable, takes 2/3 width */}
-          <PartnersTable selectedRegion={selectedRegionOnMap} />
+
+        {/* Main Content Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+          {/* Map Section */}
+          <div className="xl:col-span-2">
+            <Card className="h-full bg-gradient-to-br from-white/95 to-slate-50/90 backdrop-blur-sm border-0 shadow-xl">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl font-semibold text-slate-800 flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-ghs-green" />
+                    Regional Map
+                  </CardTitle>
+                  {selectedRegionOnMap && (
+                    <Badge variant="secondary" className="bg-ghs-green/10 text-ghs-green border-ghs-green/20">
+                      {selectedRegionOnMap}
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-sm text-slate-600">
+                  Click on any region to view stakeholders and filter the table below
+                </p>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="relative">
+                  <GenericMapComponent
+                    geoData={geoData as FeatureCollection}
+                    regionLabels={regionLabels}
+                    regionNameField="name"
+                    mapHeight="700px"
+                    onRegionSelect={handleRegionSelect}
+                    emptyRegionColor="#4ade80"
+                    filledRegionColor="#22c55e"
+                    selectedRegionColor="#16a34a"
+                    showRegionLabels={true}
+                    showTooltips={true}
+                    enableInteractions={true}
+                  />
+                  {selectedRegionOnMap && (
+                    <div className="absolute top-4 right-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={clearSelection}
+                        className="bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg"
+                      >
+                        Clear Selection
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Table Section */}
+          <div className="xl:col-span-3">
+            <PartnersTable selectedRegion={selectedRegionOnMap} />
+          </div>
         </div>
       </div>
     </section>

@@ -328,3 +328,198 @@ export async function getAllPartnerMappings(): Promise<{
     };
   }
 }
+
+export async function deletePartnerMapping(mappingId: string): Promise<{
+  success: boolean;
+  message?: string;
+}> {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: 'Authentication required',
+      };
+    }
+
+    // Check if user is admin
+    if (session.user.role !== 'Admin') {
+      return {
+        success: false,
+        message: 'Admin access required',
+      };
+    }
+
+    const db = await getDb();
+    const partnerMappingsCollection = db.collection('partner_mappings');
+    
+    // Delete the partner mapping
+    const result = await partnerMappingsCollection.deleteOne({
+      _id: new (await import('mongodb')).ObjectId(mappingId)
+    });
+
+    if (result.deletedCount === 0) {
+      return {
+        success: false,
+        message: 'Partner mapping not found',
+      };
+    }
+
+    return {
+      success: true,
+      message: 'Partner mapping deleted successfully',
+    };
+
+  } catch (error) {
+    console.error('Error deleting partner mapping:', error);
+    return {
+      success: false,
+      message: 'Failed to delete partner mapping. Please try again.',
+    };
+  }
+}
+
+export async function updatePartnerMapping(mappingId: string, updateData: any): Promise<{
+  success: boolean;
+  message?: string;
+  updatedMapping?: any;
+}> {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: 'Authentication required',
+      };
+    }
+
+    // Check if user is admin
+    if (session.user.role !== 'Admin') {
+      return {
+        success: false,
+        message: 'Admin access required',
+      };
+    }
+
+    // Validate the update data
+    const validationResult = partnerMappingFormSchema.safeParse(updateData);
+    
+    if (!validationResult.success) {
+      return {
+        success: false,
+        message: 'Validation failed',
+      };
+    }
+
+    const validatedData = validationResult.data;
+
+    const db = await getDb();
+    const partnerMappingsCollection = db.collection('partner_mappings');
+    
+    // Update the partner mapping
+    const result = await partnerMappingsCollection.findOneAndUpdate(
+      { _id: new (await import('mongodb')).ObjectId(mappingId) },
+      {
+        $set: {
+          data: validatedData,
+          updatedAt: new Date(),
+        },
+      },
+      { returnDocument: 'after' }
+    );
+
+    if (!result) {
+      return {
+        success: false,
+        message: 'Partner mapping not found',
+      };
+    }
+
+    // Serialize the updated mapping
+    const updatedMapping = {
+      id: result._id.toString(),
+      userId: result.userId,
+      data: result.data,
+      createdAt: result.createdAt instanceof Date ? result.createdAt.toISOString() : new Date(result.createdAt).toISOString(),
+      updatedAt: result.updatedAt instanceof Date ? result.updatedAt.toISOString() : new Date(result.updatedAt).toISOString(),
+      status: result.status,
+    };
+
+    return {
+      success: true,
+      message: 'Partner mapping updated successfully',
+      updatedMapping,
+    };
+
+  } catch (error) {
+    console.error('Error updating partner mapping:', error);
+    return {
+      success: false,
+      message: 'Failed to update partner mapping. Please try again.',
+    };
+  }
+}
+
+export async function getPartnerMappingById(mappingId: string): Promise<{
+  success: boolean;
+  partnerMapping?: any;
+  message?: string;
+}> {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: 'Authentication required',
+      };
+    }
+
+    // Check if user is admin
+    if (session.user.role !== 'Admin') {
+      return {
+        success: false,
+        message: 'Admin access required',
+      };
+    }
+
+    const db = await getDb();
+    const partnerMappingsCollection = db.collection('partner_mappings');
+    
+    // Get the specific partner mapping
+    const mapping = await partnerMappingsCollection.findOne({
+      _id: new (await import('mongodb')).ObjectId(mappingId)
+    });
+
+    if (!mapping) {
+      return {
+        success: false,
+        message: 'Partner mapping not found',
+      };
+    }
+
+    // Serialize the mapping
+    const serializedMapping = {
+      id: mapping._id.toString(),
+      userId: mapping.userId,
+      data: mapping.data,
+      createdAt: mapping.createdAt instanceof Date ? mapping.createdAt.toISOString() : new Date(mapping.createdAt).toISOString(),
+      updatedAt: mapping.updatedAt instanceof Date ? mapping.updatedAt.toISOString() : new Date(mapping.updatedAt).toISOString(),
+      status: mapping.status,
+    };
+
+    return {
+      success: true,
+      partnerMapping: serializedMapping,
+    };
+
+  } catch (error) {
+    console.error('Error getting partner mapping by ID:', error);
+    return {
+      success: false,
+      message: 'Failed to load partner mapping. Please try again.',
+    };
+  }
+}

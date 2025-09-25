@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { MapContainer, TileLayer, GeoJSON, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup, useMap } from 'react-leaflet';
 import { Feature, Geometry, FeatureCollection } from 'geojson';
 import { PathOptions, LatLngBounds, Layer, divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { MapPin, Users, Activity, Target, X } from 'lucide-react';
 
 interface RegionLabels {
   [region: string]: [number, number];
@@ -22,27 +23,51 @@ interface GeneralMapProps {
   emptyRegionColor?: string;
   filledRegionColor?: string;
   selectedRegionColor?: string;
+  showRegionLabels?: boolean;
+  showTooltips?: boolean;
+  enableInteractions?: boolean;
 }
+
+// Map bounds component to handle initial view
+function MapBounds({ bounds }: { bounds: LatLngBounds }) {
+  const map = useMap();
+  useEffect(() => {
+    map.fitBounds(bounds, { padding: [20, 20] });
+  }, [map, bounds]);
+  return null;
+}
+
+// Medium green for all regions
+const defaultRegionColor = '#4ade80'; // Medium green
 
 export default function GenericMap({
   geoData,
   regionLabels,
   title = "Map View",
   regionNameField = "name",
-  mapHeight = "400px", // Changed from "600px"
+  mapHeight = "500px",
   onRegionSelect,
   customStyles = {},
-  emptyRegionColor = '#b2ebf2',
-  filledRegionColor = '#3388ff',
-  selectedRegionColor = '#ff9800'
+  emptyRegionColor = '#e0f2fe',
+  filledRegionColor = '#81c784',
+  selectedRegionColor = '#388e3c',
+  showRegionLabels = true,
+  showTooltips = true,
+  enableInteractions = true
 }: GeneralMapProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [mounted, setMounted] = useState(false);
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
   
   const [selectedRegion, setSelectedRegion] = React.useState<string | null>(
     searchParams.get('region')
   );
   const selectedRegionRef = React.useRef(selectedRegion);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
 
   // Function to handle region selection and URL update
@@ -75,7 +100,8 @@ export default function GenericMap({
 
   const createOnEachFeature = useCallback(
     (
-      currentSelectedRegion: string | null
+      currentSelectedRegion: string | null,
+      currentHoveredRegion: string | null
     ) => (
       feature: Feature<Geometry, any>,
       layer: Layer
@@ -83,227 +109,399 @@ export default function GenericMap({
       if (!feature.properties?.[regionNameField]) return;
       const region = feature.properties[regionNameField];
       const isSelected = currentSelectedRegion && region.toLowerCase() === currentSelectedRegion.toLowerCase();
+      const isHovered = currentHoveredRegion && region.toLowerCase() === currentHoveredRegion.toLowerCase();
+      
+      // Use medium green for all regions
+      let fillColor = defaultRegionColor;
+      
+      if (isSelected) {
+        fillColor = selectedRegionColor;
+      } else if (isHovered) {
+        fillColor = filledRegionColor;
+      }
+
       const style: PathOptions = {
-        fillColor: isSelected ? selectedRegionColor : emptyRegionColor,
-        weight: isSelected ? 4 : 2,
+        fillColor,
+        weight: isSelected ? 3 : isHovered ? 2.5 : 2,
         opacity: 1,
-        color: isSelected ? selectedRegionColor : 'white',
-        fillOpacity: 0.7,
+        color: isSelected ? selectedRegionColor : isHovered ? filledRegionColor : '#ffffff',
+        fillOpacity: isSelected ? 0.7 : isHovered ? 0.5 : 0.3,
+        dashArray: isSelected ? '5, 5' : undefined,
       };
       (layer as any).setStyle(style);
-      layer.on({
-        click: (e: any) => {
-          handleRegionChange(region);
-        },
-        mouseover: () => layer.openTooltip(),
-      });
-      layer.bindTooltip(region, { sticky: true });
+      
+      if (enableInteractions) {
+        layer.on({
+          click: (e: any) => {
+            handleRegionChange(region);
+          },
+          mouseover: (e: any) => {
+            setHoveredRegion(region);
+            if (showTooltips) {
+              layer.openTooltip();
+            }
+          },
+          mouseout: () => {
+            setHoveredRegion(null);
+            layer.closeTooltip();
+          },
+        });
+      }
+      
+      if (showTooltips) {
+        layer.bindTooltip(`
+          <div class="custom-tooltip">
+            <div class="tooltip-header">${region}</div>
+            <div class="tooltip-content">
+              <div class="tooltip-stats">
+                <span class="stat-item">
+                  <i class="icon">📍</i>
+                  Region
+                </span>
+              </div>
+            </div>
+          </div>
+        `, { 
+          sticky: true,
+          className: 'custom-tooltip-wrapper',
+          direction: 'top',
+          offset: [0, -10]
+        });
+      }
     },
-    [regionNameField, emptyRegionColor, filledRegionColor, selectedRegionColor, handleRegionChange]
+    [regionNameField, emptyRegionColor, filledRegionColor, selectedRegionColor, handleRegionChange, enableInteractions, showTooltips]
   );
 
   const ghanaBounds = new LatLngBounds([4.7, -3.5], [11.2, 1.2]);
 
   const onEachFeature = useCallback(
-    createOnEachFeature(selectedRegion),
-    [selectedRegion, createOnEachFeature]
+    createOnEachFeature(selectedRegion, hoveredRegion),
+    [selectedRegion, hoveredRegion, createOnEachFeature]
   );
 
+  if (!mounted) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center" style={{ height: mapHeight }}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ghs-green mx-auto mb-4"></div>
+          <p className="text-lg font-medium text-slate-600">Loading Interactive Map...</p>
+          <p className="text-sm text-slate-500 mt-1">Preparing regional data visualization</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <section 
-      // className="bg-gradient-to-br from-navy-blue/15 to-mode-blue/10 p-4 md:p-8 relative"
-      style={customStyles}
-    >
-      {/* <div className="absolute inset-0 bg-pattern opacity-5 z-0"></div> */}
-      <div className="relative z-10">
-        <div style={{ height: mapHeight }}>
-          {/* Map Panel */}
-          <div
-            className="w-full h-full bg-white rounded-lg shadow-md overflow-hidden"
+    <div className="relative w-full h-full" style={{ height: mapHeight }}>
+      {/* Map Container */}
+      <div className="w-full h-full bg-white rounded-xl shadow-xl overflow-hidden border border-slate-200">
+        <MapContainer
+          center={[4.9, -0.8]}
+          zoom={7}
+          style={{ height: '100%', width: '100%' }}
+          bounds={ghanaBounds}
+          maxBounds={ghanaBounds}
+          attributionControl={false}
+          minZoom={6}
+          maxZoom={10}
+          boundsOptions={{ padding: [20, 20] }}
+          zoomControl={enableInteractions}
+          scrollWheelZoom={enableInteractions}
+          doubleClickZoom={enableInteractions}
+          dragging={enableInteractions}
+          touchZoom={enableInteractions}
+          boxZoom={false}
+          keyboard={false}
+          className="map-container"
+        >
+          <MapBounds bounds={ghanaBounds} />
+          
+          {/* Enhanced Tile Layer */}
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            className="map-tiles"
+            maxZoom={18}
+          />
+          
+          {/* GeoJSON Regions */}
+          <GeoJSON
+            key={`${selectedRegion || 'none'}-${hoveredRegion || 'none'}`}
+            data={geoData}
+            onEachFeature={onEachFeature}
             style={{
-              minWidth: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
+              weight: 2, 
+              opacity: 1, 
+              color: '#ffffff', 
+              fillOpacity: 0.6,
+              fillColor: defaultRegionColor
             }}
-          >
-            <MapContainer
-              center={[4.9, -0.8]}
-              zoom={7}
-              style={{ height: '100%', width: '100%' }}
-              bounds={ghanaBounds}
-              maxBounds={ghanaBounds}
-              attributionControl={false}
-              minZoom={6}
-              maxZoom={7}
-              boundsOptions={{ padding: [5, 5] }}
-              zoomControl={true} // Changed from false
-              scrollWheelZoom={true} // Changed from false
-              doubleClickZoom={true} // Changed from false
-              dragging={true}
-              touchZoom={true} // Changed from false
-              boxZoom={false}
-              keyboard={false}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                className="map-tiles"
+          />
+          
+          {/* Region Labels */}
+          {showRegionLabels && Object.entries(regionLabels).map(([region, position]) => {
+            const isSelected = selectedRegion && region.toLowerCase() === selectedRegion.toLowerCase();
+            const isHovered = hoveredRegion && region.toLowerCase() === hoveredRegion.toLowerCase();
+            
+            return (
+              <Marker
+                key={region}
+                position={position}
+                icon={divIcon({
+                  className: 'region-label',
+                  html: `
+                    <div class="label-container ${isSelected ? 'selected' : isHovered ? 'hovered' : ''}">
+                      <span class="region-name">${region}</span>
+                    </div>
+                  `,
+                  iconSize: [60, 20],
+                  iconAnchor: [30, 10]
+                })}
+                eventHandlers={enableInteractions ? {
+                  click: () => {
+                    handleRegionChange(region);
+                  },
+                  mouseover: () => {
+                    setHoveredRegion(region);
+                  },
+                  mouseout: () => {
+                    setHoveredRegion(null);
+                  },
+                } : {}}
               />
-              <GeoJSON
-                key={selectedRegion || 'none'}
-                data={geoData}
-                onEachFeature={onEachFeature}
-                style={{ weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7 }}
-              />
-              {Object.entries(regionLabels).map(([region, position]) => {
-                return (
-                  <Marker
-                    key={region}
-                    position={position}
-                    icon={divIcon({
-                      className: 'region-label',
-                      html: `<div class="label-container">
-                              <span class="region-name-map-marker text-sm">${region}</span>
-                             </div>`,
-                      iconSize: [30, 15],
-                      iconAnchor: [15, 7]
-                    })}
-                    eventHandlers={{
-                      click: () => {
-                        handleRegionChange(region);
-                      },
-                    }}
-                  />
-                );
-              })}
-            </MapContainer>
+            );
+          })}
+        </MapContainer>
+      </div>
+      
+      {/* Map Legend */}
+      <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-slate-200">
+        <div className="flex items-center gap-4 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: defaultRegionColor }}></div>
+            <span className="text-slate-600">Regions</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: filledRegionColor }}></div>
+            <span className="text-slate-600">Hovered</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded border-2 border-dashed" style={{ backgroundColor: selectedRegionColor }}></div>
+            <span className="text-slate-600">Selected</span>
           </div>
         </div>
       </div>
+      
+      {/* Map Controls */}
+      {selectedRegion && (
+        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-slate-200">
+          <div className="flex items-center gap-2 text-sm">
+            <MapPin className="h-4 w-4 text-ghs-green" />
+            <span className="font-medium text-slate-800">{selectedRegion}</span>
+            <button
+              onClick={() => handleRegionChange(null)}
+              className="ml-2 p-1 hover:bg-slate-100 rounded transition-colors"
+            >
+              <X className="h-3 w-3 text-slate-500" />
+            </button>
+          </div>
+        </div>
+      )}
       <style>{`
+        .map-container {
+          border-radius: 12px;
+          overflow: hidden;
+        }
+        
         .map-tiles {
-            filter: grayscale(100%) brightness(0.8);
+          filter: grayscale(20%) brightness(1.1) contrast(1.1);
+          transition: filter 0.3s ease;
         }
+        
         .leaflet-container {
-            background: #f0f0f0;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          font-family: inherit;
         }
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-            padding: 0;
+        
+        .leaflet-control-zoom {
+          border: none !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+          border-radius: 8px !important;
+          overflow: hidden;
         }
-        .leaflet-popup-content {
-            margin: 0;
-            line-height: 1.4;
+        
+        .leaflet-control-zoom a {
+          background: white !important;
+          color: #374151 !important;
+          border: none !important;
+          font-size: 16px !important;
+          font-weight: 600 !important;
+          transition: all 0.2s ease !important;
         }
-        .custom-popup {
-            min-width: 120px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        
+        .leaflet-control-zoom a:hover {
+          background: #f3f4f6 !important;
+          color: #1f2937 !important;
         }
-        .popup-header {
-            background: #3388ff;
-            color: white;
-            padding: 3px 5px;
-            font-size: 12px;
-            font-weight: 600;
-            border-radius: 4px 4px 0 0;
+        
+        .leaflet-interactive {
+          cursor: pointer;
+          transition: all 0.3s ease;
         }
-        .popup-content {
-            padding: 3px 5px;
-            background: white;
-            border-radius: 0 0 4px 4px;
+        
+        .leaflet-interactive:hover {
+          filter: brightness(1.1);
         }
-        .stat-row {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-        }
-        .stat-value {
-            font-size: 16px;
-            font-weight: 700;
-            codiv: #3388ff;
-        }
-        .stat-label {
-            font-size: 11px;
-            color: #666;
-            text-transform: uppercase;
-        }
-        .region-label {
-            background: transparent;
-            border: none;
-            box-shadow: none;
-        }
-        .label-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-        }
-        .region-name-map-marker {
-            font-size: 9px;
-            font-weight: 600;
-            color: #333;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 2px 4px;
-            border-radius: 3px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-        .leaflet-interactive[style*="stroke: rgb(255, 152, 0)"] {
-            filter: drop-shadow(0 0 6px #ff9800);
-        }
+        
         .leaflet-interactive:focus {
-            outline: none !important;
+          outline: none !important;
         }
-        .overflow-y-auto::-webkit-scrollbar {
-            width: 6px;
+        
+        .region-label {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
         }
-        .overflow-y-auto::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
+        
+        .label-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: all 0.3s ease;
         }
-        .overflow-y-auto::-webkit-scrollbar-thumb {
-            background: #ccd4e0;
-            border-radius: 10px;
+        
+        .region-name {
+          font-size: 11px;
+          font-weight: 600;
+          color: #374151;
+          white-space: nowrap;
+          text-align: center;
+          background: rgba(255, 255, 255, 0.95);
+          padding: 4px 8px;
+          border-radius: 4px;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          transition: all 0.2s ease;
         }
-        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-            background: #98a7ba;
+        
+        .label-container.hovered .region-name {
+          background: rgba(255, 255, 255, 1);
+          color: #22c55e;
+          transform: scale(1.05);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
-        .overflow-y-auto {
-            scrollbar-width: thin;
-            scrollbar-color: #ccd4e0 #f1f1f1;
+        
+        .label-container.selected .region-name {
+          background: rgba(34, 197, 94, 0.1);
+          color: #16a34a;
+          font-weight: 700;
+          transform: scale(1.1);
+          box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);
         }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        
+        .custom-tooltip-wrapper {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
         }
-        .grid > div {
-            animation: fadeIn 0.3s ease-out forwards;
+        
+        .custom-tooltip {
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          min-width: 120px;
         }
-        .grid > div:nth-child(2) {
-            animation-delay: 0.05s;
+        
+        .tooltip-header {
+          background: linear-gradient(135deg, #388e3c 0%, #4caf50 100%);
+          color: white;
+          padding: 8px 12px;
+          font-size: 13px;
+          font-weight: 600;
+          text-align: center;
         }
-        .grid > div:nth-child(3) {
-            animation-delay: 0.1s;
+        
+        .tooltip-content {
+          padding: 8px 12px;
         }
-        .grid > div:nth-child(4) {
-            animation-delay: 0.15s;
+        
+        .tooltip-stats {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
         }
-        .grid > div:nth-child(5) {
-            animation-delay: 0.2s;
+        
+        .stat-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: #6b7280;
         }
-        .grid > div:nth-child(n+6) {
-            animation-delay: 0.25s;
+        
+        .stat-item .icon {
+          font-size: 12px;
         }
-        .bg-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23223b67' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        
+        .leaflet-popup-content-wrapper {
+          border-radius: 12px !important;
+          padding: 0 !important;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .leaflet-popup-content {
+          margin: 0 !important;
+          line-height: 1.4 !important;
+        }
+        
+        .leaflet-popup-tip {
+          background: white !important;
+          border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        /* Animation for smooth interactions */
+        @keyframes regionPulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
+        
+        .leaflet-interactive[style*="stroke: rgb(56, 142, 60)"] {
+          animation: regionPulse 2s infinite;
+          filter: drop-shadow(0 0 8px rgba(56, 142, 60, 0.4));
+        }
+        
+        /* Loading animation */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .map-container {
+          animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .region-name {
+            font-size: 10px;
+            padding: 3px 6px;
+          }
+          
+          .tooltip-header {
+            font-size: 12px;
+            padding: 6px 10px;
+          }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { Users, BarChart3, FileText, Settings, Home, Folder, UserRoundPen } from 'lucide-react'
+import { Users, BarChart3, FileText, Settings, Home, Folder, UserRoundPen, Handshake } from 'lucide-react'
 import type { AdminDashboardLinksProps } from '@/types/dashboard-sidebar'
 import DashboardSidebar from '../shared/DashboardSidebar'
 import { canAccessSettings } from '@/lib/permissions'
@@ -16,7 +16,7 @@ export default function AdminDashboardLinks({ session }: AdminDashboardLinksProp
         { path: '/admin/dashboard/resources', label: 'Resources', icon: Folder },
         // { path: '/admin/dashboard/surveys', label: 'Surveys', icon: FileText },
         { path: '/admin/dashboard/surveys', label: 'Mapping', icon: FileText },
-        { path: '/admin/dashboard/partner-mapping', label: 'Partner Mapping', icon: FileText },
+        { path: '/admin/dashboard/partner-mapping', label: 'Partners', icon: Handshake },
         // { path: '/admin/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
         { path: '/admin/dashboard/profile', label: 'Profile', icon: UserRoundPen },
     ]

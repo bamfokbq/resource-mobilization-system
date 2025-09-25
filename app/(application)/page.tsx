@@ -1,6 +1,6 @@
 import HealthStats from '@/components/chart_and_graphics/HealthStats';
 import StakeholdersByRegionMap from '@/components/chart_and_graphics/StakeholdersByRegionMap';
-import Assistance from '@/components/features/Assistance';
+// import Assistance from '@/components/features/Assistance';
 import Contributions from '@/components/features/Contributions';
 import Features from '@/components/features/Features';
 import LandingHero from '@/components/features/LandingHero';
@@ -16,10 +16,10 @@ export default function Home() {
       {/* <Stakeholders /> */}
       <StakeholdersByRegionMap />
       <PartnersMap />
-      <HealthStats />
+      {/* <HealthStats /> */}
       <Contributions />
       {/* <ResourcesAction /> */}
-      <Assistance />
+      {/* <Assistance /> */}
     </main>
   );
 }
