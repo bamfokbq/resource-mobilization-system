@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import type { DashboardSidebarProps } from '@/types/dashboard-sidebar'
 import { Route } from 'next'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 export default function DashboardSidebar({ 
     session, 
@@ -19,12 +20,10 @@ export default function DashboardSidebar({
     const pathname = usePathname()
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [currentTime, setCurrentTime] = useState(new Date())
-
-    // Update time every minute
+    const [mounted, setMounted] = useState(false)
+    // Handle hydration
     useEffect(() => {
-        const timer = setInterval(() => setCurrentTime(new Date()), 60000)
-        return () => clearInterval(timer)
+        setMounted(true);
     }, [])
 
     const linkClass = (path: string, isActive: boolean) => `
@@ -33,7 +32,7 @@ export default function DashboardSidebar({
             ? 'text-mint-green bg-mint-green/10 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-mint-green before:rounded-r-lg'
             : 'text-light-blue hover:text-mint-green/80 hover:bg-white/5'
         } 
-        transition-all duration-300 hover:scale-[1.02]`
+        transition-all duration-300 ease-in-out hover:scale-[1.02]`
 
     const isItemActive = (itemPath: string) => {
         if (customPathLogic) {
@@ -72,12 +71,12 @@ export default function DashboardSidebar({
     return (
         <aside
             className="bg-ghs-green flex-shrink-0 w-[90px] flex flex-col relative transition-all duration-300 
-                       shadow-xl border-r border-light-blue/10 h-screen overflow-hidden"
+                       shadow-xl border-r border-light-blue/10 h-screen"
             role="navigation"
             aria-label={ariaLabel}
         >
             {/* Header */}
-            <div className="relative">
+            <div className="relative flex-shrink-0">
                 {/* User info section - only show avatar in collapsed state */}
                 {session?.user && (
                     <div className="px-4 pb-6 border-b border-light-blue/20">
@@ -91,8 +90,10 @@ export default function DashboardSidebar({
             </div>
 
             {/* Navigation menu */}
-            <nav className="flex-1 mt-4 flex flex-col">
-                <ul className='flex flex-col gap-2 w-full' role="menubar">
+            <div className="flex-1 overflow-hidden">
+                <ScrollArea className="h-full">
+                    <nav className="flex flex-col">
+                        <ul className='flex flex-col gap-2 w-full px-2 pb-4' role="menubar">
                     {navigationItems.map((item) => {
                         const isActive = isItemActive(item.path)
                         const Icon = item.icon
@@ -125,7 +126,7 @@ export default function DashboardSidebar({
                         <button
                             onClick={handleSignOut}
                             className="w-full flex flex-col items-center justify-center gap-1 p-3 rounded-lg text-white hover:bg-red-500/10 
-                                      hover:text-red-400 transition-all duration-300 focus:outline-none 
+                                      hover:text-red-400 transition-all duration-300 ease-in-out focus:outline-none 
                                       focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-navy-blue
                                       min-h-[60px] relative"
                             title="Logout"
@@ -143,8 +144,10 @@ export default function DashboardSidebar({
                             )}
                         </button>
                     </li>
-                </ul>
-            </nav>
+                        </ul>
+                    </nav>
+                </ScrollArea>
+            </div>
         </aside>
     )
 }

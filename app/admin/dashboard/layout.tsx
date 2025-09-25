@@ -27,9 +27,9 @@ export default async function AdminDashboardLayout({
             <Header />
             <div className="flex flex-1 overflow-hidden">
                 <AdminDashboardLinks />
-                <ScrollArea className="flex-1 bg-gray-100">
+                <ScrollArea className="flex-1 bg-gray-100 scroll-smooth scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400">
                     <div className="w-full h-full bg-gray-100">
-                        <div className="p-4">
+                        <div>
                             {children}
                         </div>
                     </div>

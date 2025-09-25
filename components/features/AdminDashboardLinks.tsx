@@ -1,6 +1,6 @@
 'use client'
 
-import { Users, BarChart3, FileText, Settings, Home, Folder, UserRoundPen, Handshake } from 'lucide-react'
+import { Users, FileText, Settings, Home, Folder, UserRoundPen, Handshake } from 'lucide-react'
 import type { AdminDashboardLinksProps } from '@/types/dashboard-sidebar'
 import DashboardSidebar from '../shared/DashboardSidebar'
 import { canAccessSettings } from '@/lib/permissions'
